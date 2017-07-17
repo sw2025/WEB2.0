@@ -1,0 +1,109 @@
+/***********header start***********/
+.header{position: fixed;background: #fff;top: 0;width: 100%;z-index: 10;box-sizing: border-box;height: 100px;background:#333;min-width: 560px;} 
+.header .container{position: relative;}
+.navbar-header{float: left;}
+.navbar-brand{float: left;margin-top: 25px;}
+.navbar-toggle{float: left;position: relative;padding: 4px 10px;margin-top: 32px;margin-left: 35px;background-color: transparent;background-image: none;border: 1px solid transparent;border-radius: 4px;border-color: #ddd;color:#fff;z-index: 24;}
+.navbar-nav{margin-top: 30px;float: left;margin-left: 16%;}
+.nav{float: right;font-size: 16px;}
+.nav li{float: left;padding:2px;}
+.nav a{color:#fff;display: block;padding:6px 16px;-webkit-transition:all 0.7s;-moz-transition:all 0.7s;-ms-transition:all 0.7s;transition:all 0.7s;}
+.nav a:hover,.nav .active a{background:#00a7ed;border-radius: 5px;font-weight: bold;}
+
+.bars{position: absolute;right: 15px;top: 0;}
+.searchbar,.header-link{float: right;margin-top: 30px;}
+.searchbar{margin-top: 40px;margin-right: 12px;}
+.header-link i,.search-cli i{font-size: 12px;-webkit-text-stroke-width: 0;color:#fff;margin-right: 5px;}
+.header-link{color:#Fff;font-size: 12px;display: inline-block;line-height: 22px;padding:9px 12px;margin-left: 1px;position: relative;z-index: 24;}
+.log-username,.quit{color:#fff;}
+.header-link:hover{background:#fff;color:#00a7ed;border-radius: 5px;}
+.header-link:hover i{color:#00a7ed;}
+.log-username{max-width:80px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.quit{margin-left: 1px;}
+.after-login{display: none;}
+.search-cli{color:#fff;border-right: 1px solid #f8f8f8;}
+.search-sear{display: none;font-size: 12px;}
+.searchbar{margin-left: 5px;position: relative;}
+.search-bar{position: absolute;right: 5px;bottom: 0px;color:#fff;}
+.select-box{position: relative;color:#fff;float: left;background:#034070;}
+.select-showbox{padding:0 4px;height: 20px;line-height: 20px;font-size: 12px;display: inline-block;cursor: pointer;}
+.select-showbox i{font-size: 12px;-webkit-text-stroke-width: 0;}
+.select-option{position: absolute;left: -12px;top: 20px;background:#d1d1d1;display: none;}
+.select-option li{padding:0 13px;cursor: pointer;white-space: nowrap;color:#333;}
+.select-option li.selected{background:#025699;color:#fff;}
+.search-text{background:#fff;width:128px;height: 20px;padding-left: 5px;color:#333;float: left;}
+.search-btn{background:none;border: none;}
+.search-btn i{color:#034070;font-size: 12px;}
+/***********header end***********/
+/***********footer start***********/
+.footer{background:#535661;width:100%;padding: 60px 0;}
+.two-pic{border-right: 1px dashed #fff;overflow: hidden;}
+.weixin,.app{float: left;margin-top: 6px;text-align: center;font-size: 18px;color:#fff;}
+.weixin{margin-right: 14%;}
+.two-code{display: block;padding:7px;background:#Fff;margin-bottom: 18px;}
+.two-code img{width:100%;}
+.contacts{padding:15px 30px;color:#fff;}
+.footer-title{font-size: 16px;padding-bottom: 15px;border-bottom: 2px solid #fff;font-weight: bold;margin-bottom: 15px;}
+.contact-pub{padding-bottom: 10px;}
+.contact-pub i{margin-right: 10px;-webkit-text-stroke-width: 0;}
+.copyright span{padding:0 12px;}
+/***********footer end***********/
+@media (min-width: 992px){
+    .navbar-toggle{display: none;}
+}
+@media (max-width: 1199px){
+    .navbar-nav{margin-left: 4%;}
+    .nav a{padding:6px 11px;}
+}
+@media (max-width: 991px){
+    .navbar-nav{display: none;float: none;margin-left: 0;}
+    .nav{width:100%;padding-top: 0;position: absolute;background: #333;z-index: 22;top: 70px;}
+    .nav li{float:none;}
+    .header .in{display: block;position: relative;}
+    .two-pic{border-bottom: 1px dashed #fff;border-right: none;}
+}
+/*分页*/
+.pages {overflow: hidden;/*padding:0 0 10px 25px;*/text-align: center;} 
+.pages #Pagination1 {float: left;overflow: hidden;} 
+.pages #Pagination1 .pagination {height: 32px;text-align: right;font-family: \u5b8b\u4f53,Arial;} 
+.pages #Pagination1 .pagination a, .pages #Pagination1 .pagination span {float: left;display: inline;padding: 7px 15px;border: 1px solid #e6e6e6;border-right: none;background: #f6f6f6;color: #666666;font-family: \u5b8b\u4f53,Arial;font-size: 14px;cursor: pointer;} 
+.pages #Pagination1 .pagination .current {background: #269edc;color: #fff;} 
+.pages #Pagination1 .pagination .prev, .pages #Pagination1 .pagination .next {float: left;padding: 7px 15px;border: 1px solid #e6e6e6;background: #f6f6f6;color: #666666;cursor: pointer;} 
+.pages #Pagination1 .pagination .prev i, .pages #Pagination1 .pagination .next i {display: inline-block;width: 4px;height: 11px;margin-right: 5px;background: url(../images/icon.fw.png) no-repeat;} 
+.pages #Pagination1 .pagination .prev {border-right: none;} 
+.pages #Pagination1 .pagination .pagination-break {padding: 3px 5px;border: none;border-left: 1px solid #e6e6e6;background: none;cursor: default;} 
+.topPages .pages #Pagination1 .pagination .prev, .topPages .pages #Pagination1 .pagination .next{display: block!important;}
+.pages #Pagination {/*float: left;*/overflow: hidden;display: inline-block;} 
+.pages #Pagination .pagination {text-align: right;font-family: \u5b8b\u4f53,Arial;overflow: hidden;} 
+.pages #Pagination .pagination a, .pages #Pagination .pagination span {float: left;display: inline;padding: 7px 15px;border: 1px solid #e6e6e6;/*border-right: none;*/ background: #f6f6f6;color: #666666;font-family: \u5b8b\u4f53,Arial;font-size: 14px;cursor: pointer;} 
+.pages #Pagination .pagination .current {background: #269edc;color: #fff;} 
+.pages #Pagination .pagination .prev, .pages #Pagination .pagination .next {float: left;padding: 7px 15px;border: 1px solid #e6e6e6;background: #f6f6f6;color: #666666;cursor: pointer;} 
+.pages #Pagination .pagination .prev i, .pages #Pagination .pagination .next i {display: inline-block;width: 4px;height: 11px;margin-right: 5px;background: url(../images/icon.fw.png) no-repeat;} 
+/*.pages #Pagination .pagination .prev {border-right: none;} */
+.pages #Pagination .pagination .pagination-break {padding: 3px 5px;border: none;/*border-left: 1px solid #e6e6e6;*/ background: none;cursor: default;} 
+
+.pages .searchPage {float: left;margin-top: 3px;} 
+.pages .searchPage .page-sum {padding: 11px 13px;color: #999999;font-family: \u5b8b\u4f53,Arial;font-size: 14px;} 
+.pages .searchPage .page-go {padding: 8px 0;color: #999999;font-family: \u5b8b\u4f53,Arial;font-size: 14px;padding: 10px 0\9;*padding: 6px 0;} 
+.pages .searchPage .page-go input {width: 21px;height: 20px;margin: 0 5px;padding-left: 5px;border: 1px solid #e4e4e4;} 
+.pages .searchPage .page-btn {margin: 9px 0 5px 5px;padding: 2px 5px;background: #269edc;border-radius: 2px;color: #ffffff;font-family: Arial, 'Microsoft YaHei';font-size: 14px;text-decoration: none;} 
+.pages .page-sum{/*float: left;*/margin-top: 2px;margin-left: 20px;color:#666;display: inline-block;vertical-align: 12px;}
+.allPage{font-weight: normal;}
+/*my add pages*/
+.pages{padding:41px 0 58px;}
+.pages #Pagination .pagination a, .pages #Pagination .pagination span{margin:0 4px;border-radius: 2px;}
+/***********侧边栏 start***********/
+.ucenter{padding-top: 125px;background:#f8f8f8;padding-bottom: 25px;}
+.wrap{min-width: 770px;max-width: 1200px;margin:0 auto;}
+.aside{float: left;width:188px;width:15.83333%;font-size: 16px;text-align: center;border: 1px solid #ccc;background:#fff;border-radius: 6px;box-shadow: 0 0 8px #ccc;overflow: hidden;}
+.aside-tit{height: 56px;background:#00a7ed;color:#fff;font-weight: normal;line-height: 56px;border-bottom: 1px solid #ccc;}
+.aside i{margin-right: 10px;font-size: 18px;font-size: 20px;display: inline-block;width:32px;overflow: hidden;vertical-align: middle;}
+.common-info li{height: 54px;line-height: 54px;border-bottom: 1px solid #ccc;overflow: hidden;}
+.common-info a{display: block;color:#666;}
+.common-info .current a,.common-info a:hover{background:#e3f7ff;color:#333;font-weight: bold;}
+.common-info .current i,.common-info a:hover i{font-weight: normal;}
+.aside .icon-iconfonticon{font-size: 30px;}
+.aside .icon-renzheng1,.aside .icon-shoufeixitong{font-size: 24px;}
+/***********侧边栏 end***********/
+.main{float: right;width:80.83333%;}
+.main-top{padding-top: 38px;padding-bottom: 18px;color:#333;font-size: 16px;}
