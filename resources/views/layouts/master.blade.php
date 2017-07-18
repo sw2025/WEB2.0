@@ -22,7 +22,7 @@
     <script type="text/javascript" src="{{asset('js/reply.js')}}"></script>
     <!--[if lt IE 9]-->
     <!--[if lt IE 9]-->
-    <script type="text/javascript" src="{{asset('js/utils/html5shiv.js?1401441990')}}"></script>
+    <script type="text/javascript" src="{{asset('js/utils/html5shiv.min.js?1401441990')}}"></script>
     <script type="text/javascript" src="{{asset('js/utils/respond.min.js?1401441990')}}"></script>
     <!--[endif]-->
 </head>
