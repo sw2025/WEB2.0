@@ -1,0 +1,43 @@
+/***********基本资料 start***********/
+.main-right{background:#fff;border: 1px solid #ccc;border-radius: 6px;}
+.basic-source{width: 255px;margin:0 auto;}
+.basic-tel{padding-top: 35px;}
+.basic-row{margin-bottom: 16px;}
+.basic-row em{display: inline-block;width: 1em;}
+.basic-row span{float: left;line-height: 28px;color:#333;}
+.basic-row label{display: block;float: left;color:#333;font-weight: bold;text-align: right;line-height: 28px;}
+.change-btn{float: right;width: 60px;height: 28px;text-align: center;line-height: 28px;color:#fff;background:#00a7ed;border-radius: 3px;}
+.basic-nickname{width:194px;border: 1px solid #ccc;border-radius: 3px;height:26px;line-height: 26px;padding-left: 3px;font-size: 12px;}
+.basic-pet{margin-bottom: 25px;}
+
+.basic-rect{float: left;width: 105px;height: 105px;background: #d9d9d9;border: 1px solid #ccc;overflow: hidden;}
+.basic-rect img{width:100%;}
+.basic-upload{float: left;padding-top: 77px;padding-left: 45px;}
+.basic-span{display: block;position: relative;overflow: hidden;}
+.basic-span span{color:#fff;display: block;text-align: center;width: 60px;}
+.basic-span input{position: absolute;top: 0;right: 0;margin: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';font-size: 200px !important;direction: ltr;cursor: pointer;width: auto;height: auto;}
+.basic-btn{width:100%;height: 40px;line-height: 40px;display: block;background:#00a7ed;color:#fff;text-align: center;font-size: 16px;border: none;border-radius: 6px;margin:28px 0 34px;}
+/***********基本资料 end***********/
+/***********更换手机号 start***********/
+.basic-source-changetel{width: 300px;margin:0 auto;}
+.change-tel-tit{display: block;color:#333;font-size: 16px;display: block;padding-top: 35px;padding-bottom: 20px;}
+.change-tel-pwd,.change-tel-tel{position: relative;width: 100%;border: 1px solid #ccc;border-radius: 3px;background: #fff;height: 34px;line-height: 34px;margin-bottom: 12px;}
+.change-tel-pwd label,.change-tel-test label,.change-tel-tel label{position: absolute;left: 0;top: 6px;padding: 0 10px;border-right: 1px solid #afafaf;height: 24px;line-height: 24px;}
+.change-tel-pwd i,.change-tel-test i,.change-tel-tel i{font-size: 20px;color: #afafaf;}
+.change-tel-pwd input,.change-tel-enter input,.change-tel-tel input{padding-left: 60px;color: #757575;}
+.change-tel-enter input{width: 134px;}
+.change-tel-test{position: relative;margin-bottom: 12px;}
+.change-tel-enter{border: 1px solid #ccc;border-radius: 3px;background: #fff;height: 34px;line-height: 34px;float: left;}
+.change-tel-get{float: right;height: 36px;line-height: 36px;width: 96px;text-align: center;background: #00a7ed;color: #fff;border-radius: 3px;}
+/***********更换手机号 end***********/
+/***********充值提现 start***********/
+.card-step{border-bottom: 2px solid #dcdcdc;font-size: 16px;color:#333;text-align: center;padding: 14px 0;margin:0 20px;line-height: 28px;}
+.green-circle{font-weight: bold;color:#fff;width: 28px;height: 28px;display: inline-block;background:#2fd887;border-radius: 20px;text-align: center;line-height: 28px;margin-right: 14px;}
+.card-step-cap{margin:0 30px;}
+.card-enter{text-align: center;}
+.card-must{color:#666;padding:115px 0;}
+.card-sum{width: 300px;height: 30px;line-height: 30px;background:#eaeaea;margin:0 10px;padding-left: 10px;}
+.must{color:#ff1919;font-size: 20px;display: inline-block;vertical-align: middle;}
+.test-btn{display: inline-block;width: 250px;height: 40px;text-align: center;line-height: 40px;background:#00a7ed;border: none;border-radius: 6px;color:#fff;font-size: 16px;margin-bottom: 50px;}
+/***********充值提现 end***********/
+/***********基本资料 end***********/
