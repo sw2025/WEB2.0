@@ -3,9 +3,9 @@
 <!-- 搜索框 / start -->
 <div class="section">
     <div class="container list-bg">
-        <form action="">
+        <form action="" onsubmit="return false">
             <div class="list-search">
-                <input type="text" class="list-search-inp" placeholder="请输入要搜索的供求信息关键字" />
+                <input type="text" class="list-search-inp"  placeholder="请输入要搜索的供求信息关键字" value="{{$searchname or null}}"/>
                 <button type="button" class="list-search-btn"><i class="iconfont icon-sousuo"></i></button>
             </div>
         </form>
@@ -16,7 +16,7 @@
 <div class="container list-filter">
     <div class="all-results filter-row clearfix"><span class="left-cap">全部结果：</span>
         @if(isset($role))<a href="javascript:;" class="all-results-expert all-results-opt">{{$role}}</a>@endif
-        @if(isset($supply))<a href="javascript:;" class="all-results-field all-results-opt">{{$supply}}</a>@endif
+        @if(isset($supply))<a href="javascript:;" class="all-results-field all-results-opt">{{$supply[0].'/'.$supply[1]}}</a>@endif
         @if(isset($address))<a href="javascript:;" class="all-results-location all-results-opt">{{$address}}</a>@endif
     </div>
     <div class="experts-classify filter-row clearfix">
@@ -27,15 +27,15 @@
     </div>
     <div class="serve-field filter-row clearfix">
         <span class="left-cap">需求领域：</span>
-        <a href="javascript:;" class="serve-all @if(empty($domain1)) active @endif">全部</a>
+        <a href="javascript:;" class="serve-all @if(empty($supply)) active @endif">全部</a>
         @foreach($cate as $big)
             @if($big->level == 1)
             <div class="serve-field-list">
-                <a href="javascript:;" class="serve-field-list-deft @if(isset($domain1) && $domain1 != $big->domainname) active @endif">{{$big->domainname}}</a>
-                <ul class="serve-field-list-show">
+                <a href="javascript:;" class="serve-field-list-deft @if(isset($supply) && $supply[0] == $big->domainname) active @endif">{{$big->domainname}}</a>
+                <ul class="serve-field-list-show" >
                     @foreach($cate as $small)
                        @if($small->level == 2 && $small->parentid == $big->domainid)
-                        <li>{{$small->domainname}}</li>
+                        <li class="@if(!empty($supply) && $small->domainname == $supply[1]) active @endif">{{$small->domainname}}</li>
                         @endif
                     @endforeach
                 </ul>
@@ -89,11 +89,10 @@
     <div class="row">
         <!-- 排序 / start -->
         <div class="sort">
-            <a href="javascript:;" class="list-time active">发布时间<span class="list-order-icon"><i class="iconfont white-color icon-triangle-copy"></i><i class="iconfont blue-color icon-sanjiaoxing"></i></span></a>
-            <a href="javascript:;" class="list-collect">收藏数<span class="list-order-icon"><i class="iconfont icon-triangle-copy"></i><i class="iconfont icon-sanjiaoxing"></i></span></a>
-            <a href="javascript:;" class="list-reviews">留言数<span class="list-order-icon"><i class="iconfont icon-triangle-copy"></i><i class="iconfont icon-sanjiaoxing"></i></span></a>
+            <a href="javascript:;" class="list-time @if(!empty($ordertime)) active @endif">发布时间<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordertime) && $ordertime == 'asc') white-color @elseif(!empty($ordertime) && $ordertime == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordertime) && $ordertime == 'asc') blue-color  @elseif(!empty($ordertime) && $ordertime == 'desc') white-color  @endif"></i></span></a>
+            <a href="javascript:;" class="list-collect @if(!empty($ordercollect)) active @endif" >收藏数<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordercollect) && $ordercollect == 'asc') white-color @elseif(!empty($ordercollect) && $ordercollect == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordercollect) && $ordercollect == 'asc') blue-color  @elseif(!empty($ordercollect) && $ordercollect == 'desc') white-color  @endif"></i></span></a>
+            <a href="javascript:;" class="list-reviews @if(!empty($ordermessage)) active @endif" >留言数<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordermessage) && $ordermessage == 'asc') white-color @elseif(!empty($ordermessage) && $ordermessage == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordermessage) && $ordermessage == 'asc') blue-color  @elseif(!empty($ordermessage) && $ordermessage == 'desc') white-color  @endif"></i></span></a>
         </div>
-        <!-- 排序 / end -->
         <!-- 供求列表/start -->
 
         <ul class="supply-list clearfix">
@@ -103,7 +102,7 @@
                     <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif " class="supp-list-img" />
                     <span class="supp-list-time">{{$v->needtime}}</span>
                     <div class="supp-list-brief">
-                        <span class="supp-list-name">供求信息</span>
+                        <span class="supp-list-name">【{{$v->needtype}}】{{$v->expertname or $v->enterprisename}}</span>
                         <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
                         <div class="supp-list-desc">
                             {{$v->brief}}
@@ -130,8 +129,59 @@
 
 <script type="text/javascript">
     $(function(){
-        $("#Pagination").pagination("{{$datas->lastpage()}}");
+        $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':{{$datas->currentPage()-1}}});
+
+        function pageselectCallback(page_index, jq){
+            // 从表单获取每页的显示的列表项数目
+            var current = parseInt(page_index)+1;
+            var url = window.location.href;
+            url = url.replace(/(\?|\&)?page=\d+/,'');
+            var isexist = url.indexOf("?");
+            if(isexist == -1){
+                url += '?page='+current;
+            } else {
+                url += '&page='+current;
+            }
+            window.location=url;
+            //阻止单击事件
+            return false;
+        }
     })
 </script>
 <script src="{{url('js/supply.js')}}" type="text/javascript"></script>
+{{--<script type="text/javascript">
+    $(function(){
+        //总数目
+
+        //-----------------------------------
+        function getOptionsFromForm(){
+            var opt = {callback: pageselectCallback};
+            // 从文本域中收集参数 - 这些空间名与参数名相对应
+            $("input:text").each(function(){
+                opt[this.name] = this.className.match(/numeric/) ? parseInt(this.value) : this.value;
+            });
+            //避免demo重引入HTML
+            var htmlspecialchars ={ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;"}
+            $.each(htmlspecialchars, function(k,v){
+                opt.prev_text = opt.prev_text.replace(k,v);
+                opt.next_text = opt.next_text.replace(k,v);
+            })
+            return opt;
+        }
+        //-------------------------------
+        function pageselectCallback(page_index, jq){
+            // 从表单获取每页的显示的列表项数目
+            var items_per_page = $("#items_per_page").val();
+            var max_elem = Math.min((page_index+1) * items_per_page, length);
+
+            $("#Searchresult").html("");
+            // 获取加载元素
+            for(var i=page_index*items_per_page;i<max_elem;i++){
+                $("#Searchresult").append($("#hiddenresult .show:eq("+i+")").clone());
+            }
+            //阻止单击事件
+            return false;
+        }
+    });
+</script>--}}
 @endsection
