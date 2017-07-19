@@ -119,7 +119,7 @@
 .expert-field-desc{text-align: justify;font-size: 12px;padding:20px 0;color:#333;line-height: 20px;height: 120px;overflow: hidden;}
 .ex-res-icon{position: absolute;right: 15px;bottom:10px;padding:0 15px;}
 .ex-res-icon a{margin-right: 15px;color:#c4c4c4;}
-.ex-res-icon a:hover{color:#e00909;}
+.ex-res-icon .red{color:#e00909;}
 .collect i{font-size: 19px;}
 .tab-list-link:hover .triangle-bottom{border-bottom-color: #00a7ed;}
 .tab-leftbtn,.tab-rightbtn{position: absolute;top: 50%;color:#333;margin-top: -24px;display: none;}

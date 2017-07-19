@@ -15,7 +15,7 @@
     <script type="text/javascript" src="{{asset('js/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/public.js')}}"></script>
     <!--[if lt IE 9]>
-    <script type="text/javascript" src="{{asset('js/utils/html5shiv.js?1401441990')}}"></script>
+    <script type="text/javascript" src="{{asset('js/utils/html5shiv.min.js?1401441990')}}"></script>
     <script type="text/javascript" src="{{asset('js/utils/respond.min.js?1401441990')}}"></script>
     <![endif]-->
 </head>
@@ -151,6 +151,22 @@
         $(".before-login").show();
         $(".after-login").hide();
     }
+    $(".quit").on("click",function(){
+        $.ajax({
+            url:"{{asset("quit")}}",
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    $.cookie("userId",'',{expires:7,path:'/',domain:'web_sheng.com'});
+                    $.cookie("name",'',{expires:7,path:'/',domain:'web_sheng.com'});
+                    window.location.href="{{asset('/')}}"
+                }else{
+                    window.location.href="{{asset('/')}}"
+                }
+            }
+        })
+    })
 </script>
 </body>
 </html>

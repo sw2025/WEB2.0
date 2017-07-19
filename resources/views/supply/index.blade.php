@@ -1,6 +1,8 @@
 @extends("layouts.master")
 @section("content")
 <!-- 搜索框 / start -->
+<link rel="stylesheet" type="text/css" href="{{asset('css/list.css')}}" />
+<script type="text/javascript" src="{{asset('js/list.js')}}"></script>
 <div class="section">
     <div class="container list-bg">
         <form action="">

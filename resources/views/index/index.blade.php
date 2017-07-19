@@ -77,255 +77,16 @@
     <div class="container">
         <div class="supply-service-tit supply-demand">专家资源库<span class="middle-line"></span></div>
         <div class="supply-service-entit">EXPERT RESOURCE BASE</div>
-        <div class="more-box"><a href="javascript:;" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
+        <div class="more-box"><a href="{{asset('expert')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
         <div class="row tab-resources">
-            <div class="tabar clearfix">
-                <a href="javascript:;" class="current tabar-opt">知名机构<div class="triangle-top"></div></a>
+            <div class="tabar clearfix" id="knowExpert">
+                <a href="javascript:;" class="tabar-opt">知名机构<div class="triangle-top"></div></a>
                 <a href="javascript:;" class="tabar-opt">知名专家<div class="triangle-top"></div></a>
                 <a href="javascript:;" class="tabar-opt">知名企业家<div class="triangle-top"></div></a>
             </div>
             <div class="tab-con">
-                <ul class="tab-list clearfix">
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="img/avatar1.jpg" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="img/avatar2.jpg" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar3.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar4.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar1.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar2.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar3.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar4.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar1.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar2.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar3.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" class="tab-list-link">
-                            <span class="ex-res-img"><img src="{{asset('img/avatar4.jpg')}}" /></span>
-                            <div class="ex-res-con">
-                                <div class="triangle-bottom"></div>
-                                <div class="ex-res-con-tit">
-                                    <span class="expert-name">专家一</span>
-                                    <span class="expert-consult">视频咨询：免费</span>
-                                </div>
-                                <div class="ex-res-con-desc">
-                                    <span class="expert-field"><strong>擅长领域：</strong>杜福海律师：法，在路上！从媒体到律师的战场</span>
-                                    <p class="expert-field-desc">阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红酒岁的法国红酒仨阿斯蒂芬规划局岁的法国红</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="ex-res-icon">
-                            <a href="javascript:;" class="review"><i class="iconfont icon-pinglun1"></i></a>
-                            <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i></a>
-                        </div>
-                    </li>
+                <ul class="tab-list clearfix" id="konwExpertList">
+
                 </ul>
             </div>
             <div class="listbottom-link nomargin"><a href="javascript:;" class="become-expert homepage-link">成为专家</a></div>
@@ -343,7 +104,7 @@
         <div class="row supply-categary clearfix">
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">融资投资<a href="javascript:;" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">投融资<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($invests as $invest)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$invest->needid)}}"><span class="dem-li-tit">{{$invest->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$invest->created_at}}</span></a></li>
@@ -353,7 +114,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">战略合作<a href="javascript:;" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">战略合作<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($works as $work)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$work->needid)}}"><span class="dem-li-tit">{{$work->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$work->created_at}}</span></a></li>
@@ -363,7 +124,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">产品升级<a href="javascript:;" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">产品升级<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($products as $product)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$product->needid)}}"><span class="dem-li-tit">{{$product->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$product->created_at}}</span></a></li>
@@ -373,7 +134,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">市场运营<a href="javascript:;" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">市场运营<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($markets as $market)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$market->needid)}}"><span class="dem-li-tit">{{$market->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$market->created_at}}</span></a></li>
@@ -386,4 +147,94 @@
     </div>
 </div>
 <!-- section3 / end -->
+<script>
+    $(function(){
+        var type=$("#knowExpert a:first-child").text();
+        $("#knowExpert a:first-child").addClass("current")
+        getType(type)
+    })
+    $("#knowExpert a").on("click",function(){
+        $("#konwExpertList").empty();
+        var expertType= $(this).text();
+        getType(expertType);
+    })
+    var getType=function(type){
+        $.ajax({
+            url:"{{asset('returnData')}}",
+            data:{"type":type},
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    $.each(res['msg'],function(key,value){
+                        var str=" <li class=''>";
+                            str+="<a href='{{asset('expert/detail/')}}"+"/"+value.expertid+"'class='tab-list-link'>";
+                            str+="<span class='ex-res-img'><img src='{{asset('img/avatar1.jpg')}}' /></span>";
+                            str+="<div class='ex-res-con'>";
+                            str+="<div class='triangle-bottom'></div>"
+                            str+="<div class='ex-res-con-tit'>"
+                            str+="<span class='expert-name'>"+value.expertname+"</span>"
+                            str+="<span class='expert-consult'>视频咨询："+value.fee +"</span></div><div class='ex-res-con-desc'>"
+                            str+="<span class='expert-field'><strong>擅长领域：</strong>"+value.domain1+"</span>"
+                            str+="<p class='expert-field-desc'>"+value.brief+"</p>"
+                            str+="</div> </div> </a><div class='ex-res-icon'>"
+                            str+="<a href='javascript:;' class='review' id='"+value.expertid+"' onclick='toMessage(this)'><i class='iconfont icon-pinglun1'></i></a>"
+                            if(value.collect==0){
+                                str+="<a href='javascript:;' class='collect ' title='收藏' id='"+value.expertid+"' onclick='collect(this)'><i class='iconfont icon-likeo'></i></a> </div></li>";
+                            }else{
+                                str+="<a href='javascript:;' class='collect red ' title='已收藏' id='"+value.expertid+"' onclick='collect(this)'><i class='iconfont icon-likeo'></i></a> </div></li>";
+                            }
+                        $("#konwExpertList").append(str);
+                    })
+                }else{
+                   /* $("#konwExpertList").text("暂无数据");*/
+                }
+            }
+
+        })
+    }
+   function collect(e){
+        var expertId=$(e).attr('id');
+        var remark;
+       if(!$.cookie("userId")){
+           window.location.href="{{asset('login')}}"
+           return false;
+       }else{
+           if($(e).attr('title') == '已收藏'){
+               remark="0";
+               collectHndle(expertId,remark);
+               $(e).attr("title","收藏");
+               $(e).removeClass('red');
+           }else{
+               remark="1";
+               collectHndle(expertId,remark);
+               $(e).attr("title","已收藏");
+               $(e).addClass('red');
+           }
+       }
+   }
+    var collectHndle=function(expertId,remark){
+            $.ajax({
+                url:"{{asset('collectExpert')}}",
+                data:{"remark":remark,"expertId":expertId},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="error"){
+                        alert("收藏失败!")
+                        return false;
+                    }
+                }
+            })
+        }
+    function toMessage(e){
+        var expertId=$(e).attr('id');
+        if(!$.cookie('userId')){
+            window.location.href="{{asset('login')}}"
+            return false;
+        }else{
+            window.location.href="{{asset('expert/detail')}}"+"/"+expertId;
+        }
+    }
+</script>
 @endsection

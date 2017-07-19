@@ -72,8 +72,8 @@ body{background:#f8f8f8;}
 .exp-rec-lab{overflow: hidden;}
 .exp-rec-brief{color:#333;font-size: 12px;line-height: 1.6;text-align: justify;text-indent: 2em;max-height: 76px;overflow: hidden;}
 .exp-rec-icon{position: absolute;bottom:18px;right: 10px;}
-.exp-rec-icon a{color:#c4c4c4;margin-left: 10px;}
-.exp-rec-icon a:hover{color:#e00909;}
+.review,.collect{color:#c4c4c4;margin-left: 10px;}
+.exp-rec-icon .red{color:#e00909;}
 .review i{font-size: 15px;}
 /*************供求*************/
 .supp-details-name{margin-bottom: 20px;}

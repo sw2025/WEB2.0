@@ -30,14 +30,111 @@
 .change-tel-enter{border: 1px solid #ccc;border-radius: 3px;background: #fff;height: 34px;line-height: 34px;float: left;}
 .change-tel-get{float: right;height: 36px;line-height: 36px;width: 96px;text-align: center;background: #00a7ed;color: #fff;border-radius: 3px;}
 /***********更换手机号 end***********/
-/***********充值提现 start***********/
+/***********绑定银行卡 start***********/
 .card-step{border-bottom: 2px solid #dcdcdc;font-size: 16px;color:#333;text-align: center;padding: 14px 0;margin:0 20px;line-height: 28px;}
-.green-circle{font-weight: bold;color:#fff;width: 28px;height: 28px;display: inline-block;background:#2fd887;border-radius: 20px;text-align: center;line-height: 28px;margin-right: 14px;}
+.green-circle,.gray-circle{font-weight: bold;color:#fff;width: 28px;height: 28px;display: inline-block;background:#2fd887;border-radius: 20px;text-align: center;line-height: 28px;margin-right: 14px;}
+.gray-circle{background: #d4d4d4;}
 .card-step-cap{margin:0 30px;}
 .card-enter{text-align: center;}
 .card-must{color:#666;padding:115px 0;}
-.card-sum{width: 300px;height: 30px;line-height: 30px;background:#eaeaea;margin:0 10px;padding-left: 10px;}
+.card-sum,.card-bank-open{width: 300px;height: 30px;line-height: 30px;background:#eaeaea;margin:0 10px;padding-left: 10px;}
 .must{color:#ff1919;font-size: 20px;display: inline-block;vertical-align: middle;}
 .test-btn{display: inline-block;width: 250px;height: 40px;text-align: center;line-height: 40px;background:#00a7ed;border: none;border-radius: 6px;color:#fff;font-size: 16px;margin-bottom: 50px;}
+.card-number{padding-top: 50px;padding-bottom: 34px;}
+.card-name{padding-bottom: 34px;}
+.card-submit{margin-bottom: 10px;margin-top: 65px;}
+.card-tip{color: #999;display: block;padding-bottom: 20px;}
+.card-bank-sel{display: inline-block;position: relative;width: 330px;}
+.card-bank-open{display: block;color: #ABABAB;text-align: left;position: relative;}
+.card-bank-open:before{font-family: "iconfont";content: "\e618";background: #00a7ed;position: absolute;color: #fff;width: 30px;text-align: center;top: 0;right: 0;}
+.card-bank-list{position: absolute;top: 30px;left: 10px;text-align: left;background: #fff;width: 310px;display: none;}
+.card-bank-list li{margin: 2px 0;padding: 5px 0 5px 10px;}
+.card-bank-list li:hover{background: #f5f5f5;}
+/***********绑定银行卡 end***********/
+/***********充值 start***********/
+.recharge-sum{padding: 70px 0 55px;margin: 0 90px;text-align: center;border-bottom: 2px solid #eaeaea;}
+.recharge-opt{position: relative;margin-left: 40px;color: #666;}
+.recharge-radio span{display: inline-block;width: 8px;height: 8px;border: 2px solid #eaeaea;border-radius: 10px;background: #eaeaea;margin-right: 10px;vertical-align: -1px;}
+.rad-inp{opacity: 0;position: absolute;top: 0;left: 0;}
+.focus .recharge-radio span{border-color: #2fd887;}
+.recharge-inp-sum{width: 110px;height: 30px;padding-left: 10px;background: #eaeaea;margin-left: 10px;}
+.recharge-way{text-align: center;padding: 55px 0;}
+.way-img{display: inline-block;}
+.way-cap{display: inline-block;vertical-align: -7px;margin-left: 12px;}
+.recharge-btn-box{text-align: center;}
+/***********充值 end***********/
+/***********我的消息 start***********/
+.myinfo-tit{background:#00a7ed;border-radius: 5px 5px 0 0;overflow: hidden;height: 36px;line-height: 36px;color:#fff;border-bottom: 1px solid #ccc;}
+.myinfo-tit-fl{float: left;}
+.myinfo-tit-fl i{float: left;margin: 1px 10px;}
+.myinfo-tit-fr{float: right;}
+.myinfo-tit-fr a{color:#fff;margin:0 10px;}
+.myinfo-list{min-height: 400px;}
+.myinfo-list li{border-bottom: 2px solid #dedede;}
+.myinfo-row{overflow: hidden;padding: 15px 0;position: relative;}
+.myinfo-check-label{position: absolute;background:url(../img/check.png) no-repeat 0 0;width: 13px;height: 13px;top: 18px;left:12px;overflow: hidden;}
+.myinfo-check{position: absolute;left:0;top:0;opacity:0;}
+.myinfo-td{display: block;color:#333;overflow: hidden;margin-left: 40px;}
+.myinfo-td i{color:#00a7ed;font-size: 30px;float: left;line-height: 18px;}
+.myinfo-td span{float: left;}
+.myinfo-td .td-time{float: right;margin-right: 10px;}
+.td-tips{width:3em;text-align: center;margin:0 28px 0 12px;}
+.td-title{color:#666;margin-right: 10px;}
+.td-title-con{white-space: nowrap;overflow: hidden;width:59%;text-overflow: ellipsis;}
+.myinfo-row-details{padding:20px 18px 10px 42px;background:#f8f8f8;border-top: 1px dashed #ccc;margin:0 10px 0 40px;margin-bottom: 7px;display: none;}
+.myinfo-row-det-con{color:#333;text-align: justify;}
+.myinfo-come{text-align: right;margin-top: 25px;}
+.ischecked{background-position: 0 -35px;}
+.been-read{color:#666;}
+.been-read .td-title{color:#999;}
+.been-read i{color:#d8d8d8;}
+.myinfo-page{padding:20px 0 15px;}
+.myinfo-page #Pagination .pagination a, .myinfo-page #Pagination .pagination span{padding:1px 7px;}
+.myinfo-page #Pagination .pagination .prev, .myinfo-page #Pagination .pagination .next{display: none;}
+.myinfo-page .page-sum{vertical-align: 9px;}
+/***********我的消息 end***********/
+/***********充值提现 start***********/
+.paycheck{padding:12px 12px 0;}
+.paycheck-wrap{min-height: 350px;}
+.paycheck-list{width:100%;border-collapse: collapse;}
+.paycheck-list thead{background:#00a7ed;color:#f8f8f8;height: 27px;line-height: 27px;}
+.paycheck-list tbody tr{height:30px;vertical-align: middle;text-align: center;color:#333;}
+.paycheck-list tbody tr:nth-child(odd){background:#e3f7ff;}
+.paycheck-list tbody tr:nth-child(even){background:#fcfcfc;}
+
+.remaining{margin: 10px 0;border-right: 2px solid #e2e2e2;width: 55%;box-sizing: border-box;float: left;text-align: center;}
+.remain-num{width: 150px;height: 85px;background:url(../img/recharge.png) no-repeat center top;text-align: center;font-size: 16px;padding-top: 32px;display: inline-block;vertical-align: 18px;}
+.remain-num em{display: block;color:#edad00;font-size: 20px;}
+.remain-state{font-size: 16px;color:#333;display: inline-block;overflow: hidden;text-align: left;}
+.remain-state span{display: block;width:50%;float: left;margin-top: 20px;}
+.remain-state i{font-size: 22px;margin-right: 3px;}
+.remain-state .icon-shouru{color:#63dfac;}
+.remain-state .icon-zhichu{color:#df6377;}
+.zaitu{display: inline-block;width: 23px;height: 24px;background:url(../img/zaitu.png) no-repeat;vertical-align: -7px;}
+.remain-bottom{padding:0 0 8px 32px;text-align: left;}
+.recharge-money,.cash{display: inline-block;width: 154px;height: 34px;line-height: 34px;border: 1px solid #ccc;border-radius: 3px;text-align: center;margin-top: 15px;}
+.recharge-money{background:#00a7ed;color:#fff;margin-right: 70px;}
+.cash{background:#f8f8f8;color:#333;}
+.upload-bankcard{padding-top: 20px;width: 45%;box-sizing: border-box;float: left;}
+.uploaded-img{position: relative;}
+.uploaded-img,.bankcard-img{margin:0 auto;width: 260px;height: 160px;}
+.delete-card{position: absolute;top: -5px;right: -5px;background:rgba(0,0,0,0.7);filter:alpha(opacity=70);color:#fff;width: 20px;height: 20px;text-align: center;line-height: 20px;border-radius: 20px;cursor: pointer;border: 1px solid #ccc;display: none;}
+.card-span{display: block;position: relative;width: 90px;height: 105px;text-align: center;margin:20px auto 0;overflow: hidden;}
+.card-span input{position: absolute;top: 0;right: 0;margin: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';font-size: 200px !important;direction: ltr;cursor: pointer;width: auto;height: auto;}
+.card-upload{display:none;}
+.card-upload-tip i{display: block;font-size: 54px;color:#baedf0;}
+.money-category{padding-top: 20px;}
+.money-cate-fr{float: right;width: 206px;height: 34px;line-height: 34px;background:#fff;border: 1px solid #ccc;border-radius: 3px;color:#666;position: relative;}
+.money-cate-fr-cap{padding:0 20px 0 12px;border-right: 1px solid #afafaf;position: absolute;left: 0;top: 6px;height: 24px;line-height: 24px;}
+.money-cate-def{color:#666;margin-left: 83px;position: relative;display: block;}
+.money-cate-def:before{font-family: "iconfont";content:'\e618';width: 34px;height: 34px;text-align: center;line-height: 34px;color:#fff;background:#00a7ed;border-radius: 3px;position: absolute;right: 0;top: 0;}
+.money-cate-list{background:#fff;position: absolute;top: 36px;left:0;text-align: center;width: 100%;box-shadow: 0 0 8px #ccc;display: none;}
+.money-cate-list li{margin:2px 0;cursor: pointer;}
+.money-cate-list li:hover{background:#f2f2f2;}
+.reduce{padding-top: 18px;}
 /***********充值提现 end***********/
+/***********基本资料 start***********/
 /***********基本资料 end***********/
+/***********基本资料 start***********/
+/***********基本资料 end***********/
+
