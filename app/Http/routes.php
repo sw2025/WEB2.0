@@ -11,6 +11,10 @@
 |
 */
 Route::get('/','IndexController@index');
+//首页专家数据
+Route::post('returnData','IndexController@returnData');
+//专家列表
+Route::post('collectExpert','ExpertController@collectExpert');
 //登录
 Route::get('login','LoginController@login');
 //注册
@@ -29,9 +33,10 @@ Route::post('quit','LoginController@quit');
 Route::post('getCode','LoginController@getCode');
 //专家列表
 Route::get('expert','ExpertController@index');
-//专家列表
+//专家详情
 Route::get('expert/detail','ExpertController@detail');
-
+//专家详情
+Route::get('expert/detail/{expertId}','ExpertController@detail');
 //供求信息
 Route::get('supply','SupplyController@index');
 //供求信息详情

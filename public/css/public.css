@@ -21,6 +21,7 @@
 .log-username{max-width:80px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .quit{margin-left: 1px;}
 .after-login{display: none;}
+.after-login,.before-login{float: right;}
 .search-cli{color:#fff;border-right: 1px solid #f8f8f8;}
 .search-sear{display: none;font-size: 12px;}
 .searchbar{margin-left: 5px;position: relative;}

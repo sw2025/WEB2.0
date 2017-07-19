@@ -59,7 +59,7 @@ body{background: #f8f8f8;}
 .exp-list-icon{right: 20px;}
 .supp-list-icon{right: 30px;}
 .exp-list-icon a,.supp-list-icon a{margin-right: 10px;color:#c4c4c4;}
-.exp-list-icon a:hover,.supp-list-icon a:hover{color:#e00909;}
+.exp-list-icon .red,.supp-list-icon .red{color:#e00909;}
 .review i{font-size: 15px;}
 /***********专家列表 end***********/
 /***********供求列表 start***********/

@@ -1,7 +1,6 @@
 @extends("layouts.master")
 @section("content")
 <!-- 登录 / start -->
-
 <div class="section login-bg">
     <div class="container">
         <div class="user-box user-login-top">

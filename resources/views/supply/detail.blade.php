@@ -1,5 +1,7 @@
 @extends("layouts.master")
 @section("content")
+<script type="text/javascript" src="{{asset('js/reply.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{asset('css/details.css')}}" />
 <div class="container section">
     <div class="row clearfix">
         <div class="main-content col-md-8">
