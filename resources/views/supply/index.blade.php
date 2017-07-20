@@ -112,8 +112,8 @@
                     </div>
                 </a>
                 <div class="supp-list-icon">
-                    <a href="javascript:;" class="review" title="留言"><i class="iconfont icon-pinglun1"></i></a>
-                    <a href="javascript:;" class="collect" title="收藏"><i class="iconfont icon-likeo"></i></a>
+                    <a href="javascript:;" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
+                    <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> {{$v->collcount}}</a>
                 </div>
             </li>
             @endforeach
@@ -151,39 +151,5 @@
     })
 </script>
 <script src="{{url('js/supply.js')}}" type="text/javascript"></script>
-{{--<script type="text/javascript">
-    $(function(){
-        //总数目
 
-        //-----------------------------------
-        function getOptionsFromForm(){
-            var opt = {callback: pageselectCallback};
-            // 从文本域中收集参数 - 这些空间名与参数名相对应
-            $("input:text").each(function(){
-                opt[this.name] = this.className.match(/numeric/) ? parseInt(this.value) : this.value;
-            });
-            //避免demo重引入HTML
-            var htmlspecialchars ={ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;"}
-            $.each(htmlspecialchars, function(k,v){
-                opt.prev_text = opt.prev_text.replace(k,v);
-                opt.next_text = opt.next_text.replace(k,v);
-            })
-            return opt;
-        }
-        //-------------------------------
-        function pageselectCallback(page_index, jq){
-            // 从表单获取每页的显示的列表项数目
-            var items_per_page = $("#items_per_page").val();
-            var max_elem = Math.min((page_index+1) * items_per_page, length);
-
-            $("#Searchresult").html("");
-            // 获取加载元素
-            for(var i=page_index*items_per_page;i<max_elem;i++){
-                $("#Searchresult").append($("#hiddenresult .show:eq("+i+")").clone());
-            }
-            //阻止单击事件
-            return false;
-        }
-    });
-</script>--}}
 @endsection

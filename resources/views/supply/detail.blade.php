@@ -12,18 +12,19 @@
                 </div>
                 <span class="details-en-tit">SUPPLY AND DEMAND INFORMATION</span>
             </div>
+
             <div class="supp-details-con">
                 <div class="supp-det-con-top">
                     <img src="@if(empty($datas->entimg)) {{asset($datas->extimg)}} @else {{asset($datas->entimg)}}  @endif" class="supp-details-img" />
                     <div class="supp-details-brief">
                         <span class="supp-details-name"><i class="iconfont icon-gongsi"></i>{{$datas->expertname or $datas->enterprisename}}</span>
-                        <a href="javascript:;" class="collect-state done">已收藏</a>
+                        <a href="javascript:;" index="{{$datas->needid}}" class="collect-state @if(in_array($datas->needid,$collectids)) done @endif">@if(in_array($datas->needid,$collectids))已收藏 @else 收藏 @endif</a>
                         <span class="supp-details-time">发布时间：<em>{{$datas->needtime}}</em></span>
                         <span class="supp-details-zone">地<b class="wem2"></b>区：<em>{{$datas->address}}</em></span>
                         <span class="supp-details-categary">需求分类：<em>{{$datas->domain1}} / {{$datas->domain2}}</em></span>
 
                     </div>
-                </div>
+                </div><a name="reply">
                 <div class="details-abs">
                     <div class="details-abs-tit">
                         <div class="details-graph"><span class="square"></span></div>
@@ -34,6 +35,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="details-top clearfix">
                 <div class="details-bg">
                     <span class="blue-circle"><i class="iconfont icon-liuyan"></i></span>
@@ -42,9 +44,9 @@
                 <span class="details-en-tit">COMMENT THREADS</span>
             </div>
             <div class="details-message">
-                <form action="">
+                <form action="" method="post">
                     <div class="message-write">
-                        <textarea name="" id="" cols="30" rows="10" class="message-txt" placeholder="请输入留言"></textarea>
+                        <textarea name="content" id="{{$datas->needid}}" cols="30" rows="10" class="message-txt" placeholder="请输入留言"></textarea>
                         <div class="message-btn"><button class="submit" type="button">提交</button></div>
                     </div>
                 </form>
@@ -60,12 +62,12 @@
                                 <div class="floor-host">
                                     <img src="{{asset('img/avatar1.jpg')}}" class="floor-host-ava" />
                                     <div class="floor-host-desc">
-                                        <a href="javascript:;" class="floor-host-name">{{$v->nickname}}({{$v->name}})[{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">2017-7-8  17：25</span>
+                                        <a href="javascript:;" class="floor-host-name">{{$v->nickname}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
                                         <span class="floor-host-words">{{$v->content}}</span>
                                     </div>
                                 </div>
                                 <div class="message-reply-show">
-                                    <a href="javascript:;" class="look-reply">查看回复（2）</a>
+                                    <a href="javascript:;" class="look-reply">查看回复（@if(key_exists($v->id,$msgcount)){{$msgcount[$v->id]}}@else 0 @endif）</a>
                                     <a href="javascript:;" class="message-reply">回复</a>
                                 </div>
                                 <div class="reply-list">
@@ -75,11 +77,11 @@
                                             <li>
                                                 <img src="{{asset('img/avatar2.jpg')}}" class="floor-guest-ava" />
                                                 <div class="gloor-guest-cnt">
-                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname}}({{$reply->name}})</a>
+                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>
                                                     <span class="floor-guest-words">{{$reply->content}}</span>
                                                 </div>
                                                 <div class="floor-bottom">
-                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn">回复</a>
+                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn" userid="{{$v->userid}}">回复</a>
                                                 </div>
                                             </li>
                                             @elseif($reply->parentid == $v->id)
@@ -87,18 +89,18 @@
                                             <li>
                                                 <img src="{{asset('img/avatar3.jpg')}}" class="floor-guest-ava" />
                                                 <div class="gloor-guest-cnt">
-                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname}}({{$reply->name}})</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->use_userid == $v->userid ? $v->nickname.'('.$v->name.')' : '还没想出来'}}</a>
+                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
                                                     <span class="floor-guest-words">{{$reply->content}}</span>
                                                 </div>
                                                 <div class="floor-bottom">
-                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn">回复</a>
+                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$v->userid}}" class="reply-btn">回复</a>
                                                 </div>
                                             </li>
                                             @endif
                                         @endforeach
                                     </ul>
                                     <div class="reply-box">
-                                        <textarea class="reply-enter"></textarea>
+                                        <textarea class="reply-enter" index="{{$v->needid}}" id="{{$v->id}}"></textarea>
                                         <div class="publish-box"><button class="publish-btn" type="button">发表</button></div>
                                     </div>
                                 </div>
@@ -137,13 +139,16 @@
                         </div>
                     </a>
                     <div class="exp-rec-icon supp-rec-icon">
-                        <a href="javascript:;" class="review" title="留言"><i class="iconfont icon-pinglun1"></i></a>
-                        <a href="javascript:;" class="collect" title="收藏"><i class="iconfont icon-likeo"></i></a>
+                        <a href="{{url('supply/detail',$v->needid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i></a>
+                        <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids)) 已收藏 @else 收藏 @endif"><i class="iconfont icon-likeo"></i></a>
                     </div>
                 </li>
                @endforeach
             </ul>
         </div>
     </div>
+
 </div>
+
+<script src="{{url('js/supply.js')}}" type="text/javascript"></script>
 @endsection
