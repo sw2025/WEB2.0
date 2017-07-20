@@ -30,6 +30,41 @@ class CenterController extends Controller
     public function recharge(){
         return view("ucenter.recharge");
     }
+
+    /**充值
+     * @return mixed
+     */
+    public function rechargeMoney(){
+        return view("ucenter.rechargeMoney");
+    }
+
+    /**提现
+     * @return mixed
+     */
+    public function cash(){
+        return view("ucenter.cash");
+    }
+
+    /**我的信息
+     * @return mixed
+     */
+    public  function  myinfo(){
+        return view("ucenter.myinfo");
+    }
+
+    /**我的需求
+     * @return mixed
+     */
+    public function  supplyNeed(){
+        return view("ucenter.supplyNeed");
+    }
+
+    /**专家认证
+     * @return mixed
+     */
+    public function  expert(){
+        return view("ucenter.expert");
+    }
     
    
 

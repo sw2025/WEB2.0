@@ -12,6 +12,7 @@
     <!-- js / start -->
     <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jquery.cookie.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/public.js')}}"></script>
     <!--[if lt IE 9]>
