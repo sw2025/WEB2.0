@@ -40,7 +40,7 @@ Route::get('expert/detail/{expertId}','ExpertController@detail');
 //供求信息
 Route::get('supply','SupplyController@index');
 //供求信息详情
-Route::get('supply/detail','SupplyController@detail');
+Route::get('supply/detail/{supplyId}','SupplyController@detail');
 /**************************************个人中心的路由***********************************************/
 //基本资料
 Route::get('uct_basic','CenterController@index');
