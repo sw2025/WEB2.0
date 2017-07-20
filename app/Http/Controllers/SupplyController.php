@@ -23,7 +23,12 @@ class SupplyController extends Controller
             ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
             ->leftJoin('view_needcollectcount as coll','coll.needid' ,'=' ,'need.needid')
             ->leftJoin('view_needmesscount as mess','mess.needid' ,'=' ,'need.needid')
-            ->select('need.*','ent.enterprisename','ent.showimage as entimg','ext.showimage as extimg','ext.expertname');
+            ->select('need.*','ent.enterprisename','ent.showimage as entimg','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_n_collectneed')->where(['userid' => session('userId'),'remark' => 1])->lists('needid');
+        }
         //判断是否为http请求
         if(!empty($get = $request->input())){
             //获取到get中的数据并处理
@@ -51,12 +56,12 @@ class SupplyController extends Controller
             } else {
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
-            $datas = $obj->paginate(2);
-            return view("supply.index",compact('cate','searchname','datas','role','supply','address','ordertime','ordercollect','ordermessage'));
+            $datas = $obj->paginate(8);
+            return view("supply.index",compact('cate','searchname','datas','role','collectids','supply','address','ordertime','ordercollect','ordermessage'));
         }
-        $datas = $datas->orderBy("need.needtime",'desc')->paginate(2);
+        $datas = $datas->orderBy("need.needtime",'desc')->paginate(8);
         $ordertime = 'desc';
-        return view("supply.index",compact('cate','datas','ordertime'));
+        return view("supply.index",compact('cate','datas','ordertime','collectids'));
     }
 
     /**供求信息详情
@@ -83,6 +88,11 @@ class SupplyController extends Controller
             $commedomain1 = $obj2->where('need.domain1',$info['domain1'])->where('need.domain2','<>',$info['domain2'])->take(5-count($recommendNeed))->get();
             $recommendNeed = array_merge($recommendNeed,$commedomain1);
         }
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_n_collectneed')->where(['userid' => session('userId'),'remark' => 1])->lists('needid');
+        }
 
         //查询留言的信息
         $message = DB::table('t_n_messagetoneed as msg')
@@ -90,11 +100,84 @@ class SupplyController extends Controller
             ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
             ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
             ->leftJoin('t_u_user as user','user.userid' ,'=' ,'msg.userid')
+            ->leftJoin('t_u_user as user2','user2.userid' ,'=' ,'msg.use_userid')
             ->where('needid',$supplyId)
-            ->select('msg.*','ent.enterprisename','ext.expertname','user.nickname','user.name')
+            ->select('msg.*','ent.enterprisename','ext.expertname','user.nickname','user.phone','user2.nickname as nickname2','user2.phone as phone2')
+            ->orderBy('messagetime','desc')
             ->get();
-        return view("supply.detail",compact('datas','recommendNeed','message'));
+        //分组取出每个回复的数量
+        $getmsgcount = DB::table('t_n_messagetoneed')->where('needid',$supplyId)->groupBy('parentid')->select(DB::raw('parentid ,count(*) as count'))->having('parentid','<>',0)->get();
+        $msgcount = [];
+        foreach ($getmsgcount as $k => $v) {
+            $msgcount[$v->parentid] = $v->count;
+        }
+        return view("supply.detail",compact('datas','recommendNeed','message','collectids','msgcount'));
     }
+
+    /**处理收藏
+     * @param Request $request
+     * @return string
+     */
+    public function dealCollect (Request $request)
+    {
+       //判断是否登陆
+        if(!session('userId')) {
+            return 'nologin';
+        }
+        //判断是否为ajax请求
+        if($request->ajax()){
+            $data = $request->only('action', 'supplyid');
+            $userid = session('userId');
+            $where = ['needid' => $data['supplyid'],'userid' => $userid];
+            if($data['action'] == 'collect'){
+                $is_insert =  DB::table('t_n_collectneed')->where($where)->first();
+                if($is_insert){
+                    $res = DB::table('t_n_collectneed')->where($where)->update(['remark' => 1]);
+                } else {
+                    $res = DB::table('t_n_collectneed')->insertGetId([
+                        'needid' => $data['supplyid'],
+                        'userid' => $userid,
+                        'collecttime' => date('Y-m-d H:i:s',time()),
+                        'remark' => 1,
+                        'updated_at' => date('Y-m-d H:i:s',time())
+                    ]);
+                }
+            } elseif ($data['action'] == 'cancel') {
+                $res = DB::table('t_n_collectneed')->where($where)->update(['remark' => 0]);
+            }
+            if($res){
+                return 'success';
+            } else {
+                return 'error';
+            }
+        }
+        return 'error';
+
+    }
+
+    /**回复留言
+     * @param Request $request
+     * @return string
+     */
+    public function replyMessage (Request $request)
+    {
+        if(!session('userId')) {
+            return 'nologin';
+        }
+        if($request->ajax()){
+            $data = $request->only('content', 'needid','parentid','use_userid');
+            $data['userid'] = session('userId');
+            $data['messagetime'] = date('Y-m-d H:i:s',time());
+            $res = DB::table('t_n_messagetoneed')->insert($data);
+            if($res){
+                return 'success';
+            } else {
+                return 'error';
+            }
+        }
+        return 'error';
+    }
+
 
    
 }
