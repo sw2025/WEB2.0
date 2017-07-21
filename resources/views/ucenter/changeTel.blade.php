@@ -1,13 +1,14 @@
 @extends("layouts.ucenter")
 @section("content")
-    <div class="main">
+        <div class="main">
+            <!-- 更改手机号 / start -->
             <h3 class="main-top">基本资料</h3>
             <div class="ucenter-con">
                 <div class="main-right">
                     <div class="basic-source-changetel">
                         <span class="change-tel-tit">更换手机号</span>
                         <p class="change-tel-pwd">
-                            <label><i class="iconfont icon-suo"></i></label><input type="password" placeholder="请输入密码" class="" />
+                            <label><i class="iconfont icon-suo"></i></label><input type="password" placeholder="请输入密码" class=""  id="passWord" />
                         </p>
                         <p class="change-tel-test clearfix">
                                 <span class="change-tel-enter">
@@ -21,7 +22,9 @@
                 </div>
             </div>
         </div>
-    <script type="text/javascript">
+
+<!-- 公共footer / end -->
+<script type="text/javascript">
     $(function(){
         // 获取验证码
         var wait=60;
@@ -42,6 +45,17 @@
         }
         document.getElementById("getCode").onclick=function(){time(this);}
 
+    })
+    $("#getCode").on("click",function(){
+        var passWord=$("#passWord").val();
+        alert(passWord);
+        if(!passWord){
+            layer.tips('密码不能为空!', '.change-tel-pwd', {
+                tips: [2, '#00a7ed'],
+                time: 4000
+            });
+            return false;
+        }
     })
 </script>
 @endsection
