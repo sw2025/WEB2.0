@@ -42,7 +42,6 @@ Route::get('supply','SupplyController@index');
 //供求信息详情
 Route::get('supply/detail/{supplyId}','SupplyController@detail');
 
-
 /**************************************收藏留言相关路由*********************************************/
 //供求收藏
 Route::post('dealcollect','SupplyController@dealCollect');
