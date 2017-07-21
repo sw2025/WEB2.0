@@ -111,7 +111,7 @@ class ExpertController extends Controller
             ->leftJoin('t_u_user as user','user.userid' ,'=' ,'msg.userid')
             ->leftJoin('t_u_user as user2','user2.userid' ,'=' ,'msg.use_userid')
             ->where('msg.expertid',$expertid)
-            ->select('msg.*','ent.enterprisename','ext.expertname','user.nickname','user.phone','user2.nickname as nickname2','user2.phone as phone2')
+            ->select('msg.*','ent.enterprisename','ext.expertname','user.avatar','user.nickname','user.phone','user2.nickname as nickname2','user2.phone as phone2')
             ->orderBy('messagetime','desc')
             ->get();
         //分组取出每个回复的数量
