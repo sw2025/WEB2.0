@@ -154,7 +154,7 @@
             url = url.replace(/(\?|\&)?page=\d+/,'');
             var isexist = url.indexOf("?");
             if(isexist == -1){
-                url += '?page='+current;
+                url += '?ordertime=desc&page='+current;
             } else {
                 url += '&page='+current;
             }
