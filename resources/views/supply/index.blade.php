@@ -112,7 +112,7 @@
                     </div>
                 </a>
                 <div class="supp-list-icon">
-                    <a href="javascript:;" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
+                    <a href="{{url('supply/detail',$v->needid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
                     <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> {{$v->collcount}}</a>
                 </div>
             </li>
