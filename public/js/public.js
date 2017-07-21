@@ -103,14 +103,14 @@ $(function(){
 // ==================about 收藏start
     // 列表收藏
     $('.collect').click(function(event) {
-
         if($(this).attr('title').trim() == '已收藏'){
-
             $(this).attr("title","收藏");
             $(this).removeClass('red');
+            fnc_collect($(this).attr('index'),'cancel',this);
         }else{
             $(this).attr("title","已收藏");
             $(this).addClass('red');
+            fnc_collect($(this).attr('index'),'collect',this);
         }
     });
     // 详情收藏
