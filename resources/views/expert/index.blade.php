@@ -129,7 +129,7 @@
                     </div>
                 </a>
                 <div class="exp-list-icon">
-                    <a href="javascript:;" class="review" title="留言"><i class="iconfont icon-pinglun1"></i></a>
+                    <a href="{{url('expert/detail',$v->expertid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i></a>
                     <a href="javascript:;" class="collect @if(in_array($v->expertid,$collectids)) red @endif" index="{{$v->expertid}}" title="@if(in_array($v->expertid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> {{$v->collcount}}</a>
                 </div>
             </li>
