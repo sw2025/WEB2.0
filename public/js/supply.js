@@ -11,25 +11,18 @@ $(function(){
 
     // 选择服务领域
     $('.serve-field-list-show').on('click', 'li', function(event) {
-<<<<<<< HEAD
-        var serveLi = $(this).html();
-=======
 
         var serveLi = $(this).parent().siblings().html();
->>>>>>> origin/lds
         select[0] = 'supply';
         select[1] = serveLi;
         getCondition(select);
     });
-<<<<<<< HEAD
-=======
 
     $('.serve-field .serve-all').on('click', function(event) {
         select[0] = 'supply';
         select[1] = '全部';
         getCondition(select);
     });
->>>>>>> origin/lds
 
     // 选择地区
     $('.location').on('click', 'a', function(event) {
@@ -39,13 +32,10 @@ $(function(){
         getCondition(select);
     });
 
-<<<<<<< HEAD
-=======
     //搜索
     $('.list-search .list-search-btn').on('click',function () {
         var searchName = $(this).siblings().val();
-        select[0] = 'serveName';
-        select[1] = searchName;
+        select[0] = 'serveName';        select[1] = searchName;
         getCondition(select);
     });
     $('.list-search-inp').keydown(function (evnet) {
@@ -73,7 +63,7 @@ $(function(){
         getCondition(select);
     })
 
->>>>>>> origin/lds
+
     // 排序
     $('.sort').on('click', 'a', function(event) {
         var ordername = $(this).text();
@@ -104,6 +94,12 @@ $(function(){
         var role=$(".all-results-expert").text();
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
+
+        if(searchName == '请输入要搜索的供求信息关键字'){
+            searchName = '';
+        }
+        searchName=(searchName)?searchName:null;
+
         role=(role)?role:null;
         supply=(supply)?supply:null;
         address=(address)?address:null;
@@ -152,3 +148,67 @@ $(function(){
         window.location.href="?role="+role+"&supply="+supply+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
     }
 })
+
+function fnc_collect (supplyid,action,obj) {
+
+    $.post('/dealcollect',{'supplyid':supplyid,'action':action},function (data) {
+        if(data == 'nologin'){
+            layer.confirm('您还未登陆是否去登陆？', {
+                btn: ['去登陆','暂不需要'], //按钮
+                skin:'layui-layer-molv'
+            }, function(){
+                window.location.href='/login';
+            }, function(){
+                layer.close();
+                $(obj).attr("title","收藏");
+                $(obj).removeClass('red');
+                if($(obj).hasClass('done')){
+                    $(obj).removeClass('done');
+                }
+           });
+        } else if(data == 'success') {
+            if(action == 'collect'){
+                layer.msg('收藏成功');
+            } else {
+                layer.msg('取消收藏成功');
+            }
+        } else {
+            layer.msg('处理失败');
+        }
+    });
+}
+
+$('.details-message .submit').on('click',function () {
+    var textarea = $(this).parent().siblings('textarea');
+    var needid = textarea.attr('id');
+    var content = textarea.val();
+    $(this).attr('disabled',"true");
+    replymessage({'needid':needid,'content':content},this);
+});
+
+function replymessage (datas,obj) {
+    $.post('/replymessage',datas,function (data) {
+        if(data == 'success'){
+            layer.msg('回复成功',{time:2000},function () {
+                window.location = window.location;
+            });
+        }else if(data == 'nologin') {
+            layer.confirm('您还未登陆是否去登陆？', {
+                btn: ['去登陆','暂不需要'], //按钮
+                skin:'layui-layer-molv'
+            }, function(){
+                window.location.href='/login';
+            }, function(){
+                layer.close();
+                $(obj).attr("title","收藏");
+                $(obj).removeClass('red');
+                if($(obj).hasClass('done')){
+                    $(obj).removeClass('done');
+                }
+                $(obj).attr('disabled',false);
+            });
+        } else {
+            layer.msg('处理失败');
+        }
+    });
+}
