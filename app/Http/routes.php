@@ -41,8 +41,6 @@ Route::get('expert/detail/{expertId}','ExpertController@detail');
 Route::get('supply','SupplyController@index');
 //供求信息详情
 Route::get('supply/detail/{supplyId}','SupplyController@detail');
-<<<<<<< HEAD
-=======
 
 /**************************************收藏留言相关路由*********************************************/
 //供求收藏
@@ -54,7 +52,6 @@ Route::post('dealextcollect','ExpertController@dealCollect');
 //专家留言
 Route::post('replyextmessage','ExpertController@replyMessage');
 
->>>>>>> origin/lds
 /**************************************个人中心的路由***********************************************/
 //基本资料
 Route::get('uct_basic','CenterController@index');
