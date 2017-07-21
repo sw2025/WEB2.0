@@ -11,18 +11,25 @@ $(function(){
 
     // 选择服务领域
     $('.serve-field-list-show').on('click', 'li', function(event) {
+<<<<<<< HEAD
+        var serveLi = $(this).html();
+=======
 
         var serveLi = $(this).parent().siblings().html();
+>>>>>>> origin/lds
         select[0] = 'supply';
         select[1] = serveLi;
         getCondition(select);
     });
+<<<<<<< HEAD
+=======
 
     $('.serve-field .serve-all').on('click', function(event) {
         select[0] = 'supply';
         select[1] = '全部';
         getCondition(select);
     });
+>>>>>>> origin/lds
 
     // 选择地区
     $('.location').on('click', 'a', function(event) {
@@ -32,6 +39,8 @@ $(function(){
         getCondition(select);
     });
 
+<<<<<<< HEAD
+=======
     //搜索
     $('.list-search .list-search-btn').on('click',function () {
         var searchName = $(this).siblings().val();
@@ -64,6 +73,7 @@ $(function(){
         getCondition(select);
     })
 
+>>>>>>> origin/lds
     // 排序
     $('.sort').on('click', 'a', function(event) {
         var ordername = $(this).text();
@@ -71,17 +81,17 @@ $(function(){
         switch (ordername){
             case '发布时间':
                 select[0] = 'ordertime';
-                select[1] = firsticon;
+                select[1] = ordername;
                 getCondition(select);
                 break;
             case '收藏数':
                 select[0] = 'ordercollect';
-                select[1] = firsticon;
+                select[1] = ordername;
                 getCondition(select);
                 break;
             case '留言数':
                 select[0] = 'ordermessage';
-                select[1] = firsticon;
+                select[1] = ordername;
                 getCondition(select);
                 break;
         }
@@ -91,11 +101,9 @@ $(function(){
 
     var getCondition= function(select){
         var Condition=select;
-        var searchName=$(".list-search-inp").val();
         var role=$(".all-results-expert").text();
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
-        searchName=(searchName)?searchName:null;
         role=(role)?role:null;
         supply=(supply)?supply:null;
         address=(address)?address:null;
@@ -120,9 +128,6 @@ $(function(){
                 case "role":
                     role=(Condition[1]!="全部")?Condition[1]:null;
                     break;
-                case "serveName":
-                    searchName=Condition[1];
-                    break;
                 case "supply":
                     supply=(Condition[1]!="全部")?Condition[1]:null;
                     break;
@@ -144,70 +149,6 @@ $(function(){
         ordertime=(ordertime)?ordertime:null;
         ordercollect=(ordercollect)?ordercollect:null;
         ordermessage=(ordermessage)?ordermessage:null;
-        window.location.href="?searchname="+searchName+"&role="+role+"&supply="+supply+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
+        window.location.href="?role="+role+"&supply="+supply+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
     }
 })
-
-
-function fnc_collect (supplyid,action,obj) {
-
-    $.post('/dealcollect',{'supplyid':supplyid,'action':action},function (data) {
-        if(data == 'nologin'){
-            layer.confirm('您还未登陆是否去登陆？', {
-                btn: ['去登陆','暂不需要'], //按钮
-                skin:'layui-layer-molv'
-            }, function(){
-                window.location.href='/login';
-            }, function(){
-                layer.close();
-                $(obj).attr("title","收藏");
-                $(obj).removeClass('red');
-                if($(obj).hasClass('done')){
-                    $(obj).removeClass('done');
-                }
-           });
-        } else if(data == 'success') {
-            if(action == 'collect'){
-                layer.msg('收藏成功');
-            } else {
-                layer.msg('取消收藏成功');
-            }
-        } else {
-            layer.msg('处理失败');
-        }
-    });
-}
-
-$('.details-message .submit').on('click',function () {
-    var textarea = $(this).parent().siblings('textarea');
-    var needid = textarea.attr('id');
-    var content = textarea.val();
-    $(this).attr('disabled',"true");
-    replymessage({'needid':needid,'content':content});
-});
-
-function replymessage (datas) {
-    $.post('/replymessage',datas,function (data) {
-        if(data == 'success'){
-            layer.msg('回复成功',{time:2000},function () {
-                window.location = window.location;
-            });
-        }else if(data == 'nologin') {
-            layer.confirm('您还未登陆是否去登陆？', {
-                btn: ['去登陆','暂不需要'], //按钮
-                skin:'layui-layer-molv'
-            }, function(){
-                window.location.href='/login';
-            }, function(){
-                layer.close();
-                $(obj).attr("title","收藏");
-                $(obj).removeClass('red');
-                if($(obj).hasClass('done')){
-                    $(obj).removeClass('done');
-                }
-            });
-        } else {
-            layer.msg('处理失败');
-        }
-    });
-}
