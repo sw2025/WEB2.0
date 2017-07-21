@@ -41,6 +41,7 @@ $(function(){
     //搜索
     $('.list-search .list-search-btn').on('click',function () {
         var searchName = $(this).siblings().val();
+
         select[0] = 'serveName';
         select[1] = searchName;
         getCondition(select);
@@ -103,6 +104,9 @@ $(function(){
     var getCondition= function(select){
         var Condition=select;
         var searchName=$(".list-search-inp").val();
+        if(searchName == '请输入专家姓名／机构名称／企业家姓名'){
+            searchName = '';
+        }
         var role=$(".all-results-expert").text();
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
@@ -201,10 +205,10 @@ $('.details-message .submit').on('click',function () {
     var needid = textarea.attr('id');
     var content = textarea.val();
     $(this).attr('disabled',"true");
-    replymessage({'needid':needid,'content':content});
+    replymessage({'needid':needid,'content':content},this);
 });
 
-function replymessage (datas) {
+function replymessage (datas,obj) {
     $.post('/replyextmessage',datas,function (data) {
         if(data == 'success'){
             layer.msg('回复成功',{time:2000},function () {
@@ -223,6 +227,7 @@ function replymessage (datas) {
                 if($(obj).hasClass('done')){
                     $(obj).removeClass('done');
                 }
+                $(obj).attr('disabled',false);
             });
         } else {
             layer.msg('处理失败');
