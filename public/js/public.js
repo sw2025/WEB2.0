@@ -118,9 +118,11 @@ $(function(){
         if($(this).html() == '已收藏'){
             $(this).html('收藏');
             $(this).removeClass('done');
+            fnc_collect($(this).attr('index'),'cancel',this);
         }else{
             $(this).html('已收藏');
             $(this).addClass('done');
+            fnc_collect($(this).attr('index'),'collect',this);
         }
     });
 // ==================about 收藏end
