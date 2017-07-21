@@ -103,7 +103,10 @@ $(function(){
 // ==================about 收藏start
     // 列表收藏
     $('.collect').click(function(event) {
+<<<<<<< HEAD
         if($(this).attr('title') == '已收藏'){
+=======
+>>>>>>> origin/lds
             $(this).attr("title","收藏");
             $(this).removeClass('red');
         }else{

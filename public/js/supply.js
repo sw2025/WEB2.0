@@ -11,11 +11,25 @@ $(function(){
 
     // 选择服务领域
     $('.serve-field-list-show').on('click', 'li', function(event) {
+<<<<<<< HEAD
         var serveLi = $(this).html();
+=======
+
+        var serveLi = $(this).parent().siblings().html();
+>>>>>>> origin/lds
         select[0] = 'supply';
         select[1] = serveLi;
         getCondition(select);
     });
+<<<<<<< HEAD
+=======
+
+    $('.serve-field .serve-all').on('click', function(event) {
+        select[0] = 'supply';
+        select[1] = '全部';
+        getCondition(select);
+    });
+>>>>>>> origin/lds
 
     // 选择地区
     $('.location').on('click', 'a', function(event) {
@@ -25,6 +39,41 @@ $(function(){
         getCondition(select);
     });
 
+<<<<<<< HEAD
+=======
+    //搜索
+    $('.list-search .list-search-btn').on('click',function () {
+        var searchName = $(this).siblings().val();
+        select[0] = 'serveName';
+        select[1] = searchName;
+        getCondition(select);
+    });
+    $('.list-search-inp').keydown(function (evnet) {
+        if (evnet.keyCode == '13') {
+            var searchName = $(this).val();
+            select[0] = 'serveName';
+            select[1] = searchName;
+            getCondition(select);
+        }
+    });
+
+    //删除
+    $('.all-results').on('click', '.all-results-opt', function(event) {
+        var key = $(this).text();
+        if ($(this).hasClass('all-results-expert')){
+            select[0] = 'role';
+            select[1] = null;
+        } else if ($(this).hasClass('all-results-field')){
+            select[0] = 'supply';
+            select[1] = null;
+        } else if ($(this).hasClass('all-results-location')) {
+            select[0] = 'address';
+            select[1] = null;
+        }
+        getCondition(select);
+    })
+
+>>>>>>> origin/lds
     // 排序
     $('.sort').on('click', 'a', function(event) {
         var ordername = $(this).text();
