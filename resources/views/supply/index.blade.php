@@ -151,5 +151,4 @@
     })
 </script>
 <script src="{{url('js/supply.js')}}" type="text/javascript"></script>
-
 @endsection

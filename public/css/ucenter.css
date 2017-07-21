@@ -15,7 +15,7 @@
 .basic-upload{float: left;padding-top: 77px;padding-left: 45px;}
 .basic-span{display: block;position: relative;overflow: hidden;}
 .basic-span span{color:#fff;display: block;text-align: center;width: 60px;}
-.basic-span input{position: absolute;top: 0;right: 0;margin: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';font-size: 200px !important;direction: ltr;cursor: pointer;width: auto;height: auto;}
+.fileinput-button input{position: absolute;top: 0;right: 0;margin: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';font-size: 200px !important;direction: ltr;cursor: pointer;width: auto;height: auto;}
 .basic-btn{width:100%;height: 40px;line-height: 40px;display: block;background:#00a7ed;color:#fff;text-align: center;font-size: 16px;border: none;border-radius: 6px;margin:28px 0 34px;}
 /***********基本资料 end***********/
 /***********更换手机号 start***********/
@@ -37,9 +37,10 @@
 .card-step-cap{margin:0 30px;}
 .card-enter{text-align: center;}
 .card-must{color:#666;padding:115px 0;}
-.card-sum,.card-bank-open{width: 300px;height: 30px;line-height: 30px;background:#eaeaea;margin:0 10px;padding-left: 10px;}
+.card-sum,.card-bank-open{width: 300px;}
+.card-sum,.card-bank-open,.cash-num{height: 30px;line-height: 30px;background:#eaeaea;margin:0 10px;padding-left: 10px;}
 .must{color:#ff1919;font-size: 20px;display: inline-block;vertical-align: middle;}
-.test-btn{display: inline-block;width: 250px;height: 40px;text-align: center;line-height: 40px;background:#00a7ed;border: none;border-radius: 6px;color:#fff;font-size: 16px;margin-bottom: 50px;}
+.test-btn,.cash-btn{display: inline-block;width: 250px;height: 40px;text-align: center;line-height: 40px;background:#00a7ed;border: none;border-radius: 6px;color:#fff;font-size: 16px;margin-bottom: 50px;}
 .card-number{padding-top: 50px;padding-bottom: 34px;}
 .card-name{padding-bottom: 34px;}
 .card-submit{margin-bottom: 10px;margin-top: 65px;}
@@ -120,19 +121,74 @@
 .uploaded-img,.bankcard-img{margin:0 auto;width: 260px;height: 160px;}
 .delete-card{position: absolute;top: -5px;right: -5px;background:rgba(0,0,0,0.7);filter:alpha(opacity=70);color:#fff;width: 20px;height: 20px;text-align: center;line-height: 20px;border-radius: 20px;cursor: pointer;border: 1px solid #ccc;display: none;}
 .card-span{display: block;position: relative;width: 90px;height: 105px;text-align: center;margin:20px auto 0;overflow: hidden;}
-.card-span input{position: absolute;top: 0;right: 0;margin: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';font-size: 200px !important;direction: ltr;cursor: pointer;width: auto;height: auto;}
+/*.card-span input{position: absolute;top: 0;right: 0;margin: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';font-size: 200px !important;direction: ltr;cursor: pointer;width: auto;height: auto;}*/
 .card-upload{display:none;}
 .card-upload-tip i{display: block;font-size: 54px;color:#baedf0;}
 .money-category{padding-top: 20px;}
-.money-cate-fr{float: right;width: 206px;height: 34px;line-height: 34px;background:#fff;border: 1px solid #ccc;border-radius: 3px;color:#666;position: relative;}
-.money-cate-fr-cap{padding:0 20px 0 12px;border-right: 1px solid #afafaf;position: absolute;left: 0;top: 6px;height: 24px;line-height: 24px;}
-.money-cate-def{color:#666;margin-left: 83px;position: relative;display: block;}
-.money-cate-def:before{font-family: "iconfont";content:'\e618';width: 34px;height: 34px;text-align: center;line-height: 34px;color:#fff;background:#00a7ed;border-radius: 3px;position: absolute;right: 0;top: 0;}
-.money-cate-list{background:#fff;position: absolute;top: 36px;left:0;text-align: center;width: 100%;box-shadow: 0 0 8px #ccc;display: none;}
-.money-cate-list li{margin:2px 0;cursor: pointer;}
-.money-cate-list li:hover{background:#f2f2f2;}
+.money-cate-fr{float: right;width: 206px;}
+.money-cate-fr,.publish-need-sel,.datas-sel{height: 34px;line-height: 34px;background:#fff;border: 1px solid #ccc;border-radius: 3px;color:#666;position: relative;}
+.money-cate-fr-cap,.publ-need-sel-cap,.datas-sel-cap{padding:0 20px 0 12px;border-right: 1px solid #afafaf;position: absolute;left: 0;top: 6px;height: 24px;line-height: 24px;}
+.money-cate-def{margin-left: 83px;}
+.money-cate-def,.publ-need-sel-def,.datas-sel-def{color:#666;position: relative;display: block;}
+.money-cate-def:before,.publ-need-sel-def:before,.datas-sel-def:before{font-family: "iconfont";content:'\e618';width: 34px;height: 34px;text-align: center;line-height: 34px;color:#fff;background:#00a7ed;border-radius: 2px;position: absolute;right: 0;top: 0;}
+.money-cate-list,.publish-need-list,.datas-list{background:#fff;position: absolute;top: 36px;left:0;text-align: center;width: 100%;box-shadow: 0 0 8px #ccc;display: none;border: 1px solid rgba(0, 0, 0, 0.15);}
+.money-cate-list li,.datas-list li{margin:2px 0;cursor: pointer;}
+.money-cate-list li:hover,.datas-list li:hover{background:#f2f2f2;}
 .reduce{padding-top: 18px;}
 /***********充值提现 end***********/
+/***********提现 start***********/
+.available-money{margin:0 90px;border-bottom: 2px solid #eaeaea;padding:65px 0;text-align: center;color:#666;}
+.cash-num{width: 120px;}
+.avai-money-all{font-size: 20px;color:#edb200;}
+.avai-money-all i{font-size: 28px;margin:0 5px 0 20px;}
+/***********提现 end***********/
+/***********发布需求 start***********/
+.publish-need{text-align: center;}
+.publish-need-sel{width: 352px;display: inline-block;margin-top: 30px;}
+.publ-need-sel-def{text-align: left;margin-left: 108px;}
+.publ-need-sel-def:before,.datas-sel-def:before{background:#72b0fc;}
+.verify-default:before{background:#dadada;}
+.verify-default{cursor: default;}
+.publish-need-list>li{position: relative;}
+.publish-need-list>li:hover,.publish-need-list>li ul li:hover{background:#f2f2f2;}
+.publish-need-list>li a{display: block;color:#333;padding-left: 108px;text-align: left;}
+.publish-need-list>li ul{position: absolute;left:100%;top: 0;background: #fff;padding: 0;white-space: nowrap;border: 1px solid rgba(0, 0, 0, 0.15);border-left: none;display: none;}
+.publish-need-list>li ul li{cursor: pointer;padding: 0 10px;}
+.publish-need-txt{width: 342px;min-height: 160px;border: 1px solid #ccc;border-radius: 5px;margin-top: 20px;padding:5px;text-align: justify;}
+.publish-submit{margin-top: 20px;}
+.publish-need-txt2{margin-bottom: 45px;}
+.publish-need-state,.expert-certy-state{padding-top: 25px;}
+.publish-need-state i,.expert-certy-state i{color:#00a7ed;font-size: 40px;}
+.publish-need-blue,.expert-certy-blue{color:#ccc;font-size: 12px;display: inline-block;vertical-align: -6px;text-align: left;margin-left: 10px;}
+.publish-need-blue em,.expert-certy-blue em{color:#00a7ed;font-size: 16px;display: block;}
+/***********发布需求 end***********/
+/***********专家认证 start***********/
+.datas{text-align: center;}
+.datas-lt{display: inline-block;vertical-align: 13px;margin-right: 30px;}
+.datas-rt{display: inline-block;vertical-align: middle;}
+.datas-sel{width: 352px;margin-bottom: 20px;}
+.datas-sel-cap{width: 80px;padding:0;text-align: center;line-height: 23px;}
+.datas-sel-def,.datas-sel-name{margin-left: 92px;text-align: left;}
+.datas-sel-name{width:225px;height: 24px;line-height: 24px;margin-left: 63px;}
+.datas-list{overflow: hidden;}
+.datas-list li{float: left;width:25%;}
+.expert-certy-state{text-align: center;}
+.expert-certy-blue{vertical-align: -2px;}
+.zindex1{position: relative;z-index: 3;}
+.zindex2{position: relative;z-index: 2;}
+.photo1{width: 158px;height: 128px;border: 1px solid #cccccc;border-radius: 3px;}
+.photo-upload{margin-top: 10px;}
+.photo-btn-box{width: 160px;height: 36px;line-height: 36px;overflow: hidden;background:#00a7ed;border-radius: 3px;text-align: center;color:#fff;position: relative;cursor: pointer;}
+.datas-lt-explain{width: 160px;color:#b2b2b2;font-size: 12px;text-align: justify;line-height: 20px;}
+.datas-upload-lt{float: left;}
+.datas-upload-rt{float: right;}
+.datas-rt textarea{width: 265px;height: 388px;border: 1px solid #ccc;border-radius: 3px;padding:5px;display: block;margin:0 auto;}
+.bottom-btn{text-align: center;}
+.submit-audit{background:#ed0021;margin-top: 50px;margin-bottom: 40px;}
+.placeholder{color:#999;}
+/***********专家认证 end***********/
+/***********基本资料 start***********/
+/***********基本资料 end***********/
 /***********基本资料 start***********/
 /***********基本资料 end***********/
 /***********基本资料 start***********/

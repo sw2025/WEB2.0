@@ -11,11 +11,13 @@ $(function(){
 
     // 选择服务领域
     $('.serve-field-list-show').on('click', 'li', function(event) {
+
         var serveLi = $(this).parent().siblings().html();
         select[0] = 'supply';
         select[1] = serveLi;
         getCondition(select);
     });
+
     $('.serve-field .serve-all').on('click', function(event) {
         select[0] = 'supply';
         select[1] = '全部';
@@ -61,8 +63,6 @@ $(function(){
         }
         getCondition(select);
     })
-
-
 
     // 排序
     $('.sort').on('click', 'a', function(event) {

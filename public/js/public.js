@@ -103,7 +103,6 @@ $(function(){
 // ==================about 收藏start
     // 列表收藏
     $('.collect').click(function(event) {
-        if($(this).attr('title').trim() == '已收藏'){
             $(this).attr("title","收藏");
             $(this).removeClass('red');
             fnc_collect($(this).attr('index'),'cancel',this);
@@ -203,6 +202,30 @@ $(function(){
         $(this).parent().hide();
     });
 // 个人中心=======》充值提现end
+// // 兼容placeholder
+            jQuery('[placeholder]').focus(function() {
+                var input = jQuery(this);
+                if (input.val() == input.attr('placeholder')) {
+                    input.val('');
+                    input.removeClass('placeholder');
+                }
+            }).blur(function() {
+                var input = jQuery(this);
+                if (input.val() == '' || input.val() == input.attr('placeholder')) {
+                    input.addClass('placeholder');
+                    input.val(input.attr('placeholder'));
+                }
+            }).blur().parents('form').submit(function() {
+                jQuery(this).find('[placeholder]').each(function() {
+                    var input = jQuery(this);
+                    if (input.val() == input.attr('placeholder')) {
+                      input.val('');
+                    }
+                })
+            });
+// 个人中心=======》专家认证start
+    
+// 个人中心=======》专家认证end
 
 // 
 })
