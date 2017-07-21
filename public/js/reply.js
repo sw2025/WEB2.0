@@ -28,7 +28,7 @@ $(document).ready(function(){
         var use_userid = obj.attr('touser');
         var content = obj.val();
         $(this).attr('disabled',"true");
-        replymessage({'needid':needid,'parentid':id,'content':content,'use_userid':use_userid});
+        replymessage({'needid':needid,'parentid':id,'content':content,'use_userid':use_userid},this);
 
     });
     // var replyLen = $('.reply-list-ul li').length;

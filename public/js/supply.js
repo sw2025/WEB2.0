@@ -95,6 +95,9 @@ $(function(){
         var role=$(".all-results-expert").text();
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
+        if(searchName == '请输入要搜索的供求信息关键字'){
+            searchName = '';
+        }
         searchName=(searchName)?searchName:null;
         role=(role)?role:null;
         supply=(supply)?supply:null;
@@ -183,10 +186,10 @@ $('.details-message .submit').on('click',function () {
     var needid = textarea.attr('id');
     var content = textarea.val();
     $(this).attr('disabled',"true");
-    replymessage({'needid':needid,'content':content});
+    replymessage({'needid':needid,'content':content},this);
 });
 
-function replymessage (datas) {
+function replymessage (datas,obj) {
     $.post('/replymessage',datas,function (data) {
         if(data == 'success'){
             layer.msg('回复成功',{time:2000},function () {
@@ -205,6 +208,7 @@ function replymessage (datas) {
                 if($(obj).hasClass('done')){
                     $(obj).removeClass('done');
                 }
+                $(obj).attr('disabled',false);
             });
         } else {
             layer.msg('处理失败');
