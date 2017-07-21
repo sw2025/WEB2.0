@@ -204,7 +204,7 @@ $(function(){
     });
 // 个人中心=======》充值提现end
 // // 兼容placeholder
-            jQuery('[placeholder]').focus(function() {
+       /*     jQuery('[placeholder]').focus(function() {
                 var input = jQuery(this);
                 if (input.val() == input.attr('placeholder')) {
                     input.val('');
@@ -223,7 +223,7 @@ $(function(){
                       input.val('');
                     }
                 })
-            });
+            });*/
 // 个人中心=======》专家认证start
     
 // 个人中心=======》专家认证end

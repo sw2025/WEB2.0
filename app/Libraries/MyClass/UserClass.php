@@ -70,6 +70,7 @@
             $result['msg']="该手机号已经注册!";
             return $result;
         }
+        //找回密码验证
         public  function  forgetVerify($phone,$pwd){
             $result=array();
             $counts=User::where("phone",$phone)->get()->toArray();
