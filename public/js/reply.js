@@ -1,8 +1,10 @@
 $(document).ready(function(){
     $('.reply-list').on('click', '.reply-btn', function(event) {
-        $('.reply-box').show();
+        var obj = $(this).closest('li').parent().siblings();
+        obj.show();
         var name = $(this).closest('li').find('.floor-guest-name').html();
-        $('.reply-enter').val('回复 '+name+'：');
+        obj.children('.reply-enter').attr('touser',$(this).attr('userid'));
+        obj.children('.reply-enter').attr('placeholder','回复 '+name+':');
     });
     // 查看回复
     $('.message-reply-show').on('click','.look-reply', function(event) {
