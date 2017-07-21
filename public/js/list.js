@@ -1,16 +1,17 @@
 $(document).ready(function(){
     $('.serve-field-list-deft').on('click', function(event) {
-        $(this).next('ul').animate({'left':'-5px'}, 400).show();
+        $(this).next('ul').animate({'left':'-5px'}, 50).slideToggle(50);
         $(this).parent().siblings().children('ul').hide().css('left', '-20px');
     });
     // 选择服务领域
     $('.serve-field-list-show').on('click', 'li', function(event) {
         $('.serve-all').removeClass('active');
         var serveLi = $(this).html();
-        $(this).parent().prev('a').html(serveLi);
+        var parentname = $(this).parent().siblings().html();
+        $(this).parent().prev('a').html(parentname+'/'+serveLi);
         $(this).parent().hide().css('left', '-20px');
         $('.all-results-field').remove();
-        $('.all-results').append('<a href="javascript:;" class="all-results-field all-results-opt">'+ serveLi +'</a>');
+        $('.all-results').append('<a href="javascript:;" class="all-results-field all-results-opt">'+ parentname+'/'+serveLi +'</a>');
     });
     // 选择专家
     $('.experts-classify').on('click', 'a', function(event) {

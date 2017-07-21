@@ -11,16 +11,22 @@ $(function(){
 
     // 选择服务领域
     $('.serve-field-list-show').on('click', 'li', function(event) {
-
         var serveLi = $(this).parent().siblings().html();
         select[0] = 'supply';
         select[1] = serveLi;
         getCondition(select);
     });
-
     $('.serve-field .serve-all').on('click', function(event) {
         select[0] = 'supply';
         select[1] = '全部';
+        getCondition(select);
+    });
+
+    // 选择视频
+    $('.video-consult').on('click', 'a', function(event) {
+        var cliHtml = $(this).html();
+        select[0] = 'consult';
+        select[1] = cliHtml;
         getCondition(select);
     });
 
@@ -60,16 +66,21 @@ $(function(){
         } else if ($(this).hasClass('all-results-location')) {
             select[0] = 'address';
             select[1] = null;
+        }else if ($(this).hasClass('all-results-video')) {
+            select[0] = 'consult';
+            select[1] = null;
         }
         getCondition(select);
     })
+
+
 
     // 排序
     $('.sort').on('click', 'a', function(event) {
         var ordername = $(this).text();
         var firsticon = ($('.sort .active span .icon-triangle-copy').hasClass('blue-color'))?'desc':'asc';
         switch (ordername){
-            case '发布时间':
+            case '认证时间  ':
                 select[0] = 'ordertime';
                 select[1] = firsticon;
                 getCondition(select);
@@ -95,15 +106,17 @@ $(function(){
         var role=$(".all-results-expert").text();
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
+        var consult=$(".all-results-video").text();
         searchName=(searchName)?searchName:null;
         role=(role)?role:null;
         supply=(supply)?supply:null;
         address=(address)?address:null;
+        consult=(consult)?consult:null;
         if( $(".sort").children('a').hasClass('active')){
             var ordername = $('.sort .active ').text();
             var firsticon = ($('.sort .active span .icon-triangle-copy').hasClass('blue-color'))?'desc':'asc';
             switch (ordername){
-                case '发布时间':
+                case '认证时间':
                     var ordertime = firsticon;
                     break;
                 case '收藏数':
@@ -126,6 +139,9 @@ $(function(){
                 case "supply":
                     supply=(Condition[1]!="全部")?Condition[1]:null;
                     break;
+                case "consult":
+                    consult=(Condition[1]!="全部")?Condition[1]:null;
+                    break;
                 case "address":
                     address=(Condition[1]!="全部")?Condition[1]:null;
                     break;
@@ -144,14 +160,16 @@ $(function(){
         ordertime=(ordertime)?ordertime:null;
         ordercollect=(ordercollect)?ordercollect:null;
         ordermessage=(ordermessage)?ordermessage:null;
-        window.location.href="?searchname="+searchName+"&role="+role+"&supply="+supply+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
+        window.location.href="?searchname="+searchName+"&role="+role+"&supply="+supply+"&consult="+consult+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
     }
 })
 
 
+
+
 function fnc_collect (supplyid,action,obj) {
 
-    $.post('/dealcollect',{'supplyid':supplyid,'action':action},function (data) {
+    $.post('/dealextcollect',{'supplyid':supplyid,'action':action},function (data) {
         if(data == 'nologin'){
             layer.confirm('您还未登陆是否去登陆？', {
                 btn: ['去登陆','暂不需要'], //按钮
@@ -165,7 +183,7 @@ function fnc_collect (supplyid,action,obj) {
                 if($(obj).hasClass('done')){
                     $(obj).removeClass('done');
                 }
-           });
+            });
         } else if(data == 'success') {
             if(action == 'collect'){
                 layer.msg('收藏成功');
@@ -187,7 +205,7 @@ $('.details-message .submit').on('click',function () {
 });
 
 function replymessage (datas) {
-    $.post('/replymessage',datas,function (data) {
+    $.post('/replyextmessage',datas,function (data) {
         if(data == 'success'){
             layer.msg('回复成功',{time:2000},function () {
                 window.location = window.location;
@@ -211,3 +229,5 @@ function replymessage (datas) {
         }
     });
 }
+
+

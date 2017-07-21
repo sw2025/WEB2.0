@@ -103,22 +103,25 @@ $(function(){
 // ==================about 收藏start
     // 列表收藏
     $('.collect').click(function(event) {
-        if($(this).attr('title') == '已收藏'){
             $(this).attr("title","收藏");
             $(this).removeClass('red');
+            fnc_collect($(this).attr('index'),'cancel',this);
         }else{
             $(this).attr("title","已收藏");
             $(this).addClass('red');
+            fnc_collect($(this).attr('index'),'collect',this);
         }
     });
     // 详情收藏
     $('.collect-state').click(function(event) {
-        if($(this).html() == '已收藏'){
+        if($(this).html().trim() == '已收藏'){
             $(this).html('收藏');
             $(this).removeClass('done');
+            fnc_collect($(this).attr('index'),'cancel',this);
         }else{
             $(this).html('已收藏');
             $(this).addClass('done');
+            fnc_collect($(this).attr('index'),'collect',this);
         }
     });
 // ==================about 收藏end
