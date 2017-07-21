@@ -35,8 +35,7 @@ $(function(){
     //搜索
     $('.list-search .list-search-btn').on('click',function () {
         var searchName = $(this).siblings().val();
-        select[0] = 'serveName';
-        select[1] = searchName;
+        select[0] = 'serveName';        select[1] = searchName;
         getCondition(select);
     });
     $('.list-search-inp').keydown(function (evnet) {
@@ -64,6 +63,7 @@ $(function(){
         getCondition(select);
     })
 
+
     // 排序
     $('.sort').on('click', 'a', function(event) {
         var ordername = $(this).text();
@@ -71,17 +71,17 @@ $(function(){
         switch (ordername){
             case '发布时间':
                 select[0] = 'ordertime';
-                select[1] = firsticon;
+                select[1] = ordername;
                 getCondition(select);
                 break;
             case '收藏数':
                 select[0] = 'ordercollect';
-                select[1] = firsticon;
+                select[1] = ordername;
                 getCondition(select);
                 break;
             case '留言数':
                 select[0] = 'ordermessage';
-                select[1] = firsticon;
+                select[1] = ordername;
                 getCondition(select);
                 break;
         }
@@ -91,14 +91,15 @@ $(function(){
 
     var getCondition= function(select){
         var Condition=select;
-        var searchName=$(".list-search-inp").val();
         var role=$(".all-results-expert").text();
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
+
         if(searchName == '请输入要搜索的供求信息关键字'){
             searchName = '';
         }
         searchName=(searchName)?searchName:null;
+
         role=(role)?role:null;
         supply=(supply)?supply:null;
         address=(address)?address:null;
@@ -123,9 +124,6 @@ $(function(){
                 case "role":
                     role=(Condition[1]!="全部")?Condition[1]:null;
                     break;
-                case "serveName":
-                    searchName=Condition[1];
-                    break;
                 case "supply":
                     supply=(Condition[1]!="全部")?Condition[1]:null;
                     break;
@@ -147,10 +145,9 @@ $(function(){
         ordertime=(ordertime)?ordertime:null;
         ordercollect=(ordercollect)?ordercollect:null;
         ordermessage=(ordermessage)?ordermessage:null;
-        window.location.href="?searchname="+searchName+"&role="+role+"&supply="+supply+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
+        window.location.href="?role="+role+"&supply="+supply+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
     }
 })
-
 
 function fnc_collect (supplyid,action,obj) {
 

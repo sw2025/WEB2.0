@@ -1,10 +1,8 @@
 $(document).ready(function(){
     $('.reply-list').on('click', '.reply-btn', function(event) {
-        var obj = $(this).closest('li').parent().siblings();
-        obj.show();
+        $('.reply-box').show();
         var name = $(this).closest('li').find('.floor-guest-name').html();
-        obj.children('.reply-enter').attr('touser',$(this).attr('userid'));
-        obj.children('.reply-enter').attr('placeholder','回复 '+name+':');
+        $('.reply-enter').val('回复 '+name+'：');
     });
     // 查看回复
     $('.message-reply-show').on('click','.look-reply', function(event) {
@@ -19,9 +17,11 @@ $(document).ready(function(){
     $('.message-reply-show').on('click','.message-reply', function(event) {
         $(this).parent().next().children('ul').hide();
         $(this).parent().next().children('.reply-box').slideToggle(500);
+
     });
     // 互相回复
     $('.publish-btn').on('click', function(event) {
+
         var obj = $(this).parent().siblings();
         var needid = obj.attr('index');
         var id = obj.attr('id');
