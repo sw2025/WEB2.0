@@ -132,8 +132,8 @@
             type:"POST",
             success:function(res){
                 if(res['code']=="success"){
-                    $.cookie("userId",'',{expires:7,path:'/',domain:'web_sheng.com'});
-                    $.cookie("name",'',{expires:7,path:'/',domain:'web_sheng.com'});
+                    $.cookie("userId",'',{expires:7,path:'/',domain:'sw2025.com'});
+                    $.cookie("name",'',{expires:7,path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('/')}}"
                 }else{
                    window.location.href="{{asset('/')}}"
