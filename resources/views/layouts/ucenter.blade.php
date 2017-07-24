@@ -79,7 +79,7 @@
             <ul class="common-info">
                 <li id="uct_basic"><a href="{{asset('uct_basic')}}"><i class="iconfont icon-3jibenziliao"></i>基本资料</a></li>
                 <li id="uct_recharge"><a href="{{asset('uct_recharge')}}"><i class="iconfont icon-chongzhi"></i>充值提现</a></li>
-                <li id="uct_myinfo"><a href="{{asset('uct_myinfo')}}"><i class="iconfont icon-wodexinxi"></i>我的信息</a></li>
+                <li id="uct_myinfo"><a href="{{asset('uct_myinfo')}}"><i class="iconfont icon-wodexinxi"></i>我的消息</a></li>
                 <li id="uct_myneed"><a href="{{asset('uct_myneed')}}"><i class="iconfont icon-xuqiu"></i>我的需求</a></li>
             </ul>
             <h2 class="aside-tit"><i class="iconfont icon-gongsi"></i>我是企业</h2>
