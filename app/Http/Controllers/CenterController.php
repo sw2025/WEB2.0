@@ -38,7 +38,12 @@ class CenterController extends Controller
      * @return mixed
      */
     public function recharge(){
-        return view("ucenter.recharge");
+        $userId=session("userId");
+        $incomes=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"收入"])->sum("money");
+        $pays=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"支出"])->sum("money");
+        $expends=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"在途"])->sum("money");
+        $balance=$incomes-$pays-$expends;
+        return view("ucenter.recharge",compact("incomes","pays","expends","balance"));
     }
 
     /**充值
@@ -83,28 +88,6 @@ class CenterController extends Controller
     public function  supplyNeed(){
         return view("ucenter.supplyNeed");
     }
-
-    /**专家认证
-     * @return mixed
-     */
-    public function  expert(){
-        return view("ucenter.expert");
-    }
-
-    /**专家资源库
-     * @return mixed
-     */
-    public function  resource(){
-        return view("ucenter.resource");
-    }
-
-    /**专家资源详情
-     * @return mixed
-     */
-    public  function resDetail(){
-        return view("ucenter.resDetail");
-    }
-
     /**个人中心获取验证码
      * @return array
      */
@@ -247,6 +230,36 @@ class CenterController extends Controller
             $res['code']="error";
         }
         return $res;
+    }
+
+    /**添加银行卡
+     * @return mixed
+     */
+    public  function  card(){
+        return view("ucenter.card");
+    }
+    public  function getRecord(){
+        $type=$_POST['type'];
+        $startPage=isset($_POST['startPage'])?$_POST['startPage']:1;
+        $offset=($startPage-1)*2;
+        $userId=session("userId");
+        $result=array();
+        $counts=DB::table("T_U_BILL")->where("userid",2)->where("type",$type)->count();
+        $counts=!empty(ceil($counts/2))?ceil($counts/2):0;
+        $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at")->where("userid",2)->where("type",$type)->skip($offset)->take(2)->get(2);
+        foreach ($datas as $data){
+            $data->created_at=date("Y-m-d",strtotime($data->created_at));
+        }
+        if($datas){
+            $result['code']="success";
+            $result['counts']=$counts;
+            $result['startPage']=$startPage;
+            $result['msg']=$datas;
+        }else{
+            $result['code']="error";
+        }
+        return $result;
+
     }
     
     

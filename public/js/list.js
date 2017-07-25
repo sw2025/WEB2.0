@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function()
     $('.serve-field-list-deft').on('click', function(event) {
         $(this).next('ul').animate({'left':'-5px'}, 400).show();
         $(this).parent().siblings().children('ul').hide().css('left', '-20px');
@@ -7,7 +7,8 @@ $(document).ready(function(){
     $('.serve-field-list-show').on('click', 'li', function(event) {
         $('.serve-all').removeClass('active');
         var serveLi = $(this).html();
-        var parentname = $(this).parent().siblings().html();
+
+       var parentname = $(this).parent().siblings().html();
         $(this).parent().prev('a').html(parentname+'/'+serveLi);
         $(this).parent().hide().css('left', '-20px');
         $('.all-results-field').remove();
