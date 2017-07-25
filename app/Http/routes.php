@@ -78,6 +78,14 @@ Route::get('uct_recharge/rechargeMoney','CenterController@rechargeMoney');
 Route::get('uct_recharge/cash','CenterController@cash');
 //提现添加银行卡
 Route::get('uct_recharge/card','CenterController@card');
+//添加银行卡处理
+Route::post('cardHandle','CenterController@cardHandle');
+//验证银行卡
+Route::get('uct_recharge/card2','CenterController@card2');
+//验证银行卡处理
+Route::post('verifyCard','CenterController@verifyCard');
+//提现
+Route::post('applicationCash','CenterController@applicationCash');
 //获取充值记录
 Route::post('getRecord','CenterController@getRecord');
 //我的信息
