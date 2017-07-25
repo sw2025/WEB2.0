@@ -1,6 +1,6 @@
-$(document).ready(function()
+$(document).ready(function(){
     $('.serve-field-list-deft').on('click', function(event) {
-        $(this).next('ul').animate({'left':'-5px'}, 400).show();
+        $(this).next('ul').animate({'left':'-5px'}, 50).slideToggle(50);
         $(this).parent().siblings().children('ul').hide().css('left', '-20px');
     });
     // 选择服务领域
