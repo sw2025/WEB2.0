@@ -27,7 +27,7 @@
                 </p>
                 <div class="basic-photo basic-row clearfix">
                     <div class="basic-rect"><img id="avatar" src="{{$data->avatar}}" /></div><!-- 上传的图片摆放位置 -->
-                    <input type="hidden" id="myAvatar" name="myAvatar" value="">
+                    <input type="hidden" id="myAvatar" name="myAvatar" value="{{$data->avatar}}">
                     <div class="basic-upload">
                             <span class="basic-span change-btn fileinput-button">
                                 <span>上传</span>

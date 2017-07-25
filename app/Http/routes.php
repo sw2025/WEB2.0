@@ -74,8 +74,12 @@ Route::post('changeBasics','CenterController@changeBasics');
 Route::get('uct_recharge','CenterController@recharge');
 //充值
 Route::get('uct_recharge/rechargeMoney','CenterController@rechargeMoney');
-//体现
+//提现
 Route::get('uct_recharge/cash','CenterController@cash');
+//提现添加银行卡
+Route::get('uct_recharge/card','CenterController@card');
+//获取充值记录
+Route::post('getRecord','CenterController@getRecord');
 //我的信息
 Route::get('uct_myinfo','CenterController@myinfo');
 //需求详情
@@ -86,8 +90,10 @@ Route::get('uct_myneed/needDetail','CenterController@needDetail');
 Route::get('uct_myneed/supplyNeed','CenterController@supplyNeed');
 /************************************我是企业*********************************************************/
 //专家资源
-Route::get('uct_resource','CenterController@resource');
+Route::get('uct_resource','MyEnterpriseController@resource');
 //专家资源
-Route::get('uct_resource/resDetail','CenterController@resDetail');
+Route::get('uct_resource/resDetail','MyEnterpriseController@resDetail');
+
+/************************************我是专家*********************************************************/
 //专家认证
-Route::get('uct_expert','CenterController@expert');
+Route::get('uct_expert','MyExpertController@expert');

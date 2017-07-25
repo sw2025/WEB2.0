@@ -7,7 +7,8 @@ $(document).ready(function(){
     $('.serve-field-list-show').on('click', 'li', function(event) {
         $('.serve-all').removeClass('active');
         var serveLi = $(this).html();
-        $(this).parent().prev('a').html(serveLi);
+        var parentname=$(this).parent().siblings().html();
+        $(this).parent().prev('a').html(parentname+'/'+serveLi);
         $(this).parent().hide().css('left', '-20px');
         $('.all-results-field').remove();
         $('.all-results').append('<a href="javascript:;" class="all-results-field all-results-opt">'+ serveLi +'</a>');
