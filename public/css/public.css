@@ -94,8 +94,8 @@
 .pages{padding:41px 0 58px;}
 .pages #Pagination .pagination a, .pages #Pagination .pagination span{margin:0 4px;border-radius: 2px;}
 /***********侧边栏 start***********/
-.ucenter{padding-top: 125px;background:#f8f8f8;padding-bottom: 25px;}
-.wrap{min-width: 770px;max-width: 1200px;margin:0 auto;}
+.ucenter{padding-top: 125px;background:#f8f8f8;padding-bottom: 25px;max-width:100%;min-width: 970px;margin:0 auto;}
+.wrap{min-width: 970px;max-width: 1200px;margin:0 auto;}
 .aside{float: left;width:188px;width:15.83333%;font-size: 16px;text-align: center;border: 1px solid #ccc;background:#fff;border-radius: 6px;box-shadow: 0 0 8px #ccc;overflow: hidden;}
 .aside-tit{height: 56px;background:#00a7ed;color:#fff;font-weight: normal;line-height: 56px;border-bottom: 1px solid #ccc;}
 .aside i{margin-right: 10px;font-size: 18px;font-size: 20px;display: inline-block;width:32px;overflow: hidden;vertical-align: middle;}
@@ -106,5 +106,5 @@
 .aside .icon-iconfonticon{font-size: 30px;}
 .aside .icon-renzheng1,.aside .icon-shoufeixitong{font-size: 24px;}
 /***********侧边栏 end***********/
-.main{float: right;width:80.83333%;}
+.main{float: right;width:80.83333%;overflow-x:hidden;}
 .main-top{padding-top: 38px;padding-bottom: 18px;color:#333;font-size: 16px;}

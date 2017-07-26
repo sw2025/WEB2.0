@@ -1,70 +1,80 @@
 @extends("layouts.ucenter")
 @section("content")
     <div class="main">
-            <!-- 发布需求 / start -->
-            <h3 class="main-top">发布需求</h3>
-            <div class="ucenter-con">
-                <div class="main-right">
-                    <div class="card-step">
-                        <span class="green-circle">1</span>提交需求<span class="card-step-cap">&gt;</span>
-                        <span class="gray-circle">2</span>需求审核
+        <!-- 发布需求 / start -->
+        <h3 class="main-top">发布需求</h3>
+        <div class="ucenter-con">
+            <div class="main-right">
+                <div class="card-step">
+                    <span class="green-circle">1</span>提交需求<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">2</span>需求审核
+                </div>
+                <div class="publish-need">
+                    <div class="publish-need-sel">
+                        <span class="publ-need-sel-cap">需求分类</span><a href="javascript:;" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
+                        <ul class="publish-need-list">
+                            @foreach($cate as $v)
+                                @if($v->level == 1)
+                                    <li>
+                                        <a href="javascript:;">{{$v->domainname}}</a>
+                                        <ul class="publ-sub-list">
+                                            @foreach($cate as $small)
+                                                @if($small->parentid == $v->domainid && $small->level == 2)
+                                                    <li>{{$small->domainname}}</li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                        @endif
+                                    </li>
+                                    @endforeach
+                        </ul>
+                        @if(!empty($info))
+                        <p><span style="color: #e3643d">拒绝原因：</span></p>
+                        <p><span style="color: #e3643d">{{$info->error}}</span></p>
+                        @endif
+                        <textarea name="" id="content" class="publish-need-txt" cols="30" rows="10" placeholder="请输入需求描述"></textarea>
                     </div>
-                    <div class="publish-need">
-                        <div class="publish-need-sel">
-                            <span class="publ-need-sel-cap">需求分类</span><a href="javascript:;" class="publ-need-sel-def">请选择</a>
-                            <ul class="publish-need-list">
-                                <li>
-                                    <a href="javascript:;">销售类</a>
-                                    <ul class="publ-sub-list">
-                                        <li>demo1</li>
-                                        <li>demo2</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">销售类</a>
-                                    <ul class="publ-sub-list">
-                                        <li>demo1</li>
-                                        <li>demo2</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">销售类</a>
-                                    <ul class="publ-sub-list">
-                                        <li>demo1</li>
-                                        <li>demo2</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">销售类</a>
-                                    <ul class="publ-sub-list">
-                                        <li>demo1</li>
-                                        <li>demo2</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <textarea name="" class="publish-need-txt" cols="30" rows="10" placeholder="请输入需求描述"></textarea>
-                        </div>
-                        <div><button class="test-btn publish-submit" type="button">提交</button></div>
-                    </div>
+                    <div><button class="test-btn publish-submit" type="button">提交</button></div>
                 </div>
             </div>
         </div>
+    </div>
     <script type="text/javascript">
-    $(function(){
-        $('.publ-need-sel-def').click(function() {
-            $(this).next('ul').stop().slideToggle();
-        });
-        $('.publish-need-list li').hover(function() {
-            $(this).children('ul').stop().show();
-        }, function() {
-            $(this).children('ul').stop().hide();
-        });
+        $(function(){
+            $('.publ-need-sel-def').click(function() {
+                $(this).next('ul').stop().slideToggle();
+            });
+            $('.publish-need-list li').hover(function() {
+                $(this).children('ul').stop().show();
+            }, function() {
+                $(this).children('ul').stop().hide();
+            });
 
-        $('.publ-sub-list li').click(function() {
-            var publishHtml = $(this).html();
-            $('.publ-need-sel-def').html(publishHtml);
-            $('.publish-need-list').hide();
-        });
-    })
-</script>
+            $('.publ-sub-list li').click(function() {
+                var publishHtml = $(this).html();
+                var parentHtml = $(this).parent().siblings('a').text();
+                $('.publ-need-sel-def').html(parentHtml+'/'+publishHtml);
+                $('.publish-need-list').hide();
+            });
+
+            $('.publish-submit').on('click',function () {
+                var content = $('#content').val();
+                var domain =  $('.publ-need-sel-def').text();
+                if(content == '' || domain == '请选择'){
+                    layer.msg('请填写完整的需求描述');
+                    return false;
+                }
+                $.post('{{url('uct_myneed/addNeed')}}',{'content':content,'domain':domain},function (data) {
+                    if (data.icon == 1){
+                        layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
+                            window.location = '{{url('uct_myneed/examineNeed')}}';
+                        });
+                    } else {
+                        layer.msg(data.msg,{'time':2000,'icon':data.icon});
+                    }
+                });
+            });
+
+        })
+    </script>
 @endsection

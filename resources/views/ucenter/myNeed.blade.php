@@ -14,12 +14,13 @@
                     </div>
 
                     <div class="three-icon clearfix five-icon">
-                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-shoucang"></i><span>待审核</span><em>20</em></a>
-                        <a href="javascript:;" class="icon-row active"><i class="iconfont icon-shoucang"></i><span>收藏</span><em>10</em></a>
-                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-shoucang"></i><span>已发布</span><em>10</em></a>
-                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-liuyan1"></i><span>留言</span><em>10</em></a>
-                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-shoucang"></i><span>拒审核</span><em>20</em></a>
+                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'waitverify')active @endif" index="waitverify"><i class="iconfont icon-shoucang"></i><span>待审核</span><em>{{$waitcount}}</em></a>
+                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'collect')active @endif" index="collect"><i class="iconfont icon-shoucang"></i><span>收藏</span><em>{{count($collectids)}}</em></a>
+                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'myput')active @endif" index="myput"><i class="iconfont icon-fabu"></i><span>已发布</span><em>{{$putcount}}</em></a>
+                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'message')active @endif" index="message"><i class="iconfont icon-liuyan1"></i><span>留言</span><em>{{$msgcount}}</em></a>
+                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'refuseverify')active @endif" index="refuseverify"><i class="iconfont icon-shoucang"></i><span>拒审核</span><em>{{$refusecount}}</em></a>
                     </div>
+
                 </div>
                 <div class="uct-list-filter">
                     <div class="uct-search">
@@ -113,7 +114,7 @@
                     <ul class="supply-list clearfix">
                         @foreach($datas as $v)
                         <li class="col-md-6">
-                            <a href="{{url('uct_myneed/needDetail',$v->needid)}}" class="supply-list-link">
+                            <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('uct_myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('uct_myneed/examineNeed',$v->needid)}} @else {{url('uct_myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
                                 <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif" class="supp-list-img" />
                                 <span class="supp-list-time">{{$v->needtime}}</span>
                                 <div class="supp-list-brief">
