@@ -77,4 +77,24 @@ abstract class Controller extends BaseController{
             $password .= substr($chars, (mt_rand() % strlen($chars)), 1);
         return $password;
     }
+
+    /**获取订单单号
+     * @param $type
+     * @return string
+     */
+    public function getPayNum($type){
+        switch($type){
+            case "提现":
+                $payPrefix='TX';
+                break;
+            case "充值":
+                $payPrefix='CZ';
+                break;
+            case "消费":
+                $payPrefix="XF";
+                break;
+        }
+        $payNo=$payPrefix.substr(time(),4) . mt_rand(1000,9999);
+        return $payNo;
+    }
 }

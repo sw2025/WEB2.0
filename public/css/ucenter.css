@@ -19,7 +19,7 @@
 .basic-btn{width:100%;height: 40px;line-height: 40px;display: block;background:#00a7ed;color:#fff;text-align: center;font-size: 16px;border: none;border-radius: 6px;margin:28px 0 34px;}
 /***********基本资料 end***********/
 /***********更换手机号 start***********/
-.basic-source-changetel{width: 300px;margin:0 auto;}
+.basic-source-changetel{width: 300px;margin:0 auto;color:#333;}
 .change-tel-tit{display: block;color:#333;font-size: 16px;display: block;padding-top: 35px;padding-bottom: 20px;}
 .change-tel-pwd,.change-tel-tel{position: relative;width: 100%;border: 1px solid #ccc;border-radius: 3px;background: #fff;height: 34px;line-height: 34px;margin-bottom: 12px;}
 .change-tel-pwd label,.change-tel-test label,.change-tel-tel label{position: absolute;left: 0;top: 6px;padding: 0 10px;border-right: 1px solid #afafaf;height: 24px;line-height: 24px;}
@@ -341,7 +341,9 @@
 .myask-detail-need{display: block;width: 250px;height: 34px;border: 1px solid #ccc;border-radius: 3px;line-height: 34px;margin:0 auto;position: relative;padding-left: 100px;text-align: left;color:#333;}
 .myask-detail-cap{position: absolute;height: 24px;line-height: 24px;border-right: 1px solid #afafaf;top: 5px;left:10px;padding-right: 6px;}
 .myask-detail-time{color:#333;display: block;margin:0 auto;text-align: left;width: 330px;padding:12px 22px;}
+
 .light-color{color:#666;}
+
 /***********我的视频咨询详情 end***********/
 /***********企业办事服务 start***********/
 .works-wrap{padding:15px;}
@@ -381,7 +383,7 @@
 .uct-works-known{margin-bottom: 20px;}
 .icon1{background:#00a7ed url(../img/icon1.png) no-repeat center center;}
 .uct-works .icon1{vertical-align: -6px;}
-/*.uct-works .publish-need-blue{vertical-align: 2px;}*/
+
 .uct-works-exps{text-align: center;}
 .uct-works-exps-list{overflow: hidden;padding-top: 10px;padding-bottom: 20px;}
 .uct-works-exps-list li{float: left;width:33.3333%;margin-bottom: 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
@@ -389,9 +391,43 @@
 .uct-works-exps-list .current span{background:url(../img/icon2.png) no-repeat;opacity:1;}
 .uct-works-exps-list li span{display: block;width: 37px;height: 41px;background:url(../img/icon3.png) no-repeat;margin:0 auto;opacity:0.3;}
 .default-result .calendar-date{background-color:#f8f8f8;cursor: default;}
+
+.uct-works-final .icon-chenggong{color:#2fd887;}
 /***********企业办事服务 end***********/
-
-
-
-
+/***********星级评分 start***********/
+.rate{padding-top: 28px;}
+.rating{overflow: hidden;}
+.rate-exp{overflow: hidden;padding-bottom: 30px;}
+.rate-exp-icon{display: inline-block;padding-left: 55px;height: 41px;background:url(../img/icon3.png) no-repeat left top;line-height: 56px;width: 80px;color:#333;white-space: nowrap;text-align: left;}
+.rating{display: inline-block;padding-right: 5px;vertical-align: -2px;}
+.rating img{float: left;width: 24px;height: 24px;margin-right: 15px;}
+.rate-btn{display: inline-block;line-height: 26px;font-size: 16px;color:#333;margin:0 15px;vertical-align: 2px;}
+.rate-btn:hover{color:#00a7ed;}
+.rate-box{padding-top: 13px;display: none;vertical-align: 3px;}
+.dib{display: block;margin:0 auto;}
+.rate-inp{width: 270px;padding-left: 5px;border: 1px solid #eee;height: 26px;line-height: 26px;}
+.rate-confirm-btn{background:#00a7ed;color:#fff;border: none;border-radius: 2px;padding:0 6px;display: inline-block;height: 24px;line-height: 24px;}
+.rate-star-btn{margin-top: 20px;}
+/***********星级评分 end***********/
+/***********专家视频咨询 start***********/
+.uct-video-manage{padding:20px;}
+.video-manage-top{overflow: hidden;margin-left: -20px;margin-right: -20px;padding-bottom: 35px;}
+.vid-man-top-main{width:50%;box-sizing: border-box;padding-right: 20px;padding-left:20px;float: left;}
+.vid-man-top-con{background:#f8f8f8;padding:16px 12px;border: 1px solid #ccc;border-radius: 3px;}
+.vid-man-top-rt .vid-man-top-con{padding:12px 12px 0;}
+.vid-man-top-cat{margin-bottom: 9px;color:#333;}
+.vid-man-top-desc{text-align: justify;color:#333;line-height: 22px;}
+.video-manage-frame{padding:35px 0 25px;border-top: 1px dashed #ccc;}
+.emcee,.emcee-bottom{overflow: hidden;}
+.emcee span,.emceer-pers{display: block;float: left;text-align: center;}
+.emcee-cap{line-height: 28px;}
+.emceer-pers i{display: block;font-size: 28px;color:#00a7ed;margin-bottom: -5px;margin-top: -5px;}
+.emcee-bottom{padding-top: 20px;position: relative;}
+.emcee-members{overflow: hidden;padding-left: 3em;}
+.emcee-bot-cap{position: absolute;top: 30px;left:0;}
+.emcee-members .emceer-pers{margin:0 1em 10px;}
+.myask-invite .vid-man-top-cat{margin-bottom: 3px;}
+.myask-invite .vid-man-top-con{padding:12px;}
+.light-color{color:#666;}
+/***********专家视频咨询 end***********/
 

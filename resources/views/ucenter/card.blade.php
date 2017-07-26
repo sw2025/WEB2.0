@@ -49,10 +49,27 @@
             $(this).val(value)
         })
     })
+    $("#bankCard").on("blur",function(){
+        var bankCard=$("#bankCard").val();
+        $.ajax({
+            url:"{{asset('getBankName')}}",
+            data:{"bankCard":bankCard},
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    bankName=$("#bankName").text(res['msg']);
+                }else{
+                    layer.msg("暂未匹配到银行信息")
+                }
+            }
+        })
+    });
     $(".card-submit").on("click",function(){
         var bankCard=$("#bankCard").val();
         var account=$("#account").val();
         var bankName=$("#bankName").text();
+        alert(bankName);
         var bankFullName=$("#bankFullName").val();
         if(!bankCard){
             layer.tips("卡号不能为空", '.bank-card', {
@@ -68,13 +85,13 @@
             });
             return false;
         }
-        /*if(!bankName){
+        if(!bankName){
             layer.tips("银行不能为空", '.card-bank-open', {
                 tips: [2, '#00a7ed'],
                 time: 4000
             });
             return false;
-        }*/
+        }
         if(!bankFullName){
             layer.tips("开户行不能为空", '.bank-full', {
                 tips: [2, '#00a7ed'],
