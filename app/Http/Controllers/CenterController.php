@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use PhpSpec\Exception\Exception;
 
@@ -131,23 +132,259 @@ class CenterController extends Controller
     /**我的需求
      * @return mixed
      */
-    public function  myNeed(){
-        return view("ucenter.myNeed");
+    public function  myNeed(Request $request){
+        //获取板块信息
+        $cate = DB::table('t_common_domaintype')->get();
+        $datas = DB::table('t_n_need as need')
+            ->leftJoin('view_userrole as view','view.userid', '=','need.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_user as user','need.userid' ,'=' ,'user.userid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->leftJoin('view_needcollectcount as coll','coll.needid' ,'=' ,'need.needid')
+            ->leftJoin('view_needmesscount as mess','mess.needid' ,'=' ,'need.needid')
+            ->leftJoin('view_needstatus as status','status.needid' ,'=' ,'need.needid')
+            ->select('need.*','ent.enterprisename','ent.showimage as entimg','status.configid as flag','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_n_collectneed')->where(['userid' => session('userId'),'remark' => 1])->lists('needid');
+        }
+        //用户发布的数量
+        $putcount = DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',3)->count();
+        //用户回复的数量
+        $msgcount = count(DB::table('t_n_messagetoneed as need')->where('userid',session('userId'))->groupBy('needid')->lists('needid'));
+        //用户待审核的供求的数量
+        $waitcount= DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',1)->count();
+        //用户拒审核的供求的数量
+        $refusecount = DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',2)->count();
+        //判断是否为http请求
+        if(!empty($get = $request->input())){
+            //获取到get中的数据并处理
+            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
+            $supply=(isset($get['supply']) && $get['supply'] != "null") ? explode('/',$get['supply']) : null;
+            $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
+            $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
+            $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
+            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
+            $action = empty($get['action']) ? null : $get['action'];
+            //设置where条件生成where数组
+            $rolewhere = !empty($role)?array("needtype"=>$role):array();
+            $supplywhere = !empty($supply)?array("need.domain1"=>$supply[0],'need.domain2' => $supply[1]):array();
+            $addresswhere = !empty($address)?array("ent.address"=>$address):array();
+            $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere);
+            //判断是否有搜索的关键字
+            if(!empty($searchname)){
+                $obj = $obj->where("need.brief","like","%".$searchname."%");
+            }
+            if(!empty($action)){
+                switch($action){
+                    case 'collect':
+                        $obj = $obj->whereRaw('need.needid in (select needid from t_n_collectneed  where userid='.session('userId').' and remark=1)');
+                        //$obj = $obj->where('colneed.userid',session('userId'))->where('colneed.remark',1);
+                        break;
+                    case 'myput':
+                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',3);
+                        break;
+                    case 'message':
+                        $obj = $obj->whereRaw('need.needid in (select  needid from t_n_messagetoneed  where userid='.session('userId').' group by needid)');
+                        break;
+                    case 'waitverify':
+                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',1);
+                        break;
+                    case 'refuseverify':
+                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',2);
+                        break;
+                }
+            } else {
+                $obj = $obj->where('status.configid',3);
+            }
+            //对三种排序进行判断
+            if(!empty($ordertime)){
+                $obj = $obj->orderBy('need.needtime',$ordertime);
+            } elseif(!empty($ordercollect)){
+                $obj = $obj->orderBy('coll.count',$ordercollect);
+            } else {
+                $obj = $obj->orderBy('mess.count',$ordermessage);
+            }
+            $datas = $obj->paginate(4);
+            return view("ucenter.myNeed",compact('waitcount','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
+        }
+        $datas = $datas->where('status.configid',3)
+            ->orderBy("need.needtime",'desc')
+            ->paginate(4);
+        $ordertime = 'desc';
+        return view("ucenter.myNeed",compact('waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
     }
 
     /**需求详情
      * @return mixed
      */
-    public function  needDetail(){
-        return view("ucenter.needDetail");
+    public function  needDetail($supplyId){
+        //取出指定的供求信息
+        $datas = DB::table('t_n_need as need')
+            ->leftJoin('view_userrole as view','view.userid', '=','need.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_user as user','user.userid' ,'=' ,'need.userid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->select('ent.brief as desc1','ext.brief as desc2','need.*','ent.enterprisename','ent.address','ext.expertname','user.phone','ent.showimage as entimg','ext.showimage as extimg');
+        //获取该供求的当前状态
+        $configid = DB::table('t_n_needverify as need')->where('needid',$supplyId)->orderBy('id','desc')->select('configid')->first();
+        $obj = clone $datas;
+        $datas = $datas->where('needid',$supplyId)->first();
+
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_n_collectneed')->where(['userid' => session('userId'),'remark' => 1])->lists('needid');
+        }
+
+        //查询留言的信息
+        $message = DB::table('t_n_messagetoneed as msg')
+            ->leftJoin('view_userrole as view','view.userid', '=','msg.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->leftJoin('t_u_user as user','user.userid' ,'=' ,'msg.userid')
+            ->leftJoin('t_u_user as user2','user2.userid' ,'=' ,'msg.use_userid')
+            ->where('needid',$supplyId)
+            ->select('msg.*','ent.enterprisename','ext.expertname','user.avatar','user.nickname','user.phone','user2.nickname as nickname2','user2.phone as phone2')
+            ->orderBy('messagetime','desc')
+            ->get();
+        //分组取出每个回复的数量
+        $getmsgcount = DB::table('t_n_messagetoneed')->where('needid',$supplyId)->groupBy('parentid')->select(DB::raw('parentid ,count(*) as count'))->having('parentid','<>',0)->get();
+        $msgcount = [];
+        foreach ($getmsgcount as $k => $v) {
+            $msgcount[$v->parentid] = $v->count;
+        }
+        //获取供求的收藏的数量
+        $collcount = DB::table('view_needcollectcount')->where('needid',$supplyId)->first();
+        $collcount = $collcount ? $collcount->count : 0;
+        $cryptid = Crypt::encrypt(session('userId').$supplyId);
+        return view("ucenter.needDetail",compact('datas','message','configid','collectids','msgcount','collcount','cryptid'));
+    }
+
+    /**
+     * 解决需求
+     */
+    public function solveNeed (Request $request){
+        //判断是否ajax请求
+        if($request->ajax()){
+            $data = $request->input();
+            $supplyid = $data['supplyid'];
+            $mdid = $data['mdid'];
+            //判断你是否登陆 和 验证crypt解密对比
+            if(!empty(session('userId')) && session('userId').$supplyid == Crypt::decrypt($mdid)){
+                //确认这个需求是本人的
+                $res = DB::table('t_n_need')->where('userid',session('userId'))->where('needid',$supplyid)->first();
+                //防止连续点击触发多次插入 需要查询确定
+                $res_repeat = DB::table('t_n_needverify')->where('configid',4)->where('needid',$supplyid)->first();
+                if($res_repeat){
+                    return ['msg' => '请勿重复提交','icon' => 2];
+                }
+                if($res){
+                    $result = DB::table('t_n_needverify')->insert([
+                        'needid' => $supplyid,
+                        'configid' => 4,
+                        'verifytime' => date('Y-m-d H:i:s',time()),
+                        'updated_at' => date('Y-m-d H:i:s',time())
+                    ]);
+                    if($result){
+                        return ['msg' => '处理成功','icon' => 1];
+                    }
+                }
+                return ['msg' => '处理失败','icon' => 2];
+            }
+            return ['msg' => '非法访问','icon' => 2];
+        }
+        return ['msg' => '非法访问','icon' => 2];
     }
 
     /**发布需求
      * @return mixed
      */
-    public function  supplyNeed(){
-        return view("ucenter.supplyNeed");
+    public function  supplyNeed($needid = null){
+        //获取板块信息
+        $cate = DB::table('t_common_domaintype')->get();
+        if($needid){
+            //验证是否该供求的状态为拒绝 否则重定向到首页
+            $res = DB::table('view_needstatus')->where(['needid' => $needid,'configid' => 2])->first();
+            if($res){
+                $info = DB::table('t_n_need')->where('needid',$needid)->first();
+                $data = DB::table('t_n_needverify')->where('needid',$needid)->orderBy('id','desc')->first();
+                $info->error = $data->remark;
+                return view("ucenter.supplyNeed",compact('cate','info'));
+            } else {
+                return redirect('/');
+            }
+        }
+        return view("ucenter.supplyNeed",compact('cate'));
     }
+
+    /**
+     * 需求审核页
+     */
+    public function examineNeed ($needid = null) {
+
+        $lastdata = DB::table('t_n_need')->where(['userid' => session('userId')])->orderBy('needid','desc')->first();
+
+        if($needid){
+            //验证是否该供求的状态为待审核 否则重定向到首页
+            $res = DB::table('view_needstatus')->where(['needid' => $needid,'configid' => 1])->first();
+            if($res){
+                $lastdata = DB::table('t_n_need')->where(['needid' => $needid])->orderBy('needid','desc')->first();
+            } else {
+                return redirect('/');
+            }
+        }
+
+        return view('ucenter.examineNeed',compact('lastdata'));
+    }
+
+    /**新增需求
+     * @param Request $request
+     */
+    public function addNeed (Request $request) {
+        //判断是否为ajax请求
+        if($request->ajax()){
+            //判断是否登陆
+            if(!empty(session('userId'))){
+                $data = $request->input();
+                $role = DB::table('view_userrole')->where('userid',session('userId'))->first()->role;
+                $domain1 = explode('/',$data['domain'])[0];
+                $domain2 = explode('/',$data['domain'])[1];
+                //开启事务
+                DB::beginTransaction();
+                try{
+                    $needid = DB::table('t_n_need')->insertGetId([
+                        'userid' => session('userId'),
+                        'domain1' => $domain1,
+                        'domain2' => $domain2,
+                        'brief' => $data['content'],
+                        'needtime' => date('Y-m-d H:i:s',time()),
+                        'needtype' => $role,
+                        'updated_at' => date('Y-m-d H:i:s',time())
+                    ]);
+                    DB::table('t_n_needverify')->insert([
+                        'needid' => $needid,
+                        'configid' => 1,
+                        'verifytime' => date('Y-m-d H:i:s',time()),
+                        'updated_at' => date('Y-m-d H:i:s',time())
+                    ]);
+                    DB::commit();
+                    return ['msg' => '添加需求成功,进入审核阶段','icon' => 1];
+
+                }catch(Exception $e)
+                {
+                    DB::rollBack();
+                    return ['msg' => '处理失败','icon' => 2];
+                }
+            }
+            return ['msg' => '请登录','icon' => 2];
+        }
+        return ['msg' => '非法访问','icon' => 2];
+    }
+
+
     /**个人中心获取验证码
      * @return array
      */

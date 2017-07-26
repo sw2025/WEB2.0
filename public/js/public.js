@@ -29,7 +29,7 @@ $(function(){
         $('.search-text').attr('placeholder', liHtml);
     });
     // 首页幻灯轮播start
-    $('.banner ul li').eq(0).show();    
+    $('.banner ul li').eq(0).show();
 //*****
     var imgKey = 0;
     var lunbo = function(){
@@ -44,7 +44,7 @@ $(function(){
     }
     var timer01 = null;
     timer01 = setInterval(lunbo,3000);
-    
+
     $('.banner ol li').click(function(event) {
         var ind = $(this).index();
         $('.banner ul li').eq(ind).fadeIn().siblings().fadeOut();
@@ -87,7 +87,7 @@ $(function(){
         var move = tabNum * -100;
         $('.tab-con ul').stop().animate({'left':move + '%'},600)
     });
-    
+
     $('.tab-leftbtn').click(function(e) {
         tabNum--;
         if(tabNum < 0){
@@ -186,6 +186,7 @@ $(function(){
     });
 
     $('.money-cate-def').click(function() {
+
         $(this).next().stop().slideToggle();
     });
 
