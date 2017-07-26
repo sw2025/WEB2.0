@@ -25,6 +25,7 @@ Route::get('forget','LoginController@forget');
 Route::post('loginHandle','LoginController@loginHandle');
 //注册验证
 Route::post('registerHandle','LoginController@registerHandle');
+
 //找回密码验证
 Route::post('forgetHandle','LoginController@forgetHandle');
 
