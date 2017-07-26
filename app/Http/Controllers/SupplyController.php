@@ -23,6 +23,7 @@ class SupplyController extends Controller
             ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
             ->leftJoin('view_needcollectcount as coll','coll.needid' ,'=' ,'need.needid')
             ->leftJoin('view_needmesscount as mess','mess.needid' ,'=' ,'need.needid')
+            ->whereRaw('need.needid in (select needid from t_n_needverify  where configid=3 group by needid order by id desc)')
             ->select('need.*','ent.enterprisename','ent.showimage as entimg','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
         //获得用户的收藏
         $collectids = [];
