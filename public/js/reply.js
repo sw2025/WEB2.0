@@ -11,7 +11,7 @@ $(document).ready(function(){
             $(this).parent().next().children('ul').stop().slideToggle(500);
             $(this).parent().next().children('.reply-box').hide();
         }
-        
+
     });
     // 回复楼主
     $('.message-reply-show').on('click','.message-reply', function(event) {
