@@ -116,6 +116,25 @@
         })
 
     })
+    $('.delete-card').click(function() {
+        var userId=$.cookie("userId");
+        $.ajax({
+            url:"{{asset('updateCard')}}",
+            data:{"userId":userId},
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    layer.msg("删除成功!");
+                    $(this).parent().hide();
+                    $(this).parent().next().show();
+                }else{
+                    layer.msg("删除失败!")
+                }
+            }
+        })
+
+    });
 
 </script>
 @endsection

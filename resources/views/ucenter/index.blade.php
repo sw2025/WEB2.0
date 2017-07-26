@@ -19,7 +19,7 @@
                 <p class="basic-pwd basic-row clearfix">
                     <label for="">密<em></em>码：</label>
                     <span>******</span>
-                    <a href="{{asset('uct_basic/changeTel/changePwd')}}" class="change-btn">修改</a>
+                    <a href="{{asset('uct_basic/changePwd')}}" class="change-btn">修改</a>
                 </p>
                 <p class="basic-pet basic-row clearfix">
                     <label for="">昵<em></em>称：</label>

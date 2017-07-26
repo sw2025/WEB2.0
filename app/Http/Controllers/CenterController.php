@@ -33,6 +33,34 @@ class CenterController extends Controller
         return view("ucenter.changeTel2");
     }
 
+    /**修改密码
+     * @return mixed
+     */
+    public  function changePwd(){
+        return view("ucenter.changePwd");
+    }
+
+    /**修改密码处理
+     * @param Request $request
+     * @return array
+     */
+    public function updatePwd(Request $request){
+        $res=array();
+        $userId=$_POST['userId'];
+        $passWord=$_POST['passWord'];
+        $result=DB::table("t_u_user")->where("userid",$userId)->update([
+            "password"=>md5($passWord),
+            "updated_at"=>date("Y-m-d H:i:s",time())
+        ]);
+        if($result){
+            $request->session()->flush();
+            $res['code']="success";
+        }else{
+            $res['code']="error";
+        }
+        return $res;
+    }
+
     /**
      * 充值提现
      * @return mixed
@@ -64,17 +92,32 @@ class CenterController extends Controller
         $balance=$incomes-$pays;
         return view("ucenter.cash",compact("balance"));
     }
-    public function applicationCash(){
+
+    /**申请提现
+     * @return array
+     */
+    public function applicationCashs(){
+        $res=array();
         $money=$_POST['money'];
         $userId=$_POST['userId'];
+        $payno=$this->getPayNum("提现");
         $result=DB::table("t_u_bill")->insert([
             "userid"=>$userId,
             "type"=>"在途",
             "channel"=>"提现申请",
             "money"=>$money,
+            "payno"=>$payno,
             "billtime"=>date("Y-m-d H:i:s",time()),
-            "userid"=>$userId,
+            "brief"=>"提现",
+            "created_at"=>date("Y-m-d H:i:s",time()),
+            "updated_at"=>date("Y-m-d H:i:s",time()),
         ]);
+        if($result){
+            $res['code']="success";
+        }else{
+            $res['code']="error";
+        }
+        return $res;
     }
 
     /**我的信息
@@ -254,6 +297,23 @@ class CenterController extends Controller
      */
     public  function  card(){
         return view("ucenter.card");
+    }
+
+    /**更改银行卡号
+     * @return array
+     */
+    public  function updateCard(){
+        $res=array();
+        $result=DB::table("t_u_bank")->where("userid",$_POST['userId'])->update([
+            "state"=>1,
+            "updated_at"=>date("Y-m-d H:i:s",time()),
+        ]);
+        if($result){
+            $res['code']="success";
+        }else{
+            $res['code']="error";
+        }
+        return $res;
     }
     /**银行卡处理
  * @return mixed
