@@ -95,14 +95,18 @@ Route::get('uct_myneed','CenterController@myNeed');
 //我的需求
 Route::get('uct_myneed/needDetail/{needid}','CenterController@needDetail');
 //发布需求
-Route::get('uct_myneed/supplyNeed','CenterController@supplyNeed');
+Route::get('uct_myneed/supplyNeed/{needid?}','CenterController@supplyNeed');
+//新增需求
+Route::post('uct_myneed/addNeed','CenterController@addNeed');
 //解决需求
 Route::post('uct_myneed/solveNeed','CenterController@solveNeed');
+//审核需求
+Route::get('uct_myneed/examineNeed/{needid?}','CenterController@examineNeed');
 /************************************我是企业*********************************************************/
 //专家资源
 Route::get('uct_resource','MyEnterpriseController@resource');
 //专家资源
-Route::get('uct_resource/resDetail','MyEnterpriseController@resDetail');
+Route::get('uct_resource/resDetail/{expertid}','MyEnterpriseController@resDetail');
 
 /************************************我是专家*********************************************************/
 //专家认证

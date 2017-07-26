@@ -6,20 +6,136 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class MyEnterpriseController extends Controller
 {
     /**专家资源库
      * @return mixed
      */
-    public function  resource(){
-        return view("myenterprise.resource");
+    public function  resource(Request $request){
+        //获取板块信息
+        $cate = DB::table('t_common_domaintype')->get();
+        $datas = DB::table('t_u_expert as ext')
+            ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
+            ->leftJoin('t_u_expertfee as fee','ext.expertid' ,'=' ,'fee.expertid')
+            ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
+            ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
+            ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
+            ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_u_collectexpert')->where(['userid' => session('userId'),'remark' => 1])->lists('expertid');
+        }
+        //用户回复的数量
+        $msgcount = count(DB::table('t_u_messagetoexpert')->where('userid',session('userId'))->groupBy('expertid')->lists('expertid'));
+
+        //判断是否为http请求
+        if(!empty($get = $request->input())){
+            //获取到get中的数据并处理
+            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
+            $supply=(isset($get['supply']) && $get['supply'] != "null") ? explode('/',$get['supply']) : null;
+            $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
+            $consult=(isset($get['consult']) && $get['consult'] != "null") ? $get['consult'] : null;
+            $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
+            $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
+            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
+            $action = empty($get['action']) ? null : $get['action'];
+            //设置where条件生成where数组
+            $rolewhere = !empty($role)?array("category"=>$role):array();
+            $supplywhere = !empty($supply)?array("ext.domain1"=>$supply[0],'ext.domain2' => $supply[1]):array();
+            $addresswhere = !empty($address)?array("ext.address"=>$address):array();
+            if(!empty($consult) && $consult == '收费'){
+                $consultwhere = ['fee.state' => 1];
+                $datas = $datas->where('fee.fee','<>','null');
+            } elseif(!empty($consult) && $consult == '免费'){
+                $consultwhere = ['fee.state' => 0];
+            } else {
+                $consultwhere = [];
+            }
+            $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere)->where($consultwhere);
+            //判断是否有搜索的关键字
+            if(!empty($searchname)){
+                $obj = $obj->where("ext.expertname","like","%".$searchname."%");
+            }
+            if(!empty($action)){
+                switch($action){
+                    case 'collect':
+                        $obj = $obj->whereRaw('ext.expertid in (select  expertid from t_u_collectexpert  where userid='.session('userId').' and remark=1)');
+                        //$obj = $obj->where('colneed.userid',session('userId'))->where('colneed.remark',1);
+                        break;
+                    case 'message':
+                        $obj = $obj->whereRaw('ext.expertid in (select  expertid from t_u_messagetoexpert  where userid='.session('userId').' group by expertid)');
+                        break;
+                }
+            } else {
+                $obj = $obj->whereIn('status.configid',[2,4]);
+            }
+            //对三种排序进行判断
+            if(!empty($ordertime)){
+                $obj = $obj->orderBy('ext.expertid',$ordertime);
+            } elseif(!empty($ordercollect)){
+                $obj = $obj->orderBy('coll.count',$ordercollect);
+            } else {
+                $obj = $obj->orderBy('mess.count',$ordermessage);
+            }
+            $datas = $obj->paginate(4);
+            return view("myenterprise.resource",compact('cate','msgcount','searchname','datas','role','collectids','consult','action','supply','address','ordertime','ordercollect','ordermessage'));
+        }
+        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
+        $ordertime = 'desc';
+        return view("myenterprise.resource",compact('cate','datas','ordertime','collectids','msgcount'));
     }
 
     /**专家资源详情
      * @return mixed
      */
-    public  function resDetail(){
-        return view("myenterprise.resDetail");
+    public  function resDetail($expertid){
+        //取出指定的供求信息
+        $datas = DB::table('t_u_expert as ext')
+            ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
+            ->leftJoin('t_u_expertfee as fee','ext.expertid' ,'=' ,'fee.expertid')
+            ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
+            ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
+            ->select('ext.*','user.phone','fee.fee','fee.state');
+        $obj = clone $datas;
+        $datas = $datas->where('ext.expertid',$expertid)->first();
+        //取出同类下推荐的供求
+        $info = ['domain1' => $datas->domain1,'domain2' =>$datas->domain2,'expertid' => $datas->expertid];
+        $recommendNeed = $obj->where('ext.expertid','<>',$info['expertid'])->orderBy('expertid','desc');
+        $obj2 = clone $recommendNeed;
+        //取出相同二级类下面的供求
+        $recommendNeed = $recommendNeed->where(['ext.domain2' => $info['domain2'],'ext.domain1' => $info['domain1']])->take(5)->get();
+        //不足5条时 在一级类下面查找供求
+        if(count($recommendNeed) < 5){
+            $commedomain1 = $obj2->where('ext.domain1',$info['domain1'])->where('ext.domain2','<>',$info['domain2'])->take(5-count($recommendNeed))->get();
+            $recommendNeed = array_merge($recommendNeed,$commedomain1);
+        }
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_u_collectexpert')->where(['userid' => session('userId'),'remark' => 1])->lists('expertid');
+        }
+
+        //查询留言的信息
+        $message = DB::table('t_u_messagetoexpert as msg')
+            ->leftJoin('view_userrole as view','view.userid', '=','msg.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->leftJoin('t_u_user as user','user.userid' ,'=' ,'msg.userid')
+            ->leftJoin('t_u_user as user2','user2.userid' ,'=' ,'msg.use_userid')
+            ->where('msg.expertid',$expertid)
+            ->select('msg.*','ent.enterprisename','ext.expertname','user.avatar','user.nickname','user.phone','user2.nickname as nickname2','user2.phone as phone2')
+            ->orderBy('messagetime','desc')
+            ->get();
+        //分组取出每个回复的数量
+        $getmsgcount = DB::table('t_u_messagetoexpert')->where('expertid',$expertid)->groupBy('parentid')->select(DB::raw('parentid ,count(*) as count'))->having('parentid','<>',0)->get();
+        $msgcount = [];
+        foreach ($getmsgcount as $k => $v) {
+            $msgcount[$v->parentid] = $v->count;
+        }
+        return view("myenterprise.resDetail",compact('datas','recommendNeed','message','collectids','msgcount'));
     }
 }
