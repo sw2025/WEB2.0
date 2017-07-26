@@ -12,10 +12,13 @@
                         <span class="introduce-cap">发布介绍</span>
                         <div class="introduce-con">工作情况汇报关于小李同志本次任务工作情况汇报工作情况汇报关于小李同志本次任务工作情况汇报</div>
                     </div>
-                    <div class="three-icon">
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'collect')active @endif" index="collect"><i class="iconfont icon-shoucang"></i><span>收藏</span><em>{{count($collectids)}}</em></a>
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'myput')active @endif" index="myput"><i class="iconfont icon-fabu"></i><span>发布</span><em>{{$putcount}}</em></a>
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'message')active @endif" index="message"><i class="iconfont icon-liuyan1"></i><span>留言</span><em>{{$msgcount}}</em></a>
+
+                    <div class="three-icon clearfix five-icon">
+                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-shoucang"></i><span>待审核</span><em>20</em></a>
+                        <a href="javascript:;" class="icon-row active"><i class="iconfont icon-shoucang"></i><span>收藏</span><em>10</em></a>
+                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-shoucang"></i><span>已发布</span><em>10</em></a>
+                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-liuyan1"></i><span>留言</span><em>10</em></a>
+                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-shoucang"></i><span>拒审核</span><em>20</em></a>
                     </div>
                 </div>
                 <div class="uct-list-filter">

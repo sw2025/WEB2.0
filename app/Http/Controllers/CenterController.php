@@ -44,7 +44,8 @@ class CenterController extends Controller
         $pays=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"支出"])->sum("money");
         $expends=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"在途"])->sum("money");
         $balance=$incomes-$pays-$expends;
-        return view("ucenter.recharge",compact("incomes","pays","expends","balance"));
+        $bankcard=DB::table("t_u_bank")->where(["userid"=>$userId,"state"=>0])->pluck("bankcard");
+        return view("ucenter.recharge",compact("incomes","pays","expends","balance","bankcard"));
     }
 
     /**充值
@@ -58,7 +59,23 @@ class CenterController extends Controller
      * @return mixed
      */
     public function cash(){
-        return view("ucenter.cash");
+        $userId=session("userId");
+        $incomes=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"收入"])->sum("money");
+        $pays=DB::table("T_U_BILL")->where("userid",$userId)->whereIn("type",["支出","在途"])->sum("money");
+        $balance=$incomes-$pays;
+        return view("ucenter.cash",compact("balance"));
+    }
+    public function applicationCash(){
+        $money=$_POST['money'];
+        $userId=$_POST['userId'];
+        $result=DB::table("t_u_bill")->insert([
+            "userid"=>$userId,
+            "type"=>"在途",
+            "channel"=>"提现申请",
+            "money"=>$money,
+            "billtime"=>date("Y-m-d H:i:s",time()),
+            "userid"=>$userId,
+        ]);
     }
 
     /**我的信息
@@ -394,17 +411,84 @@ class CenterController extends Controller
     public  function  card(){
         return view("ucenter.card");
     }
+    /**银行卡处理
+ * @return mixed
+ */
+    public  function  cardHandle(){
+        $res=array();
+        $userId=session("userId");
+        $counts=DB::table("t_u_bank")->where("userid",$userId)->count();
+        if($counts){
+            $result=DB::table("t_u_bank")->where("userid",$userId)->update([
+                "userid"=>$userId,
+                "bankname"=>$_POST['bankName'],
+                "account"=>$_POST['account'],
+                "bankcard"=>$_POST['bankCard'],
+                "bankfullname"=>$_POST['bankFullName'],
+                "state"=>0,
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+        }else{
+            $result=DB::table("t_u_bank")->insert([
+                "userid"=>$userId,
+                "bankname"=>$_POST['bankName'],
+                "account"=>$_POST['account'],
+                "bankcard"=>$_POST['bankCard'],
+                "bankfullname"=>$_POST['bankFullName'],
+                "state"=>0,
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+        }
+        if($result){
+           $res['code']="success";
+        }else{
+           $res['code']="error";
+        }
+        return  $res;
+
+    }
+    /**银行卡处理
+     * @return mixed
+     */
+    public  function  card2(){
+        return view("ucenter.card2");
+    }
+    /**银行卡处理
+     * @return mixed
+     */
+    public  function  verifyCard(Request $request){
+        $res=array();
+        $data=$request->all();
+        $money=DB::table("t_u_bank")->where("userId",$data['userId'])->pluck("money");
+        if($money==$data['money']){
+            $res['code']="success";
+        }else{
+            $res['code']="error";
+        }
+        return $res;
+
+    }
+
+    /**个人中心首页充值，消费记录
+     * @return array
+     */
     public  function getRecord(){
         $type=$_POST['type'];
         $startPage=isset($_POST['startPage'])?$_POST['startPage']:1;
         $offset=($startPage-1)*2;
         $userId=session("userId");
         $result=array();
-        $counts=DB::table("T_U_BILL")->where("userid",2)->where("type",$type)->count();
+        $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("type",$type)->count();
         $counts=!empty(ceil($counts/2))?ceil($counts/2):0;
-        $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at")->where("userid",2)->where("type",$type)->skip($offset)->take(2)->get(2);
+        $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("type",$type)->skip($offset)->take(2)->get(2);
         foreach ($datas as $data){
             $data->created_at=date("Y-m-d",strtotime($data->created_at));
+            if($data->type=="收入"){
+                $data->money="+".$data->money;
+            }else{
+                $data->money="-".$data->money;
+            }
         }
         if($datas){
             $result['code']="success";
@@ -417,10 +501,4 @@ class CenterController extends Controller
         return $result;
 
     }
-    
-    
-
-    
-   
-
 }

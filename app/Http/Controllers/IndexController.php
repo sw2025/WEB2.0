@@ -60,7 +60,8 @@ class IndexController extends Controller
                     $data->fee=$data->fee."元";
                 }
                 if(!empty(session('userId'))){
-                    $collects=DB::table("T_U_COLLECTEXPERT")->where("userid",1)->where("expertid",$data->expertid)->pluck("remark");
+                    $userId=session('userId');
+                    $collects=DB::table("T_U_COLLECTEXPERT")->where("userid",$userId)->where("expertid",$data->expertid)->pluck("remark");
                     if(empty($collects) || $collects=="0"){
                         $data->collect=0;
                     }else{
