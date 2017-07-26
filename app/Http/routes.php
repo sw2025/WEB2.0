@@ -97,3 +97,9 @@ Route::get('uct_resource/resDetail','MyEnterpriseController@resDetail');
 /************************************我是专家*********************************************************/
 //专家认证
 Route::get('uct_expert','MyExpertController@expert');
+//专家审核
+Route::get('uct_expert2','MyExpertController@expert2');
+//审核成功
+Route::get('uct_expert3','MyExpertController@expert3');
+//专家资料提交
+Route::post('uct_expertData','MyExpertController@expertData');

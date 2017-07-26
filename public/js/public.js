@@ -103,14 +103,12 @@ $(function(){
 // ==================about 收藏start
     // 列表收藏
     $('.collect').click(function(event) {
-        if($(this).attr('title').trim() == '已收藏'){
+        if($(this).attr('title') == '已收藏'){
             $(this).attr("title","收藏");
             $(this).removeClass('red');
-            fnc_collect($(this).attr('index'),'cancel',this);
         }else{
             $(this).attr("title","已收藏");
             $(this).addClass('red');
-            fnc_collect($(this).attr('index'),'collect',this);
         }
     });
     // 详情收藏
@@ -118,11 +116,9 @@ $(function(){
         if($(this).html() == '已收藏'){
             $(this).html('收藏');
             $(this).removeClass('done');
-            fnc_collect($(this).attr('index'),'cancel',this);
         }else{
             $(this).html('已收藏');
             $(this).addClass('done');
-            fnc_collect($(this).attr('index'),'collect',this);
         }
     });
 // ==================about 收藏end
@@ -187,13 +183,7 @@ $(function(){
     }, function() {
         $(this).children('span').stop().fadeOut();
     });
-
-    $('.delete-card').click(function() {
-        $(this).parent().hide();
-        $(this).parent().next().show();
-    });
-
-    $('.money-cate-def').click(function() {
+$('.money-cate-def').click(function() {
         $(this).next().stop().slideToggle();
     });
 
@@ -204,29 +194,31 @@ $(function(){
     });
 // 个人中心=======》充值提现end
 // // 兼容placeholder
-       /*     jQuery('[placeholder]').focus(function() {
-                var input = jQuery(this);
-                if (input.val() == input.attr('placeholder')) {
-                    input.val('');
-                    input.removeClass('placeholder');
-                }
-            }).blur(function() {
-                var input = jQuery(this);
-                if (input.val() == '' || input.val() == input.attr('placeholder')) {
-                    input.addClass('placeholder');
-                    input.val(input.attr('placeholder'));
-                }
-            }).blur().parents('form').submit(function() {
-                jQuery(this).find('[placeholder]').each(function() {
-                    var input = jQuery(this);
-                    if (input.val() == input.attr('placeholder')) {
-                      input.val('');
-                    }
-                })
-            });*/
-// 个人中心=======》专家认证start
-    
-// 个人中心=======》专家认证end
+            // jQuery('[placeholder]').focus(function() {
+            //     var input = jQuery(this);
+            //     if (input.val() == input.attr('placeholder')) {
+            //         input.val('');
+            //         input.removeClass('placeholder');
+            //     }
+            // }).blur(function() {
+            //     var input = jQuery(this);
+            //     if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            //         input.addClass('placeholder');
+            //         input.val(input.attr('placeholder'));
+            //     }
+            // }).blur().parents('form').submit(function() {
+            //     jQuery(this).find('[placeholder]').each(function() {
+            //         var input = jQuery(this);
+            //         if (input.val() == input.attr('placeholder')) {
+            //           input.val('');
+            //         }
+            //     })
+            // });
+// 个人中心=======》我的需求和专家资源start
+    $('.three-icon').on('click', '.icon-row', function() {
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+// 个人中心=======》我的需求和专家资源end
 
 // 
 })
