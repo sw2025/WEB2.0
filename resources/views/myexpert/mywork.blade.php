@@ -17,36 +17,44 @@
                     <div class="introduce-con">关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报</div>
                 </div>
             </div>
-            <h3 class="main-top">办事推送列表</h3>
-            <div class="main-right">
-                <div class="mywork-wrap">
-                    <table class="paycheck-list">
-                        <thead>
-                        <tr>
-                            <th>办事类型</th>
-                            <th>企业名称</th>
-                            <th>需求描述</th>
-                            <th>发布时间</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td><a href="{{asset('uct_mywork/workDetail')}}">办事类型</a></td>
-                            <td><a href="{{asset('uct_mywork/workDetail')}}">北京中博昊达资产管理有限公司</a></td>
-                            <td><a href="{{asset('uct_mywork/workDetail')}}">需求描述</a></td>
-                            <td><a href="{{asset('uct_mywork/workDetail')}}">2017-07-12</a></td>
-                        </tr>
-                        <tr>
-                            <td><a href="uct_mywkdetail.html">办事类型</a></td>
-                            <td><a href="uct_mywkdetail.html">北京中博昊达资产管理有限公司</a></td>
-                            <td><a href="uct_mywkdetail.html">需求描述</a></td>
-                            <td><a href="uct_mywkdetail.html">2017-07-12</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="myask-tabar">
+                <a class="myask-tabar-a active" href="javascript:;">办事推送列表</a>
+                <a class="myask-tabar-a" href="javascript:;">我的办事列表</a>
+            </div>
+            <div class="main-right myask-tab">
+                <div class="myask-tab-box">
+                    <div class="mywork-wrap">
+                        <table class="paycheck-list">
+                            <thead>
+                            <tr>
+                                <th>办事类型</th>
+                                <th>企业名称</th>
+                                <th>需求描述</th>
+                                <th>发布时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><a href="{{asset('uct_mywork/workDetail')}}">办事类型</a></td>
+                                <td><a href="{{asset('uct_mywork/workDetail')}}">北京中博昊达资产管理有限公司</a></td>
+                                <td><a href="{{asset('uct_mywork/workDetail')}}">需求描述</a></td>
+                                <td><a href="{{asset('uct_mywork/workDetail')}}">2017-07-12</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="uct_mywkdetail.html">办事类型</a></td>
+                                <td><a href="uct_mywkdetail.html">北京中博昊达资产管理有限公司</a></td>
+                                <td><a href="uct_mywkdetail.html">需求描述</a></td>
+                                <td><a href="uct_mywkdetail.html">2017-07-12</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pages myinfo-page">
+                        <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">15</strong>页</span>
+                    </div>
                 </div>
-                <div class="pages myinfo-page">
-                    <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">15</strong>页</span>
+                <div class="myask-tab-box">
+                    
                 </div>
             </div>
         </div>
@@ -54,6 +62,11 @@
 <script type="text/javascript">
 $(function(){
     $("#Pagination").pagination("15");
+    $('.myask-tabar-a').click(function() {
+        $(this).addClass('active').siblings().removeClass('active');
+        var ind = $(this).index();
+        $('.myask-tab-box').eq(ind).show().siblings().hide();
+    });
 })
 </script>
 @endsection

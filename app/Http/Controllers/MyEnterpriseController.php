@@ -42,7 +42,7 @@ class MyEnterpriseController extends Controller
             $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
             $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
-            $action = empty($get['action']) ? null : $get['action'];
+            $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
             $supplywhere = !empty($supply)?array("ext.domain1"=>$supply[0],'ext.domain2' => $supply[1]):array();
