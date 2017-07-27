@@ -169,47 +169,70 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public  function works(){
-        return view("myenterprise.works");
+        $userId=session('userId');
+        $type=isset($_GET['type'])?$_GET['type']:0;
+        $typeWhere=($type!=0)?array("configid"=>$type):array();
+        $result=DB::table("t_e_event")
+                ->leftJoin("t_e_eventresponse","t_e_eventresponse.eventid","=","t_e_event.eventid")
+                ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
+                ->select("t_e_event.eventid","t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief","t_e_eventresponse.state")
+                ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
+                ->where("t_e_event.userid",$userId)
+                ->where($typeWhere);
+        $count=clone $result;
+        $datas=$result->orderBy("t_e_event.created_at","desc")->paginate(2);
+        $counts=$count->count();
+        foreach ($datas as $data){
+            $data->work=$data->domain1."/".$data->domain2;
+            $data->created_at=date("Y-m-d",strtotime($data->created_at));
+            if($data->state==0){
+                $data->state="指定专家";
+            }else{
+                $data->state="匹配专家";
+            }
+        }
+        switch($type){
+            case 0:
+                $type="全部";
+                break;
+            case 1:
+                $type="办事审核";
+                break;
+            case 3:
+                $type="审核失败";
+                break;
+            case 4:
+                $type="邀请专家";
+                break;
+            case 5:
+                $type="专家响应";
+                break;
+            case 6:
+                $type="正在办事";
+                break;
+            case 7:
+                $type="已完成";
+            break;
+            case 8:
+                $type="已评价";
+            break;
+            case 9:
+                $type="异常终止";
+            break;
+        }
+        return view("myenterprise.works",compact("datas","type","counts"));
+    }
+    public function workDetail($eventId){
+        dd(123);
     }
 
     /**申请办事服务
      * @return mixed
      */
-    public function work1(){
+    public function applyWork(){
+
         return view("myenterprise.work1");
     }
-
-    /**申请办事服务2
-     * @return mixed
-     */
-    public function work2(){
-        return view("myenterprise.work2");
-    }
-    /**申请办事服务3
-     * @return mixed
-     */
-    public function work3(){
-        return view("myenterprise.work3");
-    }
-    /**申请办事服务4
-     * @return mixed
-     */
-    public function work4(){
-        return view("myenterprise.work4");
-    }
-    /**申请办事服务5
-     * @return mixed
-     */
-    public function work5(){
-        return view("myenterprise.work5");
-    }
-    /**申请办事服务6
-     * @return mixed
-     */
-    public function work6(){
-        return view("myenterprise.work6");
-    }
-
     /**视频咨询
      * @return mixed
      */
