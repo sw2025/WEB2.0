@@ -99,9 +99,9 @@ Route::post('applicationCashs','CenterController@applicationCashs');
 Route::post('getRecord','CenterController@getRecord');
 //我的信息
 Route::get('uct_myinfo','CenterController@myinfo');
-//需求详情
-Route::get('uct_myneed','CenterController@myNeed');
 //我的需求
+Route::get('uct_myneed','CenterController@myNeed');
+//需求详情
 Route::get('uct_myneed/needDetail/{needid}','CenterController@needDetail');
 //发布需求
 Route::get('uct_myneed/supplyNeed/{needid?}','CenterController@supplyNeed');
