@@ -21,7 +21,7 @@
                             <div class="datas-lt">
                                 <div class="datas-lt-enter">
                                     <div class="datas-sel zindex1">
-                                        <span class="datas-sel-cap">专家分类</span><a href="javascript:;" class="datas-sel-def">个人</a>
+                                        <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category" class="datas-sel-def">个人</a>
                                         <ul class="datas-list">
                                             <li>个人</li>
                                             <li>机构</li>
@@ -32,40 +32,29 @@
                                         <input class="datas-sel-name" type="text" placeholder="" />
                                     </div>
                                     <div class="publish-need-sel datas-newchange zindex1">
-                                        <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def">demo1</a>
+
+
+                                        <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
                                         <ul class="publish-need-list">
-                                            <li>
-                                                <a href="javascript:;">销售类</a>
-                                                <ul class="publ-sub-list">
-                                                    <li>demo1</li>
-                                                    <li>demo2</li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">销售类</a>
-                                                <ul class="publ-sub-list">
-                                                    <li>demo1</li>
-                                                    <li>demo2</li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">销售类</a>
-                                                <ul class="publ-sub-list" style="display: none;">
-                                                    <li>demo1</li>
-                                                    <li>demo2</li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">销售类</a>
-                                                <ul class="publ-sub-list">
-                                                    <li>demo1</li>
-                                                    <li>demo2</li>
-                                                </ul>
-                                            </li>
+                                            @foreach($cate as $v)
+                                                @if($v->level == 1)
+                                                    <li>
+                                                        <a href="javascript:;">{{$v->domainname}}</a>
+                                                        <ul class="publ-sub-list">
+                                                            @foreach($cate as $small)
+                                                                @if($small->parentid == $v->domainid && $small->level == 2)
+                                                                    <li>{{$small->domainname}}</li>
+                                                                @endif
+                                                            @endforeach
+                                                        </ul>
+                                                        @endif
+                                                    </li>
+                                                    @endforeach
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex2">
-                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def">全国</a>
+                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" id="address" class="datas-sel-def">全国</a>
+
                                         <ul class="datas-list zone-list">
                                             <li>全国</li>
                                             <li>北京</li>
@@ -79,7 +68,7 @@
                                             <li>吉林</li>
                                             <li>黑龙江</li>
                                             <li>江苏</li>
-                                            <li>浙江</li>
+                                            <li>浙江</li
                                             <li>安徽</li>
                                             <li>福建</li>
                                             <li>江西</li>
@@ -111,7 +100,7 @@
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传营业执照</span>
-                                                <input id="" type="file" name="files[]" data-url="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                                <input id="photo1" type="file" name="files[]" data-url="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                                             </div>
                                             <p class="datas-lt-explain">营业执照仅做认证用，不用做其它用途</p>
                                         </div>
@@ -121,7 +110,7 @@
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传宣传照片</span>
-                                                <input id="" type="file" name="files[]" data-url="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                                <input id="photo2" type="file" name="files[]" data-url="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                                             </div>
                                             <p class="datas-lt-explain">宣传照片用于展示企业，请选择企业Logo或展现企业风采的照片</p>
                                         </div>
@@ -129,7 +118,7 @@
                                 </div>
                             </div>
                             <div class="datas-rt">
-                                <textarea placeholder="请输入专家描述" cols="30" rows="10"></textarea>
+                                <textarea placeholder="请输入专家描述" id="brief" cols="30" rows="10"></textarea>
                             </div>
                         </div>
                         <div class="bottom-btn"><button class="test-btn submit-audit" type="button">提交审核</button></div>
@@ -159,8 +148,59 @@
 
         $('.publ-sub-list li').click(function() {
             var publishHtml = $(this).html();
-            $('.publ-need-sel-def').html(publishHtml);
+            var parentHtml = $(this).parent().siblings('a').text();
+            $('.publ-need-sel-def').html(parentHtml+'/'+publishHtml);
             $('.publish-need-list').hide();
+        });
+    })
+
+    /*   $(function () {
+     var token = $.cookie('token');
+     $('#photo2').fileupload({
+     dataType: 'json',
+     maxFileSize: 1 * 1024 * 1024,
+     done: function (e, data) {
+     $.each(data.result.files, function (index, file) {
+     // console.log(file.name);
+     $("#avatar").attr('src','../../swUpload/images/'+file.name).show();
+     $("#myAvatar").val(file.name);
+     });
+     }
+     });
+     });*/
+
+
+    $(function () {
+        $('.submit-audit').click(function(){
+            $('.submit-audit').attr('disabled','disabled');
+            var category=$('#category').html();
+            var name=$('.datas-sel-name').val();
+            var industry=$('#industry').html();
+            var address=$('#address').html();
+            var photo1=$('#photo1').val();
+            var photo2=$('#photo2').val();
+            var brief=$('#brief').val();
+
+            if(name=='' || photo1=='' || industry==''){
+                return false;
+            }
+            $.ajax({
+                url:"{{asset('/uct_expertData')}}",
+                data:{"category":category,"name":name,"industry":industry,"address":address,"photo1":photo1,"photo2":photo2,"brief":brief},
+                dataType:"json",
+                type:"POST",
+                success:function(data){
+                    if (data.icon == 1){
+                        layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
+                            window.location = '{{asset('/uct_expert2')}}';
+                        });
+                    } else {
+                        layer.msg(data.msg,{'time':2000,'icon':data.icon});
+                    }
+                }
+            })
+
+
         });
     })
 </script>
