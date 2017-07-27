@@ -1,4 +1,5 @@
 $(function(){
+    // $('input, textarea').placeholder();
     // 尺寸变更导航切换
     $('.navbar-toggle').on('click', function(event) {
         event.preventDefault();
@@ -28,7 +29,7 @@ $(function(){
         $('.search-text').attr('placeholder', liHtml);
     });
     // 首页幻灯轮播start
-    $('.banner ul li').eq(0).show();    
+    $('.banner ul li').eq(0).show();
 //*****
     var imgKey = 0;
     var lunbo = function(){
@@ -43,7 +44,7 @@ $(function(){
     }
     var timer01 = null;
     timer01 = setInterval(lunbo,3000);
-    
+
     $('.banner ol li').click(function(event) {
         var ind = $(this).index();
         $('.banner ul li').eq(ind).fadeIn().siblings().fadeOut();
@@ -86,7 +87,7 @@ $(function(){
         var move = tabNum * -100;
         $('.tab-con ul').stop().animate({'left':move + '%'},600)
     });
-    
+
     $('.tab-leftbtn').click(function(e) {
         tabNum--;
         if(tabNum < 0){
@@ -101,14 +102,16 @@ $(function(){
         $(this).addClass('current').siblings().removeClass('current');
     });
 // ==================about 收藏start
-    // 列表收藏
+    /// 列表收藏
     $('.collect').click(function(event) {
-        if($(this).attr('title') == '已收藏'){
+        if($(this).attr('title').trim() == '已收藏'){
             $(this).attr("title","收藏");
             $(this).removeClass('red');
+            fnc_collect($(this).attr('index'),'cancel',this);
         }else{
             $(this).attr("title","已收藏");
             $(this).addClass('red');
+            fnc_collect($(this).attr('index'),'collect',this);
         }
     });
     // 详情收藏
@@ -116,9 +119,11 @@ $(function(){
         if($(this).html() == '已收藏'){
             $(this).html('收藏');
             $(this).removeClass('done');
+            fnc_collect($(this).attr('index'),'cancel',this);
         }else{
             $(this).html('已收藏');
             $(this).addClass('done');
+            fnc_collect($(this).attr('index'),'collect',this);
         }
     });
 // ==================about 收藏end
@@ -183,7 +188,9 @@ $(function(){
     }, function() {
         $(this).children('span').stop().fadeOut();
     });
-$('.money-cate-def').click(function() {
+
+    $('.money-cate-def').click(function() {
+
         $(this).next().stop().slideToggle();
     });
 

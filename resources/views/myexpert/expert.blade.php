@@ -2,7 +2,7 @@
 @section("content")
 <div class="main">
             <!-- 发布需求 / start -->
-            <h3 class="main-top">专家认证</h3>
+            <h3 class="main-top">发布需求</h3>
             <div class="ucenter-con">
                 <div class="main-right">
                     <div class="card-step">
@@ -31,61 +31,61 @@
                                         <span class="datas-sel-cap">输入姓名</span>
                                         <input class="datas-sel-name" type="text" placeholder="" />
                                     </div>
-                                    <div class="datas-sel zindex1">
-                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" id="industry" class="datas-sel-def">不限</a>
-                                        <ul class="datas-list">
-                                            <li>不限</li>
-                                            <li>IT|通信|电子|互联网</li>
-                                            <li>金融业</li>
-                                            <li>房地产|建筑业</li>
-                                            <li>商业服务</li>
-                                            <li>贸易|批发|零售|租赁业</li>
-                                            <li>文体教育|工艺美术</li>
-                                            <li>生产|加工|制造</li>
-                                            <li>交通|运输|物流|仓储</li>
-                                            <li>服务业</li>
-                                            <li>文化|传媒|娱乐|体育</li>
-                                            <li>能源|矿产|环保</li>
-                                            <li>政府|非盈利机构</li>
-                                            <li>农|林|牧|渔|其他</li>
+                                    <div class="publish-need-sel datas-newchange zindex1">
+                                        <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
+                                        <ul class="publish-need-list">
+                                            @foreach($cate as $v)
+                                                @if($v->level == 1)
+                                                    <li>
+                                                        <a href="javascript:;">{{$v->domainname}}</a>
+                                                        <ul class="publ-sub-list">
+                                                            @foreach($cate as $small)
+                                                                @if($small->parentid == $v->domainid && $small->level == 2)
+                                                                    <li>{{$small->domainname}}</li>
+                                                                @endif
+                                                            @endforeach
+                                                        </ul>
+                                                        @endif
+                                                    </li>
+                                                    @endforeach
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex2">
-                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" id="address" class="datas-sel-def">不限</a>
-                                        <ul class="datas-list">
+                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" id="address" class="datas-sel-def">全国</a>
+                                        <ul class="datas-list zone-list">
                                             <li>全国</li>
-                                            <li>北京市</li>
-                                            <li>上海市</li>
-                                            <li>天津市</li>
-                                            <li>重庆市</li>
-                                            <li>河北省</li>
-                                            <li>山西省</li>
+                                            <li>北京</li>
+                                            <li>上海</li>
+                                            <li>天津</li>
+                                            <li>重庆</li>
+                                            <li>河北</li>
+                                            <li>山西</li>
                                             <li>内蒙古</li>
-                                            <li>辽宁省</li>
-                                            <li>吉林省</li>
-                                            <li>黑龙江省</li>
-                                            <li>江苏省</li>
-                                            <li>浙江省</li>
-                                            <li>安徽省</li>
-                                            <li>福建省</li>
-                                            <li>江西省</li>
-                                            <li>山东省</li>
-                                            <li>河南省</li>
-                                            <li>湖北省</li>
-                                            <li>湖南省</li>
-                                            <li>广东省</li>
-                                            <li>广西省</li>
-                                            <li>海南省</li>
-                                            <li>四川省</li>
-                                            <li>贵州省</li>
-                                            <li>云南省</li>
+                                            <li>辽宁</li>
+                                            <li>吉林</li>
+                                            <li>黑龙江</li>
+                                            <li>江苏</li>
+                                            <li>浙江</li>
+                                            <li>安徽</li>
+                                            <li>福建</li>
+                                            <li>江西</li>
+                                            <li>山东</li>
+                                            <li>河南</li>
+                                            <li>湖北</li>
+                                            <li>湖南</li>
+                                            <li>广东</li>
+                                            <li>广西</li>
+                                            <li>海南</li>
+                                            <li>四川</li>
+                                            <li>贵州</li>
+                                            <li>云南</li>
                                             <li>西藏</li>
-                                            <li>陕西省</li>
-                                            <li>甘肃省</li>
-                                            <li>青海省</li>
+                                            <li>陕西</li>
+                                            <li>甘肃</li>
+                                            <li>青海</li>
                                             <li>宁夏</li>
                                             <li>新疆</li>
-                                            <li>台湾省</li>
+                                            <li>台湾</li>
                                             <li>香港</li>
                                             <li>澳门</li>
                                         </ul>
@@ -97,7 +97,7 @@
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传营业执照</span>
-                                                <input id="photo1" type="file" name="files[]"  data-url="{{asset('upload')}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                                <input id="photo1" type="file" name="files[]" data-url="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                                             </div>
                                             <p class="datas-lt-explain">营业执照仅做认证用，不用做其它用途</p>
                                         </div>
@@ -107,7 +107,7 @@
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传宣传照片</span>
-                                                <input id="photo2" type="file" name="files[]" data-url="{{asset('upload')}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                                <input id="photo2" type="file" name="files[]" data-url="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                                             </div>
                                             <p class="datas-lt-explain">宣传照片用于展示企业，请选择企业Logo或展现企业风采的照片</p>
                                         </div>
@@ -134,27 +134,36 @@
             $(this).parent().prev('.datas-sel-def').html(publishHtml);
             $(this).parent().hide();
         });
-
-        $('')
-
+        $('.publ-need-sel-def').click(function() {
+            $(this).next('ul').stop().slideToggle();
+        });
+        $('.publish-need-list li').hover(function() {
+            $(this).children('ul').stop().show();
+        }, function() {
+            $(this).children('ul').stop().hide();
+        });
+        $('.publ-sub-list li').click(function() {
+            var publishHtml = $(this).html();
+            var parentHtml = $(this).parent().siblings('a').text();
+            $('.publ-need-sel-def').html(parentHtml+'/'+publishHtml);
+            $('.publish-need-list').hide();
+        });
     })
 
-
- /*   $(function () {
-        var token = $.cookie('token');
-        $('#photo2').fileupload({
-            dataType: 'json',
-            maxFileSize: 1 * 1024 * 1024,
-            done: function (e, data) {
-                $.each(data.result.files, function (index, file) {
-                    // console.log(file.name);
-                    $("#avatar").attr('src','../../swUpload/images/'+file.name).show();
-                    $("#myAvatar").val(file.name);
-                });
-            }
-        });
-    });*/
-
+    /*   $(function () {
+     var token = $.cookie('token');
+     $('#photo2').fileupload({
+     dataType: 'json',
+     maxFileSize: 1 * 1024 * 1024,
+     done: function (e, data) {
+     $.each(data.result.files, function (index, file) {
+     // console.log(file.name);
+     $("#avatar").attr('src','../../swUpload/images/'+file.name).show();
+     $("#myAvatar").val(file.name);
+     });
+     }
+     });
+     });*/
 
 
     $(function () {
@@ -168,21 +177,21 @@
             var photo2=$('#photo2').val();
             var brief=$('#brief').val();
 
-            if(name=='' || photo1==''){
+            if(name=='' || photo1=='' || industry==''){
                 return false;
             }
-
             $.ajax({
                 url:"{{asset('/uct_expertData')}}",
                 data:{"category":category,"name":name,"industry":industry,"address":address,"photo1":photo1,"photo2":photo2,"brief":brief},
                 dataType:"json",
                 type:"POST",
-                success:function(res){
-                    if(res['code']=="success"){
-                        window.location.href="{{asset('/uct_expert')}}";
-                    }else{
-                        alert("审核失败");
-                        window.location.href="{{asset('/uct_expert')}}";
+                success:function(data){
+                    if (data.icon == 1){
+                        layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
+                            window.location = '{{asset('/uct_expert2')}}';
+                        });
+                    } else {
+                        layer.msg(data.msg,{'time':2000,'icon':data.icon});
                     }
                 }
             })
@@ -190,5 +199,4 @@
         });
     })
 </script>
-
 @endsection
