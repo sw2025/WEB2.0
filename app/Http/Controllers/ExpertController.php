@@ -15,13 +15,14 @@ class ExpertController extends Controller
      */
     public function index(Request $request){
         //获取板块信息
-
         $cate = DB::table('t_common_domaintype')->get();
         $datas = DB::table('t_u_expert as ext')
             ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
             ->leftJoin('t_u_expertfee as fee','ext.expertid' ,'=' ,'fee.expertid')
             ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
             ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
+            ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
+            ->whereIn('status.configid',[2,4])
             ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
         //获得用户的收藏
         $collectids = [];

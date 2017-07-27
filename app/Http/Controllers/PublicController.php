@@ -15,4 +15,36 @@ class PublicController extends Controller
        // require_once("FileUpload/server/php/UploadHandler.php");
         $uploadHandler =new \App\UploadHandler(["upload_dir" => dirname(base_path()) . "/swUpload/images/", "upload_url" => dirname(base_path()) . "/swUpload/images/"]);
     }
+    public function getBankName(){
+        $res=array();
+        $qian=array(" ","　","\t","\n","\r");
+        $hou=array("","","","","");
+        $bankCard =str_replace($qian,$hou,$_POST['bankCard']);
+        $bankList=\BankClass::$bankList;
+        $card_8 = substr($bankCard, 0, 8);
+        if (isset($bankList[$card_8])) {
+            $bankName= $bankList[$card_8];
+        }
+        $card_6 = substr($bankCard, 0, 6);
+        if (isset($bankList[$card_6])) {
+            $bankName= $bankList[$card_6];
+        }
+        $card_5 = substr($bankCard, 0, 5);
+        if (isset($bankList[$card_5])) {
+            $bankName= $bankList[$card_5];
+        }
+        $card_4 = substr($bankCard, 0, 4);
+        if (isset($bankList[$card_4])) {
+            $bankName=  $bankList[$card_4];
+        }
+        if(isset($bankName)){
+            $res['code']="success";
+            $res['msg']=$bankName;
+        }else{
+            $res['code']="error";
+        }
+        return $res;
+        
+    }
+    
 }
