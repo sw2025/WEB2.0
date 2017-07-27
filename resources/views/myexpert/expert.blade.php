@@ -31,61 +31,75 @@
                                         <span class="datas-sel-cap">输入姓名</span>
                                         <input class="datas-sel-name" type="text" placeholder="" />
                                     </div>
-                                    <div class="datas-sel zindex1">
-                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def">不限</a>
-                                        <ul class="datas-list">
-                                            <li>不限</li>
-                                            <li>IT|通信|电子|互联网</li>
-                                            <li>金融业</li>
-                                            <li>房地产|建筑业</li>
-                                            <li>商业服务</li>
-                                            <li>贸易|批发|零售|租赁业</li>
-                                            <li>文体教育|工艺美术</li>
-                                            <li>生产|加工|制造</li>
-                                            <li>交通|运输|物流|仓储</li>
-                                            <li>服务业</li>
-                                            <li>文化|传媒|娱乐|体育</li>
-                                            <li>能源|矿产|环保</li>
-                                            <li>政府|非盈利机构</li>
-                                            <li>农|林|牧|渔|其他</li>
+                                    <div class="publish-need-sel datas-newchange zindex1">
+                                        <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def">demo1</a>
+                                        <ul class="publish-need-list">
+                                            <li>
+                                                <a href="javascript:;">销售类</a>
+                                                <ul class="publ-sub-list">
+                                                    <li>demo1</li>
+                                                    <li>demo2</li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;">销售类</a>
+                                                <ul class="publ-sub-list">
+                                                    <li>demo1</li>
+                                                    <li>demo2</li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;">销售类</a>
+                                                <ul class="publ-sub-list" style="display: none;">
+                                                    <li>demo1</li>
+                                                    <li>demo2</li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;">销售类</a>
+                                                <ul class="publ-sub-list">
+                                                    <li>demo1</li>
+                                                    <li>demo2</li>
+                                                </ul>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex2">
-                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def">不限</a>
-                                        <ul class="datas-list">
+                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def">全国</a>
+                                        <ul class="datas-list zone-list">
                                             <li>全国</li>
-                                            <li>北京市</li>
-                                            <li>上海市</li>
-                                            <li>天津市</li>
-                                            <li>重庆市</li>
-                                            <li>河北省</li>
-                                            <li>山西省</li>
+                                            <li>北京</li>
+                                            <li>上海</li>
+                                            <li>天津</li>
+                                            <li>重庆</li>
+                                            <li>河北</li>
+                                            <li>山西</li>
                                             <li>内蒙古</li>
-                                            <li>辽宁省</li>
-                                            <li>吉林省</li>
-                                            <li>黑龙江省</li>
-                                            <li>江苏省</li>
-                                            <li>浙江省</li>
-                                            <li>安徽省</li>
-                                            <li>福建省</li>
-                                            <li>江西省</li>
-                                            <li>山东省</li>
-                                            <li>河南省</li>
-                                            <li>湖北省</li>
-                                            <li>湖南省</li>
-                                            <li>广东省</li>
+                                            <li>辽宁</li>
+                                            <li>吉林</li>
+                                            <li>黑龙江</li>
+                                            <li>江苏</li>
+                                            <li>浙江</li>
+                                            <li>安徽</li>
+                                            <li>福建</li>
+                                            <li>江西</li>
+                                            <li>山东</li>
+                                            <li>河南</li>
+                                            <li>湖北</li>
+                                            <li>湖南</li>
+                                            <li>广东</li>
                                             <li>广西</li>
-                                            <li>海南省</li>
-                                            <li>四川省</li>
-                                            <li>贵州省</li>
-                                            <li>云南省</li>
+                                            <li>海南</li>
+                                            <li>四川</li>
+                                            <li>贵州</li>
+                                            <li>云南</li>
                                             <li>西藏</li>
-                                            <li>陕西省</li>
-                                            <li>甘肃省</li>
-                                            <li>青海省</li>
+                                            <li>陕西</li>
+                                            <li>甘肃</li>
+                                            <li>青海</li>
                                             <li>宁夏</li>
                                             <li>新疆</li>
-                                            <li>台湾省</li>
+                                            <li>台湾</li>
                                             <li>香港</li>
                                             <li>澳门</li>
                                         </ul>
@@ -134,7 +148,20 @@
             $(this).parent().prev('.datas-sel-def').html(publishHtml);
             $(this).parent().hide();
         });
+        $('.publ-need-sel-def').click(function() {
+            $(this).next('ul').stop().slideToggle();
+        });
+        $('.publish-need-list li').hover(function() {
+            $(this).children('ul').stop().show();
+        }, function() {
+            $(this).children('ul').stop().hide();
+        });
 
+        $('.publ-sub-list li').click(function() {
+            var publishHtml = $(this).html();
+            $('.publ-need-sel-def').html(publishHtml);
+            $('.publish-need-list').hide();
+        });
     })
 </script>
 @endsection

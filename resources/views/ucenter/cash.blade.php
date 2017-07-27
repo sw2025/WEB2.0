@@ -20,11 +20,12 @@
 
 <script type="text/javascript">
     $(function(){
+        var $enterValPre=$('.avai-money-sum').html();
         $(".cash-num").on("mouseout",function(){
             var $enterVal = $('.cash-num').val();
+            var $leftNum = $('.avai-money-sum').html();
             if($enterVal){
                 var $num = parseFloat($enterVal).toFixed(2);
-                var $leftNum = $('.avai-money-sum').html();
                 var surplusMoney=parseFloat($leftNum - $num).toFixed(2);
                 if(surplusMoney < 0) {
                     layer.confirm('可用金额不足，无法提现', {
@@ -32,9 +33,13 @@
                     });
                     $(".cash-btn").hide();
                 }else{
+                    $enterValPre=$leftNum;
                     $('.avai-money-sum').html(surplusMoney)
                     $(".cash-btn").show();
                 }
+            }else{
+                $('.avai-money-sum').html($enterValPre)
+                $(".cash-btn").show();
             }
         })
         $('.cash-btn').click(function() {

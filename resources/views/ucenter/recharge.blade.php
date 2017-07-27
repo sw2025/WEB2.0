@@ -118,22 +118,25 @@
     })
     $('.delete-card').click(function() {
         var userId=$.cookie("userId");
-        $.ajax({
-            url:"{{asset('updateCard')}}",
-            data:{"userId":userId},
-            dateType:"json",
-            type:"POST",
-            success:function(res){
-                if(res['code']=="success"){
-                    layer.msg("删除成功!");
-                    $(this).parent().hide();
-                    $(this).parent().next().show();
-                }else{
-                    layer.msg("删除失败!")
+        layer.confirm('您确定眼删除该银行卡吗？', {
+            btn: ['删除','取消'], //按钮
+        }, function(){
+            $.ajax({
+                url:"{{asset('updateCard')}}",
+                data:{"userId":userId},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        $(".delete-card").parent().hide();
+                        $(".delete-card").parent().next().show();
+                        layer.msg("删除成功!");
+                    }else{
+                        layer.msg("删除失败!")
+                    }
                 }
-            }
-        })
-
+            })
+        });
     });
 
 </script>

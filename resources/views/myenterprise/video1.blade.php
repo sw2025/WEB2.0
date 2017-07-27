@@ -1,5 +1,6 @@
 @extends("layouts.ucenter")
 @section("content")
+<script type="text/javascript" src="{{asset('js/laydate/laydate.js')}}"></script>
 <div class="main">
             <!-- 专家视频咨询 / start -->
             <h3 class="main-top">专家视频咨询</h3>
