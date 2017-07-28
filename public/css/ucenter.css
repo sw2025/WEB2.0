@@ -225,9 +225,11 @@
 /***********会员缴费 end***********/
 /***********我的需求 start***********/
 .myrequire-bg{max-width: 965px;min-width:800px;height: 107px;background:url(../img/uctbg.jpg) no-repeat;border: 1px solid #ccc;border-radius: 3px;color:#fff;text-align: center;}
+
 .need-publish-btn{display: inline-block;padding:8px 18px;font-size: 16px;color:#fff;background:#00a7ed;border-radius: 5px;}
 .publish-intro{width: 380px;display: inline-block;margin:0 0 0 5%;text-align: left;vertical-align: middle;}
 .introduce-con{height:63px;overflow:hidden;}
+
 .introduce-cap{font-size: 16px;border-bottom: 1px solid #ede500;display: inline-block;margin-top: 12px;}
 .three-icon{padding-top: 17px;display: inline-block;}
 .five-icon{width:250px;float: right;}
@@ -395,6 +397,7 @@
 .default-result .calendar-date{background-color:#f8f8f8;cursor: default;}
 .uct-works-final .icon-chenggong{color:#2fd887;}
 .uct-works-expava{overflow: hidden;padding:10px 0;display: none}
+
 .uct-works-exp-img{float: left;width: 64px;height: 64px;margin:0 3px;border-radius: 5px;}
 /***********企业办事服务 end***********/
 /***********星级评分 start***********/
