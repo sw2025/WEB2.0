@@ -5,7 +5,7 @@
             <h3 class="main-top">我的视频咨询</h3>
             <div class="ucenter-con">
                 <div class="myrequire-bg myask">
-                    <div class="three-icon">
+                    <div class="three-icon resource-icon">
                         <a href="javascript:;" class="icon-row active"><i class="iconfont icon-xiangyingcelve"></i><span>已响应</span><em>10</em></a>
                         <a href="javascript:;" class="icon-row"><i class="iconfont icon-yaoqing"></i><span>已受邀</span><em>10</em></a>
                         <a href="javascript:;" class="icon-row"><i class="iconfont icon-wancheng"></i><span>已完成</span><em>20</em></a>

@@ -2,30 +2,17 @@
 @section("content")
     <link rel="stylesheet" type="text/css" href="{{asset('css/list.css')}}" />
     <script type="text/javascript" src="{{asset('js/list.js')}}"></script>
+    <script src="{{asset('js/reselect.js')}}" type="text/javascript"></script>
     <div class="main">
-            <!-- 我的需求 / start -->
-            <h3 class="main-top">我的需求</h3>
+            <!-- 专家资源 / start -->
             <div class="ucenter-con">
-                <div class="myrequire-bg">
-                    <a href="{{asset('uct_myneed/supplyNeed')}}" class="need-publish-btn">发布需求</a>
-                    <div class="publish-intro">
-                        <span class="introduce-cap">发布介绍</span>
-                        <div class="introduce-con">工作情况汇报关于小李同志本次任务工作情况汇报工作情况汇报关于小李同志本次任务工作情况汇报</div>
-                    </div>
-
-                    <div class="three-icon clearfix five-icon">
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'waitverify')active @endif" index="waitverify"><i class="iconfont icon-daishenhe"></i><span>待审核</span><em>{{$waitcount}}</em></a>
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'collect')active @endif" index="collect"><i class="iconfont icon-shoucang"></i><span>收藏</span><em>{{count($collectids)}}</em></a>
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'myput')active @endif" index="myput"><i class="iconfont icon-fabu"></i><span>已发布</span><em>{{$putcount}}</em></a>
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'message')active @endif" index="message"><i class="iconfont icon-liuyan1"></i><span>留言</span><em>{{$msgcount}}</em></a>
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'refuseverify')active @endif" index="refuseverify"><i class="iconfont icon-shenhejujue"></i><span>拒审核</span><em>{{$refusecount}}</em></a>
-                    </div>
-
+                <div class="reselect-top">
+                    <label class="myinfo-check-label"><input type="checkbox" class="myinfo-check"></label>如果所选专家在规定时间内未接受邀请，选择系统分配
                 </div>
                 <div class="uct-list-filter">
                     <div class="uct-search">
                         <div class="uct-list-search">
-                            <input type="text" class="uct-list-search-inp placeholder" placeholder="请输入要搜索的供求信息关键字" value="{{$searchname or null}}">
+                            <input type="text" class="uct-list-search-inp placeholder" placeholder="请输入专家姓名／机构名称／企业家姓名" value="{{$searchname or null}}">
                             <button type="button" class="uct-list-search-btn"><i class="iconfont icon-sousuo"></i></button>
                         </div>
                     </div>
@@ -35,15 +22,23 @@
                             @if(isset($role))<a href="javascript:;" class="all-results-expert all-results-opt">{{$role}}</a>@endif
                             @if(isset($supply))<a href="javascript:;" class="all-results-field all-results-opt">{{$supply[0].'/'.$supply[1]}}</a>@endif
                             @if(isset($address))<a href="javascript:;" class="all-results-location all-results-opt">{{$address}}</a>@endif
+                            @if(isset($consult))<a href="javascript:;" class="all-results-video all-results-opt">{{$consult}}</a>@endif
                         </div>
                         <div class="experts-classify filter-row clearfix">
-                            <span class="left-cap">发布类别：</span>
-                            <a href="javascript:;" {{$role or 'class=active'}} >全部</a>
-                            <a href="javascript:;" @if(isset($role) && $role == '专家') class=active @endif>专家</a>
-                            <a href="javascript:;" @if(isset($role) && $role == '企业') class=active @endif>企业</a>
+                            <span class="left-cap">专家分类：</span>
+                            <a href="javascript:;" {{$role or 'class=active'}}>全部</a>
+                            <a href="javascript:;" @if(isset($role) && $role == '知名专家') class=active @endif>知名专家</a>
+                            <a href="javascript:;" @if(isset($role) && $role == '知名机构') class=active @endif>知名机构</a>
+                            <a href="javascript:;" @if(isset($role) && $role == '知名企业家') class=active @endif>知名企业家</a>
+                        </div>
+                        <div class="video-consult filter-row clearfix">
+                            <span class="left-cap">视频咨询：</span>
+                            <a href="javascript:;" {{$consult or 'class=active'}}>全部</a>
+                            <a href="javascript:;" @if(isset($consult) && $consult == '收费') class=active @endif>收费</a>
+                            <a href="javascript:;" @if(isset($consult) && $consult == '免费') class=active @endif>免费</a>
                         </div>
                         <div class="serve-field filter-row clearfix">
-                            <span class="left-cap">需求领域：</span>
+                            <span class="left-cap">服务领域：</span>
                             <a href="javascript:;" class="serve-all @if(empty($supply)) active @endif">全部</a>
                             @foreach($cate as $big)
                                 @if($big->level == 1)
@@ -63,7 +58,7 @@
                         <div class="location filter-row clearfix">
                             <span class="left-cap">所在地区：</span>
                             <div class="location-province">
-                                <a href="javascript:;" @if(empty($address)) class="active" @endif>全部</a>
+                                <a href="javascript:;" @if(empty($address)) class="active" @endif">全部</a>
                                 <a href="javascript:;" @if(!empty($address) && $address=="北京") class="active" @endif>北京</a>
                                 <a href="javascript:;" @if(!empty($address) && $address=="上海") class="active" @endif>上海</a>
                                 <a href="javascript:;" @if(!empty($address) && $address=="天津") class="active" @endif>天津</a>
@@ -105,71 +100,86 @@
                 </div>
                 <!-- 排序 start -->
                 <div class="sort uct-sort">
-                    <a href="javascript:;" class="list-time @if(!empty($ordertime)) active @endif">发布时间<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordertime) && $ordertime == 'asc') white-color @elseif(!empty($ordertime) && $ordertime == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordertime) && $ordertime == 'asc') blue-color  @elseif(!empty($ordertime) && $ordertime == 'desc') white-color  @endif"></i></span></a>
-                    <a href="javascript:;" class="list-collect @if(!empty($ordercollect)) active @endif" >收藏数<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordercollect) && $ordercollect == 'asc') white-color @elseif(!empty($ordercollect) && $ordercollect == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordercollect) && $ordercollect == 'asc') blue-color  @elseif(!empty($ordercollect) && $ordercollect == 'desc') white-color  @endif"></i></span></a>
-                    <a href="javascript:;" class="list-reviews @if(!empty($ordermessage)) active @endif" >留言数<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordermessage) && $ordermessage == 'asc') white-color @elseif(!empty($ordermessage) && $ordermessage == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordermessage) && $ordermessage == 'asc') blue-color  @elseif(!empty($ordermessage) && $ordermessage == 'desc') white-color  @endif"></i></span></a>
+                    <a href="javascript:;" class="list-time @if(!empty($ordertime)) active @endif">认证时间<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordertime) && $ordertime == 'asc') white-color @elseif(!empty($ordertime) && $ordertime == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordertime) && $ordertime == 'asc') blue-color  @elseif(!empty($ordertime) && $ordertime == 'desc') white-color  @endif"></i></span></a>
+                    <a href="javascript:;" class="list-collect @if(!empty($ordercollect)) active @endif">收藏数<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordercollect) && $ordercollect == 'asc') white-color @elseif(!empty($ordercollect) && $ordercollect == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordercollect) && $ordercollect == 'asc') blue-color  @elseif(!empty($ordercollect) && $ordercollect == 'desc') white-color  @endif"></i></span></a>
+                    <a href="javascript:;" class="list-reviews @if(!empty($ordermessage)) active @endif">留言数<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordermessage) && $ordermessage == 'asc') white-color @elseif(!empty($ordermessage) && $ordermessage == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordermessage) && $ordermessage == 'asc') blue-color  @elseif(!empty($ordermessage) && $ordermessage == 'desc') white-color  @endif"></i></span></a>
                 </div>
                 <!-- 排序 end -->
-                <div class="myask-tabar">
-                    <a class="myask-tabar-a active" href="javascript:;">其他需求列表</a>
-                    <a class="myask-tabar-a" href="javascript:;">我的需求列表</a>
-                </div>
                 <div class="main-right uct-oh">
-                    <div class="myask-tab-box">
-                        <ul class="supply-list clearfix">
-                            @foreach($datas as $v)
-                                <li class="col-md-6">
-                                    <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('uct_myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('uct_myneed/examineNeed',$v->needid)}} @else {{url('uct_myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
-                                        <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif" class="supp-list-img" />
-                                        <span class="supp-list-time">{{$v->needtime}}</span>
-                                        <div class="supp-list-brief">
-                                            <span class="supp-list-name">供求信息</span>
-                                            <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
-                                            <div class="supp-list-desc">
-                                                {{$v->brief}}
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="supp-list-icon">
-                                        <a href="{{url('supply/detail',$v->needid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
-                                        <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> {{$v->collcount}}</a>
+                    <ul class="supply-list clearfix">
+                        @foreach($datas as $v)
+                            <li class="col-md-6">
+                            <a href="{{url('expert/detail/'.$v->expertid)}}" class="expert-list-link"  target="_blank">
+                                <div class="exp-list-top">
+                                    <span class="exp-list-img"><img src="{{asset($v->showimage)}}" /></span>
+                                    <div class="exp-list-brief">
+                                        <span class="exp-list-name">{{$v->expertname}}</span>
+                                        <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}@else 免费 @endif</em></span>
+                                        <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
                                     </div>
-                                </li>
-                            @endforeach
-
-                        </ul>
-                        <div class="pages myinfo-page">
-                            <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
-                        </div>
+                                    <div class="exp-list-lab">
+                                        <span class="exp-lab-a">不知道</span>
+                                        <span class="exp-lab-a">不知道</span>
+                                        <span class="exp-lab-a">不知道</span>
+                                        <span class="exp-lab-a">不知道</span>
+                                    </div>
+                                </div>
+                                <div class="exp-list-desc">
+                                    1996年，科比被当时的夏洛特黄蜂以首轮第13顺位选中，随即他被交易到湖人。在漫长的职业生涯里，科比帮助比被当时的...
+                                </div>
+                            </a>
+                            <a href="javascript:;" class="xuanzhong" id="{{$v->expertid}}" showImg="{{$v->showimage}}"><i class="iconfont icon-xuanzhong"></i></a>
+                        </li>
+                        @endforeach
+                    </ul>
+                    <div class="pages myinfo-page">
+                        <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
                     </div>
-                    <div class="myask-tab-box"></div>
+                    <div class="reselect-btn-box">
+                        <a href="{{asset('uct_works/applyWork')}}" class="back-btn reselect-btn">返回</a>
+                        <button type="button" class="select-btn reselect-btn">选择</button>
+                    </div>
                 </div>
             </div>
         </div>
     <script type="text/javascript">
-        $(function(){
-            $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':{{$datas->currentPage()-1}}});
-            function pageselectCallback(page_index, jq){
-                // 从表单获取每页的显示的列表项数目
-                var current = parseInt(page_index)+1;
-                var url = window.location.href;
-                url = url.replace(/(\?|\&)?page=\d+/,'');
-                var isexist = url.indexOf("?");
-                if(isexist == -1){
-                    url += '?ordertime=desc&page='+current;
-                } else {
-                    url += '&page='+current;
-                }
-                window.location=url;
-                //阻止单击事件
-                return false;
+    $(function(){
+        var currentPage=parseInt("{{$datas->currentPage()}}")-1;
+        $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':currentPage});
+        function pageselectCallback(page_index, jq){
+            // 从表单获取每页的显示的列表项数目
+            var current = parseInt(page_index)+1;
+            var url = window.location.href;
+            url = url.replace(/(\?|\&)?page=\d+/,'');
+            var isexist = url.indexOf("?");
+            if(isexist == -1){
+                url += '?ordertime=desc&page='+current;
+            } else {
+                url += '&page='+current;
             }
-            $('.myask-tabar-a').click(function() {
-                $(this).addClass('active').siblings().removeClass('active');
-                var ind = $(this).index();
-                $('.myask-tab-box').eq(ind).show().siblings().hide();
-            });
-        })
-    </script>
-    <script src="{{url('js/mysupply.js')}}" type="text/javascript"></script>
+            window.location=url;
+            //阻止单击事件
+            return false;
+        }
+        $('.xuanzhong').click(function(event) {
+            var key=$(this).attr("id");
+            var img=$(this).attr("showImg");
+            var reselect;
+            if($.cookie("reselect")){
+                reselect=$.cookie('reselect')
+            }else{
+                reselect=new Array();
+                $.cookie("reselect",reselect,{expires:7,path:'/',domain:'sw2025.com'});
+            }
+            if(!$(this).hasClass("xzchecked")){
+                result[key]=img;
+                $.cookie("reselect",)
+            }else{
+
+            }
+
+            $(this).toggleClass('xzchecked');
+        });
+    })
+</script>
 @endsection

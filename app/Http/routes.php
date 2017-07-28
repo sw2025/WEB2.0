@@ -128,6 +128,8 @@ Route::get('uct_works','MyEnterpriseController@works');
 Route::get('uct_works/detail/{eventId}','MyEnterpriseController@workDetail');
 //申请办事服务1
 Route::get('uct_works/applyWork','MyEnterpriseController@applyWork');
+//申请办事服务,指定专家
+Route::get('uct_works/reselect','MyEnterpriseController@reselect');
 //视频咨询
 Route::get('uct_video','MyEnterpriseController@video');
 //申请视频咨询1

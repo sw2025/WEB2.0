@@ -222,16 +222,73 @@ class MyEnterpriseController extends Controller
         }
         return view("myenterprise.works",compact("datas","type","counts"));
     }
-    public function workDetail($eventId){
-        dd(123);
-    }
+    public function workDetail($eventId){}
 
     /**申请办事服务
      * @return mixed
      */
     public function applyWork(){
-
-        return view("myenterprise.work1");
+        $cate = DB::table('t_common_domaintype')->get();
+        return view("myenterprise.work1",compact("cate"));
+    }
+    public function  reselect(Request $request){
+        //获取板块信息
+        $cate = DB::table('t_common_domaintype')->get();
+        $datas = DB::table('t_u_expert as ext')
+            ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
+            ->leftJoin('t_u_expertfee as fee','ext.expertid' ,'=' ,'fee.expertid')
+            ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
+            ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
+            ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
+            ->whereIn('status.configid',[2,4])
+            ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_u_collectexpert')->where(['userid' => session('userId'),'remark' => 1])->lists('expertid');
+        }
+        //判断是否为http请求
+        if(!empty($get = $request->input())){
+            //获取到get中的数据并处理
+            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
+            $supply=(isset($get['supply']) && $get['supply'] != "null") ? explode('/',$get['supply']) : null;
+            $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
+            $consult=(isset($get['consult']) && $get['consult'] != "null") ? $get['consult'] : null;
+            $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
+            $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
+            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
+            //设置where条件生成where数组
+            $rolewhere = !empty($role)?array("category"=>$role):array();
+            $supplywhere = !empty($supply)?array("ext.domain1"=>$supply[0],'ext.domain2' => $supply[1]):array();
+            $addresswhere = !empty($address)?array("ext.address"=>$address):array();
+            if(!empty($consult) && $consult == '收费'){
+                $consultwhere = ['fee.state' => 1];
+                $datas = $datas->where('fee.fee','<>','null');
+            } elseif(!empty($consult) && $consult == '免费'){
+                $consultwhere = ['fee.state' => 0];
+            } else {
+                $consultwhere = [];
+            }
+            $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere)->where($consultwhere);
+            //判断是否有搜索的关键字
+            if(!empty($searchname)){
+                $obj = $obj->where("ext.expertname","like","%".$searchname."%");
+            }
+            //对三种排序进行判断
+            if(!empty($ordertime)){
+                $obj = $obj->orderBy('ext.expertid',$ordertime);
+            } elseif(!empty($ordercollect)){
+                $obj = $obj->orderBy('coll.count',$ordercollect);
+            } else {
+                $obj = $obj->orderBy('mess.count',$ordermessage);
+            }
+            $datas = $obj->paginate(2);
+            return view("myenterprise.reselect",compact('cate','searchname','datas','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
+        }
+        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(2);
+        $ordertime = 'desc';
+        return view("myenterprise.reselect",compact('cate','datas','ordertime','collectids'));
     }
     /**视频咨询
      * @return mixed
