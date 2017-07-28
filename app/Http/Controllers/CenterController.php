@@ -168,11 +168,27 @@ class CenterController extends Controller
             $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
+            $who = ( isset($get['who']) && $get['who'] != "null") ? $get['who'] : null;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("needtype"=>$role):array();
             $supplywhere = !empty($supply)?array("need.domain1"=>$supply[0],'need.domain2' => $supply[1]):array();
             $addresswhere = !empty($address)?array("ent.address"=>$address):array();
+
             $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere);
+
+            if(!empty($who)){
+                switch($who){
+                    case 'my':
+                        $obj = $obj->where('need.userid',session('userId'));
+                        break;
+                    case 'other':
+                        $obj = $obj->where('need.userid','<>',session('userId'));
+                        break;
+                }
+            } else {
+                $obj = $obj->where('need.userid','<>',session('userId'));
+            }
+
             //判断是否有搜索的关键字
             if(!empty($searchname)){
                 $obj = $obj->where("need.brief","like","%".$searchname."%");
@@ -208,9 +224,9 @@ class CenterController extends Controller
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);
-            return view("ucenter.myNeed",compact('waitcount','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
+            return view("ucenter.myNeed",compact('who','waitcount','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
         }
-        $datas = $datas->where('status.configid',3)
+        $datas = $datas->where('status.configid',3)->where('need.userid','<>',session('userId'))
             ->orderBy("need.needtime",'desc')
             ->paginate(4);
         $ordertime = 'desc';
