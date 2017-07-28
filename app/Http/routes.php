@@ -156,7 +156,7 @@ Route::post('uct_expertData','MyExpertController@expertData');
 //我的办事
 Route::get('uct_mywork','MyExpertController@mywork');
 //我的办事详情
-Route::get('uct_mywork/workDetail','MyExpertController@workDetail');
+Route::get('uct_mywork/workDetail/{eventid}','MyExpertController@workDetail');
 //我的咨询
 Route::get('uct_myask','MyExpertController@myask');
 //我的咨询详情
