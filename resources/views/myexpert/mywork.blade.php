@@ -1,8 +1,8 @@
 @extends("layouts.ucenter")
 @section("content")
-<link rel="stylesheet" type="text/css" href="css/list.css" />
-<script type="text/javascript" src="js/list.js"></script>
-<div class="main">
+    <link rel="stylesheet" type="text/css" href="css/list.css" />
+    <script type="text/javascript" src="js/list.js"></script>
+    <div class="main">
         <!-- 我的办事 / start -->
         <h3 class="main-top">我的办事</h3>
         <div class="ucenter-con">
@@ -27,22 +27,22 @@
                     <div class="mywork-wrap">
                         <table class="paycheck-list">
                             <thead>
-                                <tr>
-                                    <th>办事类型</th>
-                                    <th>企业名称</th>
-                                    <th>需求描述</th>
-                                    <th>发布时间</th>
-                                </tr>
+                            <tr>
+                                <th>办事类型</th>
+                                <th>企业名称</th>
+                                <th>需求描述</th>
+                                <th>发布时间</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach($datas as $v)
+                            @foreach($datas as $v)
                                 <tr>
                                     <td><a href="{{url('uct_mywork/workDetail',$v->eventid)}}">{{$v->domain1.' / '.$v->domain2}}</a></td>
                                     <td><a href="{{url('uct_mywork/workDetail',$v->eventid)}}">{{$v->name}}</a></td>
                                     <td><a href="{{url('uct_mywork/workDetail',$v->eventid)}}">{{$v->brief}}</a></td>
                                     <td><a href="{{url('uct_mywork/workDetail',$v->eventid)}}">{{$v->eventtime}}</a></td>
                                 </tr>
-                                @endforeach
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -82,75 +82,75 @@
             </div>
         </div>
     </div>
-<script type="text/javascript">
-$(function(){
+    <script type="text/javascript">
+        $(function(){
 
-    $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':{{$datas->currentPage()-1}}});
+            $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':{{$datas->currentPage()-1}}});
 
-    function pageselectCallback(page_index, jq){
-        // 从表单获取每页的显示的列表项数目
-        var current = parseInt(page_index)+1;
-        var divindex = $('.myask-tabar').children('.active').attr('index');
-        var guize = $('.three-icon .active').attr('index');
-        if(guize == null){
-            switch (divindex){
-                case 'pushevent':
-                    var data = {'page':current,'action':0};
-                    break;
-                case 'allevent':
-                    var data = {'page':current,'action':1};
-                    break;
-            }
-        } else {
-            var data = {'page':current,'action':guize};
-        }
-
-        senddatato(data);
-        //阻止单击事件
-        return false;
-    }
-    function senddatato (params){
-        var location = '{{url('/uct_mywork')}}?page='+params.page;
-        $.get(location,{'action':params.action},function (data) {
-            if(params.action > 1){
-                params.action = 1;
-            }
-            var obj = $('.myask-tab-box').eq(params.action).children('div').children('table').children('tbody');
-            obj.html('');
-            var ee = data.data;
-            var str = '';
-            for(var i=0;i<ee.length;i++){
-                str += '<tr>';
-                str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].domain1+' / '+ee[i].domain2+'</a></td>';
-                str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].name+'</a></td>';
-                str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].brief+'</a></td>';
-                if(params.action){
-                    str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].status+'</a></td>';
+            function pageselectCallback(page_index, jq){
+                // 从表单获取每页的显示的列表项数目
+                var current = parseInt(page_index)+1;
+                var divindex = $('.myask-tabar').children('.active').attr('index');
+                var guize = $('.three-icon .active').attr('index');
+                if(guize == null){
+                    switch (divindex){
+                        case 'pushevent':
+                            var data = {'page':current,'action':0};
+                            break;
+                        case 'allevent':
+                            var data = {'page':current,'action':1};
+                            break;
+                    }
+                } else {
+                    var data = {'page':current,'action':guize};
                 }
-                str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].eventtime+'</a></td>';
-                str +='</tr>';
+
+                senddatato(data);
+                //阻止单击事件
+                return false;
             }
-            obj.html(str);
-            $("#Pagination").pagination(data.last_page,{'callback':pageselectCallback,'current_page':data.current_page-1});
-            $('.allPage').text(data.last_page);
-        });
-    }
+            function senddatato (params){
+                var location = '{{url('/uct_mywork')}}?page='+params.page;
+                $.get(location,{'action':params.action},function (data) {
+                    if(params.action > 1){
+                        params.action = 1;
+                    }
+                    var obj = $('.myask-tab-box').eq(params.action).children('div').children('table').children('tbody');
+                    obj.html('');
+                    var ee = data.data;
+                    var str = '';
+                    for(var i=0;i<ee.length;i++){
+                        str += '<tr>';
+                        str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].domain1+' / '+ee[i].domain2+'</a></td>';
+                        str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].name+'</a></td>';
+                        str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].brief+'</a></td>';
+                        if(params.action){
+                            str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].status+'</a></td>';
+                        }
+                        str +='<td><a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].eventid+'">'+ee[i].eventtime+'</a></td>';
+                        str +='</tr>';
+                    }
+                    obj.html(str);
+                    $("#Pagination").pagination(data.last_page,{'callback':pageselectCallback,'current_page':data.current_page-1});
+                    $('.allPage').text(data.last_page);
+                });
+            }
 
-    $('.myask-tabar-a').click(function() {
-        $(this).addClass('active').siblings().removeClass('active');
-        var ind = $(this).index();
-        $('.myask-tab-box').eq(ind).show().siblings().hide();
+            $('.myask-tabar-a').click(function() {
+                $(this).addClass('active').siblings().removeClass('active');
+                var ind = $(this).index();
+                $('.myask-tab-box').eq(ind).show().siblings().hide();
 
-        senddatato({'page':1,'action':ind});
-    });
+                senddatato({'page':1,'action':ind});
+            });
 
 
-    $('.three-icon a').on('click',function () {
-        var config = $(this).attr('index');
-        $('.myask-tab-box').eq(1).show().siblings().hide();
-        $('.myask-tabar-a').eq(1).addClass('active').siblings().removeClass('active');
-        senddatato({'page':1,'action':config});
-    });
-})
-</script>
+            $('.three-icon a').on('click',function () {
+                var config = $(this).attr('index');
+                $('.myask-tab-box').eq(1).show().siblings().hide();
+                $('.myask-tabar-a').eq(1).addClass('active').siblings().removeClass('active');
+                senddatato({'page':1,'action':config});
+            });
+        })
+    </script>
 @endsection
