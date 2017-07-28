@@ -226,15 +226,15 @@
 /***********我的需求 start***********/
 .myrequire-bg{max-width: 965px;min-width:800px;height: 107px;background:url(../img/uctbg.jpg) no-repeat;border: 1px solid #ccc;border-radius: 3px;color:#fff;text-align: center;}
 .need-publish-btn{display: inline-block;padding:8px 25px;font-size: 16px;color:#fff;background:#00a7ed;border-radius: 5px;vertical-align: 34px;}
-.publish-intro{width: 380px;display: inline-block;margin:0 5%;text-align: left;}
+.publish-intro{width: 380px;display: inline-block;margin:0 0 0 5%;text-align: left;}
 .introduce-cap{font-size: 16px;border-bottom: 1px solid #ede500;display: inline-block;margin-top: 12px;}
 .three-icon{padding-top: 17px;display: inline-block;}
-.five-icon{width:190px;}
-.five-icon a{float: left;}
-.icon-row{display: block;font-size: 12px;overflow: hidden;line-height: 20px;margin-bottom: 5px;color:#fff;margin-right:10px;}
+.five-icon{width:250px;float: right;}
+.five-icon a{float: left;width: 50%;}
+.icon-row{display: block;font-size: 12px;overflow: hidden;line-height: 20px;margin-bottom: 5px;color:#fff;}
 .icon-row i{-webkit-text-stroke-width: 0;margin-right: 5px;float: left;color:#00edce;}
 .icon-row.active i{color:#ede500;}
-.icon-row span{float: left;margin-right: 20px;}
+.icon-row span{float: left;margin-right: 7px;}
 .icon-row em{float: left;height: 20px;text-align: center;line-height: 20px;background:#2a546b;padding:0 3px;}
 /*搜索条*/
 .uct-search-result{padding:15px;}
@@ -247,7 +247,7 @@
 /*排序*/
 .ucenter-con .uct-sort{margin:0 0 20px 0;}
 /*列表*/
-.uct-oh{overflow: hidden;}
+.uct-oh{overflow: hidden;position: relative;}
 .main-right .supply-list{margin-left: -10px;margin-right: -10px;padding-top: 24px;}
 /***********我的需求 end**********/
 /***********我的需求详情 start***********/
@@ -392,6 +392,8 @@
 .uct-works-exps-list li span{display: block;width: 37px;height: 41px;background:url(../img/icon3.png) no-repeat;margin:0 auto;opacity:0.3;}
 .default-result .calendar-date{background-color:#f8f8f8;cursor: default;}
 .uct-works-final .icon-chenggong{color:#2fd887;}
+.uct-works-expava{overflow: hidden;padding:10px 0;}
+.uct-works-exp-img{float: left;width: 64px;height: 64px;margin:0 3px;border-radius: 5px;}
 /***********企业办事服务 end***********/
 /***********星级评分 start***********/
 .rate{padding-top: 28px;}
@@ -430,4 +432,13 @@
 .light-color{color:#666;}
 /***********专家视频咨询 end***********/
 .datas-newchange{margin-top:0;margin-bottom:20px;}
-
+.reselect-top{color:#ed0021;position: relative;padding:12px 30px;margin:10px 0;border: 1px solid #eee;background:#fff;font-size: 15px;}
+.reselect-top .myinfo-check-label{top: 16px;left:9px;}
+.xuanzhong{position: absolute;top: 1px;right: 26px;width: 32px;height: 32px;line-height: 32px;text-align: center;background:#ececec;color:#666;border-left: 1px solid #ccc;border-bottom: 1px solid #ccc;}
+.xzchecked{color:#fff;background:#00a7ed;border-color: #fff;}
+.reselect-btn-box{text-align: center;padding-bottom: 30px;}
+.reselect-btn{display: inline-block;padding:3px 25px;border: 1px solid #ccc;border-radius: 3px;margin:0 50px;}
+.back-btn{background:#ececec;color:#333;}
+.back-btn:hover{background:#f4f4f4;}
+.select-btn{background:#1296d9;color:#fff;}
+.select-btn:hover{background:#00a7ed;}
