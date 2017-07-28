@@ -14,11 +14,11 @@
                     </div>
 
                     <div class="three-icon clearfix five-icon">
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'waitverify')active @endif" index="waitverify"><i class="iconfont icon-shoucang"></i><span>待审核</span><em>{{$waitcount}}</em></a>
+                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'waitverify')active @endif" index="waitverify"><i class="iconfont icon-daishenhe"></i><span>待审核</span><em>{{$waitcount}}</em></a>
                         <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'collect')active @endif" index="collect"><i class="iconfont icon-shoucang"></i><span>收藏</span><em>{{count($collectids)}}</em></a>
                         <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'myput')active @endif" index="myput"><i class="iconfont icon-fabu"></i><span>已发布</span><em>{{$putcount}}</em></a>
                         <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'message')active @endif" index="message"><i class="iconfont icon-liuyan1"></i><span>留言</span><em>{{$msgcount}}</em></a>
-                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'refuseverify')active @endif" index="refuseverify"><i class="iconfont icon-shoucang"></i><span>拒审核</span><em>{{$refusecount}}</em></a>
+                        <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'refuseverify')active @endif" index="refuseverify"><i class="iconfont icon-shenhejujue"></i><span>拒审核</span><em>{{$refusecount}}</em></a>
                     </div>
 
                 </div>
@@ -110,39 +110,45 @@
                     <a href="javascript:;" class="list-reviews @if(!empty($ordermessage)) active @endif" >留言数<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordermessage) && $ordermessage == 'asc') white-color @elseif(!empty($ordermessage) && $ordermessage == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordermessage) && $ordermessage == 'asc') blue-color  @elseif(!empty($ordermessage) && $ordermessage == 'desc') white-color  @endif"></i></span></a>
                 </div>
                 <!-- 排序 end -->
+                <div class="myask-tabar">
+                    <a class="myask-tabar-a @if(empty($who) || $who == 'other') active @endif" href="javascript:;" index="other">其他需求列表</a>
+                    <a class="myask-tabar-a @if(!empty($who) && $who == 'my') active @endif" href="javascript:;" index="my">我的需求列表</a>
+                </div>
                 <div class="main-right uct-oh">
-                    <ul class="supply-list clearfix">
-                        @foreach($datas as $v)
-                        <li class="col-md-6">
-                            <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('uct_myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('uct_myneed/examineNeed',$v->needid)}} @else {{url('uct_myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
-                                <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif" class="supp-list-img" />
-                                <span class="supp-list-time">{{$v->needtime}}</span>
-                                <div class="supp-list-brief">
-                                    <span class="supp-list-name">供求信息</span>
-                                    <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
-                                    <div class="supp-list-desc">
-                                        {{$v->brief}}
+                    <div class="myask-tab-box">
+                        <ul class="supply-list clearfix">
+                            @foreach($datas as $v)
+                                <li class="col-md-6">
+                                    <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('uct_myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('uct_myneed/examineNeed',$v->needid)}} @else {{url('uct_myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
+                                        <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif" class="supp-list-img" />
+                                        <span class="supp-list-time">{{$v->needtime}}</span>
+                                        <div class="supp-list-brief">
+                                            <span class="supp-list-name">供求信息</span>
+                                            <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
+                                            <div class="supp-list-desc">
+                                                {{$v->brief}}
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="supp-list-icon">
+                                        <a href="{{url('supply/detail',$v->needid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
+                                        <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> {{$v->collcount}}</a>
                                     </div>
-                                </div>
-                            </a>
-                            <div class="supp-list-icon">
-                                <a href="{{url('supply/detail',$v->needid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
-                                <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> {{$v->collcount}}</a>
-                            </div>
-                        </li>
-                       @endforeach
+                                </li>
+                            @endforeach
 
-                    </ul>
-                    <div class="pages myinfo-page">
-                        <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
+                        </ul>
+                        <div class="pages myinfo-page">
+                            <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
+                        </div>
                     </div>
+                    {{--<div class="myask-tab-box"></div>--}}
                 </div>
             </div>
         </div>
     <script type="text/javascript">
         $(function(){
             $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':{{$datas->currentPage()-1}}});
-
             function pageselectCallback(page_index, jq){
                 // 从表单获取每页的显示的列表项数目
                 var current = parseInt(page_index)+1;
@@ -158,6 +164,11 @@
                 //阻止单击事件
                 return false;
             }
+            $('.myask-tabar-a').click(function() {
+                $(this).addClass('active').siblings().removeClass('active');
+                var ind = $(this).index();
+               // $('.myask-tab-box').eq(ind).show().siblings().hide();
+            });
         })
     </script>
     <script src="{{url('js/mysupply.js')}}" type="text/javascript"></script>
