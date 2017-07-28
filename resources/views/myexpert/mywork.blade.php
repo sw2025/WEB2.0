@@ -7,7 +7,8 @@
         <h3 class="main-top">我的办事</h3>
         <div class="ucenter-con">
             <div class="myrequire-bg">
-                <div class="three-icon">
+
+                <div class="three-icon  resource-icon">
                     <a href="javascript:;" class="icon-row" index="5"><i class="iconfont icon-xiangyingcelve"></i><span>已响应</span><em>{{$responsecount}}</em></a>
                     <a href="javascript:;" class="icon-row" index="4"><i class="iconfont icon-yaoqing"></i><span>已受邀</span><em>{{$putcount}}</em></a>
                     <a href="javascript:;" class="icon-row" index="7"><i class="iconfont icon-wancheng"></i><span>已完成</span><em>{{$complatecount}}</em></a>

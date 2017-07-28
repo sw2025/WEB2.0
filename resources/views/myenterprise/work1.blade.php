@@ -22,36 +22,22 @@
                                 </span>
                         </div>
                         <div class="publish-need-sel">
-                            <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def">demo1</a>
+                            <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def">请选择</a>
                             <ul class="publish-need-list" style="display: none;">
-                                <li>
-                                    <a href="javascript:;">销售类</a>
-                                    <ul class="publ-sub-list" style="display: none;">
-                                        <li>demo1</li>
-                                        <li>demo2</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">销售类</a>
-                                    <ul class="publ-sub-list" style="display: none;">
-                                        <li>demo1</li>
-                                        <li>demo2</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">销售类</a>
-                                    <ul class="publ-sub-list" style="display: none;">
-                                        <li>demo1</li>
-                                        <li>demo2</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">销售类</a>
-                                    <ul class="publ-sub-list" style="display: none;">
-                                        <li>demo1</li>
-                                        <li>demo2</li>
-                                    </ul>
-                                </li>
+                                @foreach($cate as $v)
+                                    @if($v->level == 1)
+                                        <li>
+                                            <a href="javascript:;">{{$v->domainname}}</a>
+                                            <ul class="publ-sub-list">
+                                                @foreach($cate as $small)
+                                                    @if($small->parentid == $v->domainid && $small->level == 2)
+                                                        <li>{{$small->domainname}}</li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endif
+                                @endforeach
                             </ul>
                         </div>
                         <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述"></textarea>
@@ -67,6 +53,13 @@
                             <span>专家</span>
                             <a href="javascript:;" class="system-btn active uct-works-btn">系统分配</a>
                             <a href="javascript:;" class="uct-works-btn">指定专家</a>
+                        </div>
+                        <div class="uct-works-expava">
+                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
+                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
+                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
+                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
+                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
                         </div>
                         <div class="uct-works-tips">
                             <b>提示</b><br />
@@ -94,12 +87,19 @@
 
         $('.publ-sub-list li').click(function() {
             var publishHtml = $(this).html();
-            $('.publ-need-sel-def').html(publishHtml);
+            var parentHtml = $(this).parent().siblings('a').text();
+            $('.publ-need-sel-def').html(parentHtml+'/'+publishHtml);
             $('.publish-need-list').hide();
         });
 
         $('.uct-works-exp a').click(function(event) {
             $(this).addClass('active').siblings().removeClass('active');
+            var text=$(this).text();
+            if(text=="系统分配"){
+                $(".uct-works-expava").hide();
+            }else{
+                window.location.href="{{asset('uct_works/reselect')}}"
+            }
         });
     })
     // =========日期插件使用方法======>start

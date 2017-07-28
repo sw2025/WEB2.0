@@ -111,8 +111,10 @@
                 </div>
                 <!-- 排序 end -->
                 <div class="myask-tabar">
+
                     <a class="myask-tabar-a @if(empty($who) || $who == 'other') active @endif" href="javascript:;" index="other">其他需求列表</a>
                     <a class="myask-tabar-a @if(!empty($who) && $who == 'my') active @endif" href="javascript:;" index="my">我的需求列表</a>
+
                 </div>
                 <div class="main-right uct-oh">
                     <div class="myask-tab-box">
@@ -142,7 +144,9 @@
                             <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
                         </div>
                     </div>
+
                     {{--<div class="myask-tab-box"></div>--}}
+
                 </div>
             </div>
         </div>
@@ -167,7 +171,9 @@
             $('.myask-tabar-a').click(function() {
                 $(this).addClass('active').siblings().removeClass('active');
                 var ind = $(this).index();
+
                // $('.myask-tab-box').eq(ind).show().siblings().hide();
+
             });
         })
     </script>
