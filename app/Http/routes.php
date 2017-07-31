@@ -165,5 +165,7 @@ Route::post('uct_mywork/responseevent','MyExpertController@responseEvent');
 Route::get('uct_myask','MyExpertController@myask');
 //我的咨询详情
 Route::get('uct_myask/askDetail/{eventid}','MyExpertController@askDetail');
+//响应咨询
+Route::post('uct_mywork/responseconsult','MyExpertController@responseConsult');
 //进入咨询会议
 Route::get('uct_myask/myaskinvt','MyExpertController@myaskinvt');

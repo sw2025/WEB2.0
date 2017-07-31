@@ -6,22 +6,26 @@
             <div class="ucenter-con">
                 <div class="main-right">
                     <div class="myneed-com-name">
-                        XXXXXX公司
+                        {{$datas->enterprisename}}
                     </div>
                     <div class="mywork-det">
-                        <span class="myask-detail-need"><em class="light-color myask-detail-cap">需求分类：</em>销售类</span>
-                        <span class="myask-detail-time"><em class="light-color">时间：</em>2017-01-01 12:00-13:00</span>
+                        <span class="myask-detail-need"><em class="light-color myask-detail-cap">需求分类：</em>{{$datas->domain1.' / '.$datas->domain2}}</span>
+                        <span class="myask-detail-time"><em class="light-color">时间：</em>{{$datas->consulttime}}</span>
                         <div class="mywork-det-txt">
                             <div class="mywork-det-desc">
                                 <em class="light-color">描述：</em>
-                                <p class="mywork-det-desc-para">水电费个好久昆明是的风光好进口法国红酒对方过后更好更换即可对方过后法国红酒刚回家法国会尽快法国红酒对方过后风格好久法国红酒法规和你们更好更好费个好久昆明是的风光好进口法国红酒对方过后更好更换即可对方过后法国红酒刚回家法法规进口法国红酒对方过后更好更换即可对方回家法法规</p>
+                                <p class="mywork-det-desc-para">{{$datas->brief}}</p>
                             </div>
                         </div>
                         <div class="respond-btn-box">
                             <!-- 状态按钮根据实际状态只展示一个 -->
-                            <button type="button" class="unrespond respond-btn">响应</button>
-                            <button type="button" class="responded respond-btn">已响应</button>
-                            <span class="respond-tips">请等待企业邀请，未获企业邀请</span>
+                            @if($datas->configid == 4)
+                                <button type="button" class="unrespond respond-btn" onclick="responseevent({{$datas->consultid}})">响应</button>
+                            @elseif($datas->configid == 5)
+                                <button type="button" class="responded respond-btn">已响应</button>
+                            @else
+                                <span class="respond-tips">请等待企业邀请，未获企业邀请</span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -34,5 +38,19 @@
             $(this).val(value)
         })
     })
+
+    function responseconsult(consultid){
+        $.post('{{url('uct_myask/responseconsult')}}',{'consultid':consultid,'token':'{{$token}}'}, function (data){
+            if(data.icon == 2){
+                layer.msg(data.msg,{'time':1000,'icon':data.icon},function ()  {
+                    window.location = '{{url('/')}}';
+                });
+            } else {
+                layer.msg(data.msg,{'time':2500,'icon':data.icon},function () {
+                    window.location.href = document.referrer;
+                });
+            }
+        })
+    }
 </script>
 @endsection

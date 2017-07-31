@@ -8,7 +8,7 @@
     <script src="{{asset('./FileUpload/js/jquery.fileupload-validate.js')}}"></script>
 <div class="main">
             <!-- 发布需求 / start -->
-            <h3 class="main-top">发布需求</h3>
+            <h3 class="main-top">专家认证</h3>
             <div class="ucenter-con">
                 <div class="main-right">
                     <div class="card-step">
@@ -22,6 +22,13 @@
                                 <span class="expert-certy-blue">
                                     <em>资料提交</em>THE DATA SUBMITTED
                                 </span>
+                            @if($result->configid==3)
+                                <span>
+                                    <em>审核失败</em>
+                                    拒绝理由：{{$result->remark}}
+                                </span>
+                            @else
+                            @endif
                         </div>
                         <div class="datas">
                             <div class="datas-lt">
@@ -38,7 +45,10 @@
                                         <input class="datas-sel-name" type="text" placeholder="" />
                                     </div>
                                     <div class="publish-need-sel datas-newchange zindex1">
+<<<<<<< HEAD
+=======
 
+>>>>>>> 3191f7fef0c1a19acf12a28dbdd85b01bbc1119f
                                         <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
                                         <ul class="publish-need-list">
                                             @foreach($cate as $v)

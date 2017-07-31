@@ -39,6 +39,9 @@
         })
     })
 
+<<<<<<< HEAD
+    
+=======
     function responseevent(eventid){
         $.post('{{url('uct_mywork/responseevent')}}',{'eventid':eventid,'token':'{{$token}}'}, function (data){
                    if(data.icon == 2){
@@ -52,5 +55,6 @@
                    }
             })
     }
+>>>>>>> 3191f7fef0c1a19acf12a28dbdd85b01bbc1119f
 </script>
 @endsection
