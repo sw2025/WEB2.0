@@ -225,8 +225,16 @@
 /***********会员缴费 end***********/
 /***********我的需求 start***********/
 .myrequire-bg{max-width: 965px;min-width:800px;height: 107px;background:url(../img/uctbg.jpg) no-repeat;border: 1px solid #ccc;border-radius: 3px;color:#fff;text-align: center;}
+<<<<<<< HEAD
 .need-publish-btn{display: inline-block;padding:8px 25px;font-size: 16px;color:#fff;background:#00a7ed;border-radius: 5px;vertical-align: 34px;}
 .publish-intro{width: 380px;display: inline-block;margin:0 0 0 5%;text-align: left;}
+=======
+
+.need-publish-btn{display: inline-block;padding:8px 18px;font-size: 16px;color:#fff;background:#00a7ed;border-radius: 5px;}
+.publish-intro{width: 380px;display: inline-block;margin:0 0 0 5%;text-align: left;vertical-align: middle;}
+.introduce-con{height:63px;overflow:hidden;}
+
+>>>>>>> 8d7f8e47a1e91c08446f52d1eb7b80afb869a1a2
 .introduce-cap{font-size: 16px;border-bottom: 1px solid #ede500;display: inline-block;margin-top: 12px;}
 .three-icon{padding-top: 17px;display: inline-block;}
 .five-icon{width:250px;float: right;}
@@ -294,6 +302,7 @@
 .publish-btn{padding:2px 10px;display: inline-block;background:#00a7ed;border:1px solid #0593cf;color:#fff;}
 /***********我的需求详情 end***********/
 /***********专家资源库 start***********/
+.resource-icon{vertical-align:middle;}
 .resource-icon-row{margin-bottom: 30px;}
 .resource-intro{width: 540px;margin: 0 0 0 5%;}
 /***********专家资源库 end***********/
@@ -321,7 +330,7 @@
 /***********我的视频咨询 start***********/
 /*.myask{min-width:800px;}*/
 .myask-intro{width: 480px;margin:0 4%;}
-.myask-meet{display: inline-block;vertical-align: 26px;}
+.myask-meet{display: inline-block;vertical-align: -10px;}
 .myask-meet .need-publish-btn{display: block;}
 .fs12{font-size: 12px;}
 .myask-tabar{margin-bottom: -4px;margin-top:20px;}
@@ -392,7 +401,12 @@
 .uct-works-exps-list li span{display: block;width: 37px;height: 41px;background:url(../img/icon3.png) no-repeat;margin:0 auto;opacity:0.3;}
 .default-result .calendar-date{background-color:#f8f8f8;cursor: default;}
 .uct-works-final .icon-chenggong{color:#2fd887;}
+<<<<<<< HEAD
 .uct-works-expava{overflow: hidden;padding:10px 0;}
+=======
+.uct-works-expava{overflow: hidden;padding:10px 0;display: none}
+
+>>>>>>> 8d7f8e47a1e91c08446f52d1eb7b80afb869a1a2
 .uct-works-exp-img{float: left;width: 64px;height: 64px;margin:0 3px;border-radius: 5px;}
 /***********企业办事服务 end***********/
 /***********星级评分 start***********/

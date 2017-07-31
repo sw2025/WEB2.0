@@ -128,6 +128,8 @@ Route::get('uct_works','MyEnterpriseController@works');
 Route::get('uct_works/detail/{eventId}','MyEnterpriseController@workDetail');
 //申请办事服务1
 Route::get('uct_works/applyWork','MyEnterpriseController@applyWork');
+//申请办事服务,指定专家
+Route::get('uct_works/reselect','MyEnterpriseController@reselect');
 //视频咨询
 Route::get('uct_video','MyEnterpriseController@video');
 //申请视频咨询1
@@ -154,10 +156,12 @@ Route::post('uct_expertData','MyExpertController@expertData');
 //我的办事
 Route::get('uct_mywork','MyExpertController@mywork');
 //我的办事详情
-Route::get('uct_mywork/workDetail','MyExpertController@workDetail');
+Route::get('uct_mywork/workDetail/{eventid}','MyExpertController@workDetail');
 //我的咨询
 Route::get('uct_myask','MyExpertController@myask');
 //我的咨询详情
 Route::get('uct_myask/askDetail/{eventid}','MyExpertController@askDetail');
+//响应咨询
+Route::post('uct_mywork/responseconsult','MyExpertController@responseConsult');
 //进入咨询会议
 Route::get('uct_myask/myaskinvt','MyExpertController@myaskinvt');
