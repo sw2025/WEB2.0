@@ -39,8 +39,7 @@
                                     </div>
                                     <div class="publish-need-sel datas-newchange zindex1">
 
-
-                                        <span class="datas-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)){{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
+                                        <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
                                         <ul class="publish-need-list">
                                             @foreach($cate as $v)
                                                 @if($v->level == 1)
@@ -53,9 +52,9 @@
                                                                 @endif
                                                             @endforeach
                                                         </ul>
-                                                        @endif
                                                     </li>
-                                                    @endforeach
+                                                @endif
+                                            @endforeach
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex2">

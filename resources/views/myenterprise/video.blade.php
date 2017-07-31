@@ -8,9 +8,13 @@
             <div class="ucenter-con">
                 <div class="myrequire-bg">
                     <a href="{{asset('uct_video/video1')}}" class="need-publish-btn">申请视频咨询</a>
-                    <div class="publish-intro resource-intro">
+                    <div class="publish-intro myask-intro">
                         <span class="introduce-cap">视频咨询流程介绍</span>
                         <div class="introduce-con">关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报</div>
+                    </div>
+                    <div class="myask-meet">
+                        <span class="fs12">距会议还有1分钟</span>
+                        <a href="javascript:;" class="need-publish-btn">进入会议室</a>
                     </div>
                 </div>
                 <div class="main-right">

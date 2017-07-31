@@ -73,6 +73,14 @@ $(function() {
         getCondition(select);
     });
 
+    $('.myask-tabar-a').on('click',function () {
+        var cliHtml = $(this).attr('index');
+        select[0] = 'who';
+        select[1] = cliHtml;
+        getCondition(select);
+    });
+
+
     //删除
     $('.all-results').on('click', '.all-results-opt', function (event) {
         var key = $(this).text();
@@ -122,12 +130,14 @@ $(function() {
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
         var action=$(".three-icon .active").attr('index');
+        var who=$(".myask-tabar .active").attr('index');
 
         if(searchName == '请输入要搜索的供求信息关键字'){
             searchName = '';
         }
         searchName=(searchName)?searchName:null;
         role=(role)?role:null;
+        who=(who)?who:null;
         supply=(supply)?supply:null;
         address=(address)?address:null;
         action=(action)?action:null;
@@ -155,6 +165,9 @@ $(function() {
                 case "serveName":
                     searchName=Condition[1];
                     break;
+                case "who":
+                    who=Condition[1];
+                    break;
                 case "supply":
                     supply=(Condition[1]!="全部")?Condition[1]:null;
                     break;
@@ -179,7 +192,7 @@ $(function() {
         ordertime=(ordertime)?ordertime:null;
         ordercollect=(ordercollect)?ordercollect:null;
         ordermessage=(ordermessage)?ordermessage:null;
-        window.location.href="?searchname="+searchName+'&action='+action+"&role="+role+"&supply="+supply+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
+        window.location.href="?who="+who+"&searchname="+searchName+'&action='+action+"&role="+role+"&supply="+supply+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
     }
 })
 

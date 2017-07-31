@@ -124,15 +124,69 @@ class MyExpertController extends Controller
     /**我的办事
      * @return mixed
      */
-    public function mywork(){
-        return view("myexpert.mywork");
+    public function mywork(Request $request){
+        //获取到登陆用户的专家的id
+        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+        $countobj = DB::table('t_e_eventresponse as res')
+            ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid');
+        $countobj2 = clone $countobj;
+        $countobj3 = clone $countobj;
+        //专家已响应的办事数量
+        $responsecount = $countobj->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 5])->count();
+        //专家受邀请（被推送）的办事数量
+        $putcount = $countobj2->where(['res.expertid' => $expertid,'status.configid' => 4])->count();
+        //专家已经完成的办事数量
+        $complatecount = $countobj3->where(['res.state' => 4,'res.expertid' => $expertid,'status.configid' => 7])->count();
+        $datas = DB::table('t_e_eventresponse as res')
+            ->leftJoin('t_e_event as event','event.eventid','=','res.eventid')
+            ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
+            ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
+            ->whereRaw('res.id in (select max(id) from t_e_eventresponse group by eventid)')
+            ->select('res.*','event.domain1','event.domain2','event.brief','status.configid','event.eventtime','ent.enterprisename as name');
+        $obj = clone $datas;
+        $ajaxobj = clone $datas;
+        $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
+        $datas = $datas
+            ->where(['res.expertid' => $expertid,'status.configid' => 4])
+            ->orderBy('res.id','desc')
+            ->paginate(2);
+        $datas2 = $obj
+            ->where(['res.expertid' => $expertid])
+            ->whereIn('status.configid',[4,5,7])
+            ->orderBy('res.id','desc')
+            ->paginate(2);
+        $datas = \EventClass::handelObj($datas);
+        $datas2 = \EventClass::handelObj($datas2);
+        if($request->ajax()){
+            $action = $request->input()['action'];
+            if(!$action){
+                return $datas;
+            } elseif($action == 1){
+                return $datas2;
+            } else {
+                $ajaxobj = $ajaxobj->where(['status.configid' => $action])->paginate(2);
+                $ajaxobj = \EventClass::handelObj($ajaxobj);
+                return $ajaxobj;
+            }
+        }
+        return view("myexpert.mywork",compact('datas','datas2','responsecount','putcount','complatecount'));
     }
 
     /**我的办事详情
      * @return mixed
      */
-    public function  workDetail(){
-        return view("myexpert.workDetail");
+    public function  workDetail($eventid){
+        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+        $datas = DB::table('t_e_event as event')
+            ->leftJoin('t_e_eventresponse as res','event.eventid','=','res.eventid')
+            ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
+            ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
+            ->where('event.eventid',$eventid)
+            ->first();
+        if($datas->expertid != $expertid){
+            return redirect('/');
+        }
+        return view("myexpert.workDetail",compact('datas'));
     }
 
     /**我的咨询

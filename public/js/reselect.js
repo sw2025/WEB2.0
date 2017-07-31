@@ -38,14 +38,14 @@ $(function(){
     });
 
     //搜索
-    $('.list-search .list-search-btn').on('click',function () {
+    $('.uct-list-search .uct-list-search-btn').on('click',function () {
         var searchName = $(this).siblings().val();
 
         select[0] = 'serveName';
         select[1] = searchName;
         getCondition(select);
     });
-    $('.list-search-inp').keydown(function (evnet) {
+    $('.uct-list-search-inp').keydown(function (evnet) {
         if (evnet.keyCode == '13') {
             var searchName = $(this).val();
             select[0] = 'serveName';
@@ -170,68 +170,10 @@ $(function(){
 
 
 
-function fnc_collect (supplyid,action,obj) {
 
-    $.post('/dealextcollect',{'supplyid':supplyid,'action':action},function (data) {
-        if(data == 'nologin'){
-            layer.confirm('您还未登陆是否去登陆？', {
-                btn: ['去登陆','暂不需要'], //按钮
-                skin:'layui-layer-molv'
-            }, function(){
-                window.location.href='/login';
-            }, function(){
-                layer.close();
-                $(obj).attr("title","收藏");
-                $(obj).removeClass('red');
-                if($(obj).hasClass('done')){
-                    $(obj).removeClass('done');
-                }
-            });
-        } else if(data == 'success') {
-            if(action == 'collect'){
-                layer.msg('收藏成功');
-            } else {
-                layer.msg('取消收藏成功');
-            }
-        } else {
-            layer.msg('处理失败');
-        }
-    });
-}
 
-$('.details-message .submit').on('click',function () {
-    var textarea = $(this).parent().siblings('textarea');
-    var needid = textarea.attr('id');
-    var content = textarea.val();
-    $(this).attr('disabled',"true");
-    replymessage({'needid':needid,'content':content},this);
-});
 
-function replymessage (datas,obj) {
-    $.post('/replyextmessage',datas,function (data) {
-        if(data == 'success'){
-            layer.msg('回复成功',{time:2000},function () {
-                window.location = window.location;
-            });
-        }else if(data == 'nologin') {
-            layer.confirm('您还未登陆是否去登陆？', {
-                btn: ['去登陆','暂不需要'], //按钮
-                skin:'layui-layer-molv'
-            }, function(){
-                window.location.href='/login';
-            }, function(){
-                layer.close();
-                $(obj).attr("title","收藏");
-                $(obj).removeClass('red');
-                if($(obj).hasClass('done')){
-                    $(obj).removeClass('done');
-                }
-                $(obj).attr('disabled',false);
-            });
-        } else {
-            layer.msg('处理失败');
-        }
-    });
-}
+
+
 
 
