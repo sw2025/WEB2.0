@@ -121,13 +121,40 @@ class CenterController extends Controller
         return $res;
     }
 
+
     /**我的信息
      * @return mixed
      */
-    public  function  myinfo(){
-        $userId=session("userId");
-       
-        return view("ucenter.myinfo");
+    public  function  myinfo(Request $request){
+        $userId = session("userId");
+        $datas = DB::table('t_m_systemmessage')->where(['receiveid' => $userId])->whereIn('state',[0,1])->paginate(2);
+        if($request->ajax()){
+            return $datas;
+        }
+        return view("ucenter.myinfo",compact('datas'));
+    }
+
+    /**修改信息已读或者删除
+     * @param Request $request
+     * @return array
+     */
+    public function flagRead (Request $request) {
+        if($request->ajax()){
+            $data = $request->input('data');
+            $state = $request->input('state');
+            $userId = session('userId');
+            $res = DB::table('t_m_systemmessage')->whereIn('id',$data)->where('receiveid',$userId)->update([
+                'state' => $state,
+                'updated_at' => date("Y-m-d H:i:s",time())
+            ]);
+            if($state == 1){
+                return ['msg' => '修改已读成功','icon' => 1];
+            } elseif ($state == 2){
+                return ['msg' => '删除消息成功','icon' => 1];
+            }
+
+        }
+        return ['msg' => '非法请求','icon' => 2];
     }
     /**我的需求
      * @return mixed

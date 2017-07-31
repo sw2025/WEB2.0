@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class MyExpertController extends Controller
@@ -145,25 +146,33 @@ class MyExpertController extends Controller
             ->select('res.*','event.domain1','event.domain2','event.brief','status.configid','event.eventtime','ent.enterprisename as name');
         $obj = clone $datas;
         $ajaxobj = clone $datas;
+        //克隆ajax请求的对象
         $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
+        //datas为办事推送列表
         $datas = $datas
             ->where(['res.expertid' => $expertid,'status.configid' => 4])
             ->orderBy('res.id','desc')
             ->paginate(2);
+        //datas2为我的办事列表
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
             ->whereIn('status.configid',[4,5,7])
             ->orderBy('res.id','desc')
             ->paginate(2);
+        //调用eventclass中的方法进行对象的处理
         $datas = \EventClass::handelObj($datas);
         $datas2 = \EventClass::handelObj($datas2);
+        //ajax请求判定返回指定的对象
         if($request->ajax()){
             $action = $request->input()['action'];
             if(!$action){
+                //action为0时世界返回的是办事推送列表
                 return $datas;
             } elseif($action == 1){
+                //action为1的时候返回的是我的办事列表
                 return $datas2;
             } else {
+                //其余的action在ajax请求的时候是configid 通过where条件来进行查询
                 $ajaxobj = $ajaxobj->where(['status.configid' => $action])->paginate(2);
                 $ajaxobj = \EventClass::handelObj($ajaxobj);
                 return $ajaxobj;
@@ -182,11 +191,62 @@ class MyExpertController extends Controller
             ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
             ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
             ->where('event.eventid',$eventid)
+            ->select('event.*','ent.enterprisename','res.expertid','status.configid')
             ->first();
         if($datas->expertid != $expertid){
             return redirect('/');
         }
-        return view("myexpert.workDetail",compact('datas'));
+        $token = Crypt::encrypt($eventid.session('userId'));
+        return view("myexpert.workDetail",compact('datas','token'));
+    }
+
+    /**专家响应办事
+     * @param Request $request
+     * @return array
+     */
+    public function responseEvent (Request $request) {
+        //判断是否为ajax请求
+        if($request->ajax()){
+            $data = $request->input();
+            //对token进行验证
+            if($data['eventid'].session('userId') == Crypt::decrypt($data['token'])){
+                //获取到该用户对应的专家的id
+                $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+                DB::beginTransaction();
+                try{
+                    //查询是否存在响应的情况
+                    $verify = DB::table('t_e_eventresponse')->where(['expertid' => $expertid,'eventid' => $data['eventid'],'state' => 3])->first();
+                    if(!$verify){
+                        DB::table('t_e_eventresponse')->insert([
+                            'expertid' => $expertid,
+                            'eventid' => $data['eventid'],
+                            'state' => 3,
+                            'responsetime' => date('Y-m-d H-:i:s',time()),
+                            'updated_at' => date('Y-m-d H-:i:s',time())
+                        ]);
+                    }else {
+                        return ['msg' => '您已经响应过此办事','icon' => 2];
+                    }
+                    //查询这个办事是否已经响应过了
+                    $verify2 = DB::table('t_e_eventverify')->where(['eventid' => $data['eventid'],'configid' => 5])->first();
+                    if(!$verify2){
+                        DB::table('t_e_eventverify')->insert([
+                            'eventid' => $data['eventid'],
+                            'configid' => 5,
+                            'verifytime' =>  date('Y-m-d H-:i:s',time()),
+                            'updated_at' => date('Y-m-d H-:i:s',time())
+                        ]);
+                    }
+                    DB::commit();
+                    return ['msg' => '响应成功,请等待企业回应','icon' => 1];
+                }catch(Exception $e)
+                {
+                    DB::rollBack();
+                    return ['msg' => '处理失败','icon' => 2];
+                }
+            }
+        }
+        return ['msg' => '非法操作','icon' => 2];
     }
 
     /**我的咨询
