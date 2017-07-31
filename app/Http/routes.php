@@ -99,6 +99,8 @@ Route::post('applicationCashs','CenterController@applicationCashs');
 Route::post('getRecord','CenterController@getRecord');
 //我的信息
 Route::get('uct_myinfo','CenterController@myinfo');
+//消息标记已读
+Route::post('uct_flagread','CenterController@flagRead');
 //我的需求
 Route::get('uct_myneed','CenterController@myNeed');
 //需求详情
@@ -157,6 +159,8 @@ Route::post('uct_expertData','MyExpertController@expertData');
 Route::get('uct_mywork','MyExpertController@mywork');
 //我的办事详情
 Route::get('uct_mywork/workDetail/{eventid}','MyExpertController@workDetail');
+//响应办事
+Route::post('uct_mywork/responseevent','MyExpertController@responseEvent');
 //我的咨询
 Route::get('uct_myask','MyExpertController@myask');
 //我的咨询详情

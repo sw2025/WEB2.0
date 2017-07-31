@@ -137,11 +137,13 @@
             }
 
             $('.myask-tabar-a').click(function() {
+                var guize = $('.three-icon .active').attr('index');
                 $(this).addClass('active').siblings().removeClass('active');
                 var ind = $(this).index();
                 $('.myask-tab-box').eq(ind).show().siblings().hide();
-
-                senddatato({'page':1,'action':ind});
+                if(guize == null){
+                    senddatato({'page':1,'action':ind});
+                }
             });
 
 

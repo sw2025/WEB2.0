@@ -45,6 +45,10 @@
                                         <input class="datas-sel-name" type="text" placeholder="" />
                                     </div>
                                     <div class="publish-need-sel datas-newchange zindex1">
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3191f7fef0c1a19acf12a28dbdd85b01bbc1119f
                                         <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
                                         <ul class="publish-need-list">
                                             @foreach($cate as $v)
