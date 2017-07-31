@@ -1,5 +1,11 @@
 @extends("layouts.ucenter")
 @section("content")
+    <!-- 公共header / end -->
+    <script src="{{asset('./FileUpload/js/vendor/jquery.ui.widget.js')}}"></script>
+    <script src="{{asset('./FileUpload/js/jquery.fileupload.js')}}"></script>
+    <script src="{{asset('./FileUpload/js/jquery.iframe-transport.js')}}"></script>
+    <script src="{{asset('./FileUpload/js/jquery.fileupload-process.js')}}"></script>
+    <script src="{{asset('./FileUpload/js/jquery.fileupload-validate.js')}}"></script>
 <div class="main">
             <!-- 发布需求 / start -->
             <h3 class="main-top">发布需求</h3>
@@ -32,6 +38,7 @@
                                         <input class="datas-sel-name" type="text" placeholder="" />
                                     </div>
                                     <div class="publish-need-sel datas-newchange zindex1">
+
                                         <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
                                         <ul class="publish-need-list">
                                             @foreach($cate as $v)
@@ -94,21 +101,21 @@
                                 </div>
                                 <div class="datas-upload-box clearfix">
                                     <div class="datas-upload-lt">
-                                        <img src="img/photo1.jpg" class="photo1" />
+                                        <img src="img/photo1.jpg" class="photo1" id="avatar1"/>
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传营业执照</span>
-                                                <input id="photo1" type="file" name="files[]" data-url="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                                <input id="photo1" type="file" name="files[]" data-url="{{asset('upload')}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                                             </div>
                                             <p class="datas-lt-explain">营业执照仅做认证用，不用做其它用途</p>
                                         </div>
                                     </div>
                                     <div class="datas-upload-rt">
-                                        <img src="img/photo2.jpg" class="photo1" />
+                                        <img src="img/photo2.jpg" id="avatar2" class="photo1" />
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传宣传照片</span>
-                                                <input id="photo2" type="file" name="files[]" data-url="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                                <input id="photo2" type="file" name="files[]" data-url="{{asset('upload')}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                                             </div>
                                             <p class="datas-lt-explain">宣传照片用于展示企业，请选择企业Logo或展现企业风采的照片</p>
                                         </div>
@@ -152,20 +159,35 @@
         });
     })
 
-    /*   $(function () {
-     var token = $.cookie('token');
-     $('#photo2').fileupload({
-     dataType: 'json',
-     maxFileSize: 1 * 1024 * 1024,
-     done: function (e, data) {
-     $.each(data.result.files, function (index, file) {
-     // console.log(file.name);
-     $("#avatar").attr('src','../../swUpload/images/'+file.name).show();
-     $("#myAvatar").val(file.name);
-     });
-     }
-     });
-     });*/
+    $(function () {
+        var token = $.cookie('token');
+        $('#photo1').fileupload({
+            dataType: 'json',
+            maxFileSize: 1 * 1024 * 1024,
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    // console.log(file.name);
+                    $("#avatar1").attr('src','../../swUpload/images/'+file.name).show();
+                    $("#myAvatar").val(file.name);
+                });
+            }
+        });
+    });
+
+    $(function () {
+        var token = $.cookie('token');
+        $('#photo2').fileupload({
+            dataType: 'json',
+            maxFileSize: 1 * 1024 * 1024,
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    // console.log(file.name);
+                    $("#avatar2").attr('src','../../swUpload/images/'+file.name).show();
+                    $("#myAvatar").val(file.name);
+                });
+            }
+        });
+    });
 
 
     $(function () {

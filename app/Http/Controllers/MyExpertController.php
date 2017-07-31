@@ -67,7 +67,6 @@ class MyExpertController extends Controller
             //判断是否登陆
             if(!empty(session('userId'))){
                 $data = $request->input();
-                /*$role = DB::table('view_userrole')->where('userid',session('userId'))->first()->role;*/
                 $domain1 = explode('/',$data['industry'])[0];
                 $domain2 = explode('/',$data['industry'])[1];
                 //开启事务
@@ -101,7 +100,7 @@ class MyExpertController extends Controller
                     }
 
                     DB::commit();
-                    return ['msg' => '添加需求成功,进入审核阶段','icon' => 1];
+                    return ['msg' => '添加专家认证成功,进入审核阶段','icon' => 1];
                 }catch(Exception $e)
                 {
                     DB::rollBack();
@@ -193,15 +192,71 @@ class MyExpertController extends Controller
     /**我的咨询
      * @return mixed
      */
-    public function myask(){
+    public function myask(Request $request){
+        //获取到登陆用户的专家的id
+       /* $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+        $countobj = DB::table('t_c_consultresponse as res')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid');
+        $countobj2 = clone $countobj;
+        $countobj3 = clone $countobj;
+        //专家已响应的咨询数量
+        $responsecount = $countobj->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 5])->count();
+        //专家受邀请（被推送）的咨询数量
+        $putcount = $countobj2->where(['res.expertid' => $expertid,'status.configid' => 4])->count();
+        //专家已经完成的咨询数量
+        $complatecount = $countobj3->where(['res.state' => 4,'res.expertid' => $expertid,'status.configid' => 7])->count();
+        $datas = DB::table('t_c_consultresponse as res')
+            ->leftJoin('t_c_consult as consult','consult.consultid','=','res.consultid')
+            ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
+            ->whereRaw('res.id in (select max(id) from t_c_consultresponse group by consultid)')
+            ->select('res.*','consult.domain1','consult.domain2','consult.brief','status.configid','consult.consulttime','ent.enterprisename as name');
+        $obj = clone $datas;
+        $ajaxobj = clone $datas;
+        $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
+        $datas = $datas
+            ->where(['res.expertid' => $expertid,'status.configid' => 4])
+            ->orderBy('res.id','desc')
+            ->paginate(2);
+        $datas2 = $obj
+            ->where(['res.expertid' => $expertid])
+            ->whereIn('status.configid',[4,5,7])
+            ->orderBy('res.id','desc')
+            ->paginate(2);
+        $datas = \ConsultClass::handelObj($datas);
+        $datas2 = \ConsultClass::handelObj($datas2);
+        if($request->ajax()){
+            $action = $request->input()['action'];
+            if(!$action){
+                return $datas;
+            } elseif($action == 1){
+                return $datas2;
+            } else {
+                $ajaxobj = $ajaxobj->where(['status.configid' => $action])->paginate(2);
+                $ajaxobj = \ConsultClass::handelObj($ajaxobj);
+                return $ajaxobj;
+            }
+        }
+        return view("myexpert.myask",compact('datas','datas2','responsecount','putcount','complatecount'));*/
         return view("myexpert.myask");
     }
 
     /**我的咨询的详情
      * @return mixed
      */
-    public function  askDetail(){
-        return view("myexpert.askDetail");
+    public function  askDetail($consultid){
+
+        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+        $datas = DB::table('t_e_consult as consult')
+            ->leftJoin('t_c_consultresponse as res','consult.consultid','=','res.consultid')
+            ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
+            ->where('consult.consultid',$consultid)
+            ->first();
+        if($datas->expertid != $expertid){
+            return redirect('/');
+        }
+        return view("myexpert.askDetail",compact('datas'));
     }
 
     /**进入视频会议
