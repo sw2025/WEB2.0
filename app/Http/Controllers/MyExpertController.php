@@ -330,6 +330,8 @@ class MyExpertController extends Controller
             if($data['consultid'].session('userId') == Crypt::decrypt($data['token'])){
                 //获取到该用户对应的专家的id
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+                //$c
+
                 DB::beginTransaction();
                 try{
                     //查询是否存在响应的情况
