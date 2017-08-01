@@ -14,6 +14,7 @@
                 $v->brief = mb_strcut($v->brief,0,40,'utf-8').'...';
                 $v->consulttime = date('Y年m月d日',strtotime($v->consulttime));
                 $v->status = self::$statusarr[$v->configid];
+
             }
             return $data;
         }

@@ -330,40 +330,47 @@ class MyExpertController extends Controller
             if($data['consultid'].session('userId') == Crypt::decrypt($data['token'])){
                 //获取到该用户对应的专家的id
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
-                //$c
 
-                DB::beginTransaction();
-                try{
-                    //查询是否存在响应的情况
-                    $verify = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'consultid' => $data['consultid'],'state' => 3])->first();
-                    if(!$verify){
-                        DB::table('t_c_consultresponse')->insert([
-                            'expertid' => $expertid,
-                            'consultid' => $data['consultid'],
-                            'state' => 3,
-                            'responsetime' => date('Y-m-d H-:i:s',time()),
-                            'updated_at' => date('Y-m-d H-:i:s',time())
-                        ]);
-                    }else {
-                        return ['msg' => '您已经响应过此咨询事件','icon' => 2];
+                $consultid = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'state' => 2])->orderBy('responsetime', 'desc')->first()->consultid;
+                $endtime=DB::table('t_c_consult')->where($consultid,$consultid)->first()->endtime;
+                $starttime=DB::table('t_c_consult')->where($consultid,$data['consultid'])->first()->starttime;
+
+                if($starttime>$endtime){
+
+                    DB::beginTransaction();
+                    try{
+                        //查询是否存在响应的情况
+                        $verify = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'consultid' => $data['consultid'],'state' => 2])->first();
+                        if(!$verify){
+                            DB::table('t_c_consultresponse')->insert([
+                                'expertid' => $expertid,
+                                'consultid' => $data['consultid'],
+                                'state' => 2,
+                                'responsetime' => date('Y-m-d H-:i:s',time()),
+                                'updated_at' => date('Y-m-d H-:i:s',time())
+                            ]);
+                        }else {
+                            return ['msg' => '您已经响应过此咨询事件','icon' => 2];
+                        }
+                        //查询咨询是否已响应
+                        $verify2 = DB::table('t_c_consultverify')->where(['consultid' => $data['consultid'],'configid' => 5])->first();
+                        if(!$verify2){
+                            DB::table('t_c_consultverify')->insert([
+                                'consultid' => $data['consultid'],
+                                'configid' => 5,
+                                'verifytime' =>  date('Y-m-d H-:i:s',time()),
+                                'updated_at' => date('Y-m-d H-:i:s',time())
+                            ]);
+                        }
+                        DB::commit();
+                        return ['msg' => '响应成功,等待回应','icon' => 1];
+                    }catch(Exception $e)
+                    {
+                        DB::rollBack();
+                        return ['msg' => '处理失败','icon' => 2];
                     }
-                    //查询咨询是否已响应
-                    $verify2 = DB::table('t_c_consultverify')->where(['consultid' => $data['consultid'],'configid' => 5])->first();
-                    if(!$verify2){
-                        DB::table('t_c_consultverify')->insert([
-                            'consultid' => $data['consultid'],
-                            'configid' => 5,
-                            'verifytime' =>  date('Y-m-d H-:i:s',time()),
-                            'updated_at' => date('Y-m-d H-:i:s',time())
-                        ]);
-                    }
-                    DB::commit();
-                    return ['msg' => '响应成功,等待回应','icon' => 1];
-                }catch(Exception $e)
-                {
-                    DB::rollBack();
-                    return ['msg' => '处理失败','icon' => 2];
                 }
+                return ['msg' => '正在响应','icon' => 2];
             }
         }
         return ['msg' => '非法操作','icon' => 2];

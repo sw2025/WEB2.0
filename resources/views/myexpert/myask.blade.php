@@ -42,7 +42,7 @@
                                     <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->domain1.' / '.$v->domain2}}</a></td>
                                     <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->name}}</a></td>
                                     <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->brief}}</a></td>
-                                    <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->consulttime}}</a></td>
+                                    <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->timeRange}}</a></td>
                                 </tr>
                             @endforeach
                             </tbody>
