@@ -132,11 +132,11 @@ class MyExpertController extends Controller
         $countobj2 = clone $countobj;
         $countobj3 = clone $countobj;
         //专家已响应的办事数量
-        $responsecount = $countobj->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 5])->count();
+        $responsecount = $countobj->where(['res.state' => 2,'res.expertid' => $expertid,'status.configid' => 5])->count();
         //专家受邀请（被推送）的办事数量
         $putcount = $countobj2->where(['res.expertid' => $expertid,'status.configid' => 4])->count();
         //专家已经完成的办事数量
-        $complatecount = $countobj3->where(['res.state' => 4,'res.expertid' => $expertid,'status.configid' => 7])->count();
+        $complatecount = $countobj3->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 7])->count();
         $datas = DB::table('t_e_eventresponse as res')
             ->leftJoin('t_e_event as event','event.eventid','=','res.eventid')
             ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
@@ -189,10 +189,10 @@ class MyExpertController extends Controller
             ->leftJoin('t_e_eventresponse as res','event.eventid','=','res.eventid')
             ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
             ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
-            ->where('event.eventid',$eventid)
+            ->where(['event.eventid' => $eventid,'expertid' => $expertid])
             ->select('event.*','ent.enterprisename','res.expertid','status.configid')
             ->first();
-        if($datas->expertid != $expertid){
+        if(!$datas){
             return redirect('/');
         }
         $token = Crypt::encrypt($eventid.session('userId'));
@@ -214,12 +214,12 @@ class MyExpertController extends Controller
                 DB::beginTransaction();
                 try{
                     //查询是否存在响应的情况
-                    $verify = DB::table('t_e_eventresponse')->where(['expertid' => $expertid,'eventid' => $data['eventid'],'state' => 3])->first();
+                    $verify = DB::table('t_e_eventresponse')->where(['expertid' => $expertid,'eventid' => $data['eventid'],'state' => 2])->first();
                     if(!$verify){
                         DB::table('t_e_eventresponse')->insert([
                             'expertid' => $expertid,
                             'eventid' => $data['eventid'],
-                            'state' => 3,
+                            'state' => 2,
                             'responsetime' => date('Y-m-d H-:i:s',time()),
                             'updated_at' => date('Y-m-d H-:i:s',time())
                         ]);

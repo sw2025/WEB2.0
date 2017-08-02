@@ -118,8 +118,10 @@ Route::get('uct_myneed/examineNeed/{needid?}','CenterController@examineNeed');
 Route::get('uct_resource','MyEnterpriseController@resource');
 //会员认证1
 Route::get('uct_member','MyEnterpriseController@uct_member');
+//处理会员认证
+Route::post('uct_member/entverify','MyEnterpriseController@entVerify');
 //会员认证2
-Route::get('uct_member/member2','MyEnterpriseController@member2');
+Route::get('uct_member/member2/{entid}','MyEnterpriseController@member2');
 //会员认证3
 Route::get('uct_member/member3','MyEnterpriseController@member3');
 //会员认证4
