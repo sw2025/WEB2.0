@@ -22,8 +22,10 @@
                                 <button type="button" class="unrespond respond-btn" onclick="responseevent({{$datas->eventid}})">响应</button>
                             @elseif($datas->configid == 5)
                                 <button type="button" class="responded respond-btn">已响应</button>
-                            @else
-                            <span class="respond-tips">请等待企业邀请，未获企业邀请</span>
+                            @elseif($datas->configid == 7)
+                            <span class="respond-tips">已完成</span>
+                                @else
+                                <span class="respond-tips">请等待企业邀请，未获企业邀请</span>
                             @endif
                         </div>
                     </div>

@@ -146,11 +146,34 @@ class MyEnterpriseController extends Controller
         return view("myenterprise.member");
     }
 
+    public function entVerify (Request $request) {
+        if($request->ajax()){
+            $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
+            if($info){
+                return ['msg' => '提交失败，您已经认证过了','icon' => 2];
+            }
+            $data = $request->only(['brief','enterprisename','licenceimage','showimage','size','industry','address']);
+            $data['userid'] = session('userId');
+            $data['updated_at'] = date('Y-m-d H:i:s',time());
+            $res = DB::table('t_u_enterprise')->insertGetId($data);
+            if($res){
+                return ['msg' => '提交成功，进入审核阶段','icon' => 1,'id' => $res];
+            } else {
+                return ['msg' => '提交失败，请重新提交','icon' => 2];
+            }
+        }
+        return ['msg' => '非法请求' ,'icon' => 2];
+    }
+
     /**会员认证2
  * @return mixed
  */
-    public  function member2(){
-        return view("myenterprise.member2");
+    public  function member2($entid){
+        $data = DB::table('t_u_enterprise')->where(['enterpriseid' => $entid,'userid' => session('userId')])->first();
+        if(!$data){
+           return redirect('/');
+        }
+        return view("myenterprise.member2",compact('data'));
     }
     /**会员认证3
      * @return mixed
