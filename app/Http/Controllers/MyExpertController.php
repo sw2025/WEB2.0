@@ -256,22 +256,22 @@ class MyExpertController extends Controller
         $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
         $countobj = DB::table('t_c_consultresponse as res')
             ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid');
-
         $countobj2 = clone $countobj;
         $countobj3 = clone $countobj;
         //专家已响应的咨询数量
-        $responsecount = $countobj->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 5])->count();
+        $responsecount = $countobj->where(['res.state' => 2,'res.expertid' => $expertid,'status.configid' => 5])->count();
+        //dd($responsecount);
         //专家受邀请（被推送）的咨询数量
         $putcount = $countobj2->where(['res.expertid' => $expertid,'status.configid' => 4])->count();
         //专家已经完成的咨询数量
-        $complatecount = $countobj3->where(['res.state' => 4,'res.expertid' => $expertid,'status.configid' => 7])->count();
+        $complatecount = $countobj3->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 7])->count();
 
         $datas = DB::table('t_c_consultresponse as res')
             ->leftJoin('t_c_consult as consult','consult.consultid','=','res.consultid')
             ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
             ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
             ->whereRaw('res.id in (select max(id) from t_c_consultresponse group by consultid)')
-            ->select('res.*','consult.domain1','consult.domain2','consult.brief','status.configid','consult.consulttime','ent.enterprisename as name');
+            ->select('res.*','consult.domain1','consult.domain2','consult.brief','status.configid','consult.consulttime','consult.starttime','consult.endtime','ent.enterprisename as name');
         $obj = clone $datas;
         $ajaxobj = clone $datas;
         $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
@@ -311,12 +311,13 @@ class MyExpertController extends Controller
             ->leftJoin('t_c_consultresponse as res','consult.consultid','=','res.consultid')
             ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
             ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
-            ->where('consult.consultid',$consultid)
+            ->where(['consult.consultid'=>$consultid,'res.expertid'=>$expertid])
             ->first();
-        if($datas->expertid != $expertid){
+        if(!$datas){
             return redirect('/');
         }
-        return view("myexpert.askDetail",compact('datas'));
+        $token = Crypt::encrypt($consultid.session('userId'));
+        return view("myexpert.askDetail",compact('datas','token'));
     }
 
     /**专家响应咨询
