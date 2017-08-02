@@ -12,9 +12,8 @@
         {
             foreach($data as $v){
                 $v->brief = mb_strcut($v->brief,0,40,'utf-8').'...';
-                $v->consulttime = date('Y年m月d日',strtotime($v->consulttime));
+                $v->consulttime = date('Y年m月d日',strtotime($v->starttime)). '-'.date('Y年m月d日',strtotime($v->endtime));
                 $v->status = self::$statusarr[$v->configid];
-
             }
             return $data;
         }
