@@ -15,6 +15,10 @@ class PublicController extends Controller
        // require_once("FileUpload/server/php/UploadHandler.php");
         $uploadHandler =new \App\UploadHandler(["upload_dir" => dirname(base_path()) . "/swUpload/images/", "upload_url" => dirname(base_path()) . "/swUpload/images/"]);
     }
+
+    /**匹配银行名字
+     * @return array
+     */
     public function getBankName(){
         $res=array();
         $qian=array(" ","　","\t","\n","\r");
@@ -45,6 +49,20 @@ class PublicController extends Controller
         }
         return $res;
         
+    }
+    
+    public function returnMoney(){
+        $userId=$_POST['userId'];
+        $result=array();
+        $account=\UserClass::getMoney($userId);
+        if($account!="error"){
+            $result['code']="success";
+            $result['account']=$account;
+        }else{
+            $result['code']="error";
+        }
+        return $result;
+
     }
     
 }

@@ -404,8 +404,9 @@
 .uct-works-exps-list{overflow: hidden;padding-top: 10px;padding-bottom: 20px;}
 .uct-works-exps-list li{float: left;width:33.3333%;margin-bottom: 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .uct-works-exps-list li a{display: inline-block;color:#333;}
-.uct-works-exps-list .current span{background:url(../img/icon2.png) no-repeat;opacity:1;}
-.uct-works-exps-list li span{display: block;width: 37px;height: 41px;background:url(../img/icon3.png) no-repeat;margin:0 auto;opacity:0.3;}
+.uct-works-exps-list .current a{position: relative;}
+.uct-works-exps-list .current a:before{font-family: "iconfont";content:'\e651';top:54px;right:3px;position: absolute;color:#00ea7a;font-size: 20px;}
+.uct-works-exps-list li img{display: block;width: 84px;height: 84px;margin:0 auto;border-radius: 3px;}
 .default-result .calendar-date{background-color:#f8f8f8;cursor: default;}
 .uct-works-final .icon-chenggong{color:#2fd887;}
 <<<<<<< HEAD
@@ -426,10 +427,12 @@
 .rate{padding-top: 28px;}
 .rating{overflow: hidden;}
 .rate-exp{overflow: hidden;padding-bottom: 30px;}
-.rate-exp-icon{display: inline-block;padding-left: 55px;height: 41px;background:url(../img/icon3.png) no-repeat left top;line-height: 56px;width: 80px;color:#333;white-space: nowrap;text-align: left;}
-.rating{display: inline-block;padding-right: 5px;vertical-align: -2px;}
+.rate-exp-icon{display: inline-block;}
+.new-add-img{float: left;width:40px;height: 40px;border-radius: 3px;}
+.new-add-exp-name{float:left;margin:10px 10px 0;}
+.rating{display: inline-block;padding-right: 5px;vertical-align: 10px;}
 .rating img{float: left;width: 24px;height: 24px;margin-right: 15px;}
-.rate-btn{display: inline-block;line-height: 26px;font-size: 16px;color:#333;margin:0 15px;vertical-align: 2px;}
+.rate-btn{display: inline-block;line-height: 26px;font-size: 16px;color:#333;margin:0 15px;vertical-align: 17px;}
 .rate-btn:hover{color:#00a7ed;}
 .rate-box{padding-top: 13px;display: none;vertical-align: 3px;}
 .dib{display: block;margin:0 auto;}
@@ -469,3 +472,6 @@
 .back-btn:hover{background:#f4f4f4;}
 .select-btn{background:#1296d9;color:#fff;}
 .select-btn:hover{background:#00a7ed;}
+.reject-reason{color:#ed0021;margin-top:10px;text-align:justify;position: relative;}
+.reject-reason span{}
+.vid-new-ava{width: 40px;height: 40px;border-radius: 2px;}

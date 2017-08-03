@@ -27,7 +27,7 @@
             return $array;
         }
 
-        public  function regVerify($phone,$role,$pwd){
+        public static  function regVerify($phone,$role,$pwd){
             $result=array();
             if($role=="企业"){
                 $table="T_U_ENTERPRISE";
@@ -71,7 +71,7 @@
             return $result;
         }
         //找回密码验证
-        public  function  forgetVerify($phone,$pwd){
+        public  static function  forgetVerify($phone,$pwd){
             $result=array();
             $counts=User::where("phone",$phone)->get()->toArray();
             if(count($counts)!=0){
@@ -90,6 +90,28 @@
             $result['code']="phone";
             $result['msg']="该手机号尚未注册!";
             return $result;
+        }
+
+        /**获取用户余额
+         * @param $userId
+         * @return mixed
+         */
+        public static  function  getMoney($userId){
+            try{
+                $incomes=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"收入"])->sum("money");
+                $pays=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"支出"])->sum("money");
+                $expends=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"在途"])->sum("money");
+                $balance=$incomes-$pays-$expends;
+            }catch(Exception $e){
+                throw $e;
+            }
+            if(!isset($e)){
+                return $balance;
+            }else{
+                return "error";
+            }
+           
+          
         }
 
 

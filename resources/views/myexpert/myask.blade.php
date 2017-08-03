@@ -1,14 +1,25 @@
 @extends("layouts.ucenter")
 @section("content")
-    <div class="main">
-        <!-- 我的视频咨询 / start -->
-        <h3 class="main-top">我的视频咨询</h3>
-        <div class="ucenter-con">
-            <div class="myrequire-bg myask">
-                <div class="three-icon resource-icon">
-                    <a href="javascript:;" class="icon-row" index="5"><i class="iconfont icon-xiangyingcelve"></i><span>已响应</span><em>{{$responsecount}}</em></a>
-                    <a href="javascript:;" class="icon-row" index="4"><i class="iconfont icon-yaoqing"></i><span>已受邀</span><em>{{$putcount}}</em></a>
-                    <a href="javascript:;" class="icon-row" index="7"><i class="iconfont icon-wancheng"></i><span>已完成</span><em>{{$complatecount}}</em></a>
+
+        <div class="main">
+            <!-- 我的视频咨询 / start -->
+            <h3 class="main-top">我的视频咨询</h3>
+            <div class="ucenter-con">
+                <div class="myrequire-bg myask">
+                    <div class="three-icon resource-icon">
+                        <a href="javascript:;" class="icon-row active"><i class="iconfont icon-xiangyingcelve"></i><span>已响应</span><em>10</em></a>
+                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-yaoqing"></i><span>已受邀</span><em>10</em></a>
+                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-wancheng"></i><span>已完成</span><em>20</em></a>
+                    </div>
+                    <div class="publish-intro myask-intro">
+                        <span class="introduce-cap">视频咨询规则介绍</span>
+                        <div class="introduce-con">关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报</div>
+                    </div>
+                    <div class="myask-meet">
+                        <span class="fs12">距会议还有1分钟</span>
+                        <a href="{{asset('uct_myask/myaskinvt')}}" class="need-publish-btn">进入会议室</a>
+                    </div>
+
                 </div>
                 <div class="publish-intro myask-intro">
                     <span class="introduce-cap">视频咨询规则介绍</span>
