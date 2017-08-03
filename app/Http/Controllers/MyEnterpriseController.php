@@ -147,11 +147,54 @@ class MyEnterpriseController extends Controller
         return view("myenterprise.member");
     }
 
+    /**ajax处理会员认证
+     * @param Request $request
+     * @return array
+     */
+    public function entVerify (Request $request) {
+        if($request->ajax()){
+            $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
+            /*if($info){
+                return ['msg' => '提交失败，您已经认证过了','icon' => 2];
+            }*/
+            $data = $request->only(['brief','enterprisename','licenceimage','showimage','size','industry','address']);
+            $data['userid'] = session('userId');
+            $data['updated_at'] = date('Y-m-d H:i:s',time());
+            $res = DB::table('t_u_enterprise')->insertGetId($data);
+            if($res){
+                $res2 = DB::table('t_u_enterpriseverify')->insert([
+                    'enterpriseid' => $res,
+                    'configid' => 1,
+                    'verifytime' => date('Y-m-d H:i:s',time()),
+                    'updated_at' => date('Y-m-d H:i:s',time())
+
+                ]);
+                if($res2){
+                    return ['msg' => '提交成功，进入审核阶段','icon' => 1,'id' => $res];
+                }
+                return ['msg' => '提交失败，请重新提交','icon' => 2];
+            } else {
+                return ['msg' => '提交失败，请重新提交','icon' => 2];
+            }
+        }
+        return ['msg' => '非法请求' ,'icon' => 2];
+    }
+
     /**会员认证2
  * @return mixed
  */
-    public  function member2(){
-        return view("myenterprise.member2");
+    public  function member2($entid){
+        $data = DB::table('t_u_enterprise')->where(['enterpriseid' => $entid,'userid' => session('userId')])->first();
+        if(!$data){
+           return redirect('/');
+        }
+        $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first()->configid;
+        if($configid == 3){
+            return redirect('uct_member/member3/'.$entid);
+        } elseif ($configid == 4){
+            return redirect('uct_member/member4/'.$entid);
+        }
+        return view("myenterprise.member2",compact('data'));
     }
     /**会员认证3
      * @return mixed
@@ -159,12 +202,16 @@ class MyEnterpriseController extends Controller
     public  function member3(){
         return view("myenterprise.member3");
     }
+
     /**会员认证4
      * @return mixed
      */
-    public  function member4(){
-        return view("myenterprise.member4");
+    public  function member4($entid){
+        $data = DB::table('t_u_enterprise')->where(['enterpriseid' => $entid,'userid' => session('userId')])->first();
+        return view("myenterprise.member4",compact('data'));
     }
+
+    
 
     /**办事服务
      * @return mixed
