@@ -123,9 +123,9 @@ Route::post('uct_member/entverify','MyEnterpriseController@entVerify');
 //会员认证2
 Route::get('uct_member/member2/{entid}','MyEnterpriseController@member2');
 //会员认证3
-Route::get('uct_member/member3','MyEnterpriseController@member3');
+Route::get('uct_member/member3/{entid}','MyEnterpriseController@member3');
 //会员认证4
-Route::get('uct_member/member4','MyEnterpriseController@member4');
+Route::get('uct_member/member4/{entid}','MyEnterpriseController@member4');
 //办事服务
 Route::get('uct_works','MyEnterpriseController@works');
 //办事详情
