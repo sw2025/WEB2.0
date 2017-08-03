@@ -7,7 +7,7 @@
             <!-- 专家资源 / start -->
             <div class="ucenter-con">
                 <div class="reselect-top">
-                    <label class="myinfo-check-label"><input type="checkbox" class="myinfo-check"></label>如果所选专家在规定时间内未接受邀请，选择系统分配
+                    <label class="myinfo-check-label ischecked"><input type="checkbox"  class="myinfo-check"></label>如果所选专家在规定时间内未接受邀请，选择系统分配
                 </div>
                 <div class="uct-list-filter">
                     <div class="uct-search">
@@ -137,13 +137,22 @@
                     </div>
                     <div class="reselect-btn-box">
                         <a href="{{asset('uct_works/applyWork')}}" class="back-btn reselect-btn">返回</a>
-                        <button type="button" class="select-btn reselect-btn">选择</button>
+                        <button type="button" class="select-btn reselect-btn">确定</button>
                     </div>
                 </div>
             </div>
         </div>
     <script type="text/javascript">
     $(function(){
+        if($.cookie("reselect")){
+            var expertChecked=$.cookie('reselect').split(",");
+            for(var i=0; i<expertChecked.length; i++) {
+                var checked=expertChecked[i];
+                var end=checked.indexOf("/");
+                var id=checked.substring(0,end);
+               $("#"+id).addClass('xzchecked')
+            }
+        }
         var currentPage=parseInt("{{$datas->currentPage()}}")-1;
         $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':currentPage});
         function pageselectCallback(page_index, jq){
@@ -161,25 +170,56 @@
             //阻止单击事件
             return false;
         }
-        $('.xuanzhong').click(function(event) {
-            var key=$(this).attr("id");
-            var img=$(this).attr("showImg");
-            var reselect;
-            if($.cookie("reselect")){
-                reselect=$.cookie('reselect')
-            }else{
-                reselect=new Array();
-                $.cookie("reselect",reselect,{expires:7,path:'/',domain:'sw2025.com'});
-            }
-            if(!$(this).hasClass("xzchecked")){
-                result[key]=img;
-                $.cookie("reselect",)
-            }else{
-
-            }
-
-            $(this).toggleClass('xzchecked');
-        });
     })
+    $('.xuanzhong').click(function(event) {
+        var key=$(this).attr("id");
+        var img=$(this).attr("showImg");
+        var value=key+img;
+        var reselect;
+        if($.cookie("reselect")){
+            reselect=$.cookie('reselect').split(",");
+        }else{
+            reselect=[];
+            $.cookie("reselect",reselect,{expires:7,path:'/',domain:'sw2025.com'});
+        }
+        if(reselect.length==5){
+            if($.inArray(value,reselect)>=0){
+                deleteArray(reselect,value);
+                $.cookie("reselect",reselect.join(","),{expires:7,path:'/',domain:'sw2025.com'});
+            }else{
+                layer.confirm('您已经指定5位专家', {
+                    btn: ['确定'] //按钮
+                });
+                return false;
+            }
+        }else{
+            if(!$(this).hasClass("xzchecked")){
+                reselect.push(value);
+                $.cookie("reselect",reselect.join(','),{expires:7,path:'/',domain:'sw2025.com'});
+            }else{
+                deleteArray(reselect,value);
+                $.cookie("reselect",reselect.join(","),{expires:7,path:'/',domain:'sw2025.com'});
+            }
+        }
+        $(this).toggleClass('xzchecked');
+    });
+    //删除已经指定的专家
+    var deleteArray=function (arr, val) {
+        for(var i=0; i<arr.length; i++) {
+            if(arr[i] == val) {
+                arr.splice(i, 1);
+                break;
+            }
+        }
+    }
+    $(".reselect-btn").on("click",function(){
+        if($(".myinfo-check-label").hasClass('ischecked')){
+            $.cookie("isAppoint",1,{expires:7,path:'/',domain:'sw2025.com'});
+        }else{
+            $.cookie("isAppoint",0,{expires:7,path:'/',domain:'sw2025.com'});
+        }
+        window.location.href="{{asset('uct_works/applyWork')}}";
+    })
+
 </script>
 @endsection

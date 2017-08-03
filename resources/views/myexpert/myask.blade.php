@@ -16,7 +16,7 @@
                     </div>
                     <div class="myask-meet">
                         <span class="fs12">距会议还有1分钟</span>
-                        <a href="javascript:;" class="need-publish-btn">进入会议室</a>
+                        <a href="{{asset('uct_myask/myaskinvt')}}" class="need-publish-btn">进入会议室</a>
                     </div>
                 </div>
                 <div class="myask-tabar">

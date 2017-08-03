@@ -27,7 +27,6 @@
                                 <li>专家响应</li>
                                 <li>正在办事</li>
                                 <li>已完成</li>
-                                <li>已评价</li>
                                 <li>异常终止</li>
                             </ul>
                         </div>
@@ -109,9 +108,6 @@
                 break;
                 case "已完成":
                     type=7;
-                break;
-                case "已评价":
-                    type=8;
                 break;
                 case "异常终止":
                     type=9;

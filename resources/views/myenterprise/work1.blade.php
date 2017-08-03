@@ -41,25 +41,12 @@
                             </ul>
                         </div>
                         <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述"></textarea>
-                        <div class="calendar">
-                            <div class="calendar-start clearfix">
-                                <span>开始时间</span><span class="calendar-date laydate-icon" id="start"></span>
-                            </div>
-                            <div class="calendar-end clearfix">
-                                <span>结束时间</span><span class="calendar-date laydate-icon" id="end"></span>
-                            </div>
-                        </div>
                         <div class="uct-works-exp">
                             <span>专家</span>
-                            <a href="javascript:;" class="system-btn active uct-works-btn">系统分配</a>
-                            <a href="javascript:;" class="uct-works-btn">指定专家</a>
+                            <a href="javascript:;" class="system-btn active uct-works-btn" id="random">系统分配</a>
+                            <a href="javascript:;" class="uct-works-btn" id="appoint">指定专家</a>
                         </div>
                         <div class="uct-works-expava">
-                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
-                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
-                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
-                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
-                            <img src="{{asset('img/avatar1.jpg')}}" class="uct-works-exp-img" />
                         </div>
                         <div class="uct-works-tips">
                             <b>提示</b><br />
@@ -76,6 +63,26 @@
 
 <script type="text/javascript">
     $(function(){
+        if($.cookie("domain")!="请选择"){
+            $(".publ-need-sel-def").text($.cookie("domain"));
+        }
+        if($.cookie("describe")){
+            $(".uct-works-txt").val($.cookie("describe"));
+        }
+        if($.cookie("reselect")){
+            $(".uct-works-expava").show();
+            var expertChecked=$.cookie('reselect').split(",");
+            for(var i=0; i<expertChecked.length; i++) {
+                var checked=expertChecked[i];
+                var end=checked.indexOf("/");
+                var id=checked.substring(0,end);
+                var img=checked.substring(end);
+                var str="<input type='hidden' name=expertId[] value="+id+"><img src=http://sw2025.com"+img+" class='uct-works-exp-img' id="+id+" />"
+               $(".uct-works-expava").append(str);
+            }
+            $("#appoint").addClass('active');
+            $("#random").removeClass('active')
+        }
         $('.publ-need-sel-def').click(function() {
             $(this).next('ul').stop().slideToggle();
         });
@@ -98,40 +105,68 @@
             if(text=="系统分配"){
                 $(".uct-works-expava").hide();
             }else{
-                window.location.href="{{asset('uct_works/reselect')}}"
+                if($.cookie('reselect')){
+                    var selected=$.cookie('reselect').split(",");
+                    if(selected.length==5){
+                        $(".uct-works-expava").show();
+                    }else{
+                        var domain=$(".publ-need-sel-def").text();
+                        var describe=$(".uct-works-txt").val();
+                        $.cookie("domain",domain,{expires:1,path:'/',domain:'sw2025.com'});
+                        $.cookie("describe",describe,{expires:1,path:'/',domain:'sw2025.com'});
+                        window.location.href="{{asset('uct_works/reselect')}}"
+                    }
+                }else{
+                    window.location.href="{{asset('uct_works/reselect')}}"
+                }
             }
         });
     })
-    // =========日期插件使用方法======>start
-    !function(){
-        laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
-    }();
-    //日期范围限制
-    var start = {
-        elem: '#start',
-        format: 'YYYY/MM/DD hh:mm:ss',
-        min: '2016-01-01', //设定最小日期为当前日期
-        max: '2066-12-31 23:59:59', //最大日期
-        istime: true,
-        istoday: false,
-        choose: function(datas){
-            end.min = datas; //开始日选好后，重置结束日的最小日期
-            end.start = datas //将结束日的初始值设定为开始日
+    $(".submit-audit").on("click",function(){
+        var domain=$(".publ-need-sel-def").text();
+        var describe=$(".uct-works-txt").val();
+        var isAppoint=$.cookie("isAppoint");
+        var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
+        if($("#random").hasClass('active')){
+            var state=1;
+        }else{
+            var state=0;
         }
-    };
-    var end = {
-        elem: '#end',
-        format: 'YYYY/MM/DD hh:mm:ss',
-        min: '2016-01-01',
-        max: '2066-12-31 23:59:59',
-        istime: true,
-        istoday: false,
-        choose: function(datas){
-            start.max = datas; //结束日选好后，充值开始日的最大日期
+        if(domain=="请选择"){
+            layer.tips("问题分类不能为空", '.publ-need-sel-def', {
+                tips: [2, '#00a7ed'],
+                time: 4000
+            });
+            return false;
         }
-    };
-    laydate(start);
-    laydate(end);
-    // ========日期插件使用方法======>end
+        if(!describe){
+            layer.tips("问题描述不能为空", '.uct-works-txt', {
+                tips: [2, '#00a7ed'],
+                time: 4000
+            });
+            return false;
+        }
+        $.ajax({
+            url:"{{asset('saveEvent')}}",
+            data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state},
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    $.cookie("reselect","",{expires:7,path:'/',domain:'sw2025.com'});
+                    $.cookie("domain","",{expires:1,path:'/',domain:'sw2025.com'});
+                    $.cookie("describe","",{expires:1,path:'/',domain:'sw2025.com'});
+                    window.location.href="{{asset('uct_works')}}";
+                }else{
+                    $(".publ-need-sel-def").text(domain);
+                    $(".uct-works-txt").val(describe);
+                    layer.confirm('申请失败,请重新申请', {
+                        btn: ['确定'] //按钮
+                    });
+                }
+            }
+        })
+
+    })
 </script>
 @endsection
