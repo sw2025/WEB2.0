@@ -13,6 +13,7 @@
                     <div class="introduce-con">工作情况汇报关于小李同志本次任务工作情况汇报工作情况汇报关于小李同志本次任务工作情况汇报</div>
                 </div>
 
+
                 <div class="three-icon clearfix five-icon">
                     <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'waitverify')active @endif" index="waitverify"><i class="iconfont icon-daishenhe"></i><span>待审核</span><em>{{$waitcount}}</em></a>
                     <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'collect')active @endif" index="collect"><i class="iconfont icon-shoucang"></i><span>收藏</span><em>{{count($collectids)}}</em></a>
@@ -20,6 +21,7 @@
                     <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'message')active @endif" index="message"><i class="iconfont icon-liuyan1"></i><span>留言</span><em>{{$msgcount}}</em></a>
                     <a href="javascript:;" class="icon-row @if(!empty($action) && $action == 'refuseverify')active @endif" index="refuseverify"><i class="iconfont icon-shenhejujue"></i><span>拒审核</span><em>{{$refusecount}}</em></a>
                 </div>
+
 
             </div>
             <div class="uct-list-filter">
@@ -101,6 +103,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- 筛选条件 end -->
             </div>
             <!-- 排序 start -->
@@ -139,10 +142,12 @@
                             </li>
                         @endforeach
 
-                    </ul>
-                    <div class="pages myinfo-page">
-                        <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
+                        </ul>
+                        <div class="pages myinfo-page">
+                            <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
+                        </div>
                     </div>
+                    <div class="myask-tab-box"></div>
                 </div>
 
                 {{--<div class="myask-tab-box"></div>--}}

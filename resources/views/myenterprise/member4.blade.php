@@ -22,10 +22,10 @@
                             <div class="datas-lt">
                                 <div class="datas-lt-enter">
                                     <div class="datas-sel">
-                                        <input class="enterprise-inp" readonly="readonly" type="text" placeholder="请输入企业全称" />
+                                        <input class="enterprise-inp" readonly="readonly" type="text" value="{{$data->enterprisename}}" placeholder="请输入企业全称" />
                                     </div>
                                     <div class="datas-sel zindex1">
-                                        <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def verify-default">不限</a>
+                                        <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->size}}</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
                                             <li>20人以下</li>
@@ -37,7 +37,7 @@
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex2">
-                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def verify-default">不限</a>
+                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->industry}}</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
                                             <li>IT|通信|电子|互联网</li>
@@ -56,7 +56,7 @@
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex3">
-                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def verify-default">不限</a>
+                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->address}}</a>
                                         <ul class="datas-list zone-list">
                                             <li>全国</li>
                                             <li>北京市</li>
@@ -98,10 +98,10 @@
                                 </div>
                                 <div class="datas-upload-box clearfix">
                                     <div class="datas-upload-lt">
-                                        <img src="{{asset('img/photo1.jpg')}}" class="photo1" />
+                                        <img src="{{$data->licenceimage}}" class="photo1" />
                                     </div>
                                     <div class="datas-upload-rt">
-                                        <img src="{{asset('img/photo2.jpg')}}" class="photo1" />
+                                        <img src="{{$data->showimage}}" class="photo1" />
                                     </div>
                                 </div>
                                 <div class="expert-certy-state success-state">
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                             <div class="datas-rt">
-                                <textarea placeholder="请输入需求描述" readonly="readonly" cols="30" rows="10">需求描述内容</textarea>
+                                <textarea placeholder="请输入需求描述" readonly="readonly" cols="30" rows="10">{{$data->brief}}    b </textarea>
                             </div>
                         </div>
                         <div class="bottom-btn"><button class="test-btn renew-btn" type="button">续费</button></div>

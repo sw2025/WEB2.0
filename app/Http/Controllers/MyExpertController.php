@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class MyExpertController extends Controller
@@ -17,42 +18,50 @@ class MyExpertController extends Controller
 
         $result = DB::table('view_expertstatus')->where(['userid' => session('userId')])->orderBy('configid','desc')->first();
         $cate = DB::table('t_common_domaintype')->get();
-        if($result){
-            if($result->configid == 2){
+
+        if(!$result){
+            if($result->configid == 1){
                 return redirect()->action('MyExpertController@expert2');
+            }elseif ($result->configid == 3){
+                return view("myexpert.expert",compact('cate','result'));
             }else{
                 return redirect()->action('MyExpertController@expert3');
             }
         }else{
-            return view("myexpert.expert",compact('cate'));
+            return view("myexpert.expert",compact('cate','result'));
         }
 
     }
     /**专家审核
      */
     public function  expert2(){
-
         $data=DB::table("T_U_USER")
             ->leftJoin("T_U_EXPERT","T_U_USER.USERID","=","T_U_EXPERT.USERID")
             ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
-            ->select("T_U_EXPERT.*")
-            ->where("T_U_EXPERT.userid",3)
+            ->select("T_U_EXPERT.*","T_U_EXPERTVERIFY.configid")
+            ->where("T_U_EXPERT.userid",session('userId'))
+            ->where("T_U_EXPERTVERIFY.configid",1)
             ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
             ->first();
+        if(!$data){
+            return redirect()->action('MyExpertController@expert');
+        }
         return view("myexpert.expert2",compact('data'));
     }
     /**认证成功
      */
     public function expert3(){
-
         $data=DB::table("T_U_USER")
             ->leftJoin("T_U_EXPERT","T_U_USER.USERID","=","T_U_EXPERT.USERID")
             ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
-            ->select("T_U_EXPERT.*")
-            ->where("T_U_EXPERT.userid",3)
+            ->select("T_U_EXPERT.*","T_U_EXPERTVERIFY.configid")
+            ->where("T_U_EXPERT.userid",session('userId'))
+            ->whereIn("T_U_EXPERTVERIFY.configid",[2,4])
             ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
             ->first();
-        //dd($data);
+        if(!$data){
+            return redirect()->action('MyExpertController@expert');
+        }
         return view("myexpert.expert3",compact('data'));
     }
 
@@ -67,7 +76,6 @@ class MyExpertController extends Controller
             //判断是否登陆
             if(!empty(session('userId'))){
                 $data = $request->input();
-                /*$role = DB::table('view_userrole')->where('userid',session('userId'))->first()->role;*/
                 $domain1 = explode('/',$data['industry'])[0];
                 $domain2 = explode('/',$data['industry'])[1];
                 //开启事务
@@ -101,7 +109,7 @@ class MyExpertController extends Controller
                     }
 
                     DB::commit();
-                    return ['msg' => '添加需求成功,进入审核阶段','icon' => 1];
+                    return ['msg' => '添加专家认证成功,进入审核阶段','icon' => 1];
                 }catch(Exception $e)
                 {
                     DB::rollBack();
@@ -111,15 +119,6 @@ class MyExpertController extends Controller
             return ['msg' => '请登录','icon' => 2];
         }
         return ['msg' => '非法访问','icon' => 2];
-
-    /*  $destinationPath = 'uploads/images/';
-        $extension = $file->getClientOriginalExtension();
-        $fileName = str_random(10).'.'.$extension;
-        $file->move($destinationPath, $fileName);
-        $array=array();*/
-
-        //$userid = $_SESSION['userid'];
-
     }
 
     /**我的办事
@@ -133,11 +132,11 @@ class MyExpertController extends Controller
         $countobj2 = clone $countobj;
         $countobj3 = clone $countobj;
         //专家已响应的办事数量
-        $responsecount = $countobj->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 5])->count();
+        $responsecount = $countobj->where(['res.state' => 2,'res.expertid' => $expertid,'status.configid' => 5])->count();
         //专家受邀请（被推送）的办事数量
         $putcount = $countobj2->where(['res.expertid' => $expertid,'status.configid' => 4])->count();
         //专家已经完成的办事数量
-        $complatecount = $countobj3->where(['res.state' => 4,'res.expertid' => $expertid,'status.configid' => 7])->count();
+        $complatecount = $countobj3->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 7])->count();
         $datas = DB::table('t_e_eventresponse as res')
             ->leftJoin('t_e_event as event','event.eventid','=','res.eventid')
             ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
@@ -146,25 +145,33 @@ class MyExpertController extends Controller
             ->select('res.*','event.domain1','event.domain2','event.brief','status.configid','event.eventtime','ent.enterprisename as name');
         $obj = clone $datas;
         $ajaxobj = clone $datas;
+        //克隆ajax请求的对象
         $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
+        //datas为办事推送列表
         $datas = $datas
             ->where(['res.expertid' => $expertid,'status.configid' => 4])
             ->orderBy('res.id','desc')
             ->paginate(2);
+        //datas2为我的办事列表
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
             ->whereIn('status.configid',[4,5,7])
             ->orderBy('res.id','desc')
             ->paginate(2);
+        //调用eventclass中的方法进行对象的处理
         $datas = \EventClass::handelObj($datas);
         $datas2 = \EventClass::handelObj($datas2);
+        //ajax请求判定返回指定的对象
         if($request->ajax()){
             $action = $request->input()['action'];
             if(!$action){
+                //action为0时世界返回的是办事推送列表
                 return $datas;
             } elseif($action == 1){
+                //action为1的时候返回的是我的办事列表
                 return $datas2;
             } else {
+                //其余的action在ajax请求的时候是configid 通过where条件来进行查询
                 $ajaxobj = $ajaxobj->where(['status.configid' => $action])->paginate(2);
                 $ajaxobj = \EventClass::handelObj($ajaxobj);
                 return $ajaxobj;
@@ -182,28 +189,193 @@ class MyExpertController extends Controller
             ->leftJoin('t_e_eventresponse as res','event.eventid','=','res.eventid')
             ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
             ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
-            ->where('event.eventid',$eventid)
+            ->where(['event.eventid' => $eventid,'expertid' => $expertid])
+            ->select('event.*','ent.enterprisename','res.expertid','status.configid')
             ->first();
-        if($datas->expertid != $expertid){
+        if(!$datas){
             return redirect('/');
         }
-        return view("myexpert.workDetail",compact('datas'));
+        $token = Crypt::encrypt($eventid.session('userId'));
+        return view("myexpert.workDetail",compact('datas','token'));
+    }
+
+    /**专家响应办事
+     * @param Request $request
+     * @return array
+     */
+    public function responseEvent (Request $request) {
+        //判断是否为ajax请求
+        if($request->ajax()){
+            $data = $request->input();
+            //对token进行验证
+            if($data['eventid'].session('userId') == Crypt::decrypt($data['token'])){
+                //获取到该用户对应的专家的id
+                $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+                DB::beginTransaction();
+                try{
+                    //查询是否存在响应的情况
+                    $verify = DB::table('t_e_eventresponse')->where(['expertid' => $expertid,'eventid' => $data['eventid'],'state' => 2])->first();
+                    if(!$verify){
+                        DB::table('t_e_eventresponse')->insert([
+                            'expertid' => $expertid,
+                            'eventid' => $data['eventid'],
+                            'state' => 2,
+                            'responsetime' => date('Y-m-d H-:i:s',time()),
+                            'updated_at' => date('Y-m-d H-:i:s',time())
+                        ]);
+                    }else {
+                        return ['msg' => '您已经响应过此办事','icon' => 2];
+                    }
+                    //查询这个办事是否已经响应过了
+                    $verify2 = DB::table('t_e_eventverify')->where(['eventid' => $data['eventid'],'configid' => 5])->first();
+                    if(!$verify2){
+                        DB::table('t_e_eventverify')->insert([
+                            'eventid' => $data['eventid'],
+                            'configid' => 5,
+                            'verifytime' =>  date('Y-m-d H-:i:s',time()),
+                            'updated_at' => date('Y-m-d H-:i:s',time())
+                        ]);
+                    }
+                    DB::commit();
+                    return ['msg' => '响应成功,请等待企业回应','icon' => 1];
+                }catch(Exception $e)
+                {
+                    DB::rollBack();
+                    return ['msg' => '处理失败','icon' => 2];
+                }
+            }
+        }
+        return ['msg' => '非法操作','icon' => 2];
     }
 
     /**我的咨询
      * @return mixed
      */
-    public function myask(){
-        return view("myexpert.myask");
+    public function myask(Request $request){
+        //获取到登陆用户的专家的id
+        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+        $countobj = DB::table('t_c_consultresponse as res')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid');
+        $countobj2 = clone $countobj;
+        $countobj3 = clone $countobj;
+        //专家已响应的咨询数量
+        $responsecount = $countobj->where(['res.state' => 2,'res.expertid' => $expertid,'status.configid' => 5])->count();
+        //dd($responsecount);
+        //专家受邀请（被推送）的咨询数量
+        $putcount = $countobj2->where(['res.expertid' => $expertid,'status.configid' => 4])->count();
+        //专家已经完成的咨询数量
+        $complatecount = $countobj3->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 7])->count();
+
+        $datas = DB::table('t_c_consultresponse as res')
+            ->leftJoin('t_c_consult as consult','consult.consultid','=','res.consultid')
+            ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
+            ->whereRaw('res.id in (select max(id) from t_c_consultresponse group by consultid)')
+            ->select('res.*','consult.domain1','consult.domain2','consult.brief','status.configid','consult.consulttime','consult.starttime','consult.endtime','ent.enterprisename as name');
+        $obj = clone $datas;
+        $ajaxobj = clone $datas;
+        $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
+        $datas = $datas
+            ->where(['res.expertid' => $expertid,'status.configid' => 4])
+            ->orderBy('res.id','desc')
+            ->paginate(2);
+        $datas2 = $obj
+            ->where(['res.expertid' => $expertid])
+            ->whereIn('status.configid',[4,5,7])
+            ->orderBy('res.id','desc')
+            ->paginate(2);
+        $datas = \ConsultClass::handelObj($datas);
+        $datas2 = \ConsultClass::handelObj($datas2);
+        if($request->ajax()){
+            $action = $request->input()['action'];
+            if(!$action){
+                return $datas;
+            } elseif($action == 1){
+                return $datas2;
+            } else {
+                $ajaxobj = $ajaxobj->where(['status.configid' => $action])->paginate(2);
+                $ajaxobj = \ConsultClass::handelObj($ajaxobj);
+                return $ajaxobj;
+            }
+        }
+        return view("myexpert.myask",compact('datas','datas2','responsecount','putcount','complatecount'));
     }
 
     /**我的咨询的详情
      * @return mixed
      */
-    public function  askDetail(){
-        return view("myexpert.askDetail");
+    public function  askDetail($consultid){
+
+        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+        $datas = DB::table('t_c_consult as consult')
+            ->leftJoin('t_c_consultresponse as res','consult.consultid','=','res.consultid')
+            ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
+            ->where(['consult.consultid'=>$consultid,'res.expertid'=>$expertid])
+            ->first();
+        if(!$datas){
+            return redirect('/');
+        }
+        $token = Crypt::encrypt($consultid.session('userId'));
+        return view("myexpert.askDetail",compact('datas','token'));
     }
 
+    /**专家响应咨询
+     * @param Request $request
+     * @return array
+     */
+    public function responseConsult (Request $request) {
+        if($request->ajax()){
+            $data = $request->input();
+            //对token进行验证
+            if($data['consultid'].session('userId') == Crypt::decrypt($data['token'])){
+                //获取到该用户对应的专家的id
+                $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+
+                $consultid = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'state' => 2])->orderBy('responsetime', 'desc')->first()->consultid;
+                $endtime=DB::table('t_c_consult')->where($consultid,$consultid)->first()->endtime;
+                $starttime=DB::table('t_c_consult')->where($consultid,$data['consultid'])->first()->starttime;
+
+                if($starttime>$endtime){
+
+                    DB::beginTransaction();
+                    try{
+                        //查询是否存在响应的情况
+                        $verify = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'consultid' => $data['consultid'],'state' => 2])->first();
+                        if(!$verify){
+                            DB::table('t_c_consultresponse')->insert([
+                                'expertid' => $expertid,
+                                'consultid' => $data['consultid'],
+                                'state' => 2,
+                                'responsetime' => date('Y-m-d H-:i:s',time()),
+                                'updated_at' => date('Y-m-d H-:i:s',time())
+                            ]);
+                        }else {
+                            return ['msg' => '您已经响应过此咨询事件','icon' => 2];
+                        }
+                        //查询咨询是否已响应
+                        $verify2 = DB::table('t_c_consultverify')->where(['consultid' => $data['consultid'],'configid' => 5])->first();
+                        if(!$verify2){
+                            DB::table('t_c_consultverify')->insert([
+                                'consultid' => $data['consultid'],
+                                'configid' => 5,
+                                'verifytime' =>  date('Y-m-d H-:i:s',time()),
+                                'updated_at' => date('Y-m-d H-:i:s',time())
+                            ]);
+                        }
+                        DB::commit();
+                        return ['msg' => '响应成功,等待回应','icon' => 1];
+                    }catch(Exception $e)
+                    {
+                        DB::rollBack();
+                        return ['msg' => '处理失败','icon' => 2];
+                    }
+                }
+                return ['msg' => '正在响应','icon' => 2];
+            }
+        }
+        return ['msg' => '非法操作','icon' => 2];
+    }
     /**进入视频会议
      * @return mixed
      */
