@@ -225,23 +225,11 @@
 /***********会员缴费 end***********/
 /***********我的需求 start***********/
 .myrequire-bg{max-width: 965px;min-width:800px;height: 107px;background:url(../img/uctbg.jpg) no-repeat;border: 1px solid #ccc;border-radius: 3px;color:#fff;text-align: center;}
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 .need-publish-btn{display: inline-block;padding:8px 25px;font-size: 16px;color:#fff;background:#00a7ed;border-radius: 5px;vertical-align: 34px;}
-.publish-intro{width: 380px;display: inline-block;margin:0 0 0 5%;text-align: left;}
-=======
-=======
-
->>>>>>> 3191f7fef0c1a19acf12a28dbdd85b01bbc1119f
-
-.need-publish-btn{display: inline-block;padding:8px 18px;font-size: 16px;color:#fff;background:#00a7ed;border-radius: 5px;}
 .publish-intro{width: 380px;display: inline-block;margin:0 0 0 5%;text-align: left;vertical-align: middle;}
 .introduce-con{height:63px;overflow:hidden;}
 
-<<<<<<< HEAD
->>>>>>> 8d7f8e47a1e91c08446f52d1eb7b80afb869a1a2
-=======
->>>>>>> 3191f7fef0c1a19acf12a28dbdd85b01bbc1119f
 .introduce-cap{font-size: 16px;border-bottom: 1px solid #ede500;display: inline-block;margin-top: 12px;}
 .three-icon{padding-top: 17px;display: inline-block;}
 .five-icon{width:250px;float: right;}
@@ -409,18 +397,8 @@
 .uct-works-exps-list li img{display: block;width: 84px;height: 84px;margin:0 auto;border-radius: 3px;}
 .default-result .calendar-date{background-color:#f8f8f8;cursor: default;}
 .uct-works-final .icon-chenggong{color:#2fd887;}
-<<<<<<< HEAD
-<<<<<<< HEAD
-.uct-works-expava{overflow: hidden;padding:10px 0;}
-=======
-.uct-works-expava{overflow: hidden;padding:10px 0;display: none}
-
->>>>>>> 8d7f8e47a1e91c08446f52d1eb7b80afb869a1a2
-=======
 
 .uct-works-expava{overflow: hidden;padding:10px 0;display: none}
-
->>>>>>> 3191f7fef0c1a19acf12a28dbdd85b01bbc1119f
 .uct-works-exp-img{float: left;width: 64px;height: 64px;margin:0 3px;border-radius: 5px;}
 /***********企业办事服务 end***********/
 /***********星级评分 start***********/
