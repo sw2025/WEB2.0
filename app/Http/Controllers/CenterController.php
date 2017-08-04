@@ -170,7 +170,7 @@ class CenterController extends Controller
             ->leftJoin('view_needcollectcount as coll','coll.needid' ,'=' ,'need.needid')
             ->leftJoin('view_needmesscount as mess','mess.needid' ,'=' ,'need.needid')
             ->leftJoin('view_needstatus as status','status.needid' ,'=' ,'need.needid')
-            ->select('need.*','ent.enterprisename','ent.showimage as entimg','status.configid as flag','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
+            ->select('need.*','view.role','ent.enterprisename','ent.showimage as entimg','status.configid as flag','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
         //获得用户的收藏
         $collectids = [];
         if(session('userId')){

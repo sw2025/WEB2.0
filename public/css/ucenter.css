@@ -226,10 +226,9 @@
 /***********我的需求 start***********/
 .myrequire-bg{max-width: 965px;min-width:800px;height: 107px;background:url(../img/uctbg.jpg) no-repeat;border: 1px solid #ccc;border-radius: 3px;color:#fff;text-align: center;}
 
-.need-publish-btn{display: inline-block;padding:8px 25px;font-size: 16px;color:#fff;background:#00a7ed;border-radius: 5px;vertical-align: 34px;}
+.need-publish-btn{display: inline-block;padding:8px 25px;font-size: 16px;color:#fff;background:#00a7ed;border-radius: 5px;vertical-align: 0;}
 .publish-intro{width: 380px;display: inline-block;margin:0 0 0 5%;text-align: left;vertical-align: middle;}
 .introduce-con{height:63px;overflow:hidden;}
-
 .introduce-cap{font-size: 16px;border-bottom: 1px solid #ede500;display: inline-block;margin-top: 12px;}
 .three-icon{padding-top: 17px;display: inline-block;}
 .five-icon{width:250px;float: right;}
@@ -397,7 +396,6 @@
 .uct-works-exps-list li img{display: block;width: 84px;height: 84px;margin:0 auto;border-radius: 3px;}
 .default-result .calendar-date{background-color:#f8f8f8;cursor: default;}
 .uct-works-final .icon-chenggong{color:#2fd887;}
-
 .uct-works-expava{overflow: hidden;padding:10px 0;display: none}
 .uct-works-exp-img{float: left;width: 64px;height: 64px;margin:0 3px;border-radius: 5px;}
 /***********企业办事服务 end***********/
@@ -453,3 +451,43 @@
 .reject-reason{color:#ed0021;margin-top:10px;text-align:justify;position: relative;}
 .reject-reason span{}
 .vid-new-ava{width: 40px;height: 40px;border-radius: 2px;}
+
+.standards{border-bottom: none;width: 350px;text-align: left;margin: 0 auto;}
+.standards .others{margin-left: 0;}
+.standard-intro{text-align: justify;width: 350px;margin:0 auto;padding-bottom: 30px;}
+
+.video-chats{border: 1px dotted #ccc;border-radius: 3px;}
+.chat-room-tit{border-bottom: 2px solid #ccc;font-size: 16px;line-height: 3em;text-indent: 1em;color:#333;}
+.chat-room-time{display: block;text-align: center;color:#999;padding:10px 0;}
+.chat-room-other,.chat-room-me{position: relative;padding:15px;min-height: 48px;overflow: hidden;}
+.chat-room-other-img{left:15px;}
+.chat-room-other-img,.chat-room-me-img{position: absolute;top: 15px;width: 48px;height:48px;border-radius: 40px;}
+.chat-room-other-con{margin-left: 58px;}
+.chat-room-other-name,.chat-room-me-name{color:#666;display: block;cursor: default;}
+.chat-room-other-desc,.chat-room-me-desc{position: relative;background:#ededed;padding:10px 15px;color:#333;text-align: justify;border-radius: 5px;display: inline-block;}
+.chat-room-other-desc:before{left: -9px;content:"\e601";}
+.chat-room-other-desc:before,.chat-room-me-desc:before{position: absolute;top: 5px;font-family:"iconfont";color:#ededed;}
+.chat-room-launch{text-align: center;padding:10px 0;}
+.chat-room-commu{display: inline-block;padding:3px 15px;background:#E4F3FF;color:#8494A1;border-radius: 3px;}
+.chat-room-me-img{right: 15px;}
+.chat-room-me-con{float: right;margin-right: 58px;}
+.chat-room-me-name{text-align: right;}
+.chat-room-me-desc:before{right: -9px;content: '\e625';}
+.chat-room-write{padding: 15px;}
+.chat-room-txt{width:100%;min-height: 100px;max-height:200px;padding:5px 10px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;text-align: justify;border-color: #ccc;display: block;}
+.facebox{background:#E5F3FE;}
+.chat-file{position: relative;}
+.file-input{position: absolute;width: 100%;height:100%;opacity:0;filter:alpha(opacity=0);display: block;}
+.chat-face,.chat-file,.chat-sheying{float: left;width:40px;height:40px;overflow: hidden;line-height: 40px;text-align: center;color:#666;}
+.chat-face:hover,.chat-file:hover,.chat-sheying:hover{background:#D8EAFC;}
+.chat-face i,.chat-file i,.chat-sheying i{font-size: 24px;}
+.chat-fasong{float: right;background:#00a7ed;border: none;border-radius: 3px;color:#fff;padding:2px 10px;margin-top: 7px;margin-right: 10px;}
+.chat-room-btn{text-align: center;padding-top: 25px;}
+.unusual-btn{background:#edad00;margin-left: 60px;}
+.qqFace{margin-top:4px;background:#fff;padding:2px;border:1px #dfe6f6 solid;}
+.qqFace table td{padding:0px;}
+.qqFace table td img{cursor:pointer;border:1px #fff solid;}
+.qqFace table td img:hover{border:1px #0066cc solid;}
+#show{width:680px; margin:20px auto;}
+#facebox{background:#fff;}
+.chat-room-me-desc img,.chat-room-other-desc img{display: inline-block;}
