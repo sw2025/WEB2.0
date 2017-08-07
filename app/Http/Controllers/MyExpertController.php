@@ -382,5 +382,28 @@ class MyExpertController extends Controller
     public function myaskinvt(){
         return view("myexpert.myaskinvt");
     }
-    
+
+   /**收费标准
+     * @return mixed
+     */
+    public function standard(Request $request){
+        if($request->ajax()){
+            $data = $request->ajax();
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            $result = DB::table('t_c_consultverify')->insert([
+                'expertid' =>$expertid,
+                'fee' => $data['fee'],
+                'state' => 1,
+                'verifytime' =>  date('Y-m-d H-:i:s',time()),
+                'updated_at' => date('Y-m-d H-:i:s',time())
+            ]);
+
+            if(!$result){
+                return ['msg' => '添加失败','icon' => 2];
+            }
+        }
+        return view("myexpert.standard");
+    }
+
+
 }
