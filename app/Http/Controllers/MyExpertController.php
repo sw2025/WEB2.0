@@ -387,22 +387,24 @@ class MyExpertController extends Controller
      * @return mixed
      */
     public function standard(Request $request){
+
+        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+        $fee=DB::table('t_u_expertfee')->where('expertid',$expertid)->orderBy('expertid', 'desc')->first()->fee;
+
         if($request->ajax()){
-            $data = $request->ajax();
-            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
-            $result = DB::table('t_c_consultverify')->insert([
-                'expertid' =>$expertid,
-                'fee' => $data['fee'],
-                'state' => 1,
-                'verifytime' =>  date('Y-m-d H-:i:s',time()),
-                'updated_at' => date('Y-m-d H-:i:s',time())
-            ]);
+            $data = $request->input();
+            $result = DB::table('t_u_expertfee')
+                ->where('expertid',$expertid)
+                ->update(['fee' => $data['fee']]);
 
             if(!$result){
                 return ['msg' => '添加失败','icon' => 2];
+            }else{
+                return ['msg' => '添加成功','icon' => 1];
+
             }
         }
-        return view("myexpert.standard");
+        return view("myexpert.standard",compact('fee'));
     }
 
 
