@@ -598,10 +598,13 @@ class MyEnterpriseController extends Controller
                 $selExperts=DB::table("t_c_consult")
                     ->leftJoin("t_c_consultresponse","t_c_consultresponse.consultid","=","t_c_consult.consultid")
                     ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
-                    ->leftJoin("t_u_bill","t_u_bill.userid","=","t_c_consult.userid")
                     ->where("t_c_consultresponse.state",3)
-                    ->where("t_u_bill.consultid",$consultId)
                     ->where("t_c_consultresponse.consultid",$consultId)
+                    ->get();
+                $comperes=DB::table("t_u_bill")
+                    ->leftJoin("t_u_user","t_u_user.userid","=","t_u_bill.userid")
+                    ->where("t_u_bill.consultid",$consultId)
+                   ->where("t_u_bill.userid",$userId)
                     ->get();
             break; 
             case 7:
@@ -614,8 +617,9 @@ class MyEnterpriseController extends Controller
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
+        $comperes=!empty($comperes)?$comperes:"";
         $view="video".$configId;
-        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId"));
+        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId","comperes"));
     }
     /**申请视频咨询
      * @return mixed
@@ -797,6 +801,55 @@ class MyEnterpriseController extends Controller
             DB::commit();
         }catch (Exception $e){
             DB::rollback();
+            throw $e;
+        }
+        if(!isset($e)){
+            $result['code']="success";
+        }else{
+            $result['code']="error";
+        }
+        return $result;
+    }
+    /**视频星级评分
+     * @return array
+     */
+    public function  toVideoExpertMsg(){
+        $result=array();
+        $consultId=$_POST['consultId'];
+        try{
+            DB::table("t_c_consultcomment")->insert([
+                "consultid"=>$consultId,
+                "expertid"=>$_POST['expertId'],
+                "score"=>$_POST['score'],
+                "comment"=>"",
+                "commenttime"=>date("Y-m-d H:i:s",time()),
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+        }catch(Exception $e){
+            throw $e;
+        }
+        if(!isset($e)){
+            $result['code']="success";
+        }else{
+            $result['code']="error";
+        }
+        return $result;
+    }
+
+    /**视频内容评论
+     * @return array
+     */
+    public function   toVideoExpertContent(){
+        $result=array();
+        $consultId=$_POST['consultId'];
+        try{
+            DB::table("t_c_consultcomment")->where(["consultid"=>$consultId,"expertid"=>$_POST['expertId']])->update([
+                "comment"=>$_POST['content'],
+                "commenttime"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+        }catch(Exception $e){
             throw $e;
         }
         if(!isset($e)){

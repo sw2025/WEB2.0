@@ -156,6 +156,10 @@ Route::post('saveVideo','MyEnterpriseController@saveVideo');
 Route::get('uct_video/videoSelect','MyEnterpriseController@videoSelect');
 //视频咨询处理响应的专家
 Route::post('handleSelect','MyEnterpriseController@handleSelect');
+//咨询完成，给专家星级评论
+Route::post('toVideoExpertMsg','MyEnterpriseController@toVideoExpertMsg');
+//咨询完成，给专家评论
+Route::post('toVideoExpertContent','MyEnterpriseController@toVideoExpertContent');
 
 //申请视频咨询2
 Route::get('uct_video/video2','MyEnterpriseController@video2');
