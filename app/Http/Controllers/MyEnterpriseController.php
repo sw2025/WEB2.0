@@ -144,6 +144,18 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public  function uct_member(){
+        $enterpriseid = DB::table('t_u_enterprise')->where(['userid' => session('userId')])->first()->enterpriseid;
+        if($enterpriseid){
+            $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$enterpriseid)->orderBy('id','desc')->first()->configid;
+            if($configid == 3){
+                return redirect('uct_member/member3/'.$enterpriseid);
+            } elseif ($configid == 4){
+                return redirect('uct_member/member4/'.$enterpriseid);
+            } elseif ($configid == 2){
+                return redirect('uct_member/member2/'.$enterpriseid);
+            }
+        }
+
         return view("myenterprise.member");
     }
 
@@ -154,9 +166,9 @@ class MyEnterpriseController extends Controller
     public function entVerify (Request $request) {
         if($request->ajax()){
             $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
-            /*if($info){
+            if($info){
                 return ['msg' => '提交失败，您已经认证过了','icon' => 2];
-            }*/
+            }
             $data = $request->only(['brief','enterprisename','licenceimage','showimage','size','industry','address']);
             $data['userid'] = session('userId');
             $data['updated_at'] = date('Y-m-d H:i:s',time());

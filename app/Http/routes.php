@@ -194,3 +194,5 @@ Route::get('uct_myask/askDetail/{eventid}','MyExpertController@askDetail');
 Route::post('uct_mywork/responseconsult','MyExpertController@responseConsult');
 //进入咨询会议
 Route::get('uct_myask/myaskinvt','MyExpertController@myaskinvt');
+//收费标准
+Route::any('uct_standard','MyExpertController@standard');

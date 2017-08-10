@@ -25,7 +25,7 @@ class SupplyController extends Controller
             ->leftJoin('view_needmesscount as mess','mess.needid' ,'=' ,'need.needid')
             ->leftJoin('view_needstatus as status','status.needid' ,'=' ,'need.needid')
             ->where('status.configid',3)
-            ->select('need.*','ent.enterprisename','ent.showimage as entimg','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
+            ->select('need.*','ent.enterprisename','view.role','ent.showimage as entimg','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
         //获得用户的收藏
         $collectids = [];
         if(session('userId')){
@@ -76,7 +76,7 @@ class SupplyController extends Controller
             ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
             ->leftJoin('t_u_user as user','user.userid' ,'=' ,'need.userid')
             ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
-            ->select('ent.brief as desc1','ext.brief as desc2','need.*','ent.enterprisename','ent.address','ext.expertname','user.phone','ent.showimage as entimg','ext.showimage as extimg');
+            ->select('ent.brief as desc1','view.role','ext.brief as desc2','need.*','ent.enterprisename','ent.address','ext.expertname','user.phone','ent.showimage as entimg','ext.showimage as extimg');
         $obj = clone $datas;
         $datas = $datas->where('needid',$supplyId)->first();
         //取出同类下推荐的供求
