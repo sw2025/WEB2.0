@@ -75,6 +75,10 @@ Route::get('uct_basic/changePwd','CenterController@changePwd');
 Route::post('updatePwd','CenterController@updatePwd');
 //公共上传图片
 Route::any('upload','PublicController@upload');
+//办事上传资料
+Route::any('eventupload','PublicController@eventUpload');
+//办事上传资料
+Route::any('download','PublicController@download');
 //基本资料修改
 Route::post('changeBasics','CenterController@changeBasics');
 //充值提现
@@ -132,6 +136,8 @@ Route::get('uct_member/member4/{entid}','MyEnterpriseController@member4');
 Route::get('uct_works','MyEnterpriseController@works');
 //办事详情
 Route::get('uct_works/detail/{eventId}','MyEnterpriseController@workDetail');
+//处理上传的资料
+Route::post('uct_works/upload/{proid}','MyEnterpriseController@eventUpload');
 //申请办事服务1
 Route::get('uct_works/applyWork','MyEnterpriseController@applyWork');
 //保存申请的办事服务

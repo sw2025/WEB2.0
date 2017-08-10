@@ -1,5 +1,10 @@
 @extends("layouts.works")
 @section("content")
+    <script src="{{asset('./FileUpload/js/vendor/jquery.ui.widget.js')}}"></script>
+    <script src="{{asset('./FileUpload/js/jquery.fileupload.js')}}"></script>
+    <script src="{{asset('./FileUpload/js/jquery.iframe-transport.js')}}"></script>
+    <script src="{{asset('./FileUpload/js/jquery.fileupload-process.js')}}"></script>
+    <script src="{{asset('./FileUpload/js/jquery.fileupload-validate.js')}}"></script>
 <div class="main">
     <!-- 企业办事服务 / start -->
     <h3 class="main-top">企业办事服务</h3>
@@ -17,24 +22,22 @@
                 <div class="video-manage-top">
                     <div class="vid-man-top-lt vid-man-top-main">
                         <div class="vid-man-top-con">
-                            <p class="vid-man-top-cat"><span class="light-color">分类：</span>销售类</p>
+                            <p class="vid-man-top-cat"><span class="light-color">分类：</span>{{$datas->domain1}} / {{$datas->domain2}}</p>
                             <span class="mywork-det-tit"><em class="light-color">金额：</em>￥3000</span>
                             <span class="light-color">描述：</span>
-                            <div class="vid-man-top-desc">水电费个好久昆明是的风光好进口法国红酒对方过后更好更换即可对方过后法国红酒刚回家法国会尽快法国红酒对方过后风格好久</div>
+                            <div class="vid-man-top-desc">{{mb_strcut($datas->brief,0,250,'utf-8')}}...</div>
                         </div>
                     </div>
                     <div class="vid-man-top-rt vid-man-top-main">
                         <div class="vid-man-top-con">
                             <div class="emcee">
                                 <span class="light-color emcee-cap">主持人：</span>
-                                <span class="emceer-pers"><i class="iconfont icon-gerenzhongxin"></i>专家一</span>
+                                <span class="emceer-pers"><i class="iconfont icon-gerenzhongxin"></i>{{$datas->enterprisename}}</span>
                             </div>
                             <div class="emcee-bottom">
-                                <span class="light-color emcee-cap emcee-bot-cap">成员：</span>
+                                <span class="light-color emcee-cap emcee-bot-cap">专家：</span>
                                 <div class="emcee-members">
-                                    <span class="emceer-pers"><i class="iconfont icon-gerenzhongxin"></i>专家一</span>
-                                    <span class="emceer-pers"><i class="iconfont icon-gerenzhongxin"></i>专家一</span>
-                                    <span class="emceer-pers"><i class="iconfont icon-gerenzhongxin"></i>专家一</span>
+                                    <span class="emceer-pers"><i class="iconfont icon-gerenzhongxin"></i>{{$info->expertname}}</span>
                                 </div>
                             </div>
                         </div>
@@ -46,9 +49,14 @@
                         <p class="handle-affair-desc">资料文件可包括企业对办事的详细需求，以及企业自身的主客观条件等，专家确认后进入下一阶段。</p>
                         <div class="handle-up">
                                 <span class="handle-up-btn basic-span change-btn fileinput-button">
+                                    <form id="fileupload1">
                                     <span>上传文件</span>
-                                    <input id="" type="file" name="files[]" data-url="" multiple="" />
+                                    <input class="fileupload1" type="file" name="files" data-url="{{asset('eventupload')}}" multiple="" />
+                                    </form>
                                 </span>
+
+                                <span id="event1"><a href="" target="_blank" id="eventa1"></a><a href="" id="eventa2"></a></span>
+
                         </div>
                         <div class="datum-manage">
                             <a href="javascript:;" class="datum-btn datum-confirm">确认资料</a>
@@ -229,6 +237,48 @@
 <!-- 公共footer / end -->
 <script type="text/javascript">
     $(function(){
+
+        /*$('.fileupload1').fileupload({
+            dataType: 'json',
+            maxFileSize: 5 * 1024 * 1024,
+            maxNumberOfFiles : 1,
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    // console.log(file.name);
+                    $('.fileupload1').attr('index',file.name);
+                    $('#event1 a').html(file.name);
+                });
+            }
+        });*/
+
+        $('.fileupload1').on('change', function(e){
+            //$('#upload-avatar').html('正在上传...');
+            var formData = new FormData($("#fileupload1")[0]);
+            $.ajax({
+                url: '{{url('uct_works/upload',1)}}' ,
+                type: 'POST',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if(data.icon == 2){
+                        layer.msg(data.error,{'icon':data.icon});
+                    } else {
+                        $('#event1 #eventa1').html(data.name);
+                        $('#event1 #eventa1').attr('href','/'+data.path);
+                        $('#event1 #eventa2').html(' 下载');
+                        $('#event1 #eventa2').attr('href','/download?path='+data.path);
+                    }
+
+                },
+                error: function (returndata) {
+                    return 0;
+                }
+            });
+        });
+
         $("#Pagination").pagination("15");
         // 点击历史意见
         $('.datum-history').on('click', function(event) {
