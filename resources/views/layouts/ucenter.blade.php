@@ -15,6 +15,7 @@
     <script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/public.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery.qqFace.js')}}"></script>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="{{asset('js/utils/html5shiv.min.js?1401441990')}}"></script>
     <script type="text/javascript" src="{{asset('js/utils/respond.min.js?1401441990')}}"></script>

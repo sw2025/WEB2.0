@@ -64,7 +64,7 @@
                 var expertId= $(this).attr("index");
                 var consultId=$("#consult").val();
                 $.ajax({
-                    url:"{{asset('toExpertContent')}}",
+                    url:"{{asset('toVideoExpertContent')}}",
                     data:{"content":content,"expertId":expertId,"consultId":consultId},
                     dateType:"json",
                     type:"POST",
@@ -104,7 +104,7 @@
                     var id=$(this).attr('id')
                     consultId=$("#consult").val();
                     $.ajax({
-                        url:"{{asset('toExpertMsg')}}",
+                        url:"{{asset('toVideoExpertMsg')}}",
                         data:{"consultId":consultId,"expertId":id,"score":score},
                         dateType:"json",
                         type:"POST",

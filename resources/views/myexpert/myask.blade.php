@@ -19,15 +19,6 @@
                         <span class="fs12">距会议还有1分钟</span>
                         <a href="{{asset('uct_myask/myaskinvt')}}" class="need-publish-btn">进入会议室</a>
                     </div>
-
-                </div>
-                <div class="publish-intro myask-intro">
-                    <span class="introduce-cap">视频咨询规则介绍</span>
-                    <div class="introduce-con">关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报</div>
-                </div>
-                <div class="myask-meet">
-                    <span class="fs12">距会议还有1分钟</span>
-                    <a href="javascript:;" class="need-publish-btn">进入会议室</a>
                 </div>
             </div>
             <div class="myask-tabar">
