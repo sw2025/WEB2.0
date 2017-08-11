@@ -44,191 +44,90 @@
                     </div>
                 </div>
                 <div class="works-manage">
-                    <div class="works-first execute works-manage-step">
-                        <h2 class="handle-affair-tit">1.企业提交基本资料</h2>
-                        <p class="handle-affair-desc">资料文件可包括企业对办事的详细需求，以及企业自身的主客观条件等，专家确认后进入下一阶段。</p>
-                        <div class="handle-up">
+                    @foreach($configinfo as $v)
+                        @if($v->ppid == 7)
+                            <div class="works-last @if((empty($lastpid->pid) && $v->ppid == 1) || (!empty($lastpid->pid) && $lastpid->state == 2 && $v->ppid-1 == $lastpid->pid)  || (!empty($lastpid->pid) && $lastpid->pid == $v->ppid && $v->state != 2)) execute @endif  works-manage-step">
+                                <h2 class="handle-affair-tit">7.日程管理</h2>
+                                <p class="handle-affair-desc">正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户</p>
+                                <div class="datum-manage">
+                                    <a href="javascript:;" class="datum-btn datum-add" style="display:block">新增日程</a>
+                                </div>
+                                <ul class="add-works-task">
+                                    <li>
+                                        <textarea class="works-task-desc" readonly="readonly">正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户</textarea>
+                                        <span class="task-state task-ing">进行中</span>
+                                        <div class="task-dispose">
+                                            <span class="task-icon-finish task-icon" title="完成"><i class="iconfont icon-xuanzhong"></i></span>
+                                            <span class="task-icon-delete task-icon" title="删除"><i class="iconfont icon-chahao"></i></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <textarea class="works-task-desc" readonly="readonly">正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户</textarea>
+                                        <span class="task-state task-finished">已完成</span>
+                                        <div class="task-dispose">
+                                            <span class="task-icon-finish task-icon" title="完成"><i class="iconfont icon-xuanzhong"></i></span>
+                                            <span class="task-icon-delete task-icon" title="删除"><i class="iconfont icon-chahao"></i></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        @else
+                            <div class="works-first @if((empty($lastpid->pid) && $v->ppid == 1) || (!empty($lastpid->pid) && $lastpid->state == 2 && $v->ppid-1 == $lastpid->pid)  || (!empty($lastpid->pid) && $lastpid->pid == $v->ppid && $v->state != 2)) execute @endif works-manage-step">
+                                <h2 class="handle-affair-tit">{{$v->ppid}}.{{$v->processname}}</h2>
+                                <p class="handle-affair-desc">{{$v->processdescription}}</p>
+                                <div class="handle-up">
                                 <span class="handle-up-btn basic-span change-btn fileinput-button">
-                                    <form id="fileupload1">
-                                    <span>上传文件</span>
-                                    <input class="fileupload1" type="file" name="files" data-url="{{asset('eventupload')}}" multiple="" />
+                                    <form>
+                                        <input type="hidden" name="eventid" value='{{$eventId}}'>
+                                        <input type="hidden" name="startuserid" value='@if($v->starttype) {{$info->userid}} @else {{$datas->userid}} @endif '>
+                                        <input type="hidden" name="acceptuserid" value='@if($v->starttype) {{$datas->userid}} @else {{$info->userid}} @endif '>
+                                        <span>上传文件</span>
+                                        <input class="fileupload1" type="file" name="files" multiple="" index="{{$v->ppid}}"/>
                                     </form>
                                 </span>
-
-                                <span id="event1"><a href="" target="_blank" id="eventa1"></a><a href="" id="eventa2"></a></span>
-
-                        </div>
-                        <div class="datum-manage">
-                            <a href="javascript:;" class="datum-btn datum-confirm">确认资料</a>
-                            <a href="javascript:;" class="datum-btn datum-change">修改意见</a>
-                            <a href="javascript:;" class="datum-btn datum-history">历史意见<span class="history-counts">99</span></a>
-                        </div>
-                        <!-- 历史意见/start -->
-                        <div class="history-opinion">
-                            <ul class="opinion-list">
-                                <li class="opinion-item">
-                                    <p class="opinion-item-desc">
-                                        正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写
-                                    </p>
-                                    <span class="opinion-item-time">2017-08-08 12:33</span>
-                                </li>
-                                <li class="opinion-item">
-                                    <p class="opinion-item-desc">
-                                        正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写
-                                    </p>
-                                    <span class="opinion-item-time">2017-08-08 12:33</span>
-                                </li>
-                                <li class="opinion-item">
-                                    <p class="opinion-item-desc">
-                                        正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写
-                                    </p>
-                                    <span class="opinion-item-time">2017-08-08 12:33</span>
-                                </li>
-                                <li class="opinion-item">
-                                    <p class="opinion-item-desc">
-                                        正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写
-                                    </p>
-                                    <span class="opinion-item-time">2017-08-08 12:33</span>
-                                </li>
-                                <li class="opinion-item">
-                                    <p class="opinion-item-desc">
-                                        正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写
-                                    </p>
-                                    <span class="opinion-item-time">2017-08-08 12:33</span>
-                                </li>
-                            </ul>
-                            <div class="pages myinfo-page">
-                                <div id="Pagination"></div>
-                                <span class="page-sum">共<strong class="allPage">15</strong>页</span>
+                                    <span><a href="{{url($v->documenturl)}}" target="_blank" class="eventa1">{{$v->docname or ''}}</a><a href="@if(!empty($v->downurl)) /download?path={{$v->downurl}} " style="border: 1px solid #aaa;border-radius: 5px;margin-left: 10px;"  @endif class="eventa2"  >@if(!empty($v->downurl))&nbsp;下载&nbsp;@endif</a></span>
+                                    @if(!empty($v->oldpath))
+                                    <span>
+                                        <span>&ensp;&ensp;&ensp;历史上传：</span>
+                                        @foreach($v->oldpath as $kk => $vv)
+                                            <a href="/download?path={{$vv}}">{{$kk}}</a> |
+                                        @endforeach
+                                    </span>
+                                    @endif
+                                </div>
+                                <div class="datum-manage">
+                                    <a href="javascript:;" class="datum-btn datum-confirm" index="{{$v->epid}}">确认资料</a>
+                                    <a href="javascript:;" class="datum-btn datum-change" index="{{$v->epid}}" eventid="{{$eventId}}">修改意见</a>
+                                    <a href="javascript:;" class="datum-btn datum-history" index="{{$v->epid}}" page="{{$remark[$v->epid][0]->lastpage()}}">历史意见<span class="history-counts">{{$remark[$v->epid][1]}}</span></a>
+                                </div>
+                                <!-- 历史意见/start -->
+                                @if(key_exists($v->epid,$remark) && $remark[$v->epid][1])
+                                <div class="history-opinion">
+                                        <ul class="opinion-list">
+                                            @foreach($remark[$v->epid][0] as $msg)
+                                                @if($msg->epid == $v->epid)
+                                                <li class="opinion-item">
+                                                    <p class="opinion-item-desc">
+                                                        <span style="font-size: 15px;color: #000;">{{$msg->adduser}}:</span>{{$msg->content}}
+                                                    </p>
+                                                    <span class="opinion-item-time">{{$msg->addtime}}</span>
+                                                </li>
+                                                @endif
+                                           @endforeach
+                                        </ul>
+                                        <div class="pages myinfo-page">
+                                            <div id="Pagination"></div>
+                                            <span class="page-sum">共<strong class="allPage">{{$remark[$v->epid][0]->lastpage()}}</strong>页</span>
+                                        </div>
+                                </div>
+                                @endif
+                                <!-- 历史意见/end -->
                             </div>
-                        </div>
-                        <!-- 历史意见/end -->
-                    </div>
-                    <div class="works-second works-manage-step">
-                        <h2 class="handle-affair-tit">2.专家提交资料目录</h2>
-                        <p class="handle-affair-desc">专家开出办事所需资料的目录，企业确认后进入下一阶段。</p>
-                        <div class="handle-up">
-                                <span class="handle-up-btn basic-span change-btn fileinput-button">
-                                    <span>上传文件</span>
-                                    <input id="" type="file" name="files[]" data-url="" multiple="" />
-                                </span>
-                        </div>
-                        <div class="datum-manage">
-                            <a href="javascript:;" class="datum-btn datum-confirm">确认资料</a>
-                            <a href="javascript:;" class="datum-btn datum-change">修改意见</a>
-                            <a href="javascript:;" class="datum-btn datum-history">历史意见<span class="history-counts">99</span></a>
-                        </div>
-                        <!-- 历史意见/start -->
-                        <div class="history-opinion">
+                        @endif
 
-                        </div>
-                        <!-- 历史意见/end -->
-                    </div>
-                    <div class="works-third works-manage-step">
-                        <h2 class="handle-affair-tit">3.企业提交办事资料</h2>
-                        <p class="handle-affair-desc">企业根据第2步里专家要求的资料目录，提交相关资料，专家确认后进入下一阶段。</p>
-                        <div class="handle-up">
-                                <span class="handle-up-btn basic-span change-btn fileinput-button">
-                                    <span>上传文件</span>
-                                    <input id="" type="file" name="files[]" data-url="" multiple="" />
-                                </span>
-                        </div>
-                        <div class="datum-manage">
-                            <a href="javascript:;" class="datum-btn datum-confirm">确认资料</a>
-                            <a href="javascript:;" class="datum-btn datum-change">修改意见</a>
-                            <a href="javascript:;" class="datum-btn datum-history">历史意见<span class="history-counts">99</span></a>
-                        </div>
-                        <!-- 历史意见/start -->
-                        <div class="history-opinion">
+                    @endforeach
 
-                        </div>
-                        <!-- 历史意见/end -->
-                    </div>
-                    <div class="works-forth works-manage-step">
-                        <h2 class="handle-affair-tit">4.专家提交办事初步方案</h2>
-                        <p class="handle-affair-desc">专家提出办事初步方案，双方确认后进入下一阶段</p>
-                        <div class="handle-up">
-                                <span class="handle-up-btn basic-span change-btn fileinput-button">
-                                    <span>上传文件</span>
-                                    <input id="" type="file" name="files[]" data-url="" multiple="" />
-                                </span>
-                        </div>
-                        <div class="datum-manage">
-                            <a href="javascript:;" class="datum-btn datum-confirm">确认资料</a>
-                            <a href="javascript:;" class="datum-btn datum-change">修改意见</a>
-                            <a href="javascript:;" class="datum-btn datum-history">历史意见<span class="history-counts">99</span></a>
-                        </div>
-                        <!-- 历史意见/start -->
-                        <div class="history-opinion">
 
-                        </div>
-                        <!-- 历史意见/end -->
-                    </div>
-                    <div class="works-fifth works-manage-step">
-                        <h2 class="handle-affair-tit">5.企业提交合作框架</h2>
-                        <p class="handle-affair-desc">企业提出交易框架合同，双方确认后，进入下一阶段</p>
-                        <div class="handle-up">
-                                <span class="handle-up-btn basic-span change-btn fileinput-button">
-                                    <span>上传文件</span>
-                                    <input id="" type="file" name="files[]" data-url="" multiple="" />
-                                </span>
-                        </div>
-                        <div class="datum-manage">
-                            <a href="javascript:;" class="datum-btn datum-confirm">确认资料</a>
-                            <a href="javascript:;" class="datum-btn datum-change">修改意见</a>
-                            <a href="javascript:;" class="datum-btn datum-history">历史意见<span class="history-counts">99</span></a>
-                        </div>
-                        <!-- 历史意见/start -->
-                        <div class="history-opinion">
-
-                        </div>
-                        <!-- 历史意见/end -->
-                    </div>
-                    <div class="works-sixth works-manage-step">
-                        <h2 class="handle-affair-tit">6.专家提交办事实施方案</h2>
-                        <p class="handle-affair-desc">专家拿出实施方案，企业修改，专家反馈，双方确认</p>
-                        <div class="handle-up">
-                                <span class="handle-up-btn basic-span change-btn fileinput-button">
-                                    <span>上传文件</span>
-                                    <input id="" type="file" name="files[]" data-url="" multiple="" />
-                                </span>
-                        </div>
-                        <div class="datum-manage">
-                            <a href="javascript:;" class="datum-btn datum-confirm">确认资料</a>
-                            <a href="javascript:;" class="datum-btn datum-change">修改意见</a>
-                            <a href="javascript:;" class="datum-btn datum-history">历史意见<span class="history-counts">99</span></a>
-                        </div>
-                        <!-- 历史意见/start -->
-                        <div class="history-opinion">
-
-                        </div>
-                        <!-- 历史意见/end -->
-                    </div>
-                    <div class="works-last works-manage-step">
-                        <h2 class="handle-affair-tit">7.日程管理</h2>
-                        <p class="handle-affair-desc">正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户</p>
-                        <div class="datum-manage">
-                            <a href="javascript:;" class="datum-btn datum-add" style="display:block">新增日程</a>
-                        </div>
-                        <ul class="add-works-task">
-                            <li>
-                                <textarea class="works-task-desc" readonly="readonly">正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户</textarea>
-                                <span class="task-state task-ing">进行中</span>
-                                <div class="task-dispose">
-                                    <span class="task-icon-finish task-icon" title="完成"><i class="iconfont icon-xuanzhong"></i></span>
-                                    <span class="task-icon-delete task-icon" title="删除"><i class="iconfont icon-chahao"></i></span>
-                                </div>
-                            </li>
-                            <li>
-                                <textarea class="works-task-desc" readonly="readonly">正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户</textarea>
-                                <span class="task-state task-finished">已完成</span>
-                                <div class="task-dispose">
-                                    <span class="task-icon-finish task-icon" title="完成"><i class="iconfont icon-xuanzhong"></i></span>
-                                    <span class="task-icon-delete task-icon" title="删除"><i class="iconfont icon-chahao"></i></span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -253,37 +152,75 @@
 
         $('.fileupload1').on('change', function(e){
             //$('#upload-avatar').html('正在上传...');
-            var formData = new FormData($("#fileupload1")[0]);
-            $.ajax({
-                url: '{{url('uct_works/upload',1)}}' ,
-                type: 'POST',
-                data: formData,
-                async: false,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    if(data.icon == 2){
-                        layer.msg(data.error,{'icon':data.icon});
-                    } else {
-                        $('#event1 #eventa1').html(data.name);
-                        $('#event1 #eventa1').attr('href','/'+data.path);
-                        $('#event1 #eventa2').html(' 下载');
-                        $('#event1 #eventa2').attr('href','/download?path='+data.path);
-                    }
+            var spanobj = $(this).parent().parent().siblings('span');
+            var formobj = $(this).parent();
+            var divobj = formobj.parent().parent().parent();
+            var formData = new FormData(formobj[0]);
+            var indexpid = $(this).attr('index');
+            console.log(divobj.hasClass('execute'));
+            if(divobj.hasClass('execute')){
+                $.ajax({
+                    url: '{{url('uct_works/upload')}}'+'/'+indexpid ,
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if(data.icon == 2){
+                            layer.msg(data.error,{'icon':data.icon});
+                        } else {
+                            spanobj.children('.eventa1').html(data.name);
+                            spanobj.children('.eventa1').attr('href','/'+data.path);
+                            spanobj.children('.eventa2').html(' 下载 ');
+                            spanobj.children('.eventa2').attr('href','/download?path='+data.downpath);
+                            $('.datum-confirm').attr('index',data.epid);
+                            $('.datum-change').attr('index',data.epid);
+                        }
 
-                },
-                error: function (returndata) {
-                    return 0;
-                }
-            });
+                    },
+                    error: function (returndata) {
+                        return 0;
+                    }
+                });
+            } else {
+                return false;
+            }
+
         });
 
-        $("#Pagination").pagination("15");
+
         // 点击历史意见
         $('.datum-history').on('click', function(event) {
+            var epid = $(this).attr('index');
+            var page = $(this).attr('page');
+            var pageobj = $(this).parent().siblings('.history-opinion');
+            var contobj = pageobj.children('ul');
+            pageobj.children().children('#Pagination').pagination(page,{'callback':function (page_index, jq) {
+                var current = parseInt(page_index)+1;
+                $.get('{{url('uct_works/detail',$eventId)}}?page='+current,{'epid':epid},function (data) {
+                    var ee = data.data;
+                    contobj.html('');
+                    var str = '';
+                    for(var i=0;i<ee.length;i++){
+                        str += ' <li class="opinion-item"><p class="opinion-item-desc">';
+                        str +='<span style="font-size: 15px;color: #000;">'+ee[i].adduser+':</span>'+ee[i].content+' </p>';
+                        str +='<span class="opinion-item-time">'+ee[i].addtime+'</span>';
+                        str +='</li>';
+                    }
+                    contobj.html(str);
+
+                });
+                return false;
+            }});
+
+            //$("#Pagination").pagination("15");
             $(this).closest('.works-manage-step').children('.history-opinion').stop().slideToggle();
         });
+
+
+
         // 确定资料
         $('.datum-confirm').bind('click', function(event) {
             var $that = $(this);
@@ -292,6 +229,18 @@
                     title:false,
                     btn: ['确认','取消']
                 }, function(index){
+                    var epid =  $that.attr('index');
+                    if(epid != ''){
+                        $.post('{{url('truedocument')}}',{'epid':epid},function (data) {
+                            if(data.icon == 2){
+                                layer.msg(data.error,{'icon':2});
+                            } else {
+                                layer.msg(data.msg,{'icon':1,'time':1500});
+                                $that.parent().parent().removeClass('execute');
+                            }
+                        });
+                    }
+
                     layer.close(index);
                     $that.unbind('click');
                     $that.siblings('.datum-change').unbind('click');
@@ -310,8 +259,15 @@
         $('.datum-change').bind('click',function(e) {
             var $that = $(this);
             if($that.closest('.works-manage-step').hasClass('execute')){
+                if(!$that.attr('index')){
+                    layer.msg('请先上传资料');
+                    return false;
+                }
                 stopPropagation(e);
                 $('.cover').fadeIn();
+                $('.cover-pop').children('textarea').attr('epid', $that.attr('index'));
+                $('.cover-pop').children('textarea').attr('eventid', $that.attr('eventid'));
+
             }
         });
         $(document).click(function(e) {
@@ -320,6 +276,26 @@
         });
         $('.cover-pop').click(function(e) {
             stopPropagation(e);
+        });
+        $('.cover-confirm').click(function(event) {
+            $(this).attr('disabled',true);
+            var textarea = $(this).siblings('textarea');
+            var content = textarea.val();
+            var epid = textarea.attr('epid');
+            var eventid = textarea.attr('eventid');
+            if(content != ''){
+                $.post('{{url('uct_works/sendremark')}}',{'content':content,'epid':epid,'eventid':eventid},function (data){
+                    if(data.icon == 2){
+                        layer.msg(data.error,{'icon':2});
+                    } else {
+                        layer.msg(data.msg,{'icon':1,'time':1500},function () {
+                            window.location = window.location.href;
+                        });
+                    }
+                });
+            } else {
+                layer.msg('请输入内容');
+            }
         });
         $('.cover-cancel').click(function(event) {
             $(this).closest('.cover').fadeOut();

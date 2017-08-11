@@ -138,6 +138,10 @@ Route::get('uct_works','MyEnterpriseController@works');
 Route::get('uct_works/detail/{eventId}','MyEnterpriseController@workDetail');
 //处理上传的资料
 Route::post('uct_works/upload/{proid}','MyEnterpriseController@eventUpload');
+//确认资料
+Route::post('truedocument','MyEnterpriseController@trueDocument');
+//确认资料
+Route::post('uct_works/sendremark','MyEnterpriseController@sendRemark');
 //申请办事服务1
 Route::get('uct_works/applyWork','MyEnterpriseController@applyWork');
 //保存申请的办事服务

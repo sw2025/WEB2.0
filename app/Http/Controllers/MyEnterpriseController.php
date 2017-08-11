@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -287,7 +288,7 @@ class MyEnterpriseController extends Controller
      * @param $eventId
      * @return mixed
      */
-    public function workDetail($eventId){
+    public function workDetail($eventId,Request $request){
         $datas=DB::table("t_e_event")
                     ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
                     ->where("t_e_event.eventid",$eventId)
@@ -301,6 +302,11 @@ class MyEnterpriseController extends Controller
             }else{
                 $data->state="系统分配";
             }
+        }
+        if($request->ajax()){
+            $data = $request->input();
+            $res = DB::table('t_e_eventprocessremark')->where('epid',$data['epid'])->paginate(1);
+            return $res;
         }
         switch($configId){
             case 5:
@@ -329,7 +335,18 @@ class MyEnterpriseController extends Controller
                     ->leftJoin('t_u_enterprise as ent','ent.userid','=','t_e_event.userid')
                     ->where("t_e_event.eventid",$eventId)
                     ->first();
-                return view("myenterprise.works6",compact("datas","eventId",'info'));
+                $configinfo = DB::table('t_e_eventprocessconfig as con')
+                    ->leftJoin('t_e_eventprocess as pro','con.pid','=','pro.pid')
+                    ->select('con.pid as ppid','con.*','pro.*')
+                    ->orderBy('con.pid')
+                    ->get();
+                $configinfo = \EnterpriseClass::processInsert($configinfo);
+                $lastpid = DB::table('t_e_eventprocess')->where('eventid',$eventId)->orderBy('epid','desc')->first();
+                $epids = DB::table('t_e_eventprocess')->where('eventid',$eventId)->lists('epid');
+                foreach($epids as $v){
+                    $remark[$v] = [DB::table('t_e_eventprocessremark')->where('epid',$v)->paginate(1),DB::table('t_e_eventprocessremark')->where('epid',$v)->count()];
+                }
+                return view("myenterprise.works6",compact("datas","eventId",'info','configinfo','lastpid','remark'));
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
@@ -337,8 +354,16 @@ class MyEnterpriseController extends Controller
         return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","eventId"));
     }
 
-    public function eventUpload($proid)
+    /*public function getajaxpage (Request $request) {
+        $data = $request->input();
+    }*/
+
+    public function eventUpload($proid,Request $request)
     {
+        if(empty(session('userId'))){
+            return ['error' => '请登录','icon' => 2];
+        }
+        $data = $request->input();
         // 接收文件信息 进行上传
         $file = Input::file('files');
         if($file->isValid()){
@@ -352,12 +377,85 @@ class MyEnterpriseController extends Controller
                 return ['error' => '您上传的不是正确的类型文件','icon' => 2];
             }
             $name = iconv("UTF-8","gb2312", $file->getClientOriginalName());
-            $path = $file->move('swUpload/event/'.session('userId').'/'.$proid.'/',$name);
-            $path = iconv("gb2312","UTF-8", $path);
+            $path = $file->move('swUpload/event/'.$data['eventid'].'/'.$proid.'/'.date('mdHis',time()).'/',$name);
+            if(!empty($path)){
 
-            return ['path' => $path,'name' => $clientName,'icon' => 1];
+                $path = iconv("gb2312","UTF-8", $path);
+                $down = Crypt::encrypt($path);
+                $data['pid'] = $proid;
+                $data['documenturl'] = $path;
+                $data['state'] = 0;
+                $verify = DB::table('t_e_eventprocess')->where(['pid' => $proid,'eventid' => $data['eventid']])->first();
+
+                if(!empty($verify)){
+                    $epid = $verify->epid;
+                    DB::table('t_e_eventprocess')->where('epid',$epid)->update(['documenturl' => $path,'state' => 1]);
+                } else {
+                    $epid = DB::table('t_e_eventprocess')->insertGetId($data);
+                }
+                return ['path' => $path,'name' => $clientName,'icon' => 1,'downpath' => $down,'epid' => $epid];
+            }
+            return ['error' => '上传文件失败','icon' => 2];
+
 
         }
+        return ['error' => '上传文件失败','icon' => 2];
+    }
+
+    /**确认资料
+     * @param Request $request
+     * @return array
+     */
+    public function trueDocument (Request $request) {
+        if($request->ajax()){
+            $data = $request->only('epid');
+            $res = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->update(['state' => 2]);
+            if($res){
+                return ['msg' => '确认成功' ,'icon' => 1];
+            }
+            return ['error' => '您已经确认过资料了哦~','icon' => 2];
+        }
+        return ['error' => '非法请求','icon' => 2];
+    }
+
+    /**专家或者企业进行反馈
+     * @param Request $request
+     * @return array
+     */
+    public function sendRemark(Request $request)
+    {
+        if($request->ajax()){
+            if(empty(session('userId'))){
+                return ['error' => '请登陆后操作','icon' => 2];
+            }
+            $data = $request->input();
+            $eventid = $data['eventid'];
+            unset($data['eventid']);
+            $eventuserid = DB::table('t_e_event')->where('eventid',$eventid)->first()->userid;
+            $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $eventid,'state' => 3])->first()->expertid;
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            if(!empty($expertid)){
+                if($eventuserid != $expertid && $eventuserid != session('userId')){
+                    return ['error' => '您不是办事企业或者受邀专家','icon' => 2];
+                }
+                if($eventuserid == session('userId')){
+                    $data['adduser'] = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
+                } elseif ($eventuserid == $expertid){
+                    $data['adduser'] = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertname;
+                }
+            } else {
+                if($eventuserid != session('userId')){
+                    return ['error' => '您不是办事企业','icon' => 2];
+                } else {
+                    $data['adduser'] = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
+                }
+            }
+            $data['addtime'] = date('Y-m-d H:i:s',time());
+            DB::table('t_e_eventprocessremark')->insert($data);
+            return ['msg' => '反馈成功' , 'icon' => 1];
+
+        }
+        return ['error' => '非法请求','icon' => 2];
     }
     
     /**申请办事服务
