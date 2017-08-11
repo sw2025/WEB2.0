@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use Mockery\CountValidator\Exception;
 
 class MyEnterpriseController extends Controller
@@ -234,7 +236,7 @@ class MyEnterpriseController extends Controller
         $typeWhere=($type!=0)?array("configid"=>$type):array();
         $result=DB::table("t_e_event")
                 ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
-                ->select("t_e_event.eventid","t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
+                ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
                 ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
                 ->where("t_e_event.userid",$userId)
                 ->where($typeWhere);
@@ -250,6 +252,8 @@ class MyEnterpriseController extends Controller
             }else{
                 $data->state="匹配专家";
             }
+            $configname = DB::table('t_e_eventverifyconfig')->where('configid',$data->configid)->first()->name;
+            $data->configname = $configname;
         }
         switch($type){
             case 0:
@@ -314,12 +318,48 @@ class MyEnterpriseController extends Controller
                     ->where("t_e_eventresponse.state",3)
                     ->where("t_e_eventresponse.eventid",$eventId)
                     ->get();
+                break;
+            case 6:
+                $info = DB::table('t_e_eventresponse as res')
+                    ->leftJoin('t_u_expert as ext','ext.expertid','=','res.expertid')
+                    ->where(['eventid' => $eventId,'state' => 3])
+                    ->first();
+                $datas = DB::table("t_e_event")
+                    ->leftJoin("view_eventstatus as status","status.eventid","=","t_e_event.eventid")
+                    ->leftJoin('t_u_enterprise as ent','ent.userid','=','t_e_event.userid')
+                    ->where("t_e_event.eventid",$eventId)
+                    ->first();
+                return view("myenterprise.works6",compact("datas","eventId",'info'));
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
         $view="works".$configId;
         return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","eventId"));
     }
+
+    public function eventUpload($proid)
+    {
+        // 接收文件信息 进行上传
+        $file = Input::file('files');
+        if($file->isValid()){
+            $clientName = $file -> getClientOriginalName();
+            //$tmpName = $file ->getFileName();
+            //$realPath = $file -> getRealPath();
+            $entension = $file -> getClientOriginalExtension();
+            //$mimeTye = $file -> getMimeType();
+            $fileTypes = ['html','pdf','doc','txt','docx'];
+            if(!in_array($entension,$fileTypes)){
+                return ['error' => '您上传的不是正确的类型文件','icon' => 2];
+            }
+            $name = iconv("UTF-8","gb2312", $file->getClientOriginalName());
+            $path = $file->move('swUpload/event/'.session('userId').'/'.$proid.'/',$name);
+            $path = iconv("gb2312","UTF-8", $path);
+
+            return ['path' => $path,'name' => $clientName,'icon' => 1];
+
+        }
+    }
+    
     /**申请办事服务
      * @return mixed
      */
