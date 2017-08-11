@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 
 class PublicController extends Controller
 {
@@ -26,16 +27,22 @@ class PublicController extends Controller
 
     public function download ()
     {
-        $filepath = $_GET['path'];
-        header('Content-Description: File Transfer');
+        $filepath = Crypt::decrypt($_GET['path']);
+        $filepath = str_replace('\\','/',$filepath);
+        $filepath = iconv('utf-8','GB2312', $filepath);
 
+       /* header("Content-type: text/html;charset=utf-8");
+        header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename='.basename($filepath));
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Cache-Control:must-revalidate, post-check=0, pre-check=0');
         header('Pragma: public');
-        header('Content-Length: ' . filesize($filepath));
+        header('Content-Length: ' . filesize($filepath));*/
+        header( "Content-Disposition:  attachment;  filename=".preg_replace('/^.+[\\\\\\/]/', '', $filepath));
+        header('Content-Length: ' . filesize($filepath)); //下载文件大小
+        readfile($filepath);  //读取文件内容
     }
 
 
