@@ -18,18 +18,15 @@ class MyExpertController extends Controller
 
         $result = DB::table('view_expertstatus')->where(['userid' => session('userId')])->orderBy('configid','desc')->first();
         $cate = DB::table('t_common_domaintype')->get();
-
-        if(!$result){
-            if($result->configid == 1){
+        if(!empty($result)) {
+            if ($result->configid == 1) {
                 return redirect()->action('MyExpertController@expert2');
-            }elseif ($result->configid == 3){
-                return view("myexpert.expert",compact('cate','result'));
-            }else{
+            } elseif ($result->configid == 2) {
                 return redirect()->action('MyExpertController@expert3');
             }
-        }else{
-            return view("myexpert.expert",compact('cate','result'));
         }
+       return view("myexpert.expert",compact('cate','result'));
+
 
     }
     /**专家审核
@@ -155,7 +152,7 @@ class MyExpertController extends Controller
         //datas2为我的办事列表
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
-            ->whereIn('status.configid',[4,5,7])
+            ->whereIn('status.configid',[4,5,6,7])
             ->orderBy('res.id','desc')
             ->paginate(2);
         //调用eventclass中的方法进行对象的处理
@@ -194,6 +191,8 @@ class MyExpertController extends Controller
             ->first();
         if(!$datas){
             return redirect('/');
+        } elseif ($datas->configid == 6){
+            return redirect('uct_works/detail/'.$eventid);
         }
         $token = Crypt::encrypt($eventid.session('userId'));
         return view("myexpert.workDetail",compact('datas','token'));
