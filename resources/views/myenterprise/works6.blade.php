@@ -47,8 +47,8 @@
                     @foreach($configinfo as $v)
                         @if($v->ppid == 7)
                             <div class="works-last @if((empty($lastpid->pid) && $v->ppid == 1) || (!empty($lastpid->pid) && $lastpid->state == 2 && $v->ppid-1 == $lastpid->pid)  || (!empty($lastpid->pid) && $lastpid->pid == $v->ppid && $v->state != 2)) execute @endif  works-manage-step">
-                                <h2 class="handle-affair-tit">7.日程管理</h2>
-                                <p class="handle-affair-desc">正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户</p>
+                                <h2 class="handle-affair-tit">{{$v->ppid}}.{{$v->processname}}</h2>
+                                <p class="handle-affair-desc">{{$v->processdescription}}</p>
                                 <div class="datum-manage">
                                     <a href="javascript:;" class="datum-btn datum-add" style="display:block">新增日程</a>
                                 </div>
@@ -85,7 +85,7 @@
                                         <input class="fileupload1" type="file" name="files" multiple="" index="{{$v->ppid}}"/>
                                     </form>
                                 </span>
-                                    <span><a href="{{url($v->documenturl)}}" target="_blank" class="eventa1">{{$v->docname or ''}}</a><a href="@if(!empty($v->downurl)) /download?path={{$v->downurl}} " style="border: 1px solid #aaa;border-radius: 5px;margin-left: 10px;"  @endif class="eventa2"  >@if(!empty($v->downurl))&nbsp;下载&nbsp;@endif</a></span>
+                                    <span><a href="{{url($v->documenturl)}}" target="_blank" class="eventa1">{{$v->docname or ''}}</a><a href="@if(!empty($v->downurl)) /download?path={{$v->downurl}} " style="border: 1px solid #aaa;border-radius: 5px;margin-left: 10px;@endif"   class="eventa2"  >@if(!empty($v->downurl))&nbsp;下载&nbsp;@endif</a></span>
                                     @if(!empty($v->oldpath))
                                     <span>
                                         <span>&ensp;&ensp;&ensp;历史上传：</span>
@@ -96,12 +96,12 @@
                                     @endif
                                 </div>
                                 <div class="datum-manage">
-                                    <a href="javascript:;" class="datum-btn datum-confirm" index="{{$v->epid}}">确认资料</a>
+                                    <a href="javascript:;" class="datum-btn datum-confirm" index="{{$v->epid}}" eventid="{{$eventId}}" pid="{{$v->pid}}">确认资料</a>
                                     <a href="javascript:;" class="datum-btn datum-change" index="{{$v->epid}}" eventid="{{$eventId}}">修改意见</a>
-                                    <a href="javascript:;" class="datum-btn datum-history" index="{{$v->epid}}" page="{{$remark[$v->epid][0]->lastpage()}}">历史意见<span class="history-counts">{{$remark[$v->epid][1]}}</span></a>
+                                    <a href="javascript:;" class="datum-btn datum-history" index="{{$v->epid}}" page="@if(!empty($remark[$v->epid])) {{$remark[$v->epid][0]->lastpage()}} @endif">历史意见<span class="history-counts">{{$remark[$v->epid][1] or 0}}</span></a>
                                 </div>
                                 <!-- 历史意见/start -->
-                                @if(key_exists($v->epid,$remark) && $remark[$v->epid][1])
+                                @if(!empty($remark) && key_exists($v->epid,$remark) && $remark[$v->epid][1])
                                 <div class="history-opinion">
                                         <ul class="opinion-list">
                                             @foreach($remark[$v->epid][0] as $msg)
@@ -230,21 +230,26 @@
                     btn: ['确认','取消']
                 }, function(index){
                     var epid =  $that.attr('index');
+                    var pid =  $that.attr('pid');
+                    var eventid =  $that.attr('eventid');
                     if(epid != ''){
-                        $.post('{{url('truedocument')}}',{'epid':epid},function (data) {
+                        $.post('{{url('truedocument')}}',{'epid':epid,'eventid':eventid,'pid':pid},function (data) {
                             if(data.icon == 2){
                                 layer.msg(data.error,{'icon':2});
                             } else {
                                 layer.msg(data.msg,{'icon':1,'time':1500});
                                 $that.parent().parent().removeClass('execute');
+                                layer.close(index);
+                                $that.unbind('click');
+                                $that.siblings('.datum-change').unbind('click');
+                                $that.closest('.works-manage-step').next().addClass('execute');
                             }
                         });
+                    } else {
+                        layer.msg('请按照步骤操作',{'icon':2});
                     }
 
-                    layer.close(index);
-                    $that.unbind('click');
-                    $that.siblings('.datum-change').unbind('click');
-                    $that.closest('.works-manage-step').next().addClass('execute');
+
                 })
 
             }

@@ -343,8 +343,13 @@ class MyEnterpriseController extends Controller
                 $configinfo = \EnterpriseClass::processInsert($configinfo);
                 $lastpid = DB::table('t_e_eventprocess')->where('eventid',$eventId)->orderBy('epid','desc')->first();
                 $epids = DB::table('t_e_eventprocess')->where('eventid',$eventId)->lists('epid');
+                $remark = [];
                 foreach($epids as $v){
-                    $remark[$v] = [DB::table('t_e_eventprocessremark')->where('epid',$v)->paginate(1),DB::table('t_e_eventprocessremark')->where('epid',$v)->count()];
+                    $data1 = DB::table('t_e_eventprocessremark')->where('epid',$v)->paginate(1);
+                    $data2 = DB::table('t_e_eventprocessremark')->where('epid',$v)->count();
+                    if($data2){
+                        $remark[$v] = [$data1,$data2];
+                    }
                 }
                 return view("myenterprise.works6",compact("datas","eventId",'info','configinfo','lastpid','remark'));
         }
@@ -375,6 +380,20 @@ class MyEnterpriseController extends Controller
             $fileTypes = ['html','pdf','doc','txt','docx'];
             if(!in_array($entension,$fileTypes)){
                 return ['error' => '您上传的不是正确的类型文件','icon' => 2];
+            }
+            //验证是否为指定身份提交
+            $starttype = DB::table('t_e_eventprocessconfig')->where('pid',$proid)->first()->starttype;
+            $eventuserid = DB::table('t_e_event')->where('eventid',$data['eventid'])->first()->userid;
+            $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            if($starttype){
+                if($expertid != $eventexpertid){
+                    return ['error' => '该资料应由专家上传','icon' => 2];
+                }
+            } else{
+                if($eventuserid != session('userId')){
+                    return ['error' => '该资料应由企业上传','icon' => 2];
+                }
             }
             $name = iconv("UTF-8","gb2312", $file->getClientOriginalName());
             $path = $file->move('swUpload/event/'.$data['eventid'].'/'.$proid.'/'.date('mdHis',time()).'/',$name);
@@ -408,7 +427,21 @@ class MyEnterpriseController extends Controller
      */
     public function trueDocument (Request $request) {
         if($request->ajax()){
-            $data = $request->only('epid');
+            $data = $request->only('epid','pid','eventid');
+            //验证是否为指定身份提交
+            $starttype = DB::table('t_e_eventprocessconfig')->where('pid',$data['pid'])->first()->starttype;
+            $eventuserid = DB::table('t_e_event')->where('eventid',$data['eventid'])->first()->userid;
+            $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            if($starttype){
+                if($expertid != $eventexpertid){
+                    return ['error' => '该资料应由专家确定','icon' => 2];
+                }
+            } else{
+                if($eventuserid != session('userId')){
+                    return ['error' => '该资料应由企业确定','icon' => 2];
+                }
+            }
             $res = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->update(['state' => 2]);
             if($res){
                 return ['msg' => '确认成功' ,'icon' => 1];
@@ -435,12 +468,12 @@ class MyEnterpriseController extends Controller
             $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $eventid,'state' => 3])->first()->expertid;
             $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
             if(!empty($expertid)){
-                if($eventuserid != $expertid && $eventuserid != session('userId')){
+                if($eventexpertid != $expertid && $eventuserid != session('userId')){
                     return ['error' => '您不是办事企业或者受邀专家','icon' => 2];
                 }
                 if($eventuserid == session('userId')){
                     $data['adduser'] = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
-                } elseif ($eventuserid == $expertid){
+                } elseif ($eventexpertid == $expertid){
                     $data['adduser'] = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertname;
                 }
             } else {
