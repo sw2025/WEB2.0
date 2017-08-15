@@ -326,28 +326,36 @@ class MyEnterpriseController extends Controller
                     ->get();
                 break;
             case 6:
+                //当config为6正在办事的状态的时候
+                //获取到被选择的专家的信息
                 $info = DB::table('t_e_eventresponse as res')
                     ->leftJoin('t_u_expert as ext','ext.expertid','=','res.expertid')
                     ->where(['eventid' => $eventId,'state' => 3])
                     ->first();
+                //获取到该办事的相关信息
                 $datas = DB::table("t_e_event")
                     ->leftJoin("view_eventstatus as status","status.eventid","=","t_e_event.eventid")
                     ->leftJoin('t_u_enterprise as ent','ent.userid','=','t_e_event.userid')
                     ->where("t_e_event.eventid",$eventId)
                     ->first();
+                //获取到办事的流程的信息
                 $configinfo = DB::table('t_e_eventprocessconfig as con')
                     ->leftJoin('t_e_eventprocess as pro','con.pid','=','pro.pid')
                     ->select('con.pid as ppid','con.*','pro.*')
                     ->orderBy('con.pid')
                     ->get();
+                //对信息进行封装
                 $configinfo = \EnterpriseClass::processInsert($configinfo);
+                //获取到办事进行到的过程
                 $lastpid = DB::table('t_e_eventprocess')->where('eventid',$eventId)->orderBy('epid','desc')->first();
+                //获取到该办事的所有的过程id
                 $epids = DB::table('t_e_eventprocess')->where('eventid',$eventId)->lists('epid');
                 $remark = [];
                 foreach($epids as $v){
                     $data1 = DB::table('t_e_eventprocessremark')->where('epid',$v)->paginate(1);
                     $data2 = DB::table('t_e_eventprocessremark')->where('epid',$v)->count();
                     if($data2){
+                        //若有返回信息则吧反馈的信息对象存放到数组中
                         $remark[$v] = [$data1,$data2];
                     }
                 }
@@ -395,17 +403,20 @@ class MyEnterpriseController extends Controller
                     return ['error' => '该资料应由企业上传','icon' => 2];
                 }
             }
+            //将获取到的文件名装换成gb2312的编码方式
             $name = iconv("UTF-8","gb2312", $file->getClientOriginalName());
             $path = $file->move('swUpload/event/'.$data['eventid'].'/'.$proid.'/'.date('mdHis',time()).'/',$name);
             if(!empty($path)){
-
+                //吧路径的编码方式转换成utf-8
                 $path = iconv("gb2312","UTF-8", $path);
+                //加密路径
                 $down = Crypt::encrypt($path);
                 $data['pid'] = $proid;
                 $data['documenturl'] = $path;
                 $data['state'] = 0;
+                //获取到该办事的指定的过程的信息
                 $verify = DB::table('t_e_eventprocess')->where(['pid' => $proid,'eventid' => $data['eventid']])->first();
-
+                //如果存在过程信息  更改
                 if(!empty($verify)){
                     $epid = $verify->epid;
                     DB::table('t_e_eventprocess')->where('epid',$epid)->update(['documenturl' => $path,'state' => 1]);
@@ -464,13 +475,19 @@ class MyEnterpriseController extends Controller
             $data = $request->input();
             $eventid = $data['eventid'];
             unset($data['eventid']);
+            //获取到这个办事的发起人
             $eventuserid = DB::table('t_e_event')->where('eventid',$eventid)->first()->userid;
+            //获取到这个办事被选择的专家的expertid
             $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $eventid,'state' => 3])->first()->expertid;
+            //获取到当前登录用户的专家的id
             $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            //若这个用户是专家  若不是 则只需判定办事的发起人是不是这个当前的登录者
             if(!empty($expertid)){
+                //若被选择的专家id不是登录用户专家id 且 办事发起人不是当前用户
                 if($eventexpertid != $expertid && $eventuserid != session('userId')){
                     return ['error' => '您不是办事企业或者受邀专家','icon' => 2];
                 }
+                //判定发起人是谁
                 if($eventuserid == session('userId')){
                     $data['adduser'] = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
                 } elseif ($eventexpertid == $expertid){

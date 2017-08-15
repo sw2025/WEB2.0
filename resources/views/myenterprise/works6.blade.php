@@ -90,7 +90,7 @@
                                     <span>
                                         <span>&ensp;&ensp;&ensp;历史上传：</span>
                                         @foreach($v->oldpath as $kk => $vv)
-                                            <a href="/download?path={{$vv}}">{{$kk}}</a> |
+                                            <a href="/download?path={{$vv[1]}}" title="{{$vv[2]}}修改">{{$vv[0]}}</a> |
                                         @endforeach
                                     </span>
                                     @endif
@@ -152,6 +152,7 @@
 
         $('.fileupload1').on('change', function(e){
             //$('#upload-avatar').html('正在上传...');
+            var thisobj = $(this);
             var spanobj = $(this).parent().parent().siblings('span');
             var formobj = $(this).parent();
             var divobj = formobj.parent().parent().parent();
@@ -174,9 +175,11 @@
                             spanobj.children('.eventa1').html(data.name);
                             spanobj.children('.eventa1').attr('href','/'+data.path);
                             spanobj.children('.eventa2').html(' 下载 ');
+                            spanobj.children('.eventa2').css({'border':'1px solid #aaa','borderRadius':'5px','marginLeft':'10px'});
                             spanobj.children('.eventa2').attr('href','/download?path='+data.downpath);
                             $('.datum-confirm').attr('index',data.epid);
                             $('.datum-change').attr('index',data.epid);
+                            thisobj.val('');
                         }
 
                     },
