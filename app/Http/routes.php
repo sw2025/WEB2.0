@@ -75,6 +75,10 @@ Route::get('uct_basic/changePwd','CenterController@changePwd');
 Route::post('updatePwd','CenterController@updatePwd');
 //公共上传图片
 Route::any('upload','PublicController@upload');
+//办事上传资料
+Route::any('eventupload','PublicController@eventUpload');
+//办事上传资料
+Route::any('download','PublicController@download');
 //基本资料修改
 Route::post('changeBasics','CenterController@changeBasics');
 //充值提现
@@ -132,6 +136,12 @@ Route::get('uct_member/member4/{entid}','MyEnterpriseController@member4');
 Route::get('uct_works','MyEnterpriseController@works');
 //办事详情
 Route::get('uct_works/detail/{eventId}','MyEnterpriseController@workDetail');
+//处理上传的资料
+Route::post('uct_works/upload/{proid}','MyEnterpriseController@eventUpload');
+//确认资料
+Route::post('truedocument','MyEnterpriseController@trueDocument');
+//确认资料
+Route::post('uct_works/sendremark','MyEnterpriseController@sendRemark');
 //申请办事服务1
 Route::get('uct_works/applyWork','MyEnterpriseController@applyWork');
 //保存申请的办事服务
@@ -160,7 +170,18 @@ Route::post('handleSelect','MyEnterpriseController@handleSelect');
 Route::post('toVideoExpertMsg','MyEnterpriseController@toVideoExpertMsg');
 //咨询完成，给专家评论
 Route::post('toVideoExpertContent','MyEnterpriseController@toVideoExpertContent');
-//专家资源详情
+
+//添加过程7
+Route::post('addeventtask','MyEnterpriseController@addEventTask');
+//添加日程
+Route::post('submittask','MyEnterpriseController@submitTask');
+//申请视频咨询2
+Route::get('uct_video/video2','MyEnterpriseController@video2');
+//申请视频咨询3
+Route::get('uct_video/video3','MyEnterpriseController@video3');
+//申请视频咨询4
+Route::get('uct_video/video4','MyEnterpriseController@video4');
+
 Route::get('uct_resource/resDetail/{expertid}','MyEnterpriseController@resDetail');
 
 //判断企业是否是会员

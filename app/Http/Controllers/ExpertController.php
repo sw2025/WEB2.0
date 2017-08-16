@@ -42,7 +42,7 @@ class ExpertController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
-            $supplywhere = !empty($supply)?array("ext.domain1"=>$supply[0],'ext.domain2' => $supply[1]):array();
+
             $addresswhere = !empty($address)?array("ext.address"=>$address):array();
             if(!empty($consult) && $consult == '收费'){
                 $consultwhere = ['fee.state' => 1];
@@ -52,7 +52,12 @@ class ExpertController extends Controller
             } else {
                 $consultwhere = [];
             }
-            $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere)->where($consultwhere);
+            if(!empty($supply)){
+                $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+            } else {
+                $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
+            }
+
             //判断是否有搜索的关键字
             if(!empty($searchname)){
                 $obj = $obj->where("ext.expertname","like","%".$searchname."%");

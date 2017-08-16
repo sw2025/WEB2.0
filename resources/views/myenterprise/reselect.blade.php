@@ -115,13 +115,12 @@
                                     <div class="exp-list-brief">
                                         <span class="exp-list-name">{{$v->expertname}}</span>
                                         <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}@else 免费 @endif</em></span>
-                                        <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
+                                        <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$v->domain1}}</em></span>
                                     </div>
                                     <div class="exp-list-lab">
-                                        <span class="exp-lab-a">不知道</span>
-                                        <span class="exp-lab-a">不知道</span>
-                                        <span class="exp-lab-a">不知道</span>
-                                        <span class="exp-lab-a">不知道</span>
+                                        @foreach(explode(',',$v->domain2) as $do2)
+                                            <span class="exp-lab-a">&nbsp;{{$do2}}&nbsp;</span>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="exp-list-desc">

@@ -38,6 +38,7 @@
                             <th>办事类型</th>
                             <th>专家</th>
                             <th>描述</th>
+                            <th>办事状态</th>
                             <th>发布时间</th>
                         </tr>
                         </thead>
@@ -47,6 +48,7 @@
                                 <td><a href="{{asset('uct_works/detail/'.$data->eventid)}}">{{$data->work}}</a></td>
                                 <td><a href="{{asset('uct_works/detail/'.$data->eventid)}}">{{$data->state}}</a></td>
                                 <td><a href="{{asset('uct_works/detail/'.$data->eventid)}}">{{$data->brief}}</a></td>
+                                <td><a href="{{asset('uct_works/detail/'.$data->eventid)}}">{{$data->configname}}</a></td>
                                 <td><a href="{{asset('uct_works/detail/'.$data->eventid)}}">{{$data->created_at}}</a></td>
                             </tr>
                         @endforeach
