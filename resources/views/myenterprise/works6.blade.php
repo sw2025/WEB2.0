@@ -50,25 +50,26 @@
                                 <h2 class="handle-affair-tit">{{$v->ppid}}.{{$v->processname}}</h2>
                                 <p class="handle-affair-desc">{{$v->processdescription}}</p>
                                 <div class="datum-manage">
-                                    <a href="javascript:;" class="datum-btn datum-add" style="display:block">新增日程</a>
+                                    <a href="javascript:;" class="datum-btn datum-add" style="display:block" epid="{{$v->epid}}"  pid="{{$v->ppid}}">新增日程</a>
+                                    <input type="hidden" id="startuserid" name="startuserid" value='@if($v->starttype) {{$info->userid}} @else {{$datas->userid}} @endif '>
+                                    <input type="hidden" id="acceptuserid" name="acceptuserid" value='@if($v->starttype) {{$datas->userid}} @else {{$info->userid}} @endif '>
                                 </div>
                                 <ul class="add-works-task">
+                                    @foreach($task as $t)
                                     <li>
-                                        <textarea class="works-task-desc" readonly="readonly">正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户</textarea>
-                                        <span class="task-state task-ing">进行中</span>
+                                        <textarea class="works-task-desc" readonly="readonly">{{$t->taskname}}</textarea>
+                                        @if($t->state)
+                                            <span class="task-state task-finished">已完成</span>
+                                        @else
+                                            <span class="task-state task-ing">进行中</span>
+                                        @endif
                                         <div class="task-dispose">
-                                            <span class="task-icon-finish task-icon" title="完成"><i class="iconfont icon-xuanzhong"></i></span>
-                                            <span class="task-icon-delete task-icon" title="删除"><i class="iconfont icon-chahao"></i></span>
+                                            <span class="task-icon-finish task-icon" etid="{{$t->etid}}" title="完成"><i class="iconfont icon-xuanzhong"></i></span>
+                                            <span class="task-icon-delete task-icon" etid="{{$t->etid}}" title="删除"><i class="iconfont icon-chahao"></i></span>
                                         </div>
                                     </li>
-                                    <li>
-                                        <textarea class="works-task-desc" readonly="readonly">正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户正确填写微信支付向你的银行账户中汇入的确认金额的数目，以验证账户</textarea>
-                                        <span class="task-state task-finished">已完成</span>
-                                        <div class="task-dispose">
-                                            <span class="task-icon-finish task-icon" title="完成"><i class="iconfont icon-xuanzhong"></i></span>
-                                            <span class="task-icon-delete task-icon" title="删除"><i class="iconfont icon-chahao"></i></span>
-                                        </div>
-                                    </li>
+                                    @endforeach
+
                                 </ul>
                             </div>
                         @else
@@ -79,13 +80,13 @@
                                 <span class="handle-up-btn basic-span change-btn fileinput-button">
                                     <form>
                                         <input type="hidden" name="eventid" value='{{$eventId}}'>
-                                        <input type="hidden" name="startuserid" value='@if($v->starttype) {{$info->userid}} @else {{$datas->userid}} @endif '>
-                                        <input type="hidden" name="acceptuserid" value='@if($v->starttype) {{$datas->userid}} @else {{$info->userid}} @endif '>
+                                        <input type="hidden" name="startuserid" value='@if($info->userid == session('userId')) {{$info->userid}} @else {{$datas->userid}} @endif '>
+                                        <input type="hidden" name="acceptuserid" value='@if($info->userid == session('userId')) {{$datas->userid}} @else {{$info->userid}} @endif '>
                                         <span>上传文件</span>
                                         <input class="fileupload1" type="file" name="files" multiple="" index="{{$v->ppid}}"/>
                                     </form>
                                 </span>
-                                    <span><a href="{{url($v->documenturl)}}" target="_blank" class="eventa1">{{$v->docname or ''}}</a><a href="@if(!empty($v->downurl)) /download?path={{$v->downurl}} " style="border: 1px solid #aaa;border-radius: 5px;margin-left: 10px;@endif"   class="eventa2"  >@if(!empty($v->downurl))&nbsp;下载&nbsp;@endif</a></span>
+                                    <span><a href="{{url($v->documenturl)}}" target="_blank" class="eventa1">{{$v->docname or ''}}</a><a href="@if(!empty($v->downurl)) /download?path={{$v->downurl}} " style="padding-right: 2px;border: 1px solid #aaa;border-radius: 5px;margin-left: 10px;@endif"   class="eventa2"  >@if(!empty($v->downurl))&nbsp;下载&nbsp;@endif</a></span>
                                     @if(!empty($v->oldpath))
                                     <span>
                                         <span>&ensp;&ensp;&ensp;历史上传：</span>
@@ -96,7 +97,7 @@
                                     @endif
                                 </div>
                                 <div class="datum-manage">
-                                    <a href="javascript:;" class="datum-btn datum-confirm" index="{{$v->epid}}" eventid="{{$eventId}}" pid="{{$v->pid}}">确认资料</a>
+                                    <a href="javascript:;" class="datum-btn datum-confirm" index="{{$v->epid}}" eventid="{{$eventId}}" pid="{{$v->ppid}}">确认资料</a>
                                     <a href="javascript:;" class="datum-btn datum-change" index="{{$v->epid}}" eventid="{{$eventId}}">修改意见</a>
                                     <a href="javascript:;" class="datum-btn datum-history" index="{{$v->epid}}" page="@if(!empty($remark[$v->epid])) {{$remark[$v->epid][0]->lastpage()}} @endif">历史意见<span class="history-counts">{{$remark[$v->epid][1] or 0}}</span></a>
                                 </div>
@@ -175,7 +176,7 @@
                             spanobj.children('.eventa1').html(data.name);
                             spanobj.children('.eventa1').attr('href','/'+data.path);
                             spanobj.children('.eventa2').html(' 下载 ');
-                            spanobj.children('.eventa2').css({'border':'1px solid #aaa','borderRadius':'5px','marginLeft':'10px'});
+                            spanobj.children('.eventa2').css({'border':'1px solid #aaa','borderRadius':'5px','marginLeft':'10px','paddingRight':'2px'});
                             spanobj.children('.eventa2').attr('href','/download?path='+data.downpath);
                             $('.datum-confirm').attr('index',data.epid);
                             $('.datum-change').attr('index',data.epid);
@@ -285,6 +286,7 @@
         $('.cover-pop').click(function(e) {
             stopPropagation(e);
         });
+
         $('.cover-confirm').click(function(event) {
             $(this).attr('disabled',true);
             var textarea = $(this).siblings('textarea');
@@ -311,10 +313,29 @@
         // 新增任务
         $('.datum-add').click(function() {
             if($(this).closest('.works-manage-step').hasClass('execute')){
-                var tag = '<li><textarea class="works-task-desc"></textarea><div class="task-dispose"><span class="task-icon-delete task-icon" title="删除"><i class="iconfont icon-chahao"></i></span></div><button class="confirm-task-btn" type="button">确定</button></li>'
-                $('.add-works-task').append(tag);
+                var thisobj = $(this);
+                var epid = $(this).attr('epid');
+                var eventid = {{$eventId}};
+                var pid = $(this).attr('pid');
+                if(epid == ''){
+                    $.post('{{url('addeventtask')}}',{'pid':pid,'eventid':eventid,'startuserid':$('#startuserid').val(),'acceptuserid':$('#acceptuserid').val()},function (data) {
+                        if(data){
+                            epid = data;
+                            thisobj.attr('epid',data);
+                            var tag = '<li><textarea class="works-task-desc" epid="'+epid+'"></textarea><div class="task-dispose"><span class="task-icon-delete task-icon" title="删除"><i class="iconfont icon-chahao"></i></span></div><button class="confirm-task-btn" type="button" onclick="submittask(this)">确定</button></li>'
+                            $('.add-works-task').append(tag);
+                        }
+                    });
+                } else {
+                    var tag = '<li><textarea class="works-task-desc" epid="'+epid+'"></textarea><div class="task-dispose"><span class="task-icon-delete task-icon" title="删除"><i class="iconfont icon-chahao"></i></span></div><button class="confirm-task-btn" type="button" onclick="submittask(this)">确定</button></li>'
+                    $('.add-works-task').append(tag);
+                }
+
             }
         });
+
+
+
 
         // 鼠标滑过li
         $('.add-works-task').on('mouseover mouseout', 'li', function() {
@@ -322,30 +343,89 @@
                 $(this).children('.task-dispose').stop().fadeToggle(200);
             }
         });
+
         // 点击完成
         $('.add-works-task').on('click', '.task-icon-finish', function() {
+            var thisobj = $(this);
             var $state = $(this).closest('li').find('.task-state');
             if(!$state.hasClass('task-finished')){
                 layer.confirm('确定该日程已完成吗？', {
                     title:false,
                     btn: ['确认','取消'] //按钮
                 }, function(index){
-                    layer.close(index);
-                    $state.html('已完成').addClass('task-finished');
+
+                   dealtask(thisobj.attr('etid'),1,index,$state);
+
                 })
             }
         });
         // 点击删除
         $('.add-works-task').on('click', '.task-icon-delete', function() {
+            var thisobj = $(this);
             var $li = $(this).closest('li');
             layer.confirm('确定删除该日程吗？', {
                 title:false,
                 btn: ['确认','取消'] //按钮
             }, function(index){
-                layer.close(index);
-                $li.remove();
+                dealtask(thisobj.attr('etid'),2,index,$li);
             })
         })
     })
+    /**
+     * 处理日志完成或者删除
+     * @param id
+     * @param state
+     * @param obj1
+     * @param obj2
+     */
+    function dealtask(id,state,obj1,obj2){
+        var eventid = {{$eventId}};
+        $.post('{{url('submittask')}}',{'eventid':eventid,'etid':id,'state':state},function (data) {
+            if(data.icon == 2){
+                layer.msg(data.error,{'icon':2});
+            } else {
+                if(state == 1){
+                    layer.msg(data.msg,{'icon':1,'time':1000},function () {
+                        layer.close(obj1);
+                        obj2.html('已完成').addClass('task-finished');
+                    });
+                } else {
+                    layer.msg(data.msg,{'icon':1,'time':1000},function () {
+                        layer.close(obj1);
+                        obj2.remove();
+                    });
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 提交新建的日志
+     * @param obj
+     */
+    function submittask(obj) {
+        var textobj = $(obj).siblings('textarea');
+        var epid = textobj.attr('epid');
+        var eventid = {{$eventId}};
+        $(obj).attr('disabled',true);
+        if(epid != 0 && textobj.val() != ''){
+            $.post('{{url('submittask')}}',{'eventid':eventid,'epid':epid,'taskname':textobj.val(),'state':0},function (data) {
+                if(data.icon == 2){
+                    layer.msg(data.error,{'icon':2},function () {
+                        $(obj).attr('disabled',false);
+                    });
+                } else {
+                    layer.msg(data.msg,{'icon':1},function () {
+                        $(obj).remove();
+                        window.location = window.location.href;
+                    });
+                }
+            });
+        } else {
+            layer.msg('请填写日程');
+        }
+    }
+
 </script>
 @endsection

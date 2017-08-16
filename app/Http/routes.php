@@ -170,7 +170,10 @@ Route::post('handleSelect','MyEnterpriseController@handleSelect');
 Route::post('toVideoExpertMsg','MyEnterpriseController@toVideoExpertMsg');
 //咨询完成，给专家评论
 Route::post('toVideoExpertContent','MyEnterpriseController@toVideoExpertContent');
-
+//添加过程7
+Route::post('addeventtask','MyEnterpriseController@addEventTask');
+//添加日程
+Route::post('submittask','MyEnterpriseController@submitTask');
 //申请视频咨询2
 Route::get('uct_video/video2','MyEnterpriseController@video2');
 //申请视频咨询3

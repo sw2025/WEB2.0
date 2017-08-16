@@ -124,7 +124,7 @@
                                             <input class="datas-sel-name" readonly="readonly" type="text" value="{{$data->expertname}}" />
                                         </div>
                                         <div class="datas-sel zindex2">
-                                            <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def verify-default">不限</a>
+                                            <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->domain1.'/'.$data->domain2}}</a>
 
                                         </div>
                                         <div class="datas-sel zindex3">
