@@ -16,7 +16,7 @@ class CenterController extends Controller
      */
     public function index(){
         $userId=session("userId");
-        $data=DB::table("T_U_USER")->where("userid",2)->first();
+        $data=DB::table("T_U_USER")->where("userid",$userId)->first();
         return view("ucenter.index",compact("data"));
     }
 
@@ -445,11 +445,19 @@ class CenterController extends Controller
                     return $res;
                 }
                 break;
-            case "forget":
+            case "change1":
                 $user = User::where('phonenumber', $phone)->first();
                 if(!$user) {
                     $res['code']="phone";
                     $res['msg']="该手机号不存在!";
+                    return $res;
+                }
+                break;
+            case "change2":
+                $user = User::where('phonenumber', $phone)->first();
+                if($user) {
+                    $res['code']="phone";
+                    $res['msg']="该手机号已经注册!";
                     return $res;
                 }
                 break;
@@ -556,7 +564,7 @@ class CenterController extends Controller
      */
     public function changeBasics(){
         $nickName=!empty($_POST['nickName'])?$_POST['nickName']:"";
-        $avatar=!empty($_POST['myAvatar'])?$_POST['myAvatar']:"avatar.jpg";
+        $avatar=!empty($_POST['myAvatar'])?$_POST['myAvatar']:"/avatar.jpg";
         $userId=$_POST["userId"];
         $res=array();
         $result=DB::table("T_U_USER")->where("userid",$userId)->update([
@@ -565,6 +573,8 @@ class CenterController extends Controller
             "updated_at"=>date("Y-m-d H:i:s",time())
         ]);
         if($result){
+            $accid=DB::table("t_u_user")->where("userid",$userId)->pluck("accid");
+            \UserClass::updateName($accid,$nickName,$avatar);
             $res['code']="success";
         }else{
             $res['code']="error";

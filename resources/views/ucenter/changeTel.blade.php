@@ -60,7 +60,7 @@
     var verifyCode=function(userId){
         $.ajax({
             url:"{{asset('getcodes')}}",
-            data:{"userId":userId,"action":"forget"},
+            data:{"userId":userId,"action":"change1"},
             dateType:"json",
             type:"POST",
             success:function(res){
@@ -75,8 +75,7 @@
         })
     }
     $("#basic-btn").on("click",function(){
-        window.location.href="{{asset('uct_basic/changeTel2')}}"
-       /* var code=$("#code").val();
+        var code=$("#code").val();
         var passWord=$("#passWord").val();
         var userId=$.cookie("userId");
         if(!passWord){
@@ -109,7 +108,7 @@
                     window.location.href="{{asset('uct_basic/changeTel2')}}"
                 }
             }
-        })*/
+        })
     })
 </script>
 @endsection

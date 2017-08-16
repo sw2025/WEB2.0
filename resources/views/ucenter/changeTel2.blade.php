@@ -60,7 +60,7 @@
     var verifyPhone=function(userId){
         $.ajax({
             url:"{{asset('getcodes')}}",
-            data:{"userId":userId,"action":"forget"},
+            data:{"userId":userId,"action":"change2"},
             dateType:"json",
             type:"POST",
             success:function(res){

@@ -150,19 +150,20 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public  function uct_member(){
-        $enterprise = DB::table('t_u_enterprise')->where(['userid' => session('userId')])->first();
-        if(!empty($enterprise)){
-            $enterpriseid = $enterprise->enterpriseid;
-            $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$enterpriseid)->orderBy('id','desc')->first()->configid;
-            if($configid == 3){
-                return redirect('uct_member/member3/'.$enterpriseid);
-            } elseif ($configid == 4){
-                return redirect('uct_member/member4/'.$enterpriseid);
-            } elseif ($configid == 2){
-                return redirect('uct_member/member2/'.$enterpriseid);
+
+        $enterpriseid = DB::table('t_u_enterprise')->where(['userid' => session('userId')])->first()->enterpriseid;
+        if($enterpriseid){
+            $configids = DB::table('t_u_enterpriseverify')->where('enterpriseid',$enterpriseid)->orderBy('id','desc')->first();
+            if($configids){
+                if($configids->configid == 3){
+                    return redirect('uct_member/member3/'.$enterpriseid);
+                } elseif ($configids->configid == 4){
+                    return redirect('uct_member/member4/'.$enterpriseid);
+                } elseif ($configids->configid == 2){
+                    return redirect('uct_member/member2/'.$enterpriseid);
+                }
             }
         }
-
         return view("myenterprise.member");
     }
 
@@ -221,7 +222,6 @@ class MyEnterpriseController extends Controller
     public  function member3(){
         return view("myenterprise.member3");
     }
-
     /**会员认证4
      * @return mixed
      */
@@ -229,9 +229,6 @@ class MyEnterpriseController extends Controller
         $data = DB::table('t_u_enterprise')->where(['enterpriseid' => $entid,'userid' => session('userId')])->first();
         return view("myenterprise.member4",compact('data'));
     }
-
-    
-
     /**办事服务
      * @return mixed
      */
@@ -761,15 +758,23 @@ class MyEnterpriseController extends Controller
         $result=array();
         $eventId=$_POST['eventId'];
         try{
-            DB::table("t_e_eventtcomment")->insert([
-               "eventid"=>$eventId,
-               "expertid"=>$_POST['expertId'],
-               "score"=>$_POST['score'],
-               "comment"=>"",
-               "commenttime"=>date("Y-m-d H:i:s",time()),
-               "created_at"=>date("Y-m-d H:i:s",time()),
-               "updated_at"=>date("Y-m-d H:i:s",time()),
-               ]);
+            $counts=DB::table("t_e_eventtcomment")->where([ "eventid"=>$eventId,"expertid"=>$_POST['expertId']])->count();
+            if($counts){
+                DB::table("t_e_eventtcomment")->where([ "consultid"=>$eventId,"expertid"=>$_POST['expertId']])->update([
+                    "score"=>$_POST['score'],
+                    "updated_at"=>date("Y-m-d H:i:s",time()),
+                ]);
+            }else {
+                DB::table("t_e_eventtcomment")->insert([
+                    "eventid" => $eventId,
+                    "expertid" => $_POST['expertId'],
+                    "score" => $_POST['score'],
+                    "comment" => "",
+                    "commenttime" => date("Y-m-d H:i:s", time()),
+                    "created_at" => date("Y-m-d H:i:s", time()),
+                    "updated_at" => date("Y-m-d H:i:s", time()),
+                ]);
+            }
         }catch(Exception $e){
             throw $e;
         }
@@ -924,7 +929,6 @@ class MyEnterpriseController extends Controller
         $cate = DB::table('t_common_domaintype')->get();
         return view("myenterprise.applyVideo",compact("cate"));
     }
-
     /**保存申请的咨询
      * @return array
      */
@@ -1116,15 +1120,23 @@ class MyEnterpriseController extends Controller
         $result=array();
         $consultId=$_POST['consultId'];
         try{
-            DB::table("t_c_consultcomment")->insert([
-                "consultid"=>$consultId,
-                "expertid"=>$_POST['expertId'],
-                "score"=>$_POST['score'],
-                "comment"=>"",
-                "commenttime"=>date("Y-m-d H:i:s",time()),
-                "created_at"=>date("Y-m-d H:i:s",time()),
-                "updated_at"=>date("Y-m-d H:i:s",time()),
-            ]);
+            $counts=DB::table("t_c_consultcomment")->where([ "consultid"=>$consultId,"expertid"=>$_POST['expertId']])->count();
+            if($counts){
+                DB::table("t_c_consultcomment")->where([ "consultid"=>$consultId,"expertid"=>$_POST['expertId']])->update([
+                    "score"=>$_POST['score'],
+                    "updated_at"=>date("Y-m-d H:i:s",time()),
+                ]);
+            }else{
+                DB::table("t_c_consultcomment")->insert([
+                    "consultid"=>$consultId,
+                    "expertid"=>$_POST['expertId'],
+                    "score"=>$_POST['score'],
+                    "comment"=>"",
+                    "commenttime"=>date("Y-m-d H:i:s",time()),
+                    "created_at"=>date("Y-m-d H:i:s",time()),
+                    "updated_at"=>date("Y-m-d H:i:s",time()),
+                ]);
+            }
         }catch(Exception $e){
             throw $e;
         }
@@ -1159,30 +1171,4 @@ class MyEnterpriseController extends Controller
         return $result;
     }
 
-    /**申请视频咨询3
-     * @return mixed
-     */
-    public function video3(){
-        return view("myenterprise.video3");
-    }
-    /**申请视频咨询4
-     * @return mixed
-     */
-    public function video4(){
-        return view("myenterprise.video4");
-    }
-    /**申请视频咨询5
-     * @return mixed
-     */
-    public function video5(){
-        return view("myenterprise.video5");
-    }
-    /**申请视频咨询6
-     * @return mixed
-     */
-    public function video6(){
-        return view("myenterprise.video6");
-    }
-
-    
 }

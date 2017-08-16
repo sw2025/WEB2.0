@@ -7,7 +7,7 @@
         <h3 class="main-top">企业办事服务</h3>
         <div class="ucenter-con">
             <div class="myrequire-bg">
-                <a href="{{asset('uct_works/applyWork')}}" class="need-publish-btn">申请办事服务</a>
+                <a href="javascript:;" class="need-publish-btn" id="applyEvent">申请办事服务</a>
                 <div class="publish-intro resource-intro">
                     <span class="introduce-cap">办事流程介绍</span>
                     <div class="introduce-con">关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报</div>
@@ -117,6 +117,37 @@
             }
             window.location.href="?type="+type;
         });
+        $("#applyEvent").on("click",function(){
+            var userId=$.cookie('userId');
+            $.ajax({
+                url:"{{asset('IsMember')}}",
+                data:{"userId":userId},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        window.location.href="{{asset('uct_works/applyWork')}}"
+                    }else if(res['code']=="error"){
+                        layer.confirm('您尚未开通会员', {
+                            btn: ['开通','取消'], //按钮
+                        }, function(){
+                            window.location.href='{{asset('uct_member')}}';
+                        }, function(){
+                            layer.close();
+                        });
+                    }else{
+                        layer.confirm('您的会员已过期,请续费', {
+                            btn: ['续费','取消'], //按钮
+                        }, function(){
+                            window.location.href='{{asset('uct_member/member4/2')}}';
+                        }, function(){
+                            layer.close();
+                        });
+                    }
+                }
+            })
+
+        })
 
     })
 </script>

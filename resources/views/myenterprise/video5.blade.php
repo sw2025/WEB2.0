@@ -103,15 +103,48 @@
                    });
                     $.ajax({
                         url:"{{asset('returnMoney')}}",
-                        data:{"userId":$.cookie('userId')},
+                        data:{"userId":$.cookie('userId'),"expertIds":expertIds,"type":"consult","consultId":consultId,},
                         dateType:"json",
                         type:"POST",
                         success:function(res){
-                            if(res['code']=="success"){
-                                var account=res['account'];
-                               checkMoney(totalCount,account,consultId)
-                            }else{
-                                layer.msg("网络异常");
+                            switch(res['code']){
+                                case "noEnterprise":
+                                    layer.confirm('您还不是企业,去开通?', {
+                                        btn: ['开通','取消'], //按钮
+                                    }, function(){
+                                        window.location.href="{{asset('uct_member')}}";
+                                    }, function(){
+                                        layer.close();
+                                    });
+                                break;
+                                case "noMember":
+                                    layer.confirm('您还不是会员,去开通?', {
+                                        btn: ['开通','取消'], //按钮
+                                    }, function(){
+                                        window.location.href="{{asset('uct_member')}}";
+                                    }, function(){
+                                        layer.close();
+                                    });
+                                break;
+                                case "expried":
+                                    layer.confirm('您的会员已过期,请续费', {
+                                        btn: ['续费','取消'], //按钮
+                                    }, function(){
+                                        window.location.href='{{asset('uct_member/member4/2')}}';
+                                    }, function(){
+                                        layer.close();
+                                    });
+                                break;
+                                case "success":
+                                    window.location.reload();
+                                break;
+                                case "payMoney":
+                                    var account=res['account'];
+                                    checkMoney(totalCount,account,consultId)
+                                break;
+                                case "error":
+                                    layer.msg("网络异常");
+                                break;
                             }
                         }
                     })
@@ -124,9 +157,6 @@
             })
             //判断余额和要消费的钱
             var  checkMoney=function(totalCount,account,consultId){
-                console.log(expertIds);
-                console.log(totalCount);
-                console.log(account);
                 var userId=$.cookie("userId");
                 if(account>totalCount){
                     $.ajax({

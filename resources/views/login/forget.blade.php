@@ -54,7 +54,7 @@
             time(this);
             $.ajax({
                 url:"{{asset('getCode')}}",
-                data:{"phone":phone,"action":"register"},
+                data:{"phone":phone,"action":"findPwd"},
                 dataType:"json",
                 type:"POST",
                 success:function(res){
