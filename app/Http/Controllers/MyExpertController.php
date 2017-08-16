@@ -73,8 +73,9 @@ class MyExpertController extends Controller
             //判断是否登陆
             if(!empty(session('userId'))){
                 $data = $request->input();
-                $domain1 = explode('/',$data['industry'])[0];
-                $domain2 = explode('/',$data['industry'])[1];
+                $domain1 = explode('-',$data['industry'])[0];
+                $domain2 = explode('-',$data['industry'])[1];
+                $domain2 = trim(str_replace('/',',',$domain2),',');
                 //开启事务
                 DB::beginTransaction();
                 try{
@@ -98,9 +99,7 @@ class MyExpertController extends Controller
                             ->insert([
                                 "expertid"=>$expertid,
                                 "configid"=>1,
-                                "remark"=>$data['brief'],
                                 "verifytime"=>date("Y-m-d H:i:s",time()),
-                                "created_at"=>date("Y-m-d H:i:s",time()),
                                 "updated_at"=>date("Y-m-d H:i:s",time())
                             ]);
                     }

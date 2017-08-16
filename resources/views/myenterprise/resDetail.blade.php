@@ -12,15 +12,12 @@
                             <img src="{{asset($datas->showimage)}}" class="myexpert-img" />
                             <div class="myexpert-rt">
                                 <span class="myexp-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
-                                <span class="myexp-best">擅长领域：<em>{{$datas->domain1}} / {{$datas->domain2}}</em></span>
+                                <span class="myexp-best">擅长领域：<em>{{$datas->domain1}}</em></span>
                                 <div class="myexpert-lab">
-                                    <span class="myexp-lab-a">不知道</span>
-                                    <span class="myexp-lab-a">不知道</span>
-                                    <span class="myexp-lab-a">不知道</span>
-                                    <span class="myexp-lab-a">不知道</span>
-                                    <span class="myexp-lab-a">不知道</span>
-                                    <span class="myexp-lab-a">不知道</span>
-                                    <span class="myexp-lab-a">不知道</span>
+                                    @foreach(explode(',',$datas->domain2) as $do2)
+                                        <span class="myexp-lab-a">&nbsp;{{$do2}}&nbsp;</span>
+                                    @endforeach
+
                                 </div>
                                 <span class="myexp-time">入驻时间：<em>{{$datas->created_at}}</em></span>
                             </div>
