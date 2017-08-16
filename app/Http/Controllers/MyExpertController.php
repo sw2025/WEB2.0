@@ -18,13 +18,13 @@ class MyExpertController extends Controller
 
         $result = DB::table('view_expertstatus')->where(['userid' => session('userId')])->orderBy('configid','desc')->first();
         $cate = DB::table('t_common_domaintype')->get();
-        if(!empty($result)) {
+        /*if(!empty($result)) {
             if ($result->configid == 1) {
                 return redirect()->action('MyExpertController@expert2');
             } elseif ($result->configid == 2) {
                 return redirect()->action('MyExpertController@expert3');
             }
-        }
+        }*/
        return view("myexpert.expert",compact('cate','result'));
 
 
@@ -104,7 +104,6 @@ class MyExpertController extends Controller
                                 "updated_at"=>date("Y-m-d H:i:s",time())
                             ]);
                     }
-
                     DB::commit();
                     return ['msg' => '添加专家认证成功,进入审核阶段','icon' => 1];
                 }catch(Exception $e)
