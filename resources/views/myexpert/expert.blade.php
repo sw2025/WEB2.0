@@ -148,21 +148,57 @@
                 $(this).parent().prev('.datas-sel-def').html(publishHtml);
                 $(this).parent().hide();
             });
-            $('.publ-need-sel-def').click(function() {
+
+            $('.publ-need-sel-def').click(function(e) {
+                e.stopPropagation();
                 $(this).next('ul').stop().slideToggle();
             });
+
             $('.publish-need-list li').hover(function() {
                 $(this).children('ul').stop().show();
             }, function() {
                 $(this).children('ul').stop().hide();
             });
-
-            $('.publ-sub-list li').click(function() {
-                var publishHtml = $(this).html();
-                var parentHtml = $(this).parent().siblings('a').text();
-                $('.publ-need-sel-def').html(parentHtml+'/'+publishHtml);
+            $('.publish-need-list li a').click(function(e){
+                e.stopPropagation();
+                if($(this).next('ul').children('li').length == 0){
+                    var m = $(this).html()
+                    $(this).closest('.publish-need-list').prev().html(m);
+                }
+            })
+            $(document).click(function(event) {
                 $('.publish-need-list').hide();
             });
+            $('.publ-sub-list li').click(function(e) {
+                e.stopPropagation();
+                $(this).toggleClass('on');
+                $(this).closest('.publish-need-list>li').siblings().find('li').removeClass('on');
+                var y = $(this).parent('ul').prev('a').html();
+                // if($('.on').length > 5){
+                //     $(this).removeClass('on');
+                //     return false;
+                // }
+
+                var x = y+'-';
+                $('.publ-sub-list li').each(function(index, el) {
+                    if($(el).hasClass('on')){
+                        // x = $('.on').html();
+                        x += $(el).html()+'/';
+                        $('.publ-need-sel-def').html(x);
+
+                    }else{
+                        $('.publ-need-sel-def').html(x);
+                    }
+
+                });
+            });
+
+//            $('.publ-sub-list li').click(function() {
+//                var publishHtml = $(this).html();
+//                var parentHtml = $(this).parent().siblings('a').text();
+//                $('.publ-need-sel-def').html(parentHtml+'/'+publishHtml);
+//                $('.publish-need-list').hide();
+//            });
         })
 
         $(function () {

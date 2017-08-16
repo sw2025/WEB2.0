@@ -122,7 +122,7 @@ class LoginController extends Controller
                     return $res;
                 }
                 break;
-            case "forget":
+            case "findPwd":
                 $user = User::where('phonenumber', $phone)->first();
                 if(!$user) {
                     $res['code']="phone";
@@ -146,6 +146,8 @@ class LoginController extends Controller
         $res = $this->_sendSms($phone, $randNum, $action);
         return $res;
     }
+    
+   
     
 
 

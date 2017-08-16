@@ -7,7 +7,7 @@
             <h3 class="main-top">专家视频咨询</h3>
             <div class="ucenter-con">
                 <div class="myrequire-bg">
-                    <a href="{{asset('uct_video/applyVideo')}}" class="need-publish-btn">申请视频咨询</a>
+                    <a href="javascript:;" class="need-publish-btn" id="applyVideo">申请视频咨询</a>
                     <div class="publish-intro myask-intro">
                         <span class="introduce-cap">视频咨询流程介绍</span>
                         <div class="introduce-con">关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报</div>
@@ -123,6 +123,37 @@
             }
             window.location.href="?type="+type;
         });
+        $("#applyVideo").on("click",function(){
+            var userId=$.cookie('userId');
+            $.ajax({
+                url:"{{asset('IsMember')}}",
+                data:{"userId":userId},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        window.location.href="{{asset('uct_video/applyVideo')}}"
+                    }else if(res['code']=="error"){
+                        layer.confirm('您尚未开通会员', {
+                            btn: ['开通','取消'], //按钮
+                        }, function(){
+                            window.location.href='{{asset('uct_member')}}';
+                        }, function(){
+                            layer.close();
+                        });
+                    }else{
+                        layer.confirm('您的会员已过期,请续费', {
+                            btn: ['续费','取消'], //按钮
+                        }, function(){
+                            window.location.href='{{asset('uct_member/member4/2')}}';
+                        }, function(){
+                            layer.close();
+                        });
+                    }
+                }
+            })
+
+        })
     })
 </script>
 @endsection

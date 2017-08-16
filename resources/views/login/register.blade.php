@@ -95,7 +95,7 @@
             });
             return false;
         };
-        if(!(reg2.test(passWord))){
+        if(!(reg2.test(pwd))){
             layer.tips('密码只能是6-18位的数字或者字母', '.user-pwd', {
                 tips: [2, '#00a7ed'],
                 time: 4000
@@ -135,7 +135,7 @@
                 }else{
                     $.cookie('userId',res['userId'],{expires:7,path:'/',domain:'sw2025.com'});
                     $.cookie('name',res['name'],{expires:7,path:'/',domain:'sw2025.com'});
-                    window.location.href="{{asset('/')}}"
+                    window.location.href="{{asset('uct_basic')}}"
                 }
             }
         })

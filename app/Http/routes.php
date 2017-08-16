@@ -160,17 +160,11 @@ Route::post('handleSelect','MyEnterpriseController@handleSelect');
 Route::post('toVideoExpertMsg','MyEnterpriseController@toVideoExpertMsg');
 //咨询完成，给专家评论
 Route::post('toVideoExpertContent','MyEnterpriseController@toVideoExpertContent');
-
-//申请视频咨询2
-Route::get('uct_video/video2','MyEnterpriseController@video2');
-//申请视频咨询3
-Route::get('uct_video/video3','MyEnterpriseController@video3');
-//申请视频咨询4
-Route::get('uct_video/video4','MyEnterpriseController@video4');
-
+//专家资源详情
 Route::get('uct_resource/resDetail/{expertid}','MyEnterpriseController@resDetail');
 
-
+//判断企业是否是会员
+Route::post("IsMember",'PublicController@IsMember');
 /************************************我是专家*********************************************************/
 //专家认证
 Route::get('uct_expert','MyExpertController@expert');
