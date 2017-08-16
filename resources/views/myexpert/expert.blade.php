@@ -22,7 +22,7 @@
                         <span class="expert-certy-blue">
                                     <em>资料提交</em>THE DATA SUBMITTED
                                 </span>
-                        @if($result->configid==3)
+                        @if(!empty($result) && $result->configid==3)
                             <span>
                                     <em>审核失败</em>
                                     拒绝理由：{{$result->remark}}
@@ -210,7 +210,6 @@
                     $.each(data.result.files, function (index, file) {
                         // console.log(file.name);
                         $("#avatar1").attr('src','../../swUpload/images/'+file.name).show();
-                        $("#myAvatar").val(file.name);
                     });
                 }
             });
@@ -225,7 +224,6 @@
                     $.each(data.result.files, function (index, file) {
                         // console.log(file.name);
                         $("#avatar2").attr('src','../../swUpload/images/'+file.name).show();
-                        $("#myAvatar").val(file.name);
                     });
                 }
             });
@@ -239,28 +237,32 @@
                 var name=$('.datas-sel-name').val();
                 var industry=$('#industry').html();
                 var address=$('#address').html();
-                var photo1=$('#photo1').val();
-                var photo2=$('#photo2').val();
+                var photo1=$('#avatar1').attr('src');
+                var photo2=$('#avatar2').attr('src');
                 var brief=$('#brief').val();
-
-                if(name=='' || photo1=='' || industry==''){
+                console.log(name=='' || photo1=='' || industry=='请选择');
+                if(name=='' || photo1=='' || industry=='请选择'){
+                    alert(123);
                     return false;
-                }
-                $.ajax({
-                    url:"{{asset('/uct_expertData')}}",
-                    data:{"category":category,"name":name,"industry":industry,"address":address,"photo1":photo1,"photo2":photo2,"brief":brief},
-                    dataType:"json",
-                    type:"POST",
-                    success:function(data){
-                        if (data.icon == 1){
-                            layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
-                                window.location = '{{asset('/uct_expert2')}}';
-                            });
-                        } else {
-                            layer.msg(data.msg,{'time':2000,'icon':data.icon});
+                } else {
+                    $.ajax({
+                        url:"{{asset('/uct_expertData')}}",
+                        data:{"category":category,"name":name,"industry":industry,"address":address,"photo1":photo1,"photo2":photo2,"brief":brief},
+                        dataType:"json",
+                        type:"POST",
+                        success:function(data){
+                            if (data.icon == 1){
+                                layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
+                                    window.location = '{{asset('/uct_expert2')}}';
+                                });
+                            } else {
+                                layer.msg(data.msg,{'time':2000,'icon':data.icon});
+                                $('.submit-audit').attr('disabled',false);
+                            }
                         }
-                    }
-                })
+                    })
+                }
+
 
 
             });

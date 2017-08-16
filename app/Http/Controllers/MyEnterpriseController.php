@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use Mockery\CountValidator\Exception;
 
 class MyEnterpriseController extends Controller
@@ -46,7 +49,6 @@ class MyEnterpriseController extends Controller
             $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
-            $supplywhere = !empty($supply)?array("ext.domain1"=>$supply[0],'ext.domain2' => $supply[1]):array();
             $addresswhere = !empty($address)?array("ext.address"=>$address):array();
             if(!empty($consult) && $consult == '收费'){
                 $consultwhere = ['fee.state' => 1];
@@ -56,7 +58,11 @@ class MyEnterpriseController extends Controller
             } else {
                 $consultwhere = [];
             }
-            $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere)->where($consultwhere);
+            if(!empty($supply)){
+                $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+            } else {
+                $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
+            }
             //判断是否有搜索的关键字
             if(!empty($searchname)){
                 $obj = $obj->where("ext.expertname","like","%".$searchname."%");
@@ -144,6 +150,7 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public  function uct_member(){
+
         $enterpriseid = DB::table('t_u_enterprise')->where(['userid' => session('userId')])->first()->enterpriseid;
         if($enterpriseid){
             $configids = DB::table('t_u_enterpriseverify')->where('enterpriseid',$enterpriseid)->orderBy('id','desc')->first();
@@ -231,7 +238,7 @@ class MyEnterpriseController extends Controller
         $typeWhere=($type!=0)?array("configid"=>$type):array();
         $result=DB::table("t_e_event")
                 ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
-                ->select("t_e_event.eventid","t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
+                ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
                 ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
                 ->where("t_e_event.userid",$userId)
                 ->where($typeWhere);
@@ -247,6 +254,8 @@ class MyEnterpriseController extends Controller
             }else{
                 $data->state="匹配专家";
             }
+            $configname = DB::table('t_e_eventverifyconfig')->where('configid',$data->configid)->first()->name;
+            $data->configname = $configname;
         }
         switch($type){
             case 0:
@@ -280,7 +289,7 @@ class MyEnterpriseController extends Controller
      * @param $eventId
      * @return mixed
      */
-    public function workDetail($eventId){
+    public function workDetail($eventId,Request $request){
         $datas=DB::table("t_e_event")
                     ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
                     ->where("t_e_event.eventid",$eventId)
@@ -294,6 +303,11 @@ class MyEnterpriseController extends Controller
             }else{
                 $data->state="系统分配";
             }
+        }
+        if($request->ajax()){
+            $data = $request->input();
+            $res = DB::table('t_e_eventprocessremark')->where('epid',$data['epid'])->paginate(1);
+            return $res;
         }
         switch($configId){
             case 5:
@@ -311,12 +325,279 @@ class MyEnterpriseController extends Controller
                     ->where("t_e_eventresponse.state",3)
                     ->where("t_e_eventresponse.eventid",$eventId)
                     ->get();
+                break;
+            case 6:
+                //当config为6正在办事的状态的时候
+                //获取到被选择的专家的信息
+                $info = DB::table('t_e_eventresponse as res')
+                    ->leftJoin('t_u_expert as ext','ext.expertid','=','res.expertid')
+                    ->where(['eventid' => $eventId,'state' => 3])
+                    ->first();
+                //获取到该办事的相关信息
+                $datas = DB::table("t_e_event")
+                    ->leftJoin("view_eventstatus as status","status.eventid","=","t_e_event.eventid")
+                    ->leftJoin('t_u_enterprise as ent','ent.userid','=','t_e_event.userid')
+                    ->where("t_e_event.eventid",$eventId)
+                    ->first();
+                //获取到办事的流程的信息
+                $configinfo = DB::table('t_e_eventprocessconfig as con')
+                    ->leftJoin('t_e_eventprocess as pro','con.pid','=','pro.pid')
+                    ->select('con.pid as ppid','con.*','pro.*')
+                    ->orderBy('con.pid')
+                    ->get();
+                //对信息进行封装
+                $configinfo = \EnterpriseClass::processInsert($configinfo);
+
+                //获取到办事进行到的过程
+                $lastpid = DB::table('t_e_eventprocess')->where('eventid',$eventId)->orderBy('epid','desc')->first();
+                //获取到该办事的所有的过程id
+                $epids = DB::table('t_e_eventprocess')->where('eventid',$eventId)->lists('epid');
+                //获取所有的日程
+                $task = DB::table('t_e_eventtask')->whereIn('epid',$epids)->where('state','<>','2')->orderBy('etid','desc')->get();
+                $remark = [];
+                foreach($epids as $v){
+                    $data1 = DB::table('t_e_eventprocessremark')->where('epid',$v)->paginate(1);
+                    $data2 = DB::table('t_e_eventprocessremark')->where('epid',$v)->count();
+                    if($data2){
+                        //若有返回信息则吧反馈的信息对象存放到数组中
+                        $remark[$v] = [$data1,$data2];
+                    }
+                }
+                return view("myenterprise.works6",compact('task',"datas","eventId",'info','configinfo','lastpid','remark'));
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
         $view="works".$configId;
         return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","eventId"));
     }
+
+    /*public function getajaxpage (Request $request) {
+        $data = $request->input();
+    }*/
+
+    public function eventUpload($proid,Request $request)
+    {
+        if(empty(session('userId'))){
+            return ['error' => '请登录','icon' => 2];
+        }
+        $data = $request->input();
+        // 接收文件信息 进行上传
+        $file = Input::file('files');
+        if($file->isValid()){
+            $clientName = $file -> getClientOriginalName();
+            //$tmpName = $file ->getFileName();
+            //$realPath = $file -> getRealPath();
+            $entension = $file -> getClientOriginalExtension();
+            //$mimeTye = $file -> getMimeType();
+            $fileTypes = ['html','pdf','doc','txt','docx'];
+            if(!in_array($entension,$fileTypes)){
+                return ['error' => '您上传的不是正确的类型文件','icon' => 2];
+            }
+            //验证是否为指定身份提交
+            $starttype = DB::table('t_e_eventprocessconfig')->where('pid',$proid)->first()->starttype;
+            $eventuserid = DB::table('t_e_event')->where('eventid',$data['eventid'])->first()->userid;
+            $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            if($starttype){
+                if($expertid != $eventexpertid){
+                    return ['error' => '该资料应由专家上传','icon' => 2];
+                }
+            } else{
+                if($eventuserid != session('userId')){
+                    return ['error' => '该资料应由企业上传','icon' => 2];
+                }
+            }
+            //将获取到的文件名装换成gb2312的编码方式
+            $name = iconv("UTF-8","gb2312", $file->getClientOriginalName());
+            $path = $file->move('swUpload/event/'.$data['eventid'].'/'.$proid.'/'.date('mdHis',time()).'/',$name);
+            if(!empty($path)){
+                //吧路径的编码方式转换成utf-8
+                $path = iconv("gb2312","UTF-8", $path);
+                //加密路径
+                $down = Crypt::encrypt($path);
+                $data['pid'] = $proid;
+                $data['documenturl'] = $path;
+                $data['state'] = 0;
+                //获取到该办事的指定的过程的信息
+                $verify = DB::table('t_e_eventprocess')->where(['pid' => $proid,'eventid' => $data['eventid']])->first();
+                //如果存在过程信息  更改
+                if(!empty($verify)){
+                    $epid = $verify->epid;
+                    DB::table('t_e_eventprocess')->where('epid',$epid)->update(['documenturl' => $path,'state' => 1]);
+                } else {
+                    $epid = DB::table('t_e_eventprocess')->insertGetId($data);
+                }
+                return ['path' => $path,'name' => $clientName,'icon' => 1,'downpath' => $down,'epid' => $epid];
+            }
+            return ['error' => '上传文件失败','icon' => 2];
+
+
+        }
+        return ['error' => '上传文件失败','icon' => 2];
+    }
+
+    /**确认资料
+     * @param Request $request
+     * @return array
+     */
+    public function trueDocument (Request $request) {
+        if($request->ajax()){
+            $data = $request->only('epid','pid','eventid');
+            //验证是否为指定身份提交
+            $starttype = DB::table('t_e_eventprocessconfig')->where('pid',$data['pid'])->first()->starttype;
+            $eventuserid = DB::table('t_e_event')->where('eventid',$data['eventid'])->first()->userid;
+            $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            if($starttype){
+                if($expertid != $eventexpertid){
+                    return ['error' => '该资料应由专家确定','icon' => 2];
+                }
+            } else{
+                if($eventuserid != session('userId')){
+                    return ['error' => '该资料应由企业确定','icon' => 2];
+                }
+            }
+            $res = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->update(['state' => 2]);
+            if($res){
+                return ['msg' => '确认成功' ,'icon' => 1];
+            }
+            return ['error' => '您已经确认过资料了哦~','icon' => 2];
+        }
+        return ['error' => '非法请求','icon' => 2];
+    }
+
+    /**专家或者企业进行反馈
+     * @param Request $request
+     * @return array
+     */
+    public function sendRemark(Request $request)
+    {
+        if($request->ajax()){
+            if(empty(session('userId'))){
+                return ['error' => '请登陆后操作','icon' => 2];
+            }
+            $data = $request->input();
+            $eventid = $data['eventid'];
+            unset($data['eventid']);
+            //获取到这个办事的发起人
+            $eventuserid = DB::table('t_e_event')->where('eventid',$eventid)->first()->userid;
+            //获取到这个办事被选择的专家的expertid
+            $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $eventid,'state' => 3])->first()->expertid;
+            //获取到当前登录用户的专家的id
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            //若这个用户是专家  若不是 则只需判定办事的发起人是不是这个当前的登录者
+            if(!empty($expertid)){
+                //若被选择的专家id不是登录用户专家id 且 办事发起人不是当前用户
+                if($eventexpertid != $expertid && $eventuserid != session('userId')){
+                    return ['error' => '您不是办事企业或者受邀专家','icon' => 2];
+                }
+                //判定发起人是谁
+                if($eventuserid == session('userId')){
+                    $data['adduser'] = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
+                } elseif ($eventexpertid == $expertid){
+                    $data['adduser'] = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertname;
+                }
+            } else {
+                if($eventuserid != session('userId')){
+                    return ['error' => '您不是办事企业','icon' => 2];
+                } else {
+                    $data['adduser'] = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
+                }
+            }
+            $data['addtime'] = date('Y-m-d H:i:s',time());
+            DB::table('t_e_eventprocessremark')->insert($data);
+            return ['msg' => '反馈成功' , 'icon' => 1];
+
+        }
+        return ['error' => '非法请求','icon' => 2];
+    }
+
+    /**添加过程的最后一步
+     * @param Request $request
+     * @return int
+     */
+    public function addEventTask(Request $request)
+    {
+        $data = $request->input();
+        $res = DB::table('t_e_eventprocess')->where(['pid' => $data['pid'],'eventid' => $data['eventid']])->first();
+        if(empty($res)){
+            $data['state'] = 0;
+            $epid = DB::table('t_e_eventprocess')->insertGetId($data);
+            return $epid;
+        }
+        return 0;
+    }
+
+    /**提交日程
+     * @param Request $request
+     * @return array
+     */
+    public function submitTask(Request $request)
+    {
+        if($request->ajax()){
+            $data = $request->input();
+            //获取到这个办事的发起人
+            $eventuserid = DB::table('t_e_event')->where('eventid',$data['eventid'])->first()->userid;
+            //获取到这个办事被选择的专家的expertid
+            $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
+            //获取到当前登录用户的专家的id
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            if($eventuserid == session('userId') || $expertid == $eventexpertid){
+                if(!$data['state']){
+                    $etid = DB::table('t_e_eventtask')->insertGetId([
+                        'epid' => $data['epid'],
+                        'taskname' => $data['taskname'],
+                        'createuserid' => session('userId'),
+                        'addtime' => date('Y-m-d H:i:s',time()),
+                        'state' => 0,
+                    ]);
+                    if($etid){
+                        return ['msg' => '添加日程成功','icon' => 1,'etid' => $etid];
+                    }
+                    return ['error' => '添加日程失败','icon' => 2];
+                } elseif ($data['state'] == 1){
+                    if($eventuserid == session('userId')){
+                        $name = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
+                        $operate = '企业'.$name.'完成此日程';
+                    } else {
+                        $name = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertname;
+                        $operate = '专家'.$name.'完成此日程';
+                    }
+                    $res = DB::table('t_e_eventtask')->where('etid',$data['etid'])->update([
+                        'state' => 1,
+                        'finishtime' => date('Y-m-d H:i:s',time()),
+                        'operate' => $operate
+                    ]);
+                    if($res){
+                        return ['msg' => '完成日程成功','icon' => 1];
+                    }
+                    return ['error' => '处理失败','icon' => 2];
+                } elseif ($data['state'] == 2){
+                    if($eventuserid == session('userId')){
+                        $name = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
+                        $operate = '企业'.$name.'删除此日程';
+                    } else {
+                        $name = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertname;
+                        $operate = '专家'.$name.'删除此日程';
+                    }
+                    $res = DB::table('t_e_eventtask')->where('etid',$data['etid'])->update([
+                        'state' => 2,
+                        'deletetime' => date('Y-m-d H:i:s',time()),
+                        'operate' => $operate
+                    ]);
+                    if($res){
+                        return ['msg' => '删除日程成功','icon' => 1];
+                    }
+                    return ['error' => '处理失败','icon' => 2];
+                }
+                return ['error' => '处理失败','icon' => 2];
+
+            }
+            return ['error' => '非本次办事参与人','icon' => 2];
+        }
+        return ['error' => '非法请求','icon' => 2];
+    }
+    
     /**申请办事服务
      * @return mixed
      */
@@ -408,7 +689,6 @@ class MyEnterpriseController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
-            $supplywhere = !empty($supply)?array("ext.domain1"=>$supply[0],'ext.domain2' => $supply[1]):array();
             $addresswhere = !empty($address)?array("ext.address"=>$address):array();
             if(!empty($consult) && $consult == '收费'){
                 $consultwhere = ['fee.state' => 1];
@@ -418,7 +698,11 @@ class MyEnterpriseController extends Controller
             } else {
                 $consultwhere = [];
             }
-            $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere)->where($consultwhere);
+            if(!empty($supply)){
+                $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+            } else {
+                $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
+            }
             //判断是否有搜索的关键字
             if(!empty($searchname)){
                 $obj = $obj->where("ext.expertname","like","%".$searchname."%");
@@ -729,7 +1013,6 @@ class MyEnterpriseController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
-            $supplywhere = !empty($supply)?array("ext.domain1"=>$supply[0],'ext.domain2' => $supply[1]):array();
             $addresswhere = !empty($address)?array("ext.address"=>$address):array();
             if(!empty($consult) && $consult == '收费'){
                 $consultwhere = ['fee.state' => 1];
@@ -739,7 +1022,11 @@ class MyEnterpriseController extends Controller
             } else {
                 $consultwhere = [];
             }
-            $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere)->where($consultwhere);
+            if(!empty($supply)){
+                $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+            } else {
+                $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
+            }
             //判断是否有搜索的关键字
             if(!empty($searchname)){
                 $obj = $obj->where("ext.expertname","like","%".$searchname."%");

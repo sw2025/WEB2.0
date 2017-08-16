@@ -18,18 +18,15 @@ class MyExpertController extends Controller
 
         $result = DB::table('view_expertstatus')->where(['userid' => session('userId')])->orderBy('configid','desc')->first();
         $cate = DB::table('t_common_domaintype')->get();
-
-        if(!$result){
-            if($result->configid == 1){
+        /*if(!empty($result)) {
+            if ($result->configid == 1) {
                 return redirect()->action('MyExpertController@expert2');
-            }elseif ($result->configid == 3){
-                return view("myexpert.expert",compact('cate','result'));
-            }else{
+            } elseif ($result->configid == 2) {
                 return redirect()->action('MyExpertController@expert3');
             }
-        }else{
-            return view("myexpert.expert",compact('cate','result'));
-        }
+        }*/
+       return view("myexpert.expert",compact('cate','result'));
+
 
     }
     /**专家审核
@@ -76,8 +73,9 @@ class MyExpertController extends Controller
             //判断是否登陆
             if(!empty(session('userId'))){
                 $data = $request->input();
-                $domain1 = explode('/',$data['industry'])[0];
-                $domain2 = explode('/',$data['industry'])[1];
+                $domain1 = explode('-',$data['industry'])[0];
+                $domain2 = explode('-',$data['industry'])[1];
+                $domain2 = trim(str_replace('/',',',$domain2),',');
                 //开启事务
                 DB::beginTransaction();
                 try{
@@ -101,13 +99,10 @@ class MyExpertController extends Controller
                             ->insert([
                                 "expertid"=>$expertid,
                                 "configid"=>1,
-                                "remark"=>$data['brief'],
                                 "verifytime"=>date("Y-m-d H:i:s",time()),
-                                "created_at"=>date("Y-m-d H:i:s",time()),
                                 "updated_at"=>date("Y-m-d H:i:s",time())
                             ]);
                     }
-
                     DB::commit();
                     return ['msg' => '添加专家认证成功,进入审核阶段','icon' => 1];
                 }catch(Exception $e)
@@ -155,7 +150,7 @@ class MyExpertController extends Controller
         //datas2为我的办事列表
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
-            ->whereIn('status.configid',[4,5,7])
+            ->whereIn('status.configid',[4,5,6,7])
             ->orderBy('res.id','desc')
             ->paginate(2);
         //调用eventclass中的方法进行对象的处理
@@ -194,6 +189,8 @@ class MyExpertController extends Controller
             ->first();
         if(!$datas){
             return redirect('/');
+        } elseif ($datas->configid == 6){
+            return redirect('uct_works/detail/'.$eventid);
         }
         $token = Crypt::encrypt($eventid.session('userId'));
         return view("myexpert.workDetail",compact('datas','token'));

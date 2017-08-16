@@ -21,15 +21,11 @@
                         <span class="exp-details-time">入驻时间：<em>{{$datas->created_at}}</em></span>
                         <span class="exp-details-categary">分<b class="wem2"></b>类：<em>{{$datas->category}}</em></span>
                         <span class="exp-details-video">视频咨询：<em>@if($datas->state && $datas->fee)￥{{$datas->fee}}@else 免费 @endif</em></span>
-                        <span class="exp-details-best">擅长领域：<em>{{$datas->domain1}} / {{$datas->domain2}}</em></span>
+                        <span class="exp-details-best">擅长领域：<em>{{$datas->domain1}}</em></span>
                         <div class="exp-details-lab">
-                            <span class="exp-lab-a">不知道</span>
-                            <span class="exp-lab-a">不知道</span>
-                            <span class="exp-lab-a">不知道</span>
-                            <span class="exp-lab-a">不知道</span>
-                            <span class="exp-lab-a">不知道</span>
-                            <span class="exp-lab-a">不知道</span>
-                            <span class="exp-lab-a">不知道</span>
+                            @foreach(explode(',',$datas->domain2) as $do2)
+                                <span class="exp-lab-a">&nbsp;{{$do2}}&nbsp;</span>
+                            @endforeach
                         </div>
                     </div>
                 </div>
