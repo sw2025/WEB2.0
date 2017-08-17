@@ -18,14 +18,14 @@ class MyExpertController extends Controller
 
         $result = DB::table('view_expertstatus')->where(['userid' => session('userId')])->orderBy('configid','desc')->first();
         $cate = DB::table('t_common_domaintype')->get();
-        /*if(!empty($result)) {
+        if(!empty($result)) {
             if ($result->configid == 1) {
                 return redirect()->action('MyExpertController@expert2');
             } elseif ($result->configid == 2) {
                 return redirect()->action('MyExpertController@expert3');
             }
-        }*/
-       return view("myexpert.expert",compact('cate','result'));
+        }
+        return view("myexpert.expert",compact('cate','result'));
 
 
     }
