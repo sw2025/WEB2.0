@@ -7,9 +7,11 @@
             <div class="main-right">
                 <div class="card-step">
                     <span class="green-circle">1</span>提交需求<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">2</span>需求审核
                 </div>
                 <div class="publish-need">
+                    @if(!empty($info))
+                        <p class="wrong-reason" style="text-align:left;width:350px;margin:0 auto;padding-top:30px;"><span style="color: #e3643d">拒绝原因：</span><span style="color: #e3643d">{{$info->error}}</span></p>
+                    @endif
                     <div class="publish-need-sel">
                         <span class="publ-need-sel-cap">需求分类</span><a href="javascript:;" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
                         <ul class="publish-need-list">
@@ -28,10 +30,7 @@
                                     </li>
                                     @endforeach
                         </ul>
-                        @if(!empty($info))
-                        <p><span style="color: #e3643d">拒绝原因：</span></p>
-                        <p><span style="color: #e3643d">{{$info->error}}</span></p>
-                        @endif
+
                         <textarea name="" id="content" class="publish-need-txt" cols="30" rows="10" placeholder="请输入需求描述"></textarea>
                     </div>
                     <div><button class="test-btn publish-submit" type="button">提交</button></div>

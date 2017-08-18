@@ -30,12 +30,12 @@
                     <input type="hidden" id="myAvatar" name="myAvatar" value="{{$data->avatar}}">
                     <div class="basic-upload">
                             <span class="basic-span change-btn fileinput-button">
-                                <span>上传</span>
+                                <span>上传头像</span>
                                 <input id="fileupload" type="file" name="files[]" data-url="{{asset('upload')}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                             </span>
                     </div>
                 </div>
-                <button type="button" class="basic-btn">确定</button>
+                <button type="button" class="basic-btn">保存</button>
             </div>
         </div>
     </div>

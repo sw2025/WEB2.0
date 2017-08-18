@@ -17,6 +17,8 @@ Route::post('returnMoney','PublicController@returnMoney');
 Route::post('returnData','IndexController@returnData');
 //专家列表
 Route::post('collectExpert','ExpertController@collectExpert');
+//首页服务介绍
+Route::get('service','PublicController@service');
 //登录
 Route::get('login','LoginController@login');
 //注册

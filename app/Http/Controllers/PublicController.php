@@ -250,6 +250,14 @@ class PublicController extends Controller
         return $result;
 
     }
+
+    /**首页服务介绍
+     * @return mixed
+     */
+    public function  service(){
+        
+        return view('public.service');
+    }
     
    
 
