@@ -114,8 +114,8 @@ class LoginController extends Controller
         $action =$_POST['action'];
         $res=array();
         switch ($action){
-            case "registr":
-                $user = User::where('phonenumber', $phone)->first();
+            case "register":
+                $user = User::where('phone', $phone)->first();
                 if($user) {
                     $res['code']="phone";
                     $res['msg']="该手机号已经注册!";
@@ -123,7 +123,7 @@ class LoginController extends Controller
                 }
                 break;
             case "findPwd":
-                $user = User::where('phonenumber', $phone)->first();
+                $user = User::where('phone', $phone)->first();
                 if(!$user) {
                     $res['code']="phone";
                     $res['msg']="该手机号不存在!";

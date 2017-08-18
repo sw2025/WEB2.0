@@ -23,7 +23,7 @@
                     <span class="mutil-choice"><i class="iconfont icon-xiangxiajiantou"></i></span></div>
                 <ul class="user-role-list">
                     <li>企业</li>
-                    <li>个人</li>
+                    <li>专家</li>
                 </ul>
             </div>
             <button type="button" class="login-btn">注 册</button>
@@ -70,8 +70,14 @@
                 dataType:"json",
                 type:"POST",
                 success:function(res){
-                    if(res['type']=="code"){
+                    if(res['code']=="code"){
                         layer.tips(res['msg'], '.get-test', {
+                            tips: [2, '#00a7ed'],
+                            time: 4000
+                        });
+                        return false;
+                    }else{
+                        layer.tips(res['msg'], '.user-tel', {
                             tips: [2, '#00a7ed'],
                             time: 4000
                         });
@@ -135,7 +141,7 @@
                 }else{
                     $.cookie('userId',res['userId'],{expires:7,path:'/',domain:'sw2025.com'});
                     $.cookie('name',res['name'],{expires:7,path:'/',domain:'sw2025.com'});
-                    window.location.href="{{asset('uct_basic')}}"
+                    window.location.href="{{asset('login')}}"
                 }
             }
         })

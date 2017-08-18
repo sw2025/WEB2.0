@@ -99,7 +99,7 @@ abstract class Controller extends BaseController{
                 $payPrefix="XF";
                 break;
         }
-        $payNo=$payPrefix.substr(time(),4) . mt_rand(1000,9999);
+        $payNo=$payPrefix.time() . mt_rand(1000,9999);
         return $payNo;
     }
 

@@ -85,7 +85,7 @@
                             <div class="facebox clearfix">
                                 <span class="chat-face"><i class="iconfont icon-weibiaoti-_fuzhi-"></i></span>
                                 <span class="chat-file"><input type="file" class="file-input" /><i class="iconfont icon-wenjianjia"></i></span>
-                                <span class="chat-sheying"><i class="iconfont icon-sheyingji"></i></span>
+                                <span class="chat-sheying" id="showNetcallVideoLink"><i class="iconfont icon-sheyingji"></i></span>
                                 <button class="chat-fasong">发送</button>
                             </div>
                         </div>
@@ -98,6 +98,7 @@
             </div>
         </div>
     </div>
+
     <!-- 公共footer / end -->
     <script type="text/javascript">
                 $(function(){
@@ -120,7 +121,40 @@
             str = str.replace(/\[em_([0-9]*)\]/g,'<img src="{{asset('arclist/$1.gif')}}" border="0" />');
             return str;
         }
-
     </script>
+    <script src="{{asset('im/3rd/NIM_Web_SDK_v4.0.0.js')}}"></script>
+    <script src="{{asset('im/3rd/NIM_Web_Netcall_v4.0.0.js')}}"></script>
+   {{-- <script src="{{asset('im/3rd/jquery-1.11.3.min.js')}}"></script>--}}
+
+    <script src="{{asset('im/3rd/platform.js')}}"></script>
+    <script src="{{asset('im/js/3rd/jquery-ui.min.js')}}"></script>
+    <script src="{{asset('im/3rd/rangeslider.min.js')}}"></script>
+    <!-- 右键菜单-->
+    <script src="{{asset('im/js/3rd/contextMenu/jquery.ui.position.js')}}"></script>
+    <script src="{{asset('im/js/3rd/contextMenu/jquery.contextMenu.js')}}"></script>
+
+    <script src="{{asset('im/js/config.js')}}"></script>
+    <script src="{{asset('im/js/emoji.js')}}"></script>
+    <script src="{{asset('im/js/util.js?v=2')}}"></script>
+    <script src="{{asset('im/js/cache.js?v=2')}}"></script>
+    <script src="{{asset('im/js/link.js')}}"></script>
+    <script src="{{asset('im/js/ui.js?v=2')}}"></script>
+    <script src="{{asset('im/js/widget/uiKit.js?v=2')}}"></script>
+    <script src="{{asset('im/js/widget/minAlert.js')}}"></script>
+    <script src="{{asset('im/js/module/base.js')}}"></script>
+    <script src="{{asset('im/js/module/message.js')}}"></script>
+    <script src="{{asset('im/js/module/sysMsg.js')}}"></script>
+    <script src="{{asset('im/js/module/personCard.js')}}"></script>
+    <script src="{{asset('im/js/module/session.js')}}"></script>
+    <script src="{{asset('im/js/module/friend.js')}}"></script>
+
+    <script src="{{asset('im/js/module/team.js')}}"></script>
+    <script src="{{asset('im/js/module/team_dialog.js')}}"></script>
+    <script src="{{asset('im/js/module/cloudMsg.js')}}"></script>
+    <script src="{{asset('im/js/module/notification.js')}}"></script>
+    <script src="{{asset('im/js/module/netcall.js')}}"></script>
+    <script src="{{asset('im/js/module/netcall_meeting.js')}}"></script>
+    <script src="{{asset('im/js/module/netcall_ui.js')}}"></script>
+    <script src="{{asset('im/js/main.js?v=2')}}"></script>
 @endsection
 
