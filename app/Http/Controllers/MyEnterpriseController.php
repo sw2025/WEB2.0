@@ -151,8 +151,9 @@ class MyEnterpriseController extends Controller
      */
     public  function uct_member(){
 
-        $enterpriseid = DB::table('t_u_enterprise')->where(['userid' => session('userId')])->first()->enterpriseid;
-        if($enterpriseid){
+        $enterprise = DB::table('t_u_enterprise')->where(['userid' => session('userId')])->first();
+        if(!empty($enterprise)){
+            $enterpriseid = $enterprise->enterpriseid;
             $configids = DB::table('t_u_enterpriseverify')->where('enterpriseid',$enterpriseid)->orderBy('id','desc')->first();
             if($configids){
                 if($configids->configid == 3){

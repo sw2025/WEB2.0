@@ -30,7 +30,6 @@
                                     </li>
                                     @endforeach
                         </ul>
-
                         <textarea name="" id="content" class="publish-need-txt" cols="30" rows="10" placeholder="请输入需求描述"></textarea>
                     </div>
                     <div><button class="test-btn publish-submit" type="button">提交</button></div>
@@ -63,7 +62,7 @@
                     layer.msg('请填写完整的需求描述');
                     return false;
                 }
-                $.post('{{url('uct_myneed/addNeed')}}',{'content':content,'domain':domain},function (data) {
+                $.post('{{url('uct_myneed/addNeed')}}',{'content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
                     if (data.icon == 1){
                         layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
                             window.location = '{{url('uct_myneed/examineNeed')}}';
