@@ -19,7 +19,7 @@
                         <div class="respond-btn-box">
                             <!-- 状态按钮根据实际状态只展示一个 -->
                             @if($datas->configid == 4)
-                                <button type="button" class="unrespond respond-btn" onclick="responseevent({{$datas->eventid}})">响应</button>
+                                <button type="button" class="unrespond respond-btn" onclick="responseevent({{$datas->eventid}},this)">响应</button>
                             @elseif($datas->configid == 5)
                                 <button type="button" class="responded respond-btn">已响应</button>
                             @elseif($datas->configid == 7)
@@ -42,10 +42,14 @@
     })
 
 
-    function responseevent(eventid){
+    function responseevent(eventid,obj){
+        $(obj).attr('disabled',true);
+        $(obj).html('正在响应');
         $.post('{{url('uct_mywork/responseevent')}}',{'eventid':eventid,'token':'{{$token}}'}, function (data){
                    if(data.icon == 2){
                        layer.msg(data.msg,{'time':1000,'icon':data.icon},function ()  {
+                           $(obj).attr('disabled',false);
+                           $(obj).html('响应');
                           window.location = '{{url('/')}}';
                        });
                    } else {

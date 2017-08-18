@@ -128,7 +128,7 @@
                                 <textarea placeholder="请输入需求描述" cols="30" rows="10" id="content"></textarea>
                             </div>
                         </div>
-                        <div class="bottom-btn"><button class="test-btn submit-audit" type="button"><a href="javascript:;" id="submit">提交审核</a></button></div>
+                        <div class="bottom-btn"><button class="test-btn submit-audit" type="button"  id="submit" ><a href="javascript:;"style="color:#fff;">提交审核</a></button></div>
                     </div>
                 </div>
             </div>
@@ -170,6 +170,8 @@
             $(this).parent().hide();
         });
         $('#submit').on('click',function () {
+            $(this).attr('disabled',true);
+            $(this).html('正在提交');
             var entname = $('#entname').val();
             var size = $('#size').text();
             var industry = $('#industry').text();
@@ -179,6 +181,8 @@
             var img2 = $('.fileupload2').attr('index');
             if(entname == '' || size == '不限' ||  industry == '不限' || address == '全国' || content == '' || img1 == '' || img2 == ''){
                 layer.msg('请填写完整的资料',{'icon':0});
+                $('#submit').attr('disabled',false);
+                $(this).html('提交审核');
             } else {
                 $.post('{{asset("uct_member/entverify")}}',{'enterprisename':entname,'size':size,'industry':industry,'address':address,'brief':content,'licenceimage':img1,'showimage':img2},function (data) {
                     if(data.icon == 1){
@@ -186,7 +190,10 @@
                             window.location = '{{url('uct_member/member2')}}'+'/'+data.id;
                         });
                     } else {
+                        $('#submit').attr('disabled',false);
+                        $(this).html('提交审核');
                         layer.msg(data.msg,{'icon':data.icon,'time':2000});
+
                     }
                 });
             }
