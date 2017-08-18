@@ -203,6 +203,33 @@ class CenterController extends Controller
 
             $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere);
 
+            if(!empty($action)){
+                switch($action){
+                    case 'collect':
+                        $obj = $obj->whereRaw('need.needid in (select needid from t_n_collectneed  where userid='.session('userId').' and remark=1)');
+                        //$obj = $obj->where('colneed.userid',session('userId'))->where('colneed.remark',1);
+
+                        break;
+                    case 'myput':
+                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',3);
+                        $who = 'my';
+                        break;
+                    case 'message':
+                        $obj = $obj->whereRaw('need.needid in (select  needid from t_n_messagetoneed  where userid='.session('userId').' group by needid)');
+                        break;
+                    case 'waitverify':
+                        $who = 'my';
+                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',1);
+                        break;
+                    case 'refuseverify':
+                        $who = 'my';
+                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',2);
+                        break;
+                }
+            } else {
+                $obj = $obj->where('status.configid',3);
+            }
+
             if(!empty($who)){
                 switch($who){
                     case 'my':
@@ -220,28 +247,7 @@ class CenterController extends Controller
             if(!empty($searchname)){
                 $obj = $obj->where("need.brief","like","%".$searchname."%");
             }
-            if(!empty($action)){
-                switch($action){
-                    case 'collect':
-                        $obj = $obj->whereRaw('need.needid in (select needid from t_n_collectneed  where userid='.session('userId').' and remark=1)');
-                        //$obj = $obj->where('colneed.userid',session('userId'))->where('colneed.remark',1);
-                        break;
-                    case 'myput':
-                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',3);
-                        break;
-                    case 'message':
-                        $obj = $obj->whereRaw('need.needid in (select  needid from t_n_messagetoneed  where userid='.session('userId').' group by needid)');
-                        break;
-                    case 'waitverify':
-                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',1);
-                        break;
-                    case 'refuseverify':
-                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',2);
-                        break;
-                }
-            } else {
-                $obj = $obj->where('status.configid',3);
-            }
+
             //对三种排序进行判断
             if(!empty($ordertime)){
                 $obj = $obj->orderBy('need.needtime',$ordertime);
@@ -395,6 +401,35 @@ class CenterController extends Controller
                 $role = DB::table('view_userrole')->where('userid',session('userId'))->first()->role;
                 $domain1 = explode('/',$data['domain'])[0];
                 $domain2 = explode('/',$data['domain'])[1];
+                if(!empty($data['needid'])){
+
+                    DB::beginTransaction();
+                    try{
+                        DB::table('t_n_need')->where(['needid' => $data['needid']])->update([
+                            'domain1' => $domain1,
+                            'domain2' => $domain2,
+                            'brief' => $data['content'],
+                            'updated_at' => date('Y-m-d H:i:s',time())
+                        ]);
+                        DB::table('t_n_needverify')
+                            ->insert([
+                                'needid' => $data['needid'],
+                                'configid' => 1,
+                                'verifytime' => date('Y-m-d H:i:s',time()),
+                                'updated_at' => date('Y-m-d H:i:s',time())
+                            ]);
+                        DB::commit();
+                        return ['msg' => '修改需求成功,进入审核阶段','icon' => 1];
+
+                    }catch(Exception $e)
+                    {
+                        DB::rollBack();
+                        return ['msg' => '处理失败','icon' => 2];
+                    }
+
+
+                }
+
                 //开启事务
                 DB::beginTransaction();
                 try{

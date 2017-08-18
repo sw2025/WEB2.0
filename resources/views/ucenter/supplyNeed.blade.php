@@ -29,6 +29,7 @@
                                     @endforeach
                         </ul>
                         @if(!empty($info))
+                            <input type="hidden" id="refuseid" value="{{$info->needid}}">
                         <p><span style="color: #e3643d">拒绝原因：</span></p>
                         <p><span style="color: #e3643d">{{$info->error}}</span></p>
                         @endif
@@ -64,7 +65,7 @@
                     layer.msg('请填写完整的需求描述');
                     return false;
                 }
-                $.post('{{url('uct_myneed/addNeed')}}',{'content':content,'domain':domain},function (data) {
+                $.post('{{url('uct_myneed/addNeed')}}',{'content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
                     if (data.icon == 1){
                         layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
                             window.location = '{{url('uct_myneed/examineNeed')}}';
