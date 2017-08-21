@@ -70,10 +70,10 @@ class ExpertController extends Controller
             } else {
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
-            $datas = $obj->paginate(5);
+            $datas = $obj->paginate(12);
             return view("expert.index",compact('cate','searchname','datas','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
         }
-        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(5);
+        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(12);
         $ordertime = 'desc';
         return view("expert.index",compact('cate','datas','ordertime','collectids'));
 

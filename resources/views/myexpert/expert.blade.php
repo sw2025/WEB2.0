@@ -25,7 +25,6 @@
                         @if(!empty($result) && $result->configid==3)
                             <span>
                                     <em>审核失败</em>
-                                    拒绝理由：{{$result->remark}}
                                 </span>
                         @else
                         @endif

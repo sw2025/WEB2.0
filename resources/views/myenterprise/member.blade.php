@@ -125,10 +125,10 @@
                                 </div>
                             </div>
                             <div class="datas-rt">
-                                <textarea placeholder="请输入需求描述" cols="30" rows="10" id="content"></textarea>
+                                <textarea placeholder="请输入企业简介（30-500字）" cols="30" rows="10" id="content"></textarea>
                             </div>
                         </div>
-                        <div class="bottom-btn"><button class="test-btn submit-audit" type="button"  id="submit" ><a href="javascript:;"style="color:#fff;">提交审核</a></button></div>
+                        <div class="bottom-btn"><button class="test-btn submit-audit" type="button"  id="submit" ><a href="javascript:;"style="color:#fff;">提交认证</a></button></div>
                     </div>
                 </div>
             </div>
@@ -182,7 +182,7 @@
             if(entname == '' || size == '不限' ||  industry == '不限' || address == '全国' || content == '' || img1 == '' || img2 == ''){
                 layer.msg('请填写完整的资料',{'icon':0});
                 $('#submit').attr('disabled',false);
-                $(this).html('提交审核');
+                $(this).html('提交认证');
             } else {
                 $.post('{{asset("uct_member/entverify")}}',{'enterprisename':entname,'size':size,'industry':industry,'address':address,'brief':content,'licenceimage':img1,'showimage':img2},function (data) {
                     if(data.icon == 1){
@@ -191,7 +191,7 @@
                         });
                     } else {
                         $('#submit').attr('disabled',false);
-                        $(this).html('提交审核');
+                        $(this).html('提交认证');
                         layer.msg(data.msg,{'icon':data.icon,'time':2000});
 
                     }
