@@ -58,7 +58,6 @@
                                     <textarea placeholder="请输入专家描述" readonly="readonly" cols="30" rows="10">{{$data->brief}}</textarea>
                                 </div>
                             </div>
-                            <div class="bottom-btn"><button class="test-btn " type="button">重新认证</button></div>
                         </div>
                     </div>
                 </div>
