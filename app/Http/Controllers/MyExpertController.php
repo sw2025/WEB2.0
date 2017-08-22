@@ -16,8 +16,15 @@ class MyExpertController extends Controller
      */
     public function  expert(){
 
-        $result = DB::table('view_expertstatus')->where(['userid' => session('userId')])->orderBy('configid','desc')->first();
+        //$result = DB::table('view_expertstatus')->where(['userid' => session('userId')])->orderBy('configid','desc')->first();
         $cate = DB::table('t_common_domaintype')->get();
+        $result = DB::table('t_u_expert')
+            ->leftjoin('t_u_expertverify',"t_u_expert.expertid","=","t_u_expertverify.expertid")
+            ->where(['userid' => session('userId')])
+            ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
+            ->orderBy('configid','desc')
+            ->first();
+        //dd($result);
         if(!empty($result)) {
             if ($result->configid == 1) {
                 return redirect()->action('MyExpertController@expert2');
@@ -72,6 +79,7 @@ class MyExpertController extends Controller
         if($request->ajax()){
             //判断是否登陆
             if(!empty(session('userId'))){
+                $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
                 $data = $request->input();
                 $domain1 = explode('-',$data['industry'])[0];
                 $domain2 = explode('-',$data['industry'])[1];
@@ -79,21 +87,37 @@ class MyExpertController extends Controller
                 //开启事务
                 DB::beginTransaction();
                 try{
-                    $expertid=DB::table("T_U_EXPERT")
-                        ->insertGetId([
-                            "userid"=>session('userId'),
-                            "expertname"=>$data['name'],
-                            "category"=>$data['category'],
-                            "address"=>$data['address'],
-                            "licenceimage"=>$data['photo1'],
-                            "showimage"=>$data['photo2'],
-                            "brief"=> $data['brief'],
-                            "domain1"=>$domain1,
-                            "domain2"=>$domain2,
-                            "created_at"=>date("Y-m-d H:i:s",time()),
-                            "updated_at"=>date("Y-m-d H:i:s",time())
-                        ]);
-
+                    if(empty($expertid)) {
+                        $expertid = DB::table("T_U_EXPERT")
+                            ->insertGetId([
+                                "userid" => session('userId'),
+                                "expertname" => $data['name'],
+                                "category" => $data['category'],
+                                "address" => $data['address'],
+                                "licenceimage" => $data['photo1'],
+                                "showimage" => $data['photo2'],
+                                "brief" => $data['brief'],
+                                "domain1" => $domain1,
+                                "domain2" => $domain2,
+                                "created_at" => date("Y-m-d H:i:s", time()),
+                                "updated_at" => date("Y-m-d H:i:s", time())
+                            ]);
+                    }else{
+                        $expertdata = DB::table("T_U_EXPERT")
+                            ->where('expertid',$expertid)
+                            ->update([
+                                "expertname" => $data['name'],
+                                "category" => $data['category'],
+                                "address" => $data['address'],
+                                "licenceimage" => $data['photo1'],
+                                "showimage" => $data['photo2'],
+                                "brief" => $data['brief'],
+                                "domain1" => $domain1,
+                                "domain2" => $domain2,
+                                "created_at" => date("Y-m-d H:i:s", time()),
+                                "updated_at" => date("Y-m-d H:i:s", time())
+                            ]);
+                    }
                     if(!empty($expertid)){
                         $result=DB::table("T_U_EXPERTVERIFY")
                             ->insert([
@@ -390,9 +414,13 @@ class MyExpertController extends Controller
 
         if($request->ajax()){
             $data = $request->input();
+            //dd($expertid);
+
             $result = DB::table('t_u_expertfee')
                 ->where('expertid',$expertid)
                 ->update(['fee' => $data['fee']]);
+
+            //dd($result);
 
             if(!$result){
                 return ['msg' => '添加失败','icon' => 2];
