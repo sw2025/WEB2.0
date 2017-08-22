@@ -10,6 +10,7 @@
                 </div>
                 <div class="publish-need">
                     @if(!empty($info))
+                        <input type="hidden" id="refuseid" value="{{$info->needid}}">
                         <p class="wrong-reason" style="text-align:left;width:350px;margin:0 auto;padding-top:30px;"><span style="color: #e3643d">拒绝原因：</span><span style="color: #e3643d">{{$info->error}}</span></p>
                     @endif
                     <div class="publish-need-sel">
@@ -30,7 +31,7 @@
                                     </li>
                                     @endforeach
                         </ul>
-                        <textarea name="" id="content" class="publish-need-txt" cols="30" rows="10" placeholder="请输入需求描述"></textarea>
+                        <textarea name="" id="content" class="publish-need-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入需求描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea>
                     </div>
                     <div><button class="test-btn publish-submit" type="button">提交</button></div>
                 </div>
@@ -60,6 +61,10 @@
                 var domain =  $('.publ-need-sel-def').text();
                 if(content == '' || domain == '请选择'){
                     layer.msg('请填写完整的需求描述');
+                    return false;
+                }
+                if(content.length <= 30 || content.length >= 500){
+                    layer.msg('请输入30-500字的需求描述');
                     return false;
                 }
                 $.post('{{url('uct_myneed/addNeed')}}',{'content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
