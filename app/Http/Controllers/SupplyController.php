@@ -58,10 +58,10 @@ class SupplyController extends Controller
             } else {
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
-            $datas = $obj->paginate(8);
+            $datas = $obj->paginate(12);
             return view("supply.index",compact('cate','searchname','datas','role','collectids','supply','address','ordertime','ordercollect','ordermessage'));
         }
-        $datas = $datas->orderBy("need.needtime",'desc')->paginate(8);
+        $datas = $datas->orderBy("need.needtime",'desc')->paginate(12);
         $ordertime = 'desc';
         return view("supply.index",compact('cate','datas','ordertime','collectids'));
     }

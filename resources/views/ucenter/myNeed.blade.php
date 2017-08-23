@@ -115,8 +115,8 @@
             <!-- 排序 end -->
             <div class="myask-tabar">
 
-                <a class="myask-tabar-a @if(empty($who) || $who == 'other') active @endif" href="javascript:;" index="other">其他需求列表</a>
-                <a class="myask-tabar-a @if(!empty($who) && $who == 'my') active @endif" href="javascript:;" index="my">我的需求列表</a>
+                <a class="myask-tabar-a @if(empty($who) || $who == 'other') active @endif" href="javascript:;" index="other">供求信息</a>
+                <a class="myask-tabar-a @if(!empty($who) && $who == 'my') active @endif" href="javascript:;" index="my">我发布的</a>
 
             </div>
             <div class="main-right uct-oh">
