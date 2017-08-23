@@ -35,6 +35,8 @@ Route::post('forgetHandle','LoginController@forgetHandle');
 
 //退出
 Route::post('quit','LoginController@quit');
+/*//验证手机号是否注册
+Route::post('verifyPhone','LoginController@verifyPhone');*/
 //获取验证码
 Route::post('getCode','LoginController@getCode');
 //专家列表
@@ -213,3 +215,7 @@ Route::post('uct_mywork/responseconsult','MyExpertController@responseConsult');
 Route::get('uct_myask/myaskinvt','MyExpertController@myaskinvt');
 //收费标准
 Route::any('uct_standard','MyExpertController@standard');
+//创建群组
+Route::get('creatGroup','PublicController@createGroups');
+//获取accid和token
+Route::post('getAccid','PublicController@getAccid');

@@ -1,18 +1,18 @@
 /***********header start***********/
-.header{position: fixed;background: #fff;top: 0;width: 100%;z-index: 10;box-sizing: border-box;height: 100px;background:#333;min-width: 560px;} 
+.header{position: fixed;top: 0;width: 100%;z-index: 10;box-sizing: border-box;height: 60px;background:#004981;min-width: 560px;} 
 .header .container{position: relative;}
 .navbar-header{float: left;}
-.navbar-brand{float: left;margin-top: 25px;}
-.navbar-toggle{float: left;position: relative;padding: 4px 10px;margin-top: 32px;margin-left: 35px;background-color: transparent;background-image: none;border: 1px solid transparent;border-radius: 4px;border-color: #ddd;color:#fff;z-index: 24;}
-.navbar-nav{margin-top: 30px;float: left;margin-left: 16%;}
+.navbar-brand{float: left;margin-top: 8px;}
+.navbar-toggle{float: left;position: relative;padding: 4px 10px;margin-top: 12px;margin-left: 35px;background-color: transparent;background-image: none;border: 1px solid transparent;border-radius: 4px;border-color: #ddd;color:#fff;z-index: 24;}
+.navbar-nav{margin-top: 10px;float: left;margin-left: 16%;}
 .nav{float: right;font-size: 16px;}
 .nav li{float: left;padding:2px;}
 .nav a{color:#fff;display: block;padding:6px 16px;-webkit-transition:all 0.7s;-moz-transition:all 0.7s;-ms-transition:all 0.7s;transition:all 0.7s;}
 .nav a:hover,.nav .active a{background:#00a7ed;border-radius: 5px;font-weight: bold;}
 
 .bars{position: absolute;right: 15px;top: 0;}
-.searchbar,.header-link{float: right;margin-top: 30px;}
-.searchbar{margin-top: 40px;margin-right: 12px;}
+.searchbar,.header-link{float: right;margin-top: 10px;}
+.searchbar{margin-top: 20px;margin-right: 12px;}
 .header-link i,.search-cli i{font-size: 12px;-webkit-text-stroke-width: 0;color:#fff;margin-right: 5px;}
 .header-link{color:#Fff;font-size: 12px;display: inline-block;line-height: 22px;padding:9px 12px;margin-left: 1px;position: relative;z-index: 24;}
 .log-username,.quit{color:#fff;}
@@ -26,7 +26,7 @@
 .search-sear{display: none;font-size: 12px;}
 .searchbar{margin-left: 5px;position: relative;}
 .search-bar{position: absolute;right: 5px;bottom: 0px;color:#fff;}
-.select-box{position: relative;color:#fff;float: left;background:#034070;}
+.select-box{position: relative;color:#fff;float: left;background:#042743;}
 .select-showbox{padding:0 4px;height: 20px;line-height: 20px;font-size: 12px;display: inline-block;cursor: pointer;}
 .select-showbox i{font-size: 12px;-webkit-text-stroke-width: 0;}
 .select-option{position: absolute;left: -12px;top: 20px;background:#d1d1d1;display: none;}
@@ -34,7 +34,7 @@
 .select-option li.selected{background:#025699;color:#fff;}
 .search-text{background:#fff;width:128px;height: 20px;padding-left: 5px;color:#333;float: left;}
 .search-btn{background:none;border: none;}
-.search-btn i{color:#034070;font-size: 12px;}
+.search-btn i{color:#042743;font-size: 12px;}
 /***********header end***********/
 /***********footer start***********/
 .footer{background:#535661;width:100%;padding: 60px 0;}
@@ -58,7 +58,7 @@
 }
 @media (max-width: 991px){
     .navbar-nav{display: none;float: none;margin-left: 0;}
-    .nav{width:100%;padding-top: 0;position: absolute;background: #333;z-index: 22;top: 70px;}
+    .nav{width:100%;padding-top: 0;position: absolute;background: #004981;z-index: 22;top: 50px;}
     .nav li{float:none;}
     .header .in{display: block;position: relative;}
     .two-pic{border-bottom: 1px dashed #fff;border-right: none;}
@@ -94,7 +94,7 @@
 .pages{padding:41px 0 58px;}
 .pages #Pagination .pagination a, .pages #Pagination .pagination span{margin:0 4px;border-radius: 2px;}
 /***********侧边栏 start***********/
-.ucenter{padding-top: 125px;background:#f8f8f8;padding-bottom: 25px;max-width:100%;min-width: 970px;margin:0 auto;}
+.ucenter{padding-top: 85px;background:#f8f8f8;padding-bottom: 25px;max-width:100%;min-width: 970px;margin:0 auto;}
 .wrap{min-width: 970px;max-width: 1200px;margin:0 auto;}
 .aside{float: left;width:188px;width:15.83333%;font-size: 16px;text-align: center;border: 1px solid #ccc;background:#fff;border-radius: 6px;box-shadow: 0 0 8px #ccc;overflow: hidden;}
 .aside-tit{height: 56px;background:#00a7ed;color:#fff;font-weight: normal;line-height: 56px;border-bottom: 1px solid #ccc;}

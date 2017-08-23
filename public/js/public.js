@@ -226,6 +226,15 @@ $(function(){
         $(this).addClass('active').siblings().removeClass('active');
     });
 // 个人中心=======》我的需求和专家资源end
-
 // 
 })
+// 限定字数
+function checkLength(which) {
+    var maxChars = 500,
+        minChars = 30;
+    if (which.value.length > maxChars) {
+        layer.msg("您输入的字数超出限制!");
+        which.value = which.value.substring(0, maxChars);
+        return false;
+    }
+}

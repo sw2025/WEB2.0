@@ -146,6 +146,34 @@ class LoginController extends Controller
         $res = $this->_sendSms($phone, $randNum, $action);
         return $res;
     }
+
+   /* public function verifyPhone(){
+        $phone = $_POST['phone'];
+        $action =$_POST['action'];
+        $res=array();
+        switch ($action){
+            case "register":
+                $user = User::where('phone', $phone)->first();
+                if($user) {
+                    $res['code']="phone";
+                    $res['msg']="该手机号已经注册!";
+                }else{
+                    $res['code']="success";
+                }
+                return $res;
+                break;
+            case "findPwd":
+                $user = User::where('phone', $phone)->first();
+                if(!$user) {
+                    $res['code']="phone";
+                    $res['msg']="该手机号不存在!";
+                }else{
+                    $res['code']="success";
+                }
+                return $res;
+                break;
+        }
+    }*/
     
    
     

@@ -31,7 +31,7 @@
 <div class="header">
     <div class="container clearfix">
         <div class="navbar-header clearfix">
-            <a href="{{asset('index')}}" class="navbar-brand navbar-link">
+            <a href="{{asset('/')}}" class="navbar-brand navbar-link">
                 <img src="{{asset('img/logo.png')}}" alt="首页">
             </a>
             <button class="navbar-toggle"><i class="iconfont icon-daohang"></i></button>

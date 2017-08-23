@@ -27,6 +27,9 @@
 
                             <span  style="color:red">
                                     <em>审核失败</em>
+
+                                    拒绝理由：{{$result->remark}}
+
                                 </span>
                         @else
                         @endif
@@ -131,7 +134,7 @@
                             </div>
                         </div>
                         <div class="datas-rt">
-                            <textarea placeholder="请输入专家描述" id="brief" cols="30" rows="10"></textarea>
+                            <textarea onkeyup="checkLength(this);" placeholder="请输入专家描述" id="brief" cols="30" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="bottom-btn"><button class="test-btn submit-audit" type="button">提交审核</button></div>

@@ -10,12 +10,13 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/public.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/ucenter.css')}}" />
     <!-- js / start -->
-    <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
+ {{--   <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>--}}
+<script src="{{asset('im/3rd/jquery-1.11.3.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jquery.cookie.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/public.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/jquery.qqFace.js')}}"></script>
+  {{--  <script type="text/javascript" src="{{asset('js/jquery.qqFace.js')}}"></script>--}}
     <!--[if lt IE 9]>
     <script type="text/javascript" src="{{asset('js/utils/html5shiv.min.js?1401441990')}}"></script>
     <script type="text/javascript" src="{{asset('js/utils/respond.min.js?1401441990')}}"></script>

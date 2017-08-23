@@ -1,5 +1,14 @@
 @extends("layouts.ucenter")
 @section("content")
+    <link rel="stylesheet" href="{{asset('im/css/base.css')}}"/>
+    <link rel="stylesheet" href="{{asset('im/css/animate.css')}}"/>
+    <link rel="stylesheet" href="{{asset('im/css/jquery-ui.css')}}"/>
+    <link rel="stylesheet" href="{{asset('im/css/contextMenu/jquery.contextMenu.css')}}"/>
+    <link rel="stylesheet" href="{{asset('im/css/minAlert.css')}}"/>
+    <link rel="stylesheet" href="{{asset('im/css/main.css')}}"/>
+    <link rel="stylesheet" href="{{asset('im/css/uiKit.css')}}"/>
+    <link rel="stylesheet" href="{{asset('im/css/CEmojiEngine.css')}}"/>
+    <link rel="stylesheet" href="{{asset('im/css/rangeslider.css')}}"/>
     <script type="text/javascript">
         jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
     </script>
@@ -16,7 +25,7 @@
                     <span class="green-circle">5</span>会议管理<span class="card-step-cap">&gt;</span>
                     <span class="gray-circle">6</span>完成
                 </div>
-                <div class="uct-video-manage">
+                <div class="uct-video-manage ">
                     <div class="video-manage-top">
                         @foreach($datas as $data)
                             <div class="vid-man-top-lt vid-man-top-main">
@@ -44,7 +53,7 @@
                                             <span class="light-color emcee-cap emcee-bot-cap">成员：</span>
                                             <div class="emcee-members">
                                                 @foreach($selExperts as $selExpert)
-                                                <span class="emceer-pers"><img src="httP://sw2025.com{{$selExpert->showimage}}" class="vid-new-ava">{{$selExpert->expertname}}</span>
+                                                <span class="emceer-pers"><img src="http://sw2025.com{{$selExpert->showimage}}" class="vid-new-ava">{{$selExpert->expertname}}</span>
                                                 @endforeach
                                             </div>
                                         </div>
@@ -52,81 +61,170 @@
                                 </div>
                         @endforeach
                     </div>
-                    <div class="video-manage-frame">
-
-                    </div>
-                    <div class="video-chats">
-                        <div class="chat-room-tit">
-                            web开发讨论组
-                        </div>
-                        <div class="chat-room">
-                            <span class="chat-room-time">-----08:34-----</span>
-                            <div class="chat-room-other">
-                                <img src="{{asset('img/avatar1.jpg')}}" class="chat-room-other-img" />
-                                <div class="chat-room-other-con">
-                                    <a href="javascript:;" class="chat-room-other-name">徐二黑</a>
-                                    <div class="chat-room-other-desc">
-                                        1234567890
+                </div>
+                <div class="wrapper box-sizing">
+                    <div class="content">
+                        <div class="right-panel hide  radius5px" id="rightPanel">	<!-- 聊天面板 -->
+                            <div class="chat-box show-netcall-box" id="chatBox">
+                                <div class="title" id="chatTitle">
+                                    <img src="" width="56" height="56" class="radius-circle img" id="headImg"/>
+                                    <span id="nickName"></span>
+                                    <div class="cloudMsg tc radius4px" data-record-id="" id="cloudMsg"><i class="icon icon-team-info"></i><p>云记录</p></div>
+                                    {{--  <div class="team-info hide tc radius4px" data-team-id="" id="teamInfo"><i class="icon icon-team-info"></i><p>资料</p></div>--}}
+                                </div>
+                                <div class="netcall-box" id="netcallBox">
+                                    <div class="netcall-mask hide">
+                                        <div class="netcallTip"></div>
                                     </div>
+                                    <div class="top hide">
+                                        <span class="transferAudioAndVideo switchToAudio" id="switchToAudio">切换音频</span>
+                                        <span class="transferAudioAndVideo switchToVideo" id="switchToVideo">切换视频</span>
+                                        <span class="fullScreenIcon toggleFullScreenButton" id="toggleFullScreenButton" title="切换全屏">&nbsp;</span>
+                                    </div>
+                                    <!-- p2p呼叫界面 -->
+                                    <div class="netcall-calling-box hide">
+                                        <img  alt="用户头像" class="avatar" >
+                                        <div class="nick"></div>
+                                        <div class="tip">等待对方接听...</div>
+                                        <div class="op">
+                                            <button id="callingHangupButton" class="netcall-button red">挂断</button>
+                                        </div>
+                                    </div>
+                                    <!-- p2p视频界面 -->
+                                    <div class="netcall-show-video hide">
+                                        <div class="netcall-video-left">
+                                            <div class="netcall-video-remote bigView">
+                                                <div class="message" ></div>
+                                                <span class="switchViewPositionButton"></span>
+                                            </div>
+                                        </div>
+                                        <div class="netcall-video-right">
+                                            <div class="netcall-video-local smallView">
+                                                <div class="message"></div>
+                                                <span class="switchViewPositionButton"></span>
+                                            </div>
+                                            <div class="operation">
+                                                <div class="control">
+                                                    <div class="microphone control-item">
+                                                        <div class="slider hide">
+                                                            <div class="txt">10</div>
+                                                            <input class="microSliderInput" id="microSliderInput1" type="range" min="0" max="10" step="1" value="10" data-orientation="vertical">
+                                                        </div>
+                                                        <span class="icon-micro"></span>
+                                                    </div>
+                                                    <div class="volume control-item">
+                                                        <div class="slider hide">
+                                                            <div class="txt">10</div>
+                                                            <input class="volumeSliderInput" id="volumeSliderInput1" type="range" min="0" max="10" step="1" value="10" data-orientation="vertical">
+                                                        </div>
+                                                        <span class="icon-volume"></span>
+                                                    </div>
+                                                    <div class="camera control-item">
+                                                        <span class="icon-camera"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="op">
+                                                    <button class="hangupButton netcall-button red">挂断</button>
+                                                </div>
+                                                <div class="tip">00 : 00</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- p2p音频界面 -->
+                                    <div class="netcall-show-audio hide">
+                                        <img  alt="用户头像" class="avatar">
+                                        <div class="nick">test</div>
+                                        <div class="tip">00 : 00</div>
+                                        <div class="control">
+                                            <div class="microphone control-item " >
+                                                <div class="slider hide">
+                                                    <div class="txt">10</div>
+                                                    <input class="microSliderInput" id="microSliderInput" type="range" min="0" max="10" step="1" value="10" data-orientation="vertical">
+                                                </div>
+                                                <span class="icon-micro"></span>
+                                            </div>
+                                            <div class="volume control-item" >
+                                                <div class="slider hide">
+                                                    <div class="txt">10</div>
+                                                    <input class="microSliderInput" id="volumeSliderInput" type="range" min="0" max="10" step="1" value="10" data-orientation="vertical">
+                                                </div>
+                                                <span class="icon-volume"></span>
+                                            </div>
+                                        </div>
+                                        <div class="op">
+                                            <button class="hangupButton netcall-button red">挂断</button>
+                                        </div>
+
+                                    </div>
+                                    <!-- 多人音视频互动界面 -->
+                                    <div class="netcall-meeting-box hide" id="netcallMeetingBox"></div>
+                                    <!-- 被叫界面 -->
+                                    <div class="netcall-becalling-box hide">
+                                        <img  alt="用户头像" class="avatar">
+                                        <div class="nick"></div>
+                                        <p id="becallingText" class="tip"></p>
+                                        <div class="op">
+                                            <div class="normal">
+                                                <div class="checking-tip">检查插件中...<span class="netcall-icon-checking"></span></div>
+                                                <button class="netcall-button blue beCallingAcceptButton" id="beCallingAcceptButton">
+                                                    <span class="txt">接听</span>
+                                                    <span class="netcall-icon-checking"></span>
+                                                </button>
+                                                <button class="netcall-button red beCallingRejectButton" id="beCallingRejectButton">
+                                                    拒绝
+                                                </button>
+                                            </div>
+                                            <div class="exception">
+                                                <button class="netcall-button blue" id="downloadAgentButton">下载音视频插件</button><br/>
+                                                <button class="netcall-button red beCallingRejectButton" >拒绝</button>
+                                                <div class="exception-tip">拒绝调用插件申请会导致无法唤起插件,需重启浏览器</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="dialogs hide">
+                                    </div>
+                                </div >
+                                <div class="chat-content box-sizing" id="chatContent"> <!-- 聊天记录 -->
+                                </div>
+                                {{--  <div class="u-chat-notice">您已退出</div>--}}
+                                {{--  <div class="chat-mask"></div>--}}
+                                <div class="chat-editor box-sizing" id="chatEditor" data-disabled="1">
+                                    <div id="emojiTag" class="m-emojiTag"></div>
+                                    <a class="chat-btn u-emoji" id="showEmoji"></a>
+						<span class="chat-btn msg-type" id="chooseFileBtn">
+							<a class="icon icon-file" data-type="file"></a>
+						</span>
+                                    <a class="chat-btn u-netcall-audio-link" id="showNetcallAudioLink">&nbsp;</a>
+                                    <a class="chat-btn u-netcall-video-link" id="showNetcallVideoLink">&nbsp;</a>
+                                    <textarea id="messageText" class="chat-btn msg-input box-sizing radius5px p2p" rows="1" autofocus="autofocus" maxlength="500"></textarea>
+                                    <a class="btn-send radius5px" id="sendBtn">发送</a>
+                                    <form action="#" id="uploadForm">
+                                        <input multiple="multiple" type="file" name="file" id="uploadFile" class="hide"/>
+                                    </form>
                                 </div>
                             </div>
-                            <span class="chat-room-time">-----08:34-----</span>
-                            <div class="chat-room-launch"><span class="chat-room-commu">胖大海发起视频通话失败</span></div>
-                            <div class="chat-room-me">
-                                <img src="{{asset('img/avatar1.jpg')}}" class="chat-room-me-img" />
-                                <div class="chat-room-me-con">
-                                    <a href="javascript:;" class="chat-room-me-name">牛二犇</a>
-                                    <div class="chat-room-me-desc">二傻子</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-room-write">
-                            <textarea name="saytext" class="chat-room-txt" id="saytext"></textarea>
-                            <div class="facebox clearfix">
-                                <span class="chat-face"><i class="iconfont icon-weibiaoti-_fuzhi-"></i></span>
-                                <span class="chat-file"><input type="file" class="file-input" /><i class="iconfont icon-wenjianjia"></i></span>
-                                <span class="chat-sheying" id="showNetcallVideoLink"><i class="iconfont icon-sheyingji"></i></span>
-                                <button class="chat-fasong">发送</button>
-                            </div>
-                        </div>
-                        <div class="chat-room-btn">
-                            <button class="test-btn" type="button">完成</button>
-                            <button class="test-btn unusual-btn" type="button">异常</button>
                         </div>
                     </div>
+                    <!-- 群资料 -->
+                    <div class="team-info-container hide" id="teamInfoContainer"></div>
+                    <!-- 云记录 -->
+                    <div class="cloud-msg-container hide" id="cloudMsgContainer"></div>
+                    <!-- 弹框 -->
+                    <div class="dialog-team-container radius5px hide" id="dialogTeamContainer"></div>
+                    <!-- 技术方案弹框 -->
+                    <div class="dialog-team-container radius5px hide" id="dialogCallMethod"></div>
                 </div>
             </div>
-        </div>
     </div>
+</div>
 
-    <!-- 公共footer / end -->
-    <script type="text/javascript">
-                $(function(){
-                    $('.chat-face').qqFace({
-                        id : 'facebox',
-                        assign:'saytext',
-                        path:'http://sw2025.com/arclist/' //表情存放的路径
-                    });
-                    $(".chat-fasong").click(function(){
-                        var str = $("#saytext").val();
-                        $(".chat-room-me-desc").html(replace_em(str));
-                        $("#saytext").val('');
-                    });
-
-                })
-        function replace_em(str){
-            str = str.replace(/\</g,'&lt;');
-            str = str.replace(/\>/g,'&gt;');
-            str = str.replace(/\n/g,'<br/>');
-            str = str.replace(/\[em_([0-9]*)\]/g,'<img src="{{asset('arclist/$1.gif')}}" border="0" />');
-            return str;
-        }
-    </script>
     <script src="{{asset('im/3rd/NIM_Web_SDK_v4.0.0.js')}}"></script>
     <script src="{{asset('im/3rd/NIM_Web_Netcall_v4.0.0.js')}}"></script>
-   {{-- <script src="{{asset('im/3rd/jquery-1.11.3.min.js')}}"></script>--}}
-
-    <script src="{{asset('im/3rd/platform.js')}}"></script>
+    <script src="{{asset('im/3rd/NIM_Web_WebRTC_v4.1.0.js')}}"></script>
+    {{-- <script src="{{asset('im/3rd/jquery-1.11.3.min.js')}}"></script>--}}
+   {{-- <script src="{{asset('im/3rd/platform.js')}}"></script>--}}
+    <script src="{{asset('im/3rd/rtcSupport.js')}}"></script>
     <script src="{{asset('im/js/3rd/jquery-ui.min.js')}}"></script>
     <script src="{{asset('im/3rd/rangeslider.min.js')}}"></script>
     <!-- 右键菜单-->
@@ -149,12 +247,13 @@
     <script src="{{asset('im/js/module/friend.js')}}"></script>
 
     <script src="{{asset('im/js/module/team.js')}}"></script>
-    <script src="{{asset('im/js/module/team_dialog.js')}}"></script>
+    <script src="{{asset('im/js/module/dialog_team.js')}}"></script>
     <script src="{{asset('im/js/module/cloudMsg.js')}}"></script>
     <script src="{{asset('im/js/module/notification.js')}}"></script>
     <script src="{{asset('im/js/module/netcall.js')}}"></script>
     <script src="{{asset('im/js/module/netcall_meeting.js')}}"></script>
     <script src="{{asset('im/js/module/netcall_ui.js')}}"></script>
+    <script src="{{asset('im/js/module/dialog_call_method.js')}}"></script>
     <script src="{{asset('im/js/main.js?v=2')}}"></script>
 @endsection
 

@@ -16,8 +16,8 @@
                             <span class="must">*</span>
                         </p>
                         <p class="card-name">
-                            <label for="">户主</label>
-                            <input type="text" class="card-sum bank-account" name="account" id="account" placeholder="请输入姓名" />
+                            <label for="">账户名</label>
+                            <input type="text" class="card-sum bank-account" name="account" id="account" placeholder="请输入持卡人姓名" />
                             <span class="must">*</span>
                         </p>
                         <div class="card-bank">
