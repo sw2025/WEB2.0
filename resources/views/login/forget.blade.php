@@ -27,7 +27,8 @@
     $(function(){
         // 获取验证码
         var wait=60;
-        function time(o) {
+        function time() {
+            var o = document.getElementById("getCode");
             if (wait == 0) {
                 o.removeAttribute("disabled");
                 o.value="获得验证码";
@@ -51,7 +52,6 @@
                 });
                 return false;
             }
-            time(this);
             $.ajax({
                 url:"{{asset('getCode')}}",
                 data:{"phone":phone,"action":"findPwd"},
@@ -64,6 +64,15 @@
                             time: 4000
                         });
                         return false;
+                    }else if(res['code']=="phone"){
+                        layer.tips(res['msg'], '.user-tel', {
+                            tips: [2, '#00a7ed'],
+                            time: 4000
+                        });
+                        return false;
+                    }else{
+                        $(this).attr('disabled',true);
+                        time();
                     }
                 }
             })

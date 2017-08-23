@@ -145,7 +145,7 @@ abstract class Controller extends BaseController{
         $acsResponse = $acsClient->getAcsResponse($request);
         $str=array();
         if($acsResponse->Code=="OK"){
-            $str['code']="code";
+            $str['code']="success";
             $str['msg']="发送成功!";
         }else{
             $str['code']="code";

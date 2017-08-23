@@ -125,7 +125,7 @@
                                 </div>
                             </div>
                             <div class="datas-rt">
-                                <textarea placeholder="请输入需求描述" cols="30" rows="10" id="content"></textarea>
+                                <textarea onkeyup="checkLength(this);" placeholder="请输入需求描述" cols="30" rows="10" id="content"></textarea>
                             </div>
                         </div>
                         <div class="bottom-btn"><button class="test-btn submit-audit" type="button"  id="submit" ><a href="javascript:;"style="color:#fff;">提交审核</a></button></div>

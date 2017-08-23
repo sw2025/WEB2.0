@@ -8,15 +8,15 @@
                     <div class="recharge-sum">
                             <span class="recharge-opt focus">
                                 <input class="rad-inp" checked="true" type="radio" id="rad1" name="money">
-                                <label for="rad1" class="recharge-radio"><span></span>1000</label>
+                                <label for="rad1" class="recharge-radio"><span></span>￥1000</label>
                             </span>
                             <span class="recharge-opt">
                                 <input class="rad-inp" type="radio" id="rad2" name="money">
-                                <label for="rad2" class="recharge-radio"><span></span>2000</label>
+                                <label for="rad2" class="recharge-radio"><span></span>￥2000</label>
                             </span>
                             <span class="recharge-opt">
                                 <input class="rad-inp" type="radio" id="rad3" name="money">
-                                <label for="rad3" class="recharge-radio"><span></span>5000</label>
+                                <label for="rad3" class="recharge-radio"><span></span>￥5000</label>
                             </span>
                             <span class="recharge-opt others">
                                 <input class="rad-inp" type="radio" id="rad4" name="money">

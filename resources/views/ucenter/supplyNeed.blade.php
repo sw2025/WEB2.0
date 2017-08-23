@@ -6,7 +6,7 @@
         <div class="ucenter-con">
             <div class="main-right">
                 <div class="card-step">
-                    <span class="green-circle">1</span>提交需求<span class="card-step-cap">&gt;</span>
+                    <span class="green-circle">1</span>提交需求
                 </div>
                 <div class="publish-need">
                     @if(!empty($info))
@@ -30,7 +30,7 @@
                                     </li>
                                     @endforeach
                         </ul>
-                        <textarea name="" id="content" class="publish-need-txt" cols="30" rows="10" placeholder="请输入需求描述"></textarea>
+                        <textarea onkeyup="checkLength(this);" name="" id="content" class="publish-need-txt" cols="30" rows="10" placeholder="请输入需求描述"></textarea>
                     </div>
                     <div><button class="test-btn publish-submit" type="button">提交</button></div>
                 </div>

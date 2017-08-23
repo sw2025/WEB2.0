@@ -44,25 +44,40 @@
         })
         $('.cash-btn').click(function() {
             var userId=$.cookie("userId");
-            var money = $('.cash-num').val();
-            $.ajax({
-                url:"{{asset('applicationCashs')}}",
-                data:{"userId":userId,"money":money},
-                dateType:"json",
-                "type":"POST",
-                success:function(res){
-                    if(res['code']=="success"){
-                        layer.confirm('稍后将为您处理', {
-                            btn: ['确定'] //按钮
-                        }, function(){
-                            window.location.href="{{asset('uct_recharge')}}"
-                        });
-                    }else{
-                        layer.msg("提现申请失败");
-                    }
+            var $money = $('.cash-num').val();
+            var $leftNum = $('.avai-money-sum').html();
+            if($money){
+                var $num = parseFloat($money).toFixed(2);
+                var surplusMoney=parseFloat($leftNum - $num).toFixed(2);
+                if(surplusMoney < 0) {
+                    layer.confirm('可用金额不足，无法提现', {
+                        btn: ['确定'] //按钮
+                    });
+                }else{
+                    $enterValPre=$leftNum;
+                    $('.avai-money-sum').html(surplusMoney)
+                    $.ajax({
+                        url:"{{asset('applicationCashs')}}",
+                        data:{"userId":userId,"money":$money},
+                        dateType:"json",
+                        "type":"POST",
+                        success:function(res){
+                            if(res['code']=="success"){
+                                layer.confirm('稍后将为您处理', {
+                                    btn: ['确定'] //按钮
+                                }, function(){
+                                    window.location.href="{{asset('uct_recharge')}}"
+                                });
+                            }else{
+                                layer.msg("提现申请失败");
+                            }
+                        }
+                    })
                 }
-            })
-
+            }else{
+                $('.avai-money-sum').html($enterValPre)
+                alert("请输入提现金额")
+            }
         });
     })
 </script>

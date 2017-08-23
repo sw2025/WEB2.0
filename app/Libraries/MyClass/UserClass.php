@@ -53,6 +53,16 @@
                         "created_at" => date("Y-m-d H:i:s", time()),
                         "updated_at" => date("Y-m-d H:i:s", time()),
                     ]);
+                    DB::table("t_m_systemmessage")->insert([
+                        "sendid"=>0,
+                        "receiveid"=>$userid,
+                        "sendtime"=>date("Y-m-d H:i:s",time()),
+                        "title"=>"感谢您注册升维网",
+                        "content"=>"您已成功注册升维网",
+                        "state"=>0,
+                        "created_at"=>date("Y-m-d H:i:s",time()),
+                        "updated_at"=>date("Y-m-d H:i:s",time()),
+                    ]);
                     DB::commit();
                 } catch (Exception $e) {
                     DB::rollback();
@@ -61,9 +71,6 @@
                 if (!isset($e)) {
                     self::getAccId($userid,$phone);
                     $result['code'] = "success";
-                    session(["userId" => $userid]);
-                    $result['userId'] = $userid;
-                    $result['name'] = substr_replace($phone,'****',3,4);
                 } else {
                     $result['code'] = "phone";
                     $result['msg'] = "注册失败,请重新注册";

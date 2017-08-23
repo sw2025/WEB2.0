@@ -39,7 +39,8 @@
     $(function(){
         // 获取验证码
         var wait=60;
-        function time(o) {
+        function time() {
+            var o = document.getElementById("getCode");
                 if (wait == 0) {
                     o.removeAttribute("disabled");
                     o.value="获得验证码";
@@ -56,14 +57,14 @@
                 }
         document.getElementById("getCode").onclick=function(){
            var phone= $(".user-tel-inp").val();
-            if(!phone){
-                layer.tips('手机号不能为空', '.user-tel', {
+            var reg1 = /^1[3578][0-9]{9}$/;//手机号
+            if(!(reg1.test(phone))){
+                layer.tips('手机号不能为空或输入错误', '.user-tel', {
                     tips: [2, '#00a7ed'],
                     time: 4000
                 });
-                    return false;
+                return false;
             }
-            time(this);
             $.ajax({
                 url:"{{asset('getCode')}}",
                 data:{"phone":phone,"action":"register"},
@@ -76,12 +77,15 @@
                             time: 4000
                         });
                         return false;
-                    }else{
+                    }else if(res['code']=="phone"){
                         layer.tips(res['msg'], '.user-tel', {
                             tips: [2, '#00a7ed'],
                             time: 4000
                         });
                         return false;
+                    }else{
+                        $(this).attr('disabled',true);
+                        time();
                     }
                 }
             })

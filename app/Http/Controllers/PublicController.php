@@ -258,6 +258,48 @@ class PublicController extends Controller
         
         return view('public.service');
     }
+
+    public function createGroups(){
+        /*$expertIds=array(1,2,3);
+        $accids=array();
+        $userIds=DB::table("t_u_expert")->select("userid")->whereIn("expertid",$expertIds)->get();
+        foreach ($userIds as $userId){
+            $accid=DB::table('t_u_user')->where("userid",$userId->userid)->pluck("accid");
+            $accids[]=$accid;
+        }*/
+        $tname="咨询他讨论组";
+        /*$phone=DB::table("t_u_user")->where("userid",session('userId'))->pluck("phone");*/
+        $phone="sw_18";
+        $accids=array("sw_20");
+        $AppKey = env('AppKey');
+        $AppSecret = env('AppSecret');
+        $serverApi = new \ServerApiClass($AppKey, $AppSecret);
+        $msg="欢迎";
+        $codes=$serverApi->createGroup($tname,$phone,$accids,'','',$msg,'0','0','0');
+        DB::table("t_s_im")->insert([
+            "userid"=>session('userId'),
+            "tid"=>$codes['tid'],
+            "state"=>0,
+            "created_at"=>date("Y-m-d H:i:s",time()),
+            "updated_at"=>date("Y-m-d H:i:s",time())
+        ]);
+
+    }
+    public function getAccid(){
+        $userId=$_POST['userId'];
+        $res=array();
+        $results=DB::table("t_u_user")->where("userid",$userId)->select("imtoken","accid")->get();
+        if($results){
+            $res['code']="success";
+            foreach ($results as $result){
+                $res['imtoken']=$result->imtoken;
+                $res['accid']=$result->accid;
+            }
+        }else{
+            $res['code']="error";
+        }
+        return $res;
+    }
     
    
 

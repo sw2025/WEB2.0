@@ -610,7 +610,7 @@ class CenterController extends Controller
         ]);
         if($result){
             $accid=DB::table("t_u_user")->where("userid",$userId)->pluck("accid");
-            \UserClass::updateName($accid,$nickName,$avatar);
+            \UserClass::updateName($accid,$nickName,"httP://sw2025.com/images/15033817982959.jpg");
             $res['code']="success";
         }else{
             $res['code']="error";
