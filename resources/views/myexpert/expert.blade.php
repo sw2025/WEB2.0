@@ -22,14 +22,19 @@
                         <span class="expert-certy-blue">
                                     <em>资料提交</em>THE DATA SUBMITTED
                                 </span>
+                    <br/>
                         @if(!empty($result) && $result->configid==3)
-                            <span>
+
+                            <span  style="color:red">
                                     <em>审核失败</em>
-                                    拒绝理由：{{--{{$result->remark}}--}}
+
+                                    拒绝理由：{{$result->remark}}
+
                                 </span>
                         @else
                         @endif
                     </div>
+
                     <div class="datas">
                         <div class="datas-lt">
                             <div class="datas-lt-enter">
@@ -242,7 +247,8 @@
                 var brief=$('#brief').val();
                 console.log(name=='' || photo1=='' || industry=='请选择');
                 if(name=='' || photo1=='' || industry=='请选择'){
-                    alert(123);
+                    layer.msg('请把信息填写完整');
+                    $('.submit-audit').attr('disabled',false);
                     return false;
                 } else {
                     $.ajax({
