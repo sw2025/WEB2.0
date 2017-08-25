@@ -58,8 +58,10 @@
                       time: 4000
                   });
               }else{
-                  $.cookie("userId",res['userId'],{expires:7,path:'/',domain:'sw2025.com'});
-                  $.cookie("name",res['name'],{expires:7,path:'/',domain:'sw2025.com'});
+                  var date = new Date();
+                  date.setTime(date.getTime() + (120 * 60 * 1000));
+                  $.cookie("userId",res['userId'],{expires:date,path:'/',domain:'sw2025.com'});
+                  $.cookie("name",res['name'],{expires:date,path:'/',domain:'sw2025.com'});
                   window.location.href="{{asset('uct_basic')}}"
               }
           }

@@ -164,5 +164,33 @@
             $serverApi = new ServerApiClass($AppKey, $AppSecret);
             $result=$serverApi->updateUinfo($accid,$name,$icon);
         }
+
+        /**反选专家之后，创建网易云的群
+         * @param $expertIDS
+         * @param $consultId
+         */
+        public  static function createGroups($expertIDS,$consultId){
+            $accids=array();
+            $userIds=DB::table("t_u_expert")->select("userid")->whereIn("expertid",$expertIDS)->get();
+            foreach ($userIds as $userId){
+                $accid=DB::table('t_u_user')->where("userid",$userId->userid)->pluck("accid");
+                $accids[]=$accid;
+            }
+            $tname="咨询讨论组";
+            $phone=DB::table("t_u_user")->where("userid",session('userId'))->pluck("accid");
+            $AppKey = env('AppKey');
+            $AppSecret = env('AppSecret');
+            $serverApi = new \ServerApiClass($AppKey, $AppSecret);
+            $msg="欢迎";
+            $codes=$serverApi->createGroup($tname,$phone,$accids,'','',$msg,'0','0','0');
+            DB::table("t_s_im")->insert([
+                "userid"=>session('userId'),
+                "tid"=>$codes['tid'],
+                "state"=>0,
+                "consultid"=>$consultId,
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time())
+            ]);
+        }
     }
 ?>

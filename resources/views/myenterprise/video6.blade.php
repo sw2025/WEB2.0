@@ -25,6 +25,7 @@
                     <span class="green-circle">5</span>会议管理<span class="card-step-cap">&gt;</span>
                     <span class="gray-circle">6</span>完成
                 </div>
+                <input type="hidden" id="consult" name="consult" value="{{$consultId}}">
                 <div class="uct-video-manage ">
                     <div class="video-manage-top">
                         @foreach($datas as $data)

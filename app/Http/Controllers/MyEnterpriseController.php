@@ -1108,6 +1108,7 @@ class MyEnterpriseController extends Controller
             throw $e;
         }
         if(!isset($e)){
+            \UserClass::createGroups($expertIDS,$_POST['consultId']);
             $result['code']="success";
         }else{
             $result['code']="error";
