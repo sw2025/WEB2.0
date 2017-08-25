@@ -143,8 +143,6 @@
                         time: 4000
                     });
                 }else{
-                    $.cookie('userId',res['userId'],{expires:7,path:'/',domain:'sw2025.com'});
-                    $.cookie('name',res['name'],{expires:7,path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('login')}}"
                 }
             }

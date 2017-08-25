@@ -3,9 +3,11 @@
  */
 
 var SDKBridge = function (ctr, data) {
-  var sdktoken = readCookie('sdktoken'),
-    userUID = readCookie('uid'),
-    that = this;
+ /* var sdktoken = readCookie('sdktoken'),
+      userUID = readCookie('uid')*/
+  var sdktoken = $.cookie('sdktoken');
+  var userUID = $.cookie('uid')
+  that = this;
   if (!sdktoken) {
     window.location.href = './index.html';
     return;

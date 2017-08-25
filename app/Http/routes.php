@@ -215,7 +215,10 @@ Route::post('uct_mywork/responseconsult','MyExpertController@responseConsult');
 Route::get('uct_myask/myaskinvt','MyExpertController@myaskinvt');
 //收费标准
 Route::any('uct_standard','MyExpertController@standard');
+/***********************************视频路由*******************************************/
 //创建群组
 Route::get('creatGroup','PublicController@createGroups');
 //获取accid和token
 Route::post('getAccid','PublicController@getAccid');
+//获取群ID
+Route::post('getTeamId','PublicController@getTeamId');
