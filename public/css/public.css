@@ -106,5 +106,32 @@
 .aside .icon-iconfonticon{font-size: 30px;}
 .aside .icon-renzheng1,.aside .icon-shoufeixitong{font-size: 24px;}
 /***********侧边栏 end***********/
-.main{float: right;width:80.83333%;overflow-x:hidden;}
+/*.main{float: right;width:80.83333%;overflow-x:hidden;}*/
 .main-top{padding-top: 38px;padding-bottom: 18px;color:#333;font-size: 16px;}
+/***********v2==>>侧边栏 start***********/
+.ucenter{padding:95px 0 35px;min-height: 686px;}
+.wrap{min-width: 970px;max-width: 1200px;margin:0 auto;position: relative;}
+.v-work-manage{background:url(../img/bg01.jpg) no-repeat;background-attachment: fixed;}
+.v-aside{width: 126px;border: 1px solid #ccc;padding-top: 20px;background:#fff;background:rgba(255,255,255,0.6);border-radius: 5px;box-shadow: 0 0 8px #ccc;overflow: hidden;position: absolute;left: 0;top: 0;}
+.v-personal{display: block;width: 83px;margin:0 auto;color:#666;}
+.v-avatar{width: 75px;height: 75px;border-radius: 50px;border: 3px solid #00a7ed;}
+.v-nick{display: block;padding:10px 3px;text-align: center;white-space: nowrap;overflow: hidden;}
+.v-money-info{overflow: hidden;padding-bottom: 10px;}
+.v-money{float: left;width: 50%;height: 22px;background:url(../img/vicon_money.png) no-repeat center center;}
+.v-info{float: left;box-sizing: border-box;border-left: 1px solid #ccc;height: 18px;line-height: 18px;width: 50%;text-align: center;color:#333;margin-top: 2px;position: relative;}
+.v-info i{font-size: 14px;}
+.v-new-info-tip{position: absolute;width: 6px;height: 6px;border-radius: 5px;background:#e90e0e;top: 0;right: 19px;}
+.v-identity-sel{position: relative;}
+.v-identity-default{display: block;width: 124px;height: 32px;line-height: 32px;margin:0 auto;border-radius: 3px;background:#00a7ed;color:#fff;position: relative;}
+.v-identity-default:before{content:"\e60c";font-family: "iconfont";position: absolute;top: 0;right: 8px;font-size: 20px;}
+.v-identity-cap{padding:0 15px;border-right: 1px solid #7cd2f6;}
+.v-identity-list{position: absolute;background:#fff;width:100%;text-align: center;line-height: 32px;box-shadow: 0 0 5px #ccc;display: none;}
+.v-identity-list li{cursor: pointer;color:#333;border-bottom: 1px solid #ccc;}
+.v-identity-list li:hover,.v-identity-list li.active{background:#7cd2f6;color:#fff;}
+.v-ucenter-nav-list{display: none;}
+.v-default{display: block;}
+.v-ucenter-nav-item{padding:20px 0;display: block;border-bottom: 1px solid #ccc;text-align: center;color:#333;}
+.v-ucenter-nav-item img{margin:0 auto 15px;}
+.v-ucenter-nav-item:hover,.v-ucenter-nav-list .active{background:#fff;}
+.vmain{margin-left: 148px;}
+/***********v2==>>侧边栏 end***********/
