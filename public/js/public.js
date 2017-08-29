@@ -29,6 +29,14 @@ $(function(){
         $this.parent().hide();
         var $index = $(this).index();
         $('.v-ucenter-nav-list').eq($index).show().siblings().hide();
+        if($('.v-identity-cap').html() == '我是专家'){
+            $('.iamenter').hide();
+            $('.iamexpert').show();
+        }else{
+            $('.iamenter').show();
+            $('.iamexpert').hide();
+        }
+
     })
     //end 新增2017-08-24
     // 展开搜索框
