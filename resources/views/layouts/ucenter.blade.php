@@ -77,8 +77,8 @@
         <!-- 侧边栏公共部分/start -->
         <div class="v-aside">
             <a href="{{asset('uct_basic')}}" class="v-personal" title="个人中心">
-                <img src="{{asset('img/avatar1.jpg')}}" class="v-avatar" />
-                <span class="v-nick">123****7890</span>
+                <img src="" class="v-avatar" />
+                <span class="v-nick"></span>
             </a>
             <div class="v-money-info">
                 <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"></a>
@@ -199,15 +199,25 @@
             $(".before-login").show();
             $(".after-login").hide();
         }
-        $.ajax({
-            url:"{{asset('getAvatar')}}",
-            data:{userId:$.cookie('userId')},
-            dateType:"json",
-            type:"POST",
-            success:function(res){
-                $(".v-avatar").attr('src','http://sw2025.com'+res);
-            }
-        })
+        if($.cookie("avatar") && $.cookie("phone")){
+            $(".v-avatar").attr('src','http://sw2025.com'+$.cookie("avatar"));
+            $(".v-nick").html($.cookie("phone"));
+        }else{
+            $.ajax({
+                url:"{{asset('getAvatar')}}",
+                data:{userId:$.cookie('userId')},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    $(".v-avatar").attr('src','http://sw2025.com'+res['avatar']);
+                    $(".v-nick").html(res['phone']);
+                    var date = new Date();
+                    date.setTime(date.getTime() + (120 * 60 * 1000));
+                    $.cookie("avatar",res['avatar'],{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("phone",res['phone'],{expires:date,path:'/',domain:'sw2025.com'});
+                }
+            })
+        }
         $(".quit").on("click",function(){
             $.ajax({
                 url:"{{asset("quit")}}",
@@ -215,8 +225,10 @@
                 type:"POST",
                 success:function(res){
                     if(res['code']=="success"){
-                        $.cookie("userId",'',{expires:7,path:'/',domain:'sw2025.com'});
-                        $.cookie("name",'',{expires:7,path:'/',domain:'sw2025.com'});
+                        $.cookie("userId",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("name",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("avatar",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('/')}}"
                     }else{
                         window.location.href="{{asset('/')}}"
