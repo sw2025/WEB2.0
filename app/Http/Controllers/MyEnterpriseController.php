@@ -1172,5 +1172,9 @@ class MyEnterpriseController extends Controller
         }
         return $result;
     }
+    
+    public function manage(){
+        return view("myenterprise.newWorkManage");
+    }
 
 }

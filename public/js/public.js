@@ -8,25 +8,51 @@ $(function(){
     $('.nav li').click(function(event) {
         $(this).addClass('active').siblings().removeClass('active');
     });
+    //start 新增2017-08-24
+    $(document).click(function(event) {
+        // event.stopPropagation();
+        $('.search-sear').hide();//隐藏头部导航条相关
+        $('.search-cli').show();
+        $('.select-option').hide();
+        $('.v-identity-list').hide();//隐藏侧边栏的下拉框
+    });
+    $('.v-identity-default').click(function (event) {
+        event.stopPropagation();
+        $(this).next('ul').toggle();
+    })
+    $('.v-identity-list li').click(function (event) {
+        event.stopPropagation();
+        var $this = $(this);
+        $this.addClass('active').siblings().removeClass('active');
+        var $html = $this.html();
+        $('.v-identity-cap').html($html);
+        $this.parent().hide();
+        var $index = $(this).index();
+        $('.v-ucenter-nav-list').eq($index).show().siblings().hide();
+    })
+    //end 新增2017-08-24
     // 展开搜索框
     $('.search-cli').on('click', function(event) {
-        event.preventDefault();
+        event.stopPropagation();
         $(this).hide();
         $('.search-sear').show();
     });
     // 搜索框下拉展示
     $('.select-showbox').on('click', function(event) {
-        event.preventDefault();
+        event.stopPropagation();
         $('.select-option').animate({'left':0}, 400).show();
     });
     // 填充搜索框下拉值
     $('.select-option').on('click', 'li', function(event) {
-        event.preventDefault();
+        event.stopPropagation();
         $(this).addClass('selected').siblings().removeClass('selected');
         var liHtml = $(this).html();
         $('.select-showbox span').html(liHtml);
         $('.select-option').hide();
         $('.search-text').attr('placeholder', liHtml);
+    });
+    $('.search-sear').click(function(event) {
+        event.stopPropagation();
     });
     // 首页幻灯轮播start
     $('.banner ul li').eq(0).show();

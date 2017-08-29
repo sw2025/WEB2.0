@@ -136,8 +136,10 @@ Route::get('uct_member/member2/{entid}','MyEnterpriseController@member2');
 Route::get('uct_member/member3/{entid}','MyEnterpriseController@member3');
 //会员认证4
 Route::get('uct_member/member4/{entid}','MyEnterpriseController@member4');
+/*//办事服务
+Route::get('uct_works','MyEnterpriseController@works');*/
 //办事服务
-Route::get('uct_works','MyEnterpriseController@works');
+Route::get('uct_works','MyEnterpriseController@manage');
 //办事详情
 Route::get('uct_works/detail/{eventId}','MyEnterpriseController@workDetail');
 //处理上传的资料
@@ -222,3 +224,5 @@ Route::get('creatGroup','PublicController@createGroups');
 Route::post('getAccid','PublicController@getAccid');
 //获取群ID
 Route::post('getTeamId','PublicController@getTeamId');
+//获取个人中心头像
+Route::post('getAvatar','PublicController@getAvatar');
