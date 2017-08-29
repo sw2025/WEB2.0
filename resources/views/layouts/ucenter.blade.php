@@ -9,16 +9,16 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/global.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/public.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/ucenter.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset('css/list.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset('css/workmanage.css')}}" />
     <!-- js / start -->
- {{--   <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>--}}
-<script src="{{asset('im/3rd/jquery-1.11.3.min.js')}}"></script>
+    <script src="{{asset('im/3rd/jquery-1.11.3.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jquery.cookie.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/public.js')}}"></script>
-  {{--  <script type="text/javascript" src="{{asset('js/jquery.qqFace.js')}}"></script>--}}
     <!--[if lt IE 9]>
-    <script type="text/javascript" src="{{asset('js/utils/html5shiv.min.js?1401441990')}}"></script>
+    <script type="text/javascript" src="{{asset('js/utils/html5shiv.js?1401441990')}}"></script>
     <script type="text/javascript" src="{{asset('js/utils/respond.min.js?1401441990')}}"></script>
     <![endif]-->
 </head>
@@ -72,38 +72,82 @@
     </div>
 </div>
 <!-- 公共header / end -->
-<!-- 基本资料 / start -->
-<div class="ucenter">
+<div class="ucenter v-work-manage">
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
-        <div class="aside">
-            <h2 class="aside-tit"><i class="iconfont icon-tongyong"></i>通用信息</h2>
-            <ul class="common-info">
-                <li id="uct_basic"><a href="{{asset('uct_basic')}}"><i class="iconfont icon-3jibenziliao"></i>基本资料</a></li>
-                <li id="uct_recharge"><a href="{{asset('uct_recharge')}}"><i class="iconfont icon-chongzhi"></i>充值提现</a></li>
-                <li id="uct_myinfo"><a href="{{asset('uct_myinfo')}}"><i class="iconfont icon-wodexinxi"></i>我的消息</a></li>
-                <li id="uct_myneed"><a href="{{asset('uct_myneed')}}"><i class="iconfont icon-xuqiu"></i>我的需求</a></li>
-            </ul>
-            <h2 class="aside-tit"><i class="iconfont icon-gongsi"></i>我是企业</h2>
-            <ul class="common-info">
-                <li id="uct_member"><a href="{{asset('uct_member')}}"><i class="iconfont icon-renzheng2"></i>会员认证</a></li>
-                <li id="uct_works"><a href="{{asset('uct_works')}}"><i class="iconfont icon-banshizhinan"></i>办事服务</a></li>
-                <li id="uct_video"><a href="{{asset('uct_video')}}"><i class="iconfont icon-shipin"></i>视频咨询</a></li>
-                <li id="uct_resource"><a href="{{asset('uct_resource')}}"><i class="iconfont icon-ziyuanku2"></i>专家资源</a></li>
-            </ul>
-            <h2 class="aside-tit"><i class="iconfont icon-iconfonticon"></i>我是专家</h2>
-            <ul class="common-info">
-                <li id="uct_expert"><a href="{{asset('uct_expert')}}"><i class="iconfont icon-renzheng1"></i>专家认证</a></li>
-                <li id="uct_standard"><a href="{{asset('uct_standard')}}"><i class="iconfont icon-shoufeixitong"></i>收费标准</a></li>
-                <li id="uct_mywork"><a href="{{asset('uct_mywork')}}"><i class="iconfont icon-banjieshijian"></i>我的办事</a></li>
-                <li id="uct_myask"><a href="{{asset('uct_myask')}}"><i class="iconfont icon-zixun"></i>我的咨询</a></li>
-            </ul>
+        <div class="v-aside">
+            <a href="{{asset('uct_basic')}}" class="v-personal" title="个人中心">
+                <img src="{{asset('img/avatar1.jpg')}}" class="v-avatar" />
+                <span class="v-nick">123****7890</span>
+            </a>
+            <div class="v-money-info">
+                <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"></a>
+                <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
+            </div>
+            <div class="v-identity">
+                <div class="v-identity-sel">
+                    <a href="javascript:;" class="v-identity-default"><span class="v-identity-cap">我是企业</span></a>
+                    <ul class="v-identity-list">
+                        <li class="active">我是企业</li>
+                        <li>我是专家</li>
+                    </ul>
+                    <div class="v-ucenter-nav">
+                        <div class="v-ucenter-nav-list v-default">
+                            <a href="{{asset('uct_works')}}" class="v-ucenter-nav-item active">
+                                <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
+                                办事管理
+                            </a>
+                            <a href="{{asset('uct_video')}}" class="v-ucenter-nav-item">
+                                <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
+                                视频会议
+                            </a>
+                            <a href="{{asset('uct_resource')}}" class="v-ucenter-nav-item">
+                                <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
+                                专家资源
+                            </a>
+                            <a href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
+                                <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
+                                需求信息
+                            </a>
+                        </div>
+                        <div class="v-ucenter-nav-list">
+                            <a href="{{asset('uct_standard')}}" class="v-ucenter-nav-item active">
+                                <img src="{{asset('img/vicon01.png')}}" alt="收费标准" />
+                                收费标准
+                            </a>
+                            <a href="{{asset('uct_mywork')}}" class="v-ucenter-nav-item">
+                                <img src="{{asset('img/vicon02.png')}}" alt="我的办事" />
+                                我的办事
+                            </a>
+                            <a href="{{asset('uct_myask')}}" class="v-ucenter-nav-item">
+                                <img src="{{asset('img/vicon03.png')}}" alt="我的咨询" />
+                                我的咨询
+                            </a>
+                            <a href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
+                                <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
+                                需求信息
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- 侧边栏公共部分/end -->
-@yield("content")
+        <!-- 企业办事服务 / start -->
+        <div class="vmain">
+            <div class="vmain-work-manage-top">
+                <img class="vmain-work-top-pic" src="{{asset('img/vwork.jpg')}}" height="82" width="142" />
+                <div class="vmain-work-top-rt">
+                    <span class="vcertifate">未认证</span><i class="iconfont icon-vip"></i>
+                    <a href="{{asset('uct_member')}}" class="vmain-to-cert">去认证</a>
+                </div>
+            </div>
+            @yield("content")
+        </div>
+        <!-- 企业办事服务 / start -->
     </div>
 </div>
-<!-- 基本资料 / end -->
+<!-- 企业办事服务 / end -->
 <!-- 公共footer / end -->
 <div class="footer">
     <div class="container clearfix">
@@ -126,50 +170,63 @@
 </div>
 <!-- 公共footer / end -->
 <script type="text/javascript">
-    var str=window.location.pathname;
-    var num1=str.indexOf('/');
-    var find = '/';//表示要找的字符
-    var flag = 2;//表示第几次出现
-    var num2=0;
-    for(var i=0;i<str.length;i++){
-        if(str.charAt(i)==find)
-            flag--;
-        if(flag==0){
-            num2=i;
-            break;
+    $(function(){
+        var str=window.location.pathname;
+        var num1=str.indexOf('/');
+        var find = '/';//表示要找的字符
+        var flag = 2;//表示第几次出现
+        var num2=0;
+        for(var i=0;i<str.length;i++){
+            if(str.charAt(i)==find)
+                flag--;
+            if(flag==0){
+                num2=i;
+                break;
+            }
         }
-    }
-    if(num2){
-        var string=str.substring(num1+1,num2);
-    }else{
-        var string=str.substring(num1+1);
-    }
-    $("#"+string).addClass('current');
-    if($.cookie('name')){
-        var name=$.cookie("name");
-        $(".before-login").hide();
-        $(".after-login").show();
-        $(".after-login").children(":last").text(name);
-    }else{
-        $(".before-login").show();
-        $(".after-login").hide();
-    }
-    $(".quit").on("click",function(){
+        if(num2){
+            var string=str.substring(num1+1,num2);
+        }else{
+            var string=str.substring(num1+1);
+        }
+        $("#"+string).addClass('current');
+        if($.cookie('name')){
+            var name=$.cookie("name");
+            $(".before-login").hide();
+            $(".after-login").show();
+            $(".after-login").children(":last").text(name);
+        }else{
+            $(".before-login").show();
+            $(".after-login").hide();
+        }
         $.ajax({
-            url:"{{asset("quit")}}",
+            url:"{{asset('getAvatar')}}",
+            data:{userId:$.cookie('userId')},
             dateType:"json",
             type:"POST",
             success:function(res){
-                if(res['code']=="success"){
-                    $.cookie("userId",'',{expires:7,path:'/',domain:'sw2025.com'});
-                    $.cookie("name",'',{expires:7,path:'/',domain:'sw2025.com'});
-                    window.location.href="{{asset('/')}}"
-                }else{
-                    window.location.href="{{asset('/')}}"
-                }
+                $(".v-avatar").attr('src','http://sw2025.com'+res);
             }
         })
+        $(".quit").on("click",function(){
+            $.ajax({
+                url:"{{asset("quit")}}",
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        $.cookie("userId",'',{expires:7,path:'/',domain:'sw2025.com'});
+                        $.cookie("name",'',{expires:7,path:'/',domain:'sw2025.com'});
+                        window.location.href="{{asset('/')}}"
+                    }else{
+                        window.location.href="{{asset('/')}}"
+                    }
+                }
+            })
+        })
+
     })
+
 </script>
 </body>
 </html>

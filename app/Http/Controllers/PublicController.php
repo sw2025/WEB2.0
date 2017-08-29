@@ -277,6 +277,9 @@ class PublicController extends Controller
         return $res;
     }
 
+    /**获取群id
+     * @return array
+     */
     public  function getTeamId(){
         $userId=session('userId');
         $res=array();
@@ -286,6 +289,13 @@ class PublicController extends Controller
             $res['tid']=$teamId;
         }
         return $res;
+    }
+
+    public function getAvatar(){
+        
+        $userId=$_POST['userId'];
+        $avatar=DB::table("T_U_USER")->select('avatar','phone')->where("userid",$userId)->get();
+
     }
     
    

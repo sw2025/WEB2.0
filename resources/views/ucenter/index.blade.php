@@ -6,8 +6,7 @@
 <script src="{{asset('./FileUpload/js/jquery.iframe-transport.js')}}"></script>
 <script src="{{asset('./FileUpload/js/jquery.fileupload-process.js')}}"></script>
 <script src="{{asset('./FileUpload/js/jquery.fileupload-validate.js')}}"></script>
-<div class="main">
-    <h3 class="main-top">基本资料</h3>
+<h3 class="main-top">基本资料</h3>
     <div class="ucenter-con">
         <div class="main-right">
             <div class="basic-source">
@@ -39,7 +38,6 @@
             </div>
         </div>
     </div>
-</div>
 <script>
     $(function () {
         var token = $.cookie('token');
