@@ -302,11 +302,12 @@ class MyExpertController extends Controller
             ->paginate(2);
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
-            ->whereIn('status.configid',[4,5,7])
+            ->whereIn('status.configid',[5,6,7])
             ->orderBy('res.id','desc')
             ->paginate(2);
         $datas = \ConsultClass::handelObj($datas);
         $datas2 = \ConsultClass::handelObj($datas2);
+        //dd($datas2);
         if($request->ajax()){
             $action = $request->input()['action'];
             if(!$action){

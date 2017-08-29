@@ -5,22 +5,24 @@
             <!-- 我的视频咨询 / start -->
             <h3 class="main-top">我的视频咨询</h3>
             <div class="ucenter-con">
-                <div class="myrequire-bg myask">
+                <div class="myrequire-bg">
                     <div class="three-icon resource-icon">
-                        <a href="javascript:;" class="icon-row active"><i class="iconfont icon-xiangyingcelve"></i><span>已响应</span><em>10</em></a>
-                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-yaoqing"></i><span>已受邀</span><em>10</em></a>
-                        <a href="javascript:;" class="icon-row"><i class="iconfont icon-wancheng"></i><span>已完成</span><em>20</em></a>
+                        <a href="javascript:;" class="icon-row"  index="5"><i class="iconfont icon-xiangyingcelve"></i><span>已响应</span><em>{{$responsecount}}</em></a>
+                        <a href="javascript:;" class="icon-row"  index="pushevent"><i class="iconfont icon-yaoqing"></i><span>已受邀</span><em>{{$putcount}}</em></a>
+                        <a href="javascript:;" class="icon-row"  index="7"><i class="iconfont icon-wancheng"></i><span>已完成</span><em>{{$complatecount}}</em></a>
                     </div>
                     <div class="publish-intro myask-intro">
                         <span class="introduce-cap">视频咨询规则介绍</span>
-                        <div class="introduce-con">关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报</div>
+                        <div class="introduce-con">
+                            关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报
+                        </div>
                     </div>
                     <div class="myask-meet">
                         <span class="fs12">距会议还有1分钟</span>
                         <a href="{{asset('uct_myask/myaskinvt')}}" class="need-publish-btn">进入会议室</a>
                     </div>
                 </div>
-            </div>
+
             <div class="myask-tabar">
                 <a class="myask-tabar-a active" href="javascript:;" index="pushevent">会议推送列表</a>
                 <a class="myask-tabar-a" href="javascript:;" index="allevent">我的会议列表</a>
@@ -44,7 +46,7 @@
                                     <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->domain1.' / '.$v->domain2}}</a></td>
                                     <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->name}}</a></td>
                                     <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->brief}}</a></td>
-                                    <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->timeRange}}</a></td>
+                                    <td><a href="{{url('uct_myask/askDetail',$v->consultid)}}">{{$v->consulttime}}</a></td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -84,7 +86,7 @@
                 <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
             </div>
         </div>
-    </div>
+        </div>
 
     <script type="text/javascript">
         $(function(){
@@ -136,6 +138,7 @@
                     $('.allPage').text(data.last_page);
                 });
             }
+
             $('.myask-tabar-a').click(function() {
                 var guize = $('.three-icon .active').attr('index');
                 $(this).addClass('active').siblings().removeClass('active');
@@ -145,12 +148,22 @@
                     senddatato({'page': 1, 'action': ind});
                 }
             });
-            $('.three-icon a').on('click',function () {
-                var config = $(this).attr('index');
-                $('.myask-tab-box').eq(1).show().siblings().hide();
-                $('.myask-tabar-a').eq(1).addClass('active').siblings().removeClass('active');
-                senddatato({'page':1,'action':config});
-            });
+
+           $('.three-icon a').on('click',function () {
+               var config = $(this).attr('index');
+               if(config=='pushevent'){
+                   $('.myask-tabar-a').eq(0).addClass('active');
+                   $('.myask-tabar-a').eq(1).removeClass('active');
+                   $('.myask-tab-box').eq(0).show();
+                   senddatato({'page':1,'action':config});
+               }else {
+                   $('.myask-tab-box').eq(1).show().siblings().hide();
+                   $('.myask-tabar-a').eq(1).addClass('active').siblings().removeClass('active');
+                   senddatato({'page':1,'action':config});
+               }
+
+           });
+
         })
     </script>
 @endsection
