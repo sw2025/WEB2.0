@@ -1,16 +1,16 @@
 @extends("layouts.ucenter")
 @section("content")
     <div class="vmain-manage-list clearfix">
-        <div class="v-works-sel">
-            <a href="javascript:;" class="v-works-sel-def">全部</a>
-            <ul class="v-works-sel-list" style="display: none;">
-                <li>全部</li>
-                <li>办事审核</li>
-                <li>邀请专家</li>
-                <li>专家响应</li>
-                <li>正在办事</li>
-                <li>已完成</li>
-            </ul>
+        <div class="v-works-manage-list-top clearfix">
+            <div class="v-works-mlt-select">
+                <a href="javascript:;" class="v-works-mlt-opt active">全部</a>
+                <a href="javascript:;" class="v-works-mlt-opt">找资金</a>
+                <a href="javascript:;" class="v-works-mlt-opt">找技术</a>
+                <a href="javascript:;" class="v-works-mlt-opt">找市场</a>
+                <a href="javascript:;" class="v-works-mlt-opt">定战略</a>
+            </div>
+            <div class="v-supply-con"></div>
+            <a href="uct_works1.html" class="goto-work"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
         </div>
         <ul class="v-manage-list-ul clearfix">
             <li>
@@ -32,6 +32,7 @@
                         <span class="vprogress vprog4" title="办事管理"></span>
                         <span class="vprogress vprog5" title="完成"></span>
                     </div>
+                    <span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>2017-01-01</span>
                 </a>
             </li>
             <li>
@@ -53,6 +54,7 @@
                         <span class="vprogress vprog4" title="办事管理"></span>
                         <span class="vprogress vprog5" title="完成"></span>
                     </div>
+                    <span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>2017-01-01</span>
                 </a>
             </li>
             <li>
@@ -74,6 +76,7 @@
                         <span class="vprogress vprog4" title="办事管理"></span>
                         <span class="vprogress vprog5" title="完成"></span>
                     </div>
+                    <span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>2017-01-01</span>
                 </a>
             </li>
             <li>
@@ -95,6 +98,7 @@
                         <span class="vprogress vprog4" title="办事管理"></span>
                         <span class="vprogress vprog5" title="完成"></span>
                     </div>
+                    <span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>2017-01-01</span>
                 </a>
             </li>
             <li>
@@ -116,14 +120,14 @@
                         <span class="vprogress vprog4" title="办事管理"></span>
                         <span class="vprogress vprog5" title="完成"></span>
                     </div>
+                    <span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>2017-01-01</span>
                 </a>
             <li>
                 <div class="v-supply-tip">
-                                <span class="v-my-hover">
-                                    <a href="{{asset('uct_works/applyWork')}}" class="to-link-supply1" title="申请办事服务"><i class="iconfont icon-iconjia"></i></a>
-                                    <a href="{{asset('uct_works/applyWork')}}" class="to-link-supply2" title="申请办事服务">申请办事服务</a>
-                                </span>
-                    <div class="v-supply-con"></div>
+                    <span class="v-supply-tip-top"><strong>升维网</strong>为<strong>企业</strong></span>
+                    <div class="v-supply-tactic"><span>找资金</span><span>找技术</span><span>找市场</span><span>定战略</span></div>
+                    <img src="img/nolength.png" class="nolength" />
+                    <a href="uct_works1.html" class="goto-work1"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
                 </div>
             </li>
         </ul>

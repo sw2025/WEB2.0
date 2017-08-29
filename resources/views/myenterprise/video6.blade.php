@@ -12,10 +12,9 @@
     <script type="text/javascript">
         jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
     </script>
-    <div class="main">
-        <!-- 专家视频咨询 / start -->
-        <h3 class="main-top">专家视频咨询</h3>
-        <div class="ucenter-con">
+    <!-- 专家视频咨询 / start -->
+    <h3 class="main-top">专家视频咨询</h3>
+    <div class="ucenter-con">
             <div class="main-right">
                 <div class="card-step works-step">
                     <span class="green-circle">1</span>会议申请<span class="card-step-cap">&gt;</span>
@@ -218,7 +217,6 @@
                 </div>
             </div>
     </div>
-</div>
 
     <script src="{{asset('im/3rd/NIM_Web_SDK_v4.0.0.js')}}"></script>
     <script src="{{asset('im/3rd/NIM_Web_Netcall_v4.0.0.js')}}"></script>

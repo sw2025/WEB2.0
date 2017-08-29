@@ -76,12 +76,19 @@
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
         <div class="v-aside">
+            <a href="{{asset('uct_expert')}}" class="goto-renzh v-personal" title="去认证"><img src="" class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip" title="未认证"></i></a>
             <a href="{{asset('uct_basic')}}" class="v-personal" title="个人中心">
-                <img src="" class="v-avatar" />
                 <span class="v-nick"></span>
             </a>
-            <div class="v-money-info">
-                <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"></a>
+            <!-- 我是企业时 -->
+            <div class="v-money-info iamenter">
+                <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
+                <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
+            </div>
+            <!-- 我是专家时 -->
+            <div class="v-money-info iamexpert">
+                <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
+                <a href="{{asset('uct_standard')}}" class="v-info border2" title=""><i class="iconfont"></i></a>
                 <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
             </div>
             <div class="v-identity">
@@ -93,37 +100,33 @@
                     </ul>
                     <div class="v-ucenter-nav">
                         <div class="v-ucenter-nav-list v-default">
-                            <a href="{{asset('uct_works')}}" class="v-ucenter-nav-item active">
+                            <a id="uct_works" href="{{asset('uct_works')}}" class="v-ucenter-nav-item ">
                                 <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
                                 办事管理
                             </a>
-                            <a href="{{asset('uct_video')}}" class="v-ucenter-nav-item">
+                            <a id="uct_video" href="{{asset('uct_video')}}" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
                                 视频会议
                             </a>
-                            <a href="{{asset('uct_resource')}}" class="v-ucenter-nav-item">
+                            <a id="uct_resource" href="{{asset('uct_resource')}}" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
                                 专家资源
                             </a>
-                            <a href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
+                            <a id="uct_myneed" href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
                                 需求信息
                             </a>
                         </div>
                         <div class="v-ucenter-nav-list">
-                            <a href="{{asset('uct_standard')}}" class="v-ucenter-nav-item active">
-                                <img src="{{asset('img/vicon01.png')}}" alt="收费标准" />
-                                收费标准
-                            </a>
-                            <a href="{{asset('uct_mywork')}}" class="v-ucenter-nav-item">
+                            <a id="uct_mywork" href="{{asset('uct_mywork')}}" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon02.png')}}" alt="我的办事" />
                                 我的办事
                             </a>
-                            <a href="{{asset('uct_myask')}}" class="v-ucenter-nav-item">
+                            <a id="uct_myask" href="{{asset('uct_myask')}}" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon03.png')}}" alt="我的咨询" />
                                 我的咨询
                             </a>
-                            <a href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
+                            <a id="uct_myneed" href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
                                 需求信息
                             </a>
@@ -135,13 +138,6 @@
         <!-- 侧边栏公共部分/end -->
         <!-- 企业办事服务 / start -->
         <div class="vmain">
-            <div class="vmain-work-manage-top">
-                <img class="vmain-work-top-pic" src="{{asset('img/vwork.jpg')}}" height="82" width="142" />
-                <div class="vmain-work-top-rt">
-                    <span class="vcertifate">未认证</span><i class="iconfont icon-vip"></i>
-                    <a href="{{asset('uct_member')}}" class="vmain-to-cert">去认证</a>
-                </div>
-            </div>
             @yield("content")
         </div>
         <!-- 企业办事服务 / start -->
@@ -189,7 +185,7 @@
         }else{
             var string=str.substring(num1+1);
         }
-        $("#"+string).addClass('current');
+        $("#"+string).addClass('active');
         if($.cookie('name')){
             var name=$.cookie("name");
             $(".before-login").hide();
@@ -200,7 +196,7 @@
             $(".after-login").hide();
         }
         if($.cookie("avatar") && $.cookie("phone")){
-            $(".v-avatar").attr('src','http://sw2025.com'+$.cookie("avatar"));
+            $(".v-avatar").attr('src',$.cookie("avatar"));
             $(".v-nick").html($.cookie("phone"));
         }else{
             $.ajax({
