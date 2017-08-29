@@ -132,8 +132,10 @@
             type:"POST",
             success:function(res){
                 if(res['code']=="success"){
-                    $.cookie("userId",'',{expires:7,path:'/',domain:'sw2025.com'});
-                    $.cookie("name",'',{expires:7,path:'/',domain:'sw2025.com'});
+                    $.cookie("userId",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("name",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("avatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('/')}}"
                 }else{
                    window.location.href="{{asset('/')}}"

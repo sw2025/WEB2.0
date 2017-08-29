@@ -292,9 +292,14 @@ class PublicController extends Controller
     }
 
     public function getAvatar(){
-        
+        $res=array();
         $userId=$_POST['userId'];
-        $avatar=DB::table("T_U_USER")->select('avatar','phone')->where("userid",$userId)->get();
+        $userInfos=DB::table("T_U_USER")->select('avatar','phone')->where("userid",$userId)->get();
+        foreach ($userInfos as $userInfo){
+            $res['avatar']=$userInfo->avatar;
+            $res['phone']=substr_replace($userInfo->phone,'****',3,4);
+        }
+        return $res;
 
     }
     
