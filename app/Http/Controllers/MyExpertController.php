@@ -326,20 +326,36 @@ class MyExpertController extends Controller
     /**我的咨询的详情
      * @return mixed
      */
-    public function  askDetail($consultid){
-
+    public function  askDetail($consultId){
+        $consultStatus=DB::table("view_consultstatus")->where("consultid",$consultId)->pluck("configid");
         $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
         $datas = DB::table('t_c_consult as consult')
             ->leftJoin('t_c_consultresponse as res','consult.consultid','=','res.consultid')
             ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
             ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
-            ->where(['consult.consultid'=>$consultid,'res.expertid'=>$expertid])
+            ->where(['consult.consultid'=>$consultId,'res.expertid'=>$expertid])
             ->first();
-        if(!$datas){
-            return redirect('/');
+        switch ($consultStatus){
+            case 5:
+                $token = Crypt::encrypt($consultId.session('userId'));
+                return view("myexpert.askDetail05",compact('datas','token'));
+            break;
+            case 6:
+                $selExperts=DB::table("t_c_consult")
+                    ->leftJoin("t_c_consultresponse","t_c_consultresponse.consultid","=","t_c_consult.consultid")
+                    ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_c_consultresponse.state",3)
+                    ->where("t_c_consultresponse.consultid",$consultId)
+                    ->get();
+                $comperes=DB::table("t_u_bill")
+                    ->leftJoin("t_u_user","t_u_user.userid","=","t_u_bill.userid")
+                    ->where("t_u_bill.consultid",$consultId)
+                    ->where("t_u_bill.type","支出")
+                    ->get();
+                return view("myexpert.askDetail06",compact('selExperts','comperes','datas',"consultId"));
+            break;
+
         }
-        $token = Crypt::encrypt($consultid.session('userId'));
-        return view("myexpert.askDetail",compact('datas','token'));
     }
 
     /**专家响应咨询
