@@ -281,9 +281,9 @@ class PublicController extends Controller
      * @return array
      */
     public  function getTeamId(){
-        $userId=session('userId');
+
         $res=array();
-        $teamId=DB::table("t_s_im")->where(['userid'=>$userId,"consultid"=>$_POST['consultId']])->pluck("tid");
+        $teamId=DB::table("t_s_im")->where(["consultid"=>$_POST['consultId']])->pluck("tid");
         if($teamId){
             $res['code']="success";
             $res['tid']=$teamId;
