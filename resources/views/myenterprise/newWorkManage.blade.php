@@ -10,7 +10,7 @@
                 <a href="javascript:;" class="v-works-mlt-opt">定战略</a>
             </div>
             <div class="v-supply-con"></div>
-            <a href="uct_works1.html" class="goto-work"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
+            <a href="{{asset('uct_works/applyWork')}}" class="goto-work"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
         </div>
         <ul class="v-manage-list-ul clearfix">
             <li>
@@ -126,8 +126,8 @@
                 <div class="v-supply-tip">
                     <span class="v-supply-tip-top"><strong>升维网</strong>为<strong>企业</strong></span>
                     <div class="v-supply-tactic"><span>找资金</span><span>找技术</span><span>找市场</span><span>定战略</span></div>
-                    <img src="img/nolength.png" class="nolength" />
-                    <a href="uct_works1.html" class="goto-work1"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
+                    <img src="{{asset('img/nolength.png')}}" class="nolength" />
+                    <a href="{{asset('uct_works/applyWork')}}" class="goto-work1"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
                 </div>
             </li>
         </ul>
@@ -136,27 +136,16 @@
         </div>
     </div>
     <script>
-        // 下拉筛选条件
-        $(document).click(function(){
-            $('.v-works-sel-list').hide();
-        })
-        $('.v-works-sel .v-works-sel-def').click(function(event) {
-            event.stopPropagation();
-            $(this).next('ul').slideToggle();
-        });
-        $('.v-works-sel-list li').click(function(event) {
-            event.stopPropagation();
-            var selHtml = $(this).html();
-            $(this).parent().prev('a').html(selHtml);
-            $(this).parent().hide();
-        });
         // 提示申请服务内容
         var $html = '关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报';
-        $('.v-supply-tip').hover(function(){
+        $('.goto-work').hover(function(){
             $('.v-supply-con').html($html).show();
         },function(){
             $('.v-supply-con').hide();
-        })
+        });
+        $('.v-works-mlt-opt').click(function(event) {
+            $(this).addClass('active').siblings().removeClass('active');
+        });
         $("#Pagination").pagination("15");
     </script>
 @endsection
