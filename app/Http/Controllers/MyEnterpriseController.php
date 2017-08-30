@@ -736,8 +736,10 @@ class MyEnterpriseController extends Controller
                     "updated_at"=>date("Y-m-d H:i:s")
                 ]);
             }
-            DB::table("t_eventverify")->where("eventid",$_POST['evnetId'])->update([
+            DB::table("t_e_eventverify")->insert([
+                'eventid' => $_POST['eventId'],
                 "configid"=>6,
+                "verifytime"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
         }catch (Exception $e){
@@ -908,6 +910,7 @@ class MyEnterpriseController extends Controller
                     ->where("t_u_bill.consultid",$consultId)
                    ->where("t_u_bill.userid",$userId)
                     ->get();
+
             break; 
             case 7:
                 $selExperts=DB::table("t_c_consultresponse")
@@ -1174,7 +1177,65 @@ class MyEnterpriseController extends Controller
     }
     
     public function manage(){
-        return view("myenterprise.newWorkManage");
+        $userId=session('userId');
+        $type=isset($_GET['domain'])?$_GET['domain']:0;
+        switch ($type){
+            case '找资金':
+                $type2 = '投融资';
+                break;
+            case '找技术':
+                $type2 = '产品升级换代';
+                break;
+            case '定战略':
+                $type2 = '战略定位';
+                break;
+            case '找市场':
+                $type2 = '市场拓展';
+                break;
+            default :
+                $type2 = 0;
+                break;
+        }
+        $typeWhere=($type2)?array("t_e_event.domain1"=>$type2):array();
+            $result=DB::table("t_e_event")
+            ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
+            ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
+            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
+            ->where("t_e_event.userid",$userId)
+            ->where($typeWhere);
+        $count=clone $result;
+        $datas=$result->orderBy("t_e_event.created_at","desc")->paginate(6);
+        $counts=$count->count();
+        foreach ($datas as $data){
+            $data->created_at=date("Y-m-d",strtotime($data->created_at));
+            $totals=DB::table("t_e_eventresponse")->where("eventid",$data->eventid)->count();
+            if($totals!=0){
+                $data->state="指定专家";
+            }else{
+                $data->state="匹配专家";
+            }
+            switch($data->domain1){
+                case '投融资':
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+                case '产品升级换代':
+                    $data->icon = 'v-manage-link-icon nature1';
+                    break;
+                case '战略定位':
+                    $data->icon = 'v-manage-link-icon nature2';
+                    break;
+                case '市场拓展':
+                    $data->icon = 'v-manage-link-icon nature3';
+                    break;
+                default :
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+            }
+            $configname = DB::table('t_e_eventverifyconfig')->where('configid',$data->configid)->first()->name;
+            $data->configname = $configname;
+        }
+
+        return view("myenterprise.newWorkManage",compact("datas","type","counts",'type2'));
     }
 
 }
