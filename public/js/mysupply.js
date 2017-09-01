@@ -20,7 +20,7 @@ $(function() {
 
     $('.serve-field .serve-all').on('click', function (event) {
         select[0] = 'supply';
-        select[1] = '全部';
+        select[1] = '不限';
         getCondition(select);
     });
 
@@ -39,6 +39,7 @@ $(function() {
         select[1] = searchName;
         getCondition(select);
     });
+
     $('.uct-list-search-inp').keydown(function (evnet) {
         if (evnet.keyCode == '13') {
             var searchName = $(this).val();
@@ -48,11 +49,25 @@ $(function() {
         }
     });
 
-    //动作
+    $('.v-condition a').on('click',function () {
+        var action = $(this).attr('index');
+        select[0] = 'action';
+        select[1] = action;
+        getCondition(select);
+    });
+
+    $('.my-trace').on('click', 'a', function(event) {
+        var action = $(this).attr('index');
+        select[0] = 'action';
+        select[1] = action;
+        getCondition(select);
+    });
+
+    /*//动作
     $('.three-icon .icon-row').on('click',function () {
         var action = $(this).attr('index');
         select[0] = 'action';
-        /*switch (action) {
+        /!*switch (action) {
          case '收藏':
          select[1] = 'collect';
          break;
@@ -68,11 +83,11 @@ $(function() {
          case '拒审核':
          select[1] = 'refuseverify';
          break;
-         }*/
+         }*!/
         select[1] = action;
         getCondition(select);
     });
-
+*/
     $('.myask-tabar-a').on('click',function () {
         var cliHtml = $(this).attr('index');
         select[0] = 'who';
@@ -92,6 +107,9 @@ $(function() {
             select[1] = null;
         } else if ($(this).hasClass('all-results-location')) {
             select[0] = 'address';
+            select[1] = null;
+        }else if ($(this).hasClass('all-results-trace')) {
+            select[0] = 'action';
             select[1] = null;
         }
         getCondition(select);
@@ -129,7 +147,10 @@ $(function() {
         var role=$(".all-results-expert").text();
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
-        var action=$(".three-icon .active").attr('index');
+        var action=$(".my-trace .active").attr('index');
+        if(!action){
+            action = $('.v-condition .active').attr('index');
+        }
         var who=$(".myask-tabar .active").attr('index');
 
         if(searchName == '请输入要搜索的供求信息关键字'){
@@ -160,7 +181,7 @@ $(function() {
         if(Condition.length!=0){
             switch(Condition[0]){
                 case "role":
-                    role=(Condition[1]!="全部")?Condition[1]:null;
+                    role=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "serveName":
                     searchName=Condition[1];
@@ -169,13 +190,13 @@ $(function() {
                     who=Condition[1];
                     break;
                 case "supply":
-                    supply=(Condition[1]!="全部")?Condition[1]:null;
+                    supply=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "address":
-                    address=(Condition[1]!="全部")?Condition[1]:null;
+                    address=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "action":
-                    action=Condition[1];
+                    action=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "ordertime":
                     ordertime=Condition[1];
@@ -220,7 +241,9 @@ function fnc_collect (supplyid,action,obj) {
                 layer.msg('取消收藏成功');
             }
         } else {
-            layer.msg('处理失败');
+            $(obj).removeClass('red');
+            layer.msg('收藏失败请您登陆或者这是一个异常需求',{'icon':0});
+
         }
     });
 }
