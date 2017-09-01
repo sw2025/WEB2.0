@@ -1,4 +1,4 @@
-@extends("layouts.works")
+@extends("layouts.ucenter")
 @section("content")
     <script src="{{asset('./FileUpload/js/vendor/jquery.ui.widget.js')}}"></script>
     <script src="{{asset('./FileUpload/js/jquery.fileupload.js')}}"></script>
