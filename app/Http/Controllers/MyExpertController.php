@@ -307,7 +307,6 @@ class MyExpertController extends Controller
             ->paginate(2);
         $datas = \ConsultClass::handelObj($datas);
         $datas2 = \ConsultClass::handelObj($datas2);
-        //dd($datas2);
         if($request->ajax()){
             $action = $request->input()['action'];
             if(!$action){
@@ -320,6 +319,7 @@ class MyExpertController extends Controller
                 return $ajaxobj;
             }
         }
+        //dd($datas);
         return view("myexpert.newMyAsk",compact('datas','datas2','responsecount','putcount','complatecount'));
     }
 

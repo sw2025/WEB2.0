@@ -1234,4 +1234,71 @@ class MyEnterpriseController extends Controller
         return view("myenterprise.newWorkManage",compact("datas","type","counts",'type2'));
     }
 
+    public function manageVideo(){
+        $userId=session('userId');
+        $type=isset($_GET['domain'])?$_GET['domain']:0;
+        if($type){
+            switch ($type){
+                case '找资金':
+                    $type2 = '投融资';
+                    break;
+                case '找技术':
+                    $type2 = '产品升级换代';
+                    break;
+                case '定战略':
+                    $type2 = '战略定位';
+                    break;
+                case '找市场':
+                    $type2 = '市场拓展';
+                    break;
+                default :
+                    $type2 = 0;
+                    break;
+            }
+        }else{
+            $type = '全部';
+            $type2 = 0;
+
+        }
+        $typeWhere=($type2)?array("t_c_consult.domain1"=>$type2):array();
+        $result=DB::table("t_c_consult")
+            ->leftJoin("t_c_consultverify","t_c_consultverify.consultid","=","t_c_consult.consultid")
+            ->select("t_c_consult.consultid",'t_c_consultverify.configid',"t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief")
+            ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
+            ->where("t_c_consult.userid",$userId)
+            ->where($typeWhere);
+        $count=clone $result;
+        $datas=$result->orderBy("t_c_consult.created_at","desc")->paginate(6);
+        $counts=$count->count();
+        foreach ($datas as $data){
+            $data->created_at=date("Y-m-d",strtotime($data->created_at));
+            $totals=DB::table("t_c_consultresponse")->where("consultid",$data->consultid)->count();
+            if($totals!=0){
+                $data->state="指定专家";
+            }else{
+                $data->state="匹配专家";
+            }
+            switch($data->domain1){
+                case '投融资':
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+                case '产品升级换代':
+                    $data->icon = 'v-manage-link-icon nature1';
+                    break;
+                case '战略定位':
+                    $data->icon = 'v-manage-link-icon nature2';
+                    break;
+                case '市场拓展':
+                    $data->icon = 'v-manage-link-icon nature3';
+                    break;
+                default :
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+            }
+            $configname = DB::table('t_c_consultverifyconfig')->where('configid',$data->configid)->first()->name;
+            $data->configname = $configname;
+        }
+        return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2'));
+    }
+
 }
