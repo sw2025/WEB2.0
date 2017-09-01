@@ -679,8 +679,7 @@ class MyEnterpriseController extends Controller
         }
         //判断是否为http请求
         if(!empty($get = $request->input())){
-            //获取到get中的数据并处理
-            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            //获取到get中的数据并处理            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
             $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
             $supply=(isset($get['supply']) && $get['supply'] != "null") ? explode('/',$get['supply']) : null;
             $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
@@ -690,10 +689,7 @@ class MyEnterpriseController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
-            $addresswhere = !empty($address)?array("ext.address"=>$address):array();
-            if(!empty($consult) && $consult == '收费'){
-                $consultwhere = ['fee.state' => 1];
-                $datas = $datas->where('fee.fee','<>','null');
+            $addresswhere = !empty($address)?array("ext.address"=>$address):array();            if(!empty($consult) && $consult == '收费'){                $consultwhere = ['fee.state' => 1];                $datas = $datas->where('fee.fee','<>','null');
             } elseif(!empty($consult) && $consult == '免费'){
                 $consultwhere = ['fee.state' => 0];
             } else {
@@ -701,10 +697,9 @@ class MyEnterpriseController extends Controller
             }
             if(!empty($supply)){
                 $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
-            } else {
+            } else 
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
-            }
-            //判断是否有搜索的关键字
+            }            //判断是否有搜索的关键字
             if(!empty($searchname)){
                 $obj = $obj->where("ext.expertname","like","%".$searchname."%");
             }
@@ -736,10 +731,14 @@ class MyEnterpriseController extends Controller
                     "updated_at"=>date("Y-m-d H:i:s")
                 ]);
             }
-            DB::table("t_eventverify")->insert([
+
+           
+
+           DB::table("t_e_eventverify")->insert([
+                'eventid' => $_POST['eventId'],
                 "configid"=>6,
-                'eventid'=>$_POST['eventId'],
-                'verifytime'=>date("Y-m-d H:i:s",time()),
+                "verifytime"=>date("Y-m-d H:i:s",time()),
+
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
         }catch (Exception $e){
@@ -910,6 +909,7 @@ class MyEnterpriseController extends Controller
                     ->where("t_u_bill.consultid",$consultId)
                    ->where("t_u_bill.userid",$userId)
                     ->get();
+
             break; 
             case 7:
                 $selExperts=DB::table("t_c_consultresponse")
@@ -1176,7 +1176,65 @@ class MyEnterpriseController extends Controller
     }
     
     public function manage(){
-        return view("myenterprise.newWorkManage");
+        $userId=session('userId');
+        $type=isset($_GET['domain'])?$_GET['domain']:0;
+        switch ($type){
+            case '找资金':
+                $type2 = '投融资';
+                break;
+            case '找技术':
+                $type2 = '产品升级换代';
+                break;
+            case '定战略':
+                $type2 = '战略定位';
+                break;
+            case '找市场':
+                $type2 = '市场拓展';
+                break;
+            default :
+                $type2 = 0;
+                break;
+        }
+        $typeWhere=($type2)?array("t_e_event.domain1"=>$type2):array();
+            $result=DB::table("t_e_event")
+            ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
+            ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
+            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
+            ->where("t_e_event.userid",$userId)
+            ->where($typeWhere);
+        $count=clone $result;
+        $datas=$result->orderBy("t_e_event.created_at","desc")->paginate(6);
+        $counts=$count->count();
+        foreach ($datas as $data){
+            $data->created_at=date("Y-m-d",strtotime($data->created_at));
+            $totals=DB::table("t_e_eventresponse")->where("eventid",$data->eventid)->count();
+            if($totals!=0){
+                $data->state="指定专家";
+            }else{
+                $data->state="匹配专家";
+            }
+            switch($data->domain1){
+                case '投融资':
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+                case '产品升级换代':
+                    $data->icon = 'v-manage-link-icon nature1';
+                    break;
+                case '战略定位':
+                    $data->icon = 'v-manage-link-icon nature2';
+                    break;
+                case '市场拓展':
+                    $data->icon = 'v-manage-link-icon nature3';
+                    break;
+                default :
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+            }
+            $configname = DB::table('t_e_eventverifyconfig')->where('configid',$data->configid)->first()->name;
+            $data->configname = $configname;
+        }
+
+        return view("myenterprise.newWorkManage",compact("datas","type","counts",'type2'));
     }
 
 }

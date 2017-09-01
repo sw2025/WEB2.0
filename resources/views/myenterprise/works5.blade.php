@@ -34,7 +34,7 @@
                     <div class="uct-works-exps">
                         <ul class="uct-works-exps-list">
                             @foreach($selExperts as $selExpert)
-                                <li id="{{$selExpert->expertid}}"><a href="javascript:;"><img src="httP://sw2025.com{{$selExpert->showimage}}" alt="">{{$selExpert->expertname}}</a></li>
+                                <li id="{{$selExpert->expertid}}"><a href="javascript:;"><img src="{{asset($selExpert->showimage)}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;">{{$selExpert->expertname}}</a></li>
                             @endforeach
                         </ul>
                         <button type="button" class="test-btn">确认</button>
@@ -46,8 +46,10 @@
     <script type="text/javascript">
         $(function(){
             var expertIds=new Array();
+
             $('.uct-works-exps-list li').click(function(event) {
                 var expertId=$(this).attr("id");
+
                 if(expertIds.length!=5){
                     if(!$(this).hasClass("current")){
                         expertIds.push(expertId);
@@ -77,7 +79,8 @@
             }
             //处理反选的专家
             $(".test-btn").on("click",function(){
-                if(expertIds.length!=0){
+
+                if(expertIds.length!=0 && expertIds.length == 1){
                    var eventId=$("#event").val();
                     $.ajax({
                         url:"{{asset('selectExpert')}}",
@@ -96,7 +99,7 @@
                         }
                     })
                 }else{
-                    layer.confirm('请您至少选定1位专家', {
+                    layer.confirm('请您只选定1位专家', {
                         btn: ['确定'] //按钮
                     });
                     return false;
