@@ -697,7 +697,7 @@ class MyEnterpriseController extends Controller
             }
             if(!empty($supply)){
                 $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
-            } else 
+            } else {
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
             }            //判断是否有搜索的关键字
             if(!empty($searchname)){
@@ -714,6 +714,7 @@ class MyEnterpriseController extends Controller
             $datas = $obj->paginate(2);
             return view("myenterprise.reselect",compact('cate','searchname','datas','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
         }
+
         $datas = $datas->orderBy("ext.expertid",'desc')->paginate(2);
         $ordertime = 'desc';
         return view("myenterprise.reselect",compact('cate','datas','ordertime','collectids'));
@@ -731,14 +732,10 @@ class MyEnterpriseController extends Controller
                     "updated_at"=>date("Y-m-d H:i:s")
                 ]);
             }
-
-           
-
-           DB::table("t_e_eventverify")->insert([
+            DB::table("t_e_eventverify")->insert([
                 'eventid' => $_POST['eventId'],
                 "configid"=>6,
                 "verifytime"=>date("Y-m-d H:i:s",time()),
-
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
         }catch (Exception $e){
