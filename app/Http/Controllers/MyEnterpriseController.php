@@ -89,11 +89,11 @@ class MyEnterpriseController extends Controller
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);
-            return view("myenterprise.resource",compact('cate','msgcount','searchname','datas','role','collectids','consult','action','supply','address','ordertime','ordercollect','ordermessage'));
+            return view("myenterprise.newExResource",compact('cate','msgcount','searchname','datas','role','collectids','consult','action','supply','address','ordertime','ordercollect','ordermessage'));
         }
         $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
         $ordertime = 'desc';
-        return view("myenterprise.resource",compact('cate','datas','ordertime','collectids','msgcount'));
+        return view("myenterprise.newExResource",compact('cate','datas','ordertime','collectids','msgcount'));
     }
 
     /**专家资源详情
@@ -736,8 +736,10 @@ class MyEnterpriseController extends Controller
                     "updated_at"=>date("Y-m-d H:i:s")
                 ]);
             }
-            DB::table("t_eventverify")->where("eventid",$_POST['evnetId'])->update([
+            DB::table("t_eventverify")->insert([
                 "configid"=>6,
+                'eventid'=>$_POST['eventId'],
+                'verifytime'=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
         }catch (Exception $e){
@@ -862,7 +864,7 @@ class MyEnterpriseController extends Controller
                 $type="异常终止";
                 break;
         }
-        return view("myenterprise.video",compact("datas","type","counts"));
+        return view("myenterprise.newVideoManage",compact("datas","type","counts"));
     }
     /**视频咨询详情
      * @return mixed

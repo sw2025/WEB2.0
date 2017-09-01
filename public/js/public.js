@@ -32,9 +32,11 @@ $(function(){
         if($('.v-identity-cap').html() == '我是专家'){
             $('.iamenter').hide();
             $('.iamexpert').show();
+            $('.v-aside').addClass('beexpert');
         }else{
             $('.iamenter').show();
             $('.iamexpert').hide();
+            $('.v-aside').removeClass('beexpert');
         }
 
     })

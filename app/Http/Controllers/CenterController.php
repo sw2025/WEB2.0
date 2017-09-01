@@ -258,13 +258,13 @@ class CenterController extends Controller
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);
-            return view("ucenter.myNeed",compact('who','waitcount','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
+            return view("ucenter.newMyNeed",compact('who','waitcount','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
         }
         $datas = $datas->where('status.configid',3)->where('need.userid','<>',session('userId'))
             ->orderBy("need.needtime",'desc')
             ->paginate(4);
         $ordertime = 'desc';
-        return view("ucenter.myNeed",compact('waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
+        return view("ucenter.newMyNeed",compact('waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
     }
 
     /**需求详情
