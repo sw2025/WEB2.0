@@ -196,7 +196,7 @@ class MyExpertController extends Controller
                 return $ajaxobj;
             }
         }
-        return view("myexpert.mywork",compact('datas','datas2','responsecount','putcount','complatecount'));
+        return view("myexpert.newMyWork",compact('datas','datas2','responsecount','putcount','complatecount'));
     }
 
     /**我的办事详情
@@ -320,7 +320,7 @@ class MyExpertController extends Controller
                 return $ajaxobj;
             }
         }
-        return view("myexpert.myask",compact('datas','datas2','responsecount','putcount','complatecount'));
+        return view("myexpert.newMyAsk",compact('datas','datas2','responsecount','putcount','complatecount'));
     }
 
     /**我的咨询的详情

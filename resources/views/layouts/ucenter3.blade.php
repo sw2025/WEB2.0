@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/public.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/ucenter.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/list.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{asset('css/workmanage.css')}}" />
     <!-- js / start -->
     <script src="{{asset('im/3rd/jquery-1.11.3.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jquery.cookie.js')}}"></script>
@@ -72,7 +71,7 @@
     </div>
 </div>
 <!-- 公共header / end -->
-<div class="ucenter v-work-manage">
+<div class="ucenter  v-bg4">
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
         <div class="v-aside">

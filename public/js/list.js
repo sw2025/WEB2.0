@@ -49,12 +49,23 @@ $(document).ready(function(){
         else if($(this).hasClass('all-results-video')){
             $('.video-consult a:first').addClass('active').siblings().removeClass('active');
         }
-        else if($(this).hasClass('all-results-serve')){
+        else if($(this).hasClass('all-results-location')){
             $('.location a:first').addClass('active').siblings().removeClass('active');
+        }else if($(this).hasClass('all-results-trace')){
+            $('.my-trace a:first').addClass('active').siblings().removeClass('active');
         }else{
             $('.serve-all').addClass('active');
         }
     });
+    // v2========2017-08-30
+    // 选择收藏留言
+    $('.my-trace').on('click', 'a', function(event) {
+        $(this).addClass('active').siblings().removeClass('active');
+        var cliHtml = $(this).html();
+        $('.all-results-trace').remove();
+        $('.all-results').append('<a href="javascript:;" class="all-results-trace all-results-opt">'+ cliHtml +'</a>');
+    });
+// v2========2017-08-30
     // 排序
     $('.sort').on('click', 'a', function(event) {
         var $this = $(this);

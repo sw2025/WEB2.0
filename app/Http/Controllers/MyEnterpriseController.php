@@ -89,11 +89,11 @@ class MyEnterpriseController extends Controller
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);
-            return view("myenterprise.resource",compact('cate','msgcount','searchname','datas','role','collectids','consult','action','supply','address','ordertime','ordercollect','ordermessage'));
+            return view("myenterprise.newExResource",compact('cate','msgcount','searchname','datas','role','collectids','consult','action','supply','address','ordertime','ordercollect','ordermessage'));
         }
         $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
         $ordertime = 'desc';
-        return view("myenterprise.resource",compact('cate','datas','ordertime','collectids','msgcount'));
+        return view("myenterprise.newExResource",compact('cate','datas','ordertime','collectids','msgcount'));
     }
 
     /**专家资源详情
@@ -679,8 +679,7 @@ class MyEnterpriseController extends Controller
         }
         //判断是否为http请求
         if(!empty($get = $request->input())){
-            //获取到get中的数据并处理
-            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            //获取到get中的数据并处理            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
             $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
             $supply=(isset($get['supply']) && $get['supply'] != "null") ? explode('/',$get['supply']) : null;
             $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
@@ -690,10 +689,7 @@ class MyEnterpriseController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
-            $addresswhere = !empty($address)?array("ext.address"=>$address):array();
-            if(!empty($consult) && $consult == '收费'){
-                $consultwhere = ['fee.state' => 1];
-                $datas = $datas->where('fee.fee','<>','null');
+            $addresswhere = !empty($address)?array("ext.address"=>$address):array();            if(!empty($consult) && $consult == '收费'){                $consultwhere = ['fee.state' => 1];                $datas = $datas->where('fee.fee','<>','null');
             } elseif(!empty($consult) && $consult == '免费'){
                 $consultwhere = ['fee.state' => 0];
             } else {
@@ -701,10 +697,9 @@ class MyEnterpriseController extends Controller
             }
             if(!empty($supply)){
                 $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
-            } else {
+            } else 
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
-            }
-            //判断是否有搜索的关键字
+            }            //判断是否有搜索的关键字
             if(!empty($searchname)){
                 $obj = $obj->where("ext.expertname","like","%".$searchname."%");
             }
@@ -736,10 +731,14 @@ class MyEnterpriseController extends Controller
                     "updated_at"=>date("Y-m-d H:i:s")
                 ]);
             }
-            DB::table("t_e_eventverify")->insert([
+
+           
+
+           DB::table("t_e_eventverify")->insert([
                 'eventid' => $_POST['eventId'],
                 "configid"=>6,
                 "verifytime"=>date("Y-m-d H:i:s",time()),
+
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
         }catch (Exception $e){
@@ -864,7 +863,7 @@ class MyEnterpriseController extends Controller
                 $type="异常终止";
                 break;
         }
-        return view("myenterprise.video",compact("datas","type","counts"));
+        return view("myenterprise.newVideoManage",compact("datas","type","counts"));
     }
     /**视频咨询详情
      * @return mixed

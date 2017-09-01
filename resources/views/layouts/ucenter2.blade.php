@@ -72,7 +72,7 @@
     </div>
 </div>
 <!-- 公共header / end -->
-<div class="ucenter v-work-manage">
+<div class="ucenter v-bg3">
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
         <div class="v-aside">
