@@ -72,7 +72,7 @@
                 $.post('{{url('uct_myneed/addNeed')}}',{'content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
                     if (data.icon == 1){
                         layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
-                            window.location = '{{url('uct_myneed/examineNeed')}}';
+                            window.location = '{{url('uct_myneed/examineNeed')}}'+'/'+data.id;
                         });
                     } else {
                         layer.msg(data.msg,{'time':2000,'icon':data.icon});

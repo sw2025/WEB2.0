@@ -1,3 +1,4 @@
+
 @extends('layouts.ucenter4')
 @section("content")
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
@@ -31,7 +32,9 @@
                 </div>
                 <div class="my-trace filter-row clearfix">
                     <span class="left-cap">我的足迹：</span>
-                    <a href="javascript:;" {{$action or 'class=active'}} index="不限">不限</a>
+
+                    <a href="javascript:;" {{$action or 'class=active'}} index="">不限</a>
+
                     <a href="javascript:;" @if(isset($action) && $action == '已收藏') class=active @endif index="collect">已收藏</a>
                     <a href="javascript:;" @if(isset($action) && $action == '已留言') class=active @endif index="message">已留言</a>
                 </div>
@@ -105,8 +108,7 @@
         <div class="main-right uct-oh">
             <div class="myask-tab-box">
                 <ul class="supply-list clearfix">
-                    @foreach($datas as $v)
-                        <li class="col-md-6">
+                    @foreach($datas as $v)                        <li class="col-md-6">
                             <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('uct_myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('uct_myneed/examineNeed',$v->needid)}} @else {{url('uct_myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
                                 <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif" class="supp-list-img" />
                                 <span class="supp-list-time">{{date('Y-m-d',strtotime($v->needtime))}}</span>
@@ -116,8 +118,7 @@
                                     <div class="supp-list-desc">
                                         {{$v->brief}}
                                     </div>
-                                </div>
-                            </a>
+                                </div>                            </a>
                             <div class="supp-list-icon">
                                 <a href="{{url('supply/detail',$v->needid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
                                 <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> {{$v->collcount}}</a>
@@ -137,6 +138,12 @@
     <script type="text/javascript">
         $(function(){
             $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':{{$datas->currentPage()-1}}});
+
+
+            $('.v-condition-link').click(function() {
+                $(this).addClass('active').siblings().removeClass('active');
+            });
+
             function pageselectCallback(page_index, jq){
                 // 从表单获取每页的显示的列表项数目
                 var current = parseInt(page_index)+1;
@@ -158,8 +165,10 @@
 
                 // $('.myask-tab-box').eq(ind).show().siblings().hide();
 
-            });
+
+           });
         })
     </script>
     <script src="{{url('js/mysupply.js')}}" type="text/javascript"></script>
 @endsection
+

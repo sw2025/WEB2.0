@@ -31,10 +31,10 @@ $(function(){
         $('.v-ucenter-nav-list').eq($index).show().siblings().hide();*/
         if($('.v-identity-cap').html() == '我是专家'){
 
-            window.location.href="http://sw2025.com/uct_mywork"
+            window.location.href="/uct_mywork"
         }else{
 
-            window.location.href="http://sw2025.com/uct_works"
+            window.location.href="/uct_works"
         }
     })
     //end 新增2017-08-24

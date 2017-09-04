@@ -160,9 +160,11 @@ class MyExpertController extends Controller
             ->leftJoin('t_e_event as event','event.eventid','=','res.eventid')
             ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
             ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
-            ->select('res.*','event.domain1','event.domain2','event.brief','status.configid','event.eventtime','ent.enterprisename as name','res.state');
+            ->select('res.*','event.domain1','event.domain2','event.brief','status.configid','event.eventtime','ent.enterprisename as name','res.state')
+            ->whereRaw('res.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`expertid`,eventid)');
         $obj = clone $datas;
         $ajaxobj = clone $datas;
+        $eventobj = clone $datas;
         //克隆ajax请求的对象
         $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
         //datas为办事推送列表
@@ -172,6 +174,12 @@ class MyExpertController extends Controller
             ->whereIn('res.state',[0,1])
             ->orderBy('res.id','desc')
             ->paginate(1);
+
+        $waitcount = $eventobj
+            ->where(['res.expertid' => $expertid])
+            ->whereIn('status.configid',[4,5])
+            ->whereIn('res.state',[0,1])
+            ->count();
         //datas2为我的办事列表
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
@@ -198,7 +206,7 @@ class MyExpertController extends Controller
             }
         }
         $token = Crypt::encrypt(session('userId'));
-        return view("myexpert.newMyWork",compact('datas','datas2','responsecount','putcount','complatecount','token'));
+        return view("myexpert.newMyWork",compact('datas','datas2','responsecount','putcount','complatecount','token','waitcount'));
     }
 
     /**我的办事详情

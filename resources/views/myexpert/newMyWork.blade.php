@@ -8,7 +8,7 @@
                     </div>
                     <div class="v-feedback">
                             <span class="v-feedback-span"><i class="iconfont icon-laba"></i>
-                            <span class="v-feedback-count">2</span>个企业向您发出咨询请求</span>
+                            <span class="v-feedback-count">{{$waitcount}}</span>个企业向您发出咨询请求</span>
                     </div>
                 </div>
                 <div class="v-m-list-box">
