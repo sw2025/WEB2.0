@@ -291,7 +291,6 @@ class MyExpertController extends Controller
         $countobj3 = clone $countobj;
         //专家已响应的咨询数量
         $responsecount = $countobj->where(['res.state' => 2,'res.expertid' => $expertid,'status.configid' => 5])->count();
-        //dd($responsecount);
         //专家受邀请（被推送）的咨询数量
         $putcount = $countobj2->where(['res.expertid' => $expertid,'status.configid' => 4])->count();
         //专家已经完成的咨询数量
@@ -306,10 +305,19 @@ class MyExpertController extends Controller
         $obj = clone $datas;
         $ajaxobj = clone $datas;
         $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
+
+        $countobj4 = clone $datas;
+        $count= $countobj4
+           ->where(['res.expertid' => $expertid,'status.configid' => 4])
+           ->orderBy('res.id','desc')
+           ->count();
+
         $datas = $datas
             ->where(['res.expertid' => $expertid,'status.configid' => 4])
             ->orderBy('res.id','desc')
             ->paginate(2);
+
+
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
             ->whereIn('status.configid',[5,6,7])
@@ -329,14 +337,16 @@ class MyExpertController extends Controller
                 return $ajaxobj;
             }
         }
-        //dd($datas);
-        return view("myexpert.newMyAsk",compact('datas','datas2','responsecount','putcount','complatecount'));
+        $token = Crypt::encrypt(session('userId'));
+
+        return view("myexpert.newMyAsk",compact('datas','datas2','responsecount','putcount','complatecount','token','count'));
     }
 
     /**我的咨询的详情
      * @return mixed
      */
-    public function  askDetail($consultId){
+    public function askDetail($consultId){
+
         $consultStatus=DB::table("view_consultstatus")->where("consultid",$consultId)->pluck("configid");
         $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
         $datas = DB::table('t_c_consult as consult')
@@ -349,7 +359,7 @@ class MyExpertController extends Controller
             case 5:
                 $token = Crypt::encrypt($consultId.session('userId'));
                 return view("myexpert.askDetail05",compact('datas','token'));
-            break;
+                break;
             case 6:
                 $selExperts=DB::table("t_c_consult")
                     ->leftJoin("t_c_consultresponse","t_c_consultresponse.consultid","=","t_c_consult.consultid")
@@ -363,9 +373,10 @@ class MyExpertController extends Controller
                     ->where("t_u_bill.type","支出")
                     ->get();
                 return view("myexpert.askDetail06",compact('selExperts','comperes','datas',"consultId"));
-            break;
+                break;
 
         }
+
     }
 
     /**专家响应咨询
@@ -376,16 +387,14 @@ class MyExpertController extends Controller
         if($request->ajax()){
             $data = $request->input();
             //对token进行验证
-            if($data['consultid'].session('userId') == Crypt::decrypt($data['token'])){
+            if(session('userId') == Crypt::decrypt($data['token'])){
                 //获取到该用户对应的专家的id
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
 
                 $consultid = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'state' => 2])->orderBy('responsetime', 'desc')->first()->consultid;
-                $endtime=DB::table('t_c_consult')->where($consultid,$consultid)->first()->endtime;
-                $starttime=DB::table('t_c_consult')->where($consultid,$data['consultid'])->first()->starttime;
-
-                if($starttime>$endtime){
-
+                $endtime=DB::table('t_c_consult')->where('consultid',$consultid)->first()->endtime;
+                $starttime=DB::table('t_c_consult')->where('consultid',$consultid)->first()->starttime;
+                if($endtime>$starttime){
                     DB::beginTransaction();
                     try{
                         //查询是否存在响应的情况
