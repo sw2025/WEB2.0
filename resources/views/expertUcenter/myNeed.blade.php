@@ -7,7 +7,7 @@
         <h3 class="main-top">我的需求</h3>
         <div class="ucenter-con">
             <div class="myrequire-bg">
-                <a href="{{asset('myneed/supplyNeed')}}" class="need-publish-btn">发布需求</a>
+                <a href="{{asset('uct_myneed/supplyNeed')}}" class="need-publish-btn">发布需求</a>
                 <div class="publish-intro">
                     <span class="introduce-cap">发布介绍</span>
                     <div class="introduce-con">工作情况汇报关于小李同志本次任务工作情况汇报工作情况汇报关于小李同志本次任务工作情况汇报</div>
@@ -124,7 +124,7 @@
                     <ul class="supply-list clearfix">
                         @foreach($datas as $v)
                             <li class="col-md-6">
-                                <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('myneed/examineNeed',$v->needid)}} @else {{url('myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
+                                <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('uct_myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('uct_myneed/examineNeed',$v->needid)}} @else {{url('uct_myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
                                     <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif" class="supp-list-img" />
                                     <span class="supp-list-time">{{$v->needtime}}</span>
                                     <div class="supp-list-brief">
@@ -142,18 +142,18 @@
                             </li>
                         @endforeach
 
-                        </ul>
-                        <div class="pages myinfo-page">
-                            <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
-                        </div>
+                    </ul>
+                    <div class="pages myinfo-page">
+                        <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
                     </div>
-                    <div class="myask-tab-box"></div>
                 </div>
-
-                {{--<div class="myask-tab-box"></div>--}}
-
+                <div class="myask-tab-box"></div>
             </div>
+
+            {{--<div class="myask-tab-box"></div>--}}
+
         </div>
+    </div>
     </div>
     <script type="text/javascript">
         $(function(){

@@ -60,3 +60,4 @@
 .v-m-list-box .v-manage-link-desc{margin: 24px 0 30px;}
 .v-m-list-box .v-manage-list-ul{display: none;}
 .v-m-list-box .v-m-l-show{display: block;}
+.v-m-list-box{min-height: 382px;}

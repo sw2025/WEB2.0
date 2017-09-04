@@ -75,7 +75,7 @@
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
         <div class="v-aside beexpert">
-            <a href="{{asset('uct_expert')}}" class="goto-renzh v-personal" title="去认证"><img src="" class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip" title="未认证"></i></a>
+            <a href="{{asset('uct_expert')}}" class="goto-renzh v-personal" title="去认证"><img  class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip" title="未认证"></i></a>
             <a href="{{asset('basic')}}" class="v-personal" title="个人中心">
                 <span class="v-nick"></span>
             </a>
