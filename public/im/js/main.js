@@ -3,7 +3,7 @@
  */
 $userId=$.cookie("userId");
 $.ajax({
-    url:"http://sw2025.com/getAccid",
+    url:"/getAccid",
     data:{"userId":$userId},
     dateType:"json",
     type:"POST",
@@ -17,7 +17,7 @@ $.ajax({
             //setCookie('sdktoken',res['imtoken']);
             $.cookie("sdktoken",res['imtoken'].toLocaleLowerCase(),{expires:2,path:'/',domain:'sw2025.com'});
         }else{
-            window.location.href="http://sw2025.com/login";
+            window.location.href="/login";
         }
     }
 })
@@ -29,7 +29,7 @@ var userUID = readCookie("uid")
 var yunXin = new YX(userUID)
 var consultId=$("#consult").val();
 $.ajax({
-    url:"http://sw2025.com/getTeamId",
+    url:"/getTeamId",
     data:{"consultId":consultId},
     dataType:"json",
     type:"POST",

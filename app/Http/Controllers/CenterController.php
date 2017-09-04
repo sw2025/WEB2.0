@@ -378,9 +378,6 @@ class CenterController extends Controller
      * 需求审核页
      */
     public function examineNeed ($needid = null) {
-
-        $lastdata = DB::table('t_n_need')->where(['userid' => session('userId')])->orderBy('needid','desc')->first();
-
         if($needid){
             //验证是否该供求的状态为待审核 否则重定向到首页
             $res = DB::table('view_needstatus')->where(['needid' => $needid,'configid' => 1])->first();
@@ -389,6 +386,8 @@ class CenterController extends Controller
             } else {
                 return redirect('/');
             }
+        } else {
+            return redirect('/');
         }
 
         return view('ucenter.examineNeed',compact('lastdata'));
@@ -424,7 +423,7 @@ class CenterController extends Controller
                                 'updated_at' => date('Y-m-d H:i:s',time())
                             ]);
                         DB::commit();
-                        return ['msg' => '修改需求成功,进入审核阶段','icon' => 1];
+                        return ['msg' => '修改需求成功,进入审核阶段','icon' => 1,'id' => $data['needid']];
 
                     }catch(Exception $e)
                     {
@@ -454,7 +453,7 @@ class CenterController extends Controller
                         'updated_at' => date('Y-m-d H:i:s',time())
                     ]);
                     DB::commit();
-                    return ['msg' => '添加需求成功,进入审核阶段','icon' => 1];
+                    return ['msg' => '添加需求成功,进入审核阶段','icon' => 1,'id' => $needid];
 
                 }catch(Exception $e)
                 {

@@ -205,7 +205,7 @@
                 dateType:"json",
                 type:"POST",
                 success:function(res){
-                    $(".v-avatar").attr('src','http://sw2025.com'+res['expertAvatar']);
+                    $(".v-avatar").attr('src',res['expertAvatar']);
                     $(".v-nick").html(res['phone']);
                     var date = new Date();
                     date.setTime(date.getTime() + (120 * 60 * 1000));
