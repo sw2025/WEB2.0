@@ -161,7 +161,7 @@ Route::post('toExpertMsg','MyEnterpriseController@toExpertMsg');
 //办事完成，给专家评论
 Route::post('toExpertContent','MyEnterpriseController@toExpertContent');
 //视频咨询
-Route::get('uct_video','MyEnterpriseController@video');
+Route::get('uct_video','MyEnterpriseController@manageVideo');
 //视频咨询
 Route::get('uct_video/detail/{consultId}','MyEnterpriseController@videoDetail');
 //申请视频咨询
