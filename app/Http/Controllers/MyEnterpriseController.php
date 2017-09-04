@@ -1175,7 +1175,6 @@ class MyEnterpriseController extends Controller
     
     public function manage(){
         $userId=session('userId');
-
         $type=isset($_GET['domain'])?$_GET['domain']:false;
         switch ($type){
             case '找资金':
@@ -1237,7 +1236,7 @@ class MyEnterpriseController extends Controller
 
     public function manageVideo(){
         $userId=session('userId');
-        $type=isset($_GET['domain'])?$_GET['domain']:0;
+        $type=isset($_GET['type'])?$_GET['type']:"全部";
         if($type){
             switch ($type){
                 case '找资金':

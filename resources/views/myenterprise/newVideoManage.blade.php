@@ -43,10 +43,8 @@
                     </li>
                         @endforeach
                     @else
-
-                         <li>
-
-                        <div class="v-supply-tip">
+                        <li>
+                            <div class="v-supply-tip">
                             <span class="v-supply-tip-top"><strong>升维网</strong>为<strong>企业</strong></span>
                             <div class="v-supply-tactic"><span>找资金</span><span>找技术</span><span>找市场</span><span>定战略</span></div>
                             <img src="{{asset('img/nolength.png')}}" class="nolength" />

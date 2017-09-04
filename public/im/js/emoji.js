@@ -32,7 +32,7 @@ function buildEmoji(text) {
 	var matches = text.match(re) || [];
 	for (var j = 0, len = matches.length; j < len; ++j) {
 		if(emoji[matches[j]]){
-			text = text.replace(matches[j], '<img class="emoji" src="http://sw2025.com/im/images/emoji/' + emoji[matches[j]].file + '" />');
+			text = text.replace(matches[j], '<img class="emoji" src="../../im/images/emoji/' + emoji[matches[j]].file + '" />');
 		}		
 	}
 	return text;
@@ -103,7 +103,7 @@ CEmojiEngine.prototype.__renderChangeCol = function(){
 			var span = document.createElement('span');
 			span.id = 'chn-emoji-'+i;	
 			var img = new Image();
-			img.src = "http://sw2025.com/im/images/"+emojiList[key]['file'];
+			img.src = "../../im/images/"+emojiList[key]['file'];
 			span.appendChild(img);
 			this._changeColumn.appendChild(span);			
 			break;
@@ -117,7 +117,7 @@ CEmojiEngine.prototype.__renderChangeCol = function(){
 		var span = document.createElement('span');
 		span.id = 'chn-pinup-'+i;
 		var img = new Image();
-		img.src = "http://sw2025.com/im/images/"+ pinupList[0];
+		img.src = "../../im/images/"+ pinupList[0];
 		span.appendChild(img);
 		this._changeColumn.appendChild(span);		
 	}
