@@ -18,7 +18,7 @@ $(function() {
     });
     $('.serve-field .serve-all').on('click', function(event) {
         select[0] = 'supply';
-        select[1] = '全部';
+        select[1] = '不限';
         getCondition(select);
     });
 
@@ -54,6 +54,13 @@ $(function() {
         }
     });
 
+    $('.my-trace').on('click', 'a', function(event) {
+        var action = $(this).attr('index');
+        select[0] = 'action';
+        select[1] = action;
+        getCondition(select);
+    });
+
     //动作
     $('.three-icon .icon-row').on('click',function () {
         var action = $(this).attr('index');
@@ -77,7 +84,11 @@ $(function() {
         } else if ($(this).hasClass('all-results-video')) {
             select[0] = 'consult';
             select[1] = null;
+        } else if ($(this).hasClass('all-results-trace')) {
+            select[0] = 'action';
+            select[1] = null;
         }
+
         getCondition(select);
     })
 
@@ -113,7 +124,7 @@ $(function() {
         var role=$(".all-results-expert").text();
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
-        var action=$(".three-icon .active").attr('index');
+        var action=$(".my-trace .active").attr('index');
         var consult=$(".all-results-video").text();
 
         if(searchName == '请输入专家姓名／机构名称／企业家姓名'){
@@ -144,19 +155,19 @@ $(function() {
         if(Condition.length!=0){
             switch(Condition[0]){
                 case "role":
-                    role=(Condition[1]!="全部")?Condition[1]:null;
+                    role=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "serveName":
                     searchName=Condition[1];
                     break;
                 case "supply":
-                    supply=(Condition[1]!="全部")?Condition[1]:null;
+                    supply=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "consult":
-                    consult=(Condition[1]!="全部")?Condition[1]:null;
+                    consult=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "address":
-                    address=(Condition[1]!="全部")?Condition[1]:null;
+                    address=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "action":
                     action=Condition[1];
@@ -204,7 +215,7 @@ function fnc_collect (supplyid,action,obj) {
                 layer.msg('取消收藏成功');
             }
         } else {
-            layer.msg('处理失败');
+            layer.msg('收藏失败请您登陆或者这是一个异常');
         }
     });
 }

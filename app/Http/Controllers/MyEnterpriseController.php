@@ -71,10 +71,12 @@ class MyEnterpriseController extends Controller
                 switch($action){
                     case 'collect':
                         $obj = $obj->whereRaw('ext.expertid in (select  expertid from t_u_collectexpert  where userid='.session('userId').' and remark=1)');
+                        $action = '已收藏';
                         //$obj = $obj->where('colneed.userid',session('userId'))->where('colneed.remark',1);
                         break;
                     case 'message':
                         $obj = $obj->whereRaw('ext.expertid in (select  expertid from t_u_messagetoexpert  where userid='.session('userId').' group by expertid)');
+                        $action = '已留言';
                         break;
                 }
             } else {
@@ -1174,7 +1176,7 @@ class MyEnterpriseController extends Controller
     
     public function manage(){
         $userId=session('userId');
-        $type=isset($_GET['domain'])?$_GET['domain']:0;
+        $type=isset($_GET['domain'])?$_GET['domain']:false;
         switch ($type){
             case '找资金':
                 $type2 = '投融资';
@@ -1230,7 +1232,6 @@ class MyEnterpriseController extends Controller
             $configname = DB::table('t_e_eventverifyconfig')->where('configid',$data->configid)->first()->name;
             $data->configname = $configname;
         }
-
         return view("myenterprise.newWorkManage",compact("datas","type","counts",'type2'));
     }
 
