@@ -104,7 +104,7 @@ YX.fn.initEmoji = function () {
             'pinupList': pinupList,  //贴图
             'width': 500,
             'height': 300,
-            'imgpath': 'http://sw2025.com/im/images/',
+            'imgpath': '../../im/images/',
             'callback': function (result) {
                 that.cbShowEmoji(result)
             }

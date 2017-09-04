@@ -170,7 +170,7 @@ $(function() {
                     address=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "action":
-                    action=Condition[1];
+                    action=(Condition[1]!="不限")?Condition[1]:null;
                     break;
                 case "ordertime":
                     ordertime=Condition[1];
