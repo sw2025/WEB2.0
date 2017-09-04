@@ -243,9 +243,9 @@ Route::post('uct_mywork/responseevent','MyExpertController@responseEvent');
 //我的咨询
 Route::get('uct_myask','MyExpertController@myask');
 //我的咨询详情
-Route::get('uct_myask/askDetail/{eventid}','MyExpertController@askDetail');
+Route::get('uct_myask/askDetail/{consultid}','MyExpertController@askDetail');
 //响应咨询
-Route::post('uct_mywork/responseconsult','MyExpertController@responseConsult');
+Route::post('uct_myask/responseconsult','MyExpertController@responseConsult');
 //进入咨询会议
 Route::get('uct_myask/myaskinvt','MyExpertController@myaskinvt');
 //收费标准

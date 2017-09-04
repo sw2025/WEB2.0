@@ -27,19 +27,18 @@
                     <div class="item-con dif-hexagon1">
                         <span class="hexagon"><i class="iconfont icon-zhuanjia"></i></span>
                         <h2 class="number">01</h2>
-                        <span class="item-tit">我要咨询</span>
-                        <p class="item-desc">解决企业遇到各类问题</p>
+                        <span class="item-tit">定战略</span>
+                        {{--<p class="item-desc">解决企业遇到各类问题</p>--}}
                     </div>
                     <div class="item-con-hover">
-                        <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
+                        <p><br /><span href="">商业模式</span><br /><span href="">发展战略</span><br /><span href="">企业定位</span> </p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
                     <div class="item-con dif-hexagon2">
                         <span class="hexagon"><i class="iconfont icon-fangbianvideo"></i></span>
                         <h2 class="number">02</h2>
-                        <span class="item-tit">我要开会</span>
-                        <p class="item-desc">解决企业遇到各类问题</p>
+                        <span class="item-tit">找资金</span>
                     </div>
                     <div class="item-con-hover">
                         <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
@@ -49,8 +48,7 @@
                     <div class="item-con dif-hexagon3">
                         <span class="hexagon"><i class="iconfont icon-ziyuanku1"></i></span>
                         <h2 class="number">03</h2>
-                        <span class="item-tit">我要办事</span>
-                        <p class="item-desc">解决企业遇到各类问题</p>
+                        <span class="item-tit">找技术</span>
                     </div>
                     <div class="item-con-hover">
                         <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
@@ -60,8 +58,7 @@
                     <div class="item-con dif-hexagon4">
                         <span class="hexagon"><i class="iconfont icon-need"></i></span>
                         <h2 class="number">04</h2>
-                        <span class="item-tit">发布信息</span>
-                        <p class="item-desc">解决企业遇到各类问题</p>
+                        <span class="item-tit">找市场</span>
                     </div>
                     <div class="item-con-hover">
                         <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
