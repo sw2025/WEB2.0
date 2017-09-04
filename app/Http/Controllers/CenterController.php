@@ -209,20 +209,24 @@ class CenterController extends Controller
                     case 'collect':
                         $obj = $obj->whereRaw('need.needid in (select needid from t_n_collectneed  where userid='.session('userId').' and remark=1)');
                         //$obj = $obj->where('colneed.userid',session('userId'))->where('colneed.remark',1);
-
+                        $action  = '已收藏';
                         break;
                     case 'myput':
                         $obj = $obj->where('need.userid',session('userId'))->where('status.configid',3);
+                        $action  = '已发布';
                         $who = 'my';
                         break;
                     case 'message':
                         $obj = $obj->whereRaw('need.needid in (select  needid from t_n_messagetoneed  where userid='.session('userId').' group by needid)');
+                        $action = '已留言';
                         break;
                     case 'waitverify':
+                        $action  = '待审核';
                         $who = 'my';
                         $obj = $obj->where('need.userid',session('userId'))->where('status.configid',1);
                         break;
                     case 'refuseverify':
+                        $action  = '审核失败';
                         $who = 'my';
                         $obj = $obj->where('need.userid',session('userId'))->where('status.configid',2);
                         break;

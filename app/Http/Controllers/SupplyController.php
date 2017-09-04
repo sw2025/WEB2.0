@@ -71,6 +71,16 @@ class SupplyController extends Controller
      */
     public  function detail($supplyId){
         //取出指定的供求信息
+        $verify = DB::table('view_needstatus')->where('needid',$supplyId)->first()->configid;
+        if($verify != 3){
+            if($verify == 1){
+                return redirect(url('uct_myneed/examineNeed',$supplyId));
+            } elseif ($verify == 2){
+                return redirect(url('uct_myneed/supplyNeed',$supplyId));
+            } else {
+                return '您的需求已解决';
+            }
+        }
         $datas = DB::table('t_n_need as need')
             ->leftJoin('view_userrole as view','view.userid', '=','need.userid')
             ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
@@ -131,6 +141,10 @@ class SupplyController extends Controller
             $data = $request->only('action', 'supplyid');
             $userid = session('userId');
             $where = ['needid' => $data['supplyid'],'userid' => $userid];
+            $verify = DB::table('view_needstatus')->where('needid',$data['supplyid'])->first()->configid;
+            if($verify != 3){
+                return 'error';
+            }
             if($data['action'] == 'collect'){
                 $is_insert =  DB::table('t_n_collectneed')->where($where)->first();
                 if($is_insert){

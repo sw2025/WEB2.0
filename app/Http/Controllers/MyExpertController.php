@@ -160,23 +160,24 @@ class MyExpertController extends Controller
             ->leftJoin('t_e_event as event','event.eventid','=','res.eventid')
             ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
             ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
-            ->whereRaw('res.id in (select max(id) from t_e_eventresponse group by eventid)')
-            ->select('res.*','event.domain1','event.domain2','event.brief','status.configid','event.eventtime','ent.enterprisename as name');
+            ->select('res.*','event.domain1','event.domain2','event.brief','status.configid','event.eventtime','ent.enterprisename as name','res.state');
         $obj = clone $datas;
         $ajaxobj = clone $datas;
         //克隆ajax请求的对象
         $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
         //datas为办事推送列表
         $datas = $datas
-            ->where(['res.expertid' => $expertid,'status.configid' => 4])
+            ->where(['res.expertid' => $expertid])
+            ->whereIn('status.configid',[4,5])
+            ->whereIn('res.state',[0,1])
             ->orderBy('res.id','desc')
-            ->paginate(2);
+            ->paginate(1);
         //datas2为我的办事列表
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
-            ->whereIn('status.configid',[4,5,6,7])
+            ->whereIn('status.configid',[5,6,7])
             ->orderBy('res.id','desc')
-            ->paginate(2);
+            ->paginate(1);
         //调用eventclass中的方法进行对象的处理
         $datas = \EventClass::handelObj($datas);
         $datas2 = \EventClass::handelObj($datas2);
@@ -196,7 +197,8 @@ class MyExpertController extends Controller
                 return $ajaxobj;
             }
         }
-        return view("myexpert.newMyWork",compact('datas','datas2','responsecount','putcount','complatecount'));
+        $token = Crypt::encrypt(session('userId'));
+        return view("myexpert.newMyWork",compact('datas','datas2','responsecount','putcount','complatecount','token'));
     }
 
     /**我的办事详情
@@ -216,7 +218,7 @@ class MyExpertController extends Controller
         } elseif ($datas->configid == 6){
             return redirect('uct_works/detail/'.$eventid);
         }
-        $token = Crypt::encrypt($eventid.session('userId'));
+        $token = Crypt::encrypt(session('userId'));
         return view("myexpert.workDetail",compact('datas','token'));
     }
 
@@ -229,7 +231,7 @@ class MyExpertController extends Controller
         if($request->ajax()){
             $data = $request->input();
             //对token进行验证
-            if($data['eventid'].session('userId') == Crypt::decrypt($data['token'])){
+            if(session('userId') == Crypt::decrypt($data['token'])){
                 //获取到该用户对应的专家的id
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
                 DB::beginTransaction();
@@ -307,7 +309,6 @@ class MyExpertController extends Controller
             ->paginate(2);
         $datas = \ConsultClass::handelObj($datas);
         $datas2 = \ConsultClass::handelObj($datas2);
-        //dd($datas2);
         if($request->ajax()){
             $action = $request->input()['action'];
             if(!$action){
@@ -320,6 +321,7 @@ class MyExpertController extends Controller
                 return $ajaxobj;
             }
         }
+        //dd($datas);
         return view("myexpert.newMyAsk",compact('datas','datas2','responsecount','putcount','complatecount'));
     }
 
