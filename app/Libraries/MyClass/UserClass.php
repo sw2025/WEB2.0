@@ -18,6 +18,8 @@
                     session(["userId" => $counts[0]['userid']]);
                     $array['userId'] = $counts[0]['userid'];
                     $array['name'] = !empty($counts[0]['nickname'])?$counts[0]['nickname']:substr_replace($phone,'****',3,4);
+                    $roles=DB::table("view_userrole")->where('userid',$counts[0]['userid'])->pluck("role");
+                    $array['role']=$roles;
                 } else {
                     $array['code'] = "pwd";
                     $array['msg'] = "密码错误!";

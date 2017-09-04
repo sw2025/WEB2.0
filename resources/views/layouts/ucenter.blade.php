@@ -76,21 +76,21 @@
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
         <div class="v-aside">
-            <a href="{{asset('uct_expert')}}" class="goto-renzh v-personal" title="去认证"><img src="" class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip" title="未认证"></i></a>
+            <a href="{{asset('uct_member')}}" class="goto-renzh v-personal" title="去认证"><img src="" class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip" title="未认证"></i></a>
             <a href="{{asset('uct_basic')}}" class="v-personal" title="个人中心">
                 <span class="v-nick"></span>
             </a>
             <!-- 我是企业时 -->
-            <div class="v-money-info iamenter">
+            <div class="v-money-info ">
                 <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
                 <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
             </div>
-            <!-- 我是专家时 -->
+          {{--  <!-- 我是专家时 -->
             <div class="v-money-info iamexpert">
                 <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
                 <a href="{{asset('uct_standard')}}" class="v-info border2" title=""><i class="iconfont icon-shenjia"></i></a>
                 <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
-            </div>
+            </div>--}}
             <div class="v-identity">
                 <div class="v-identity-sel">
                     <a href="javascript:;" class="v-identity-default"><span class="v-identity-cap">我是企业</span></a>
@@ -195,46 +195,45 @@
             $(".before-login").show();
             $(".after-login").hide();
         }
-        if($.cookie("avatar") && $.cookie("phone")){
-            $(".v-avatar").attr('src',$.cookie("avatar"));
+        if($.cookie("enterAvatar") && $.cookie("phone")){
+            $(".v-avatar").attr('src',$.cookie("enterAvatar"));
             $(".v-nick").html($.cookie("phone"));
         }else{
             $.ajax({
                 url:"{{asset('getAvatar')}}",
-                data:{userId:$.cookie('userId')},
+                data:{userId:$.cookie('userId'),type:"enterprise"},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
-                    $(".v-avatar").attr('src','http://sw2025.com'+res['avatar']);
+                    $(".v-avatar").attr('src','http://sw2025.com'+res['enterAvatar']);
                     $(".v-nick").html(res['phone']);
                     var date = new Date();
                     date.setTime(date.getTime() + (120 * 60 * 1000));
-                    $.cookie("avatar",res['avatar'],{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("enterAvatar",res['enterAvatar'],{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("phone",res['phone'],{expires:date,path:'/',domain:'sw2025.com'});
                 }
             })
         }
-        $(".quit").on("click",function(){
-            $.ajax({
-                url:"{{asset("quit")}}",
-                dateType:"json",
-                type:"POST",
-                success:function(res){
-                    if(res['code']=="success"){
-                        $.cookie("userId",'',{path:'/',domain:'sw2025.com'});
-                        $.cookie("name",'',{path:'/',domain:'sw2025.com'});
-                        $.cookie("avatar",'',{path:'/',domain:'sw2025.com'});
-                        $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
-                        window.location.href="{{asset('/')}}"
-                    }else{
-                        window.location.href="{{asset('/')}}"
-                    }
-                }
-            })
-        })
 
     })
-
+    $(".quit").on("click",function(){
+        $.ajax({
+            url:"{{asset("quit")}}",
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    $.cookie("userId",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("name",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("avatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
+                    window.location.href="{{asset('/')}}"
+                }else{
+                    window.location.href="{{asset('/')}}"
+                }
+            }
+        })
+    })
 </script>
 </body>
 </html>

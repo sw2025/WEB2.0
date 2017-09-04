@@ -815,11 +815,28 @@ class MyEnterpriseController extends Controller
      */
     public function video(){
         $userId=session('userId');
-        $type=isset($_GET['type'])?$_GET['type']:0;
-        $typeWhere=($type!=0)?array("configid"=>$type):array();
+        $type=isset($_GET['type'])?$_GET['type']:"全部";
+        switch ($type){
+            case '找资金':
+                $type2 = '投融资';
+                break;
+            case '找技术':
+                $type2 = '产品升级换代';
+                break;
+            case '定战略':
+                $type2 = '战略定位';
+                break;
+            case '找市场':
+                $type2 = '市场拓展';
+                break;
+            default :
+                $type2 = 0;
+                break;
+        }
+        $typeWhere=($type2)?array("t_c_consult.domain1"=>$type2):array();
         $result=DB::table("t_c_consult")
             ->leftJoin("t_c_consultverify","t_c_consultverify.consultid","=","t_c_consult.consultid")
-            ->select("t_c_consult.consultid","t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.brief")
+            ->select("t_c_consult.consultid","t_c_consult.domain1","t_c_consult.domain2","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief","t_c_consultverify.configid")
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
             ->where("t_c_consult.userid",$userId)
             ->where($typeWhere);
@@ -827,40 +844,25 @@ class MyEnterpriseController extends Controller
         $datas=$result->orderBy("t_c_consult.created_at","desc")->paginate(2);
         $counts=$count->count();
         foreach ($datas as $data){
-            $data->video=$data->domain1."/".$data->domain2;
-            $data->created_at=date("Y-m-d",strtotime($data->created_at));
-            $totals=DB::table("t_c_consultresponse")->where("consultid",$data->consultid)->count();
-            if($totals!=0){
-                $data->state="指定专家";
-            }else{
-                $data->state="匹配专家";
+            $data->starttime=date("m-d H:i",strtotime($data->starttime));
+            $data->endtime=date("m-d H:i",strtotime($data->endtime));
+            switch($data->domain1){
+                case '投融资':
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+                case '产品升级换代':
+                    $data->icon = 'v-manage-link-icon nature1';
+                    break;
+                case '战略定位':
+                    $data->icon = 'v-manage-link-icon nature2';
+                    break;
+                case '市场拓展':
+                    $data->icon = 'v-manage-link-icon nature3';
+                    break;
+                default :
+                    $data->icon = 'v-manage-link-icon';
+                    break;
             }
-        }
-        switch($type){
-            case 0:
-                $type="全部";
-                break;
-            case 1:
-                $type="咨询审核";
-                break;
-            case 3:
-                $type="审核失败";
-                break;
-            case 4:
-                $type="邀请专家";
-                break;
-            case 5:
-                $type="专家响应";
-                break;
-            case 6:
-                $type="正在咨询";
-                break;
-            case 7:
-                $type="已完成";
-                break;
-            case 9:
-                $type="异常终止";
-                break;
         }
         return view("myenterprise.newVideoManage",compact("datas","type","counts"));
     }
@@ -1127,8 +1129,7 @@ class MyEnterpriseController extends Controller
             if($counts){
                 DB::table("t_c_consultcomment")->where([ "consultid"=>$consultId,"expertid"=>$_POST['expertId']])->update([
                     "score"=>$_POST['score'],
-                    "updated_at"=>date("Y-m-d H:i:s",time()),
-                ]);
+                    "updated_at"=>date("Y-m-d H:i:s",time()),                ]);
             }else{
                 DB::table("t_c_consultcomment")->insert([
                     "consultid"=>$consultId,
@@ -1137,9 +1138,7 @@ class MyEnterpriseController extends Controller
                     "comment"=>"",
                     "commenttime"=>date("Y-m-d H:i:s",time()),
                     "created_at"=>date("Y-m-d H:i:s",time()),
-                    "updated_at"=>date("Y-m-d H:i:s",time()),
-                ]);
-            }
+                    "updated_at"=>date("Y-m-d H:i:s",time()),                ]);            }
         }catch(Exception $e){
             throw $e;
         }
@@ -1176,6 +1175,7 @@ class MyEnterpriseController extends Controller
     
     public function manage(){
         $userId=session('userId');
+
         $type=isset($_GET['domain'])?$_GET['domain']:false;
         switch ($type){
             case '找资金':

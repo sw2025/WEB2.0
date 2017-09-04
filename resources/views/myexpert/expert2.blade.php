@@ -1,4 +1,4 @@
-@extends("layouts.ucenter")
+@extends("layouts.ucenter4")
 @section("content")
     <!-- 公共header / start -->
     <script src="{{asset('./FileUpload/js/vendor/jquery.ui.widget.js')}}"></script>

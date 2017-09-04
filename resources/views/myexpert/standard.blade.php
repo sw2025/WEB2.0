@@ -1,4 +1,4 @@
-@extends("layouts.ucenter")
+@extends("layouts.ucenter4")
 @section("content")
     <!-- 公共header / start -->
             <div class="main">
