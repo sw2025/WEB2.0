@@ -46,14 +46,14 @@
             <!-- 登录后 -->
                 <span class="after-login">
                     <a href="javascript:;" class="quit header-link">退出</a>
-                    <a href="{{asset('uct_basic')}}" class="log-username header-link"><i class="iconfont icon-touxiang"></i></a>
+                    <a href="javascript:;" id="toCenter" class="log-username header-link"><i class="iconfont icon-touxiang"></i></a>
                 </span>
             <div class="searchbar">
                 <a href="javascript:;" class="search-cli"><i class="iconfont icon-sousuo"></i></a>
                 <div class="search-sear">
                     <form name="">
                         <div class="select-box">
-                            <div class="select-showbox"><span></span><i class="iconfont icon-xiangxiajiantou"></i></div>
+                            <div class="select-showbox"><span id="select-type"></span><i class="iconfont icon-xiangxiajiantou"></i></div>
                             <ul class="select-option">
                                 <li>搜专家</li>
                                 <li>搜供求</li>
@@ -143,5 +143,24 @@
             }
         })
     })
+    $(".search-btn").on("click",function(){
+        var type=$("#select-type").text();
+        var content=$(".search-text").val();
+        if(!type || !content){
+            return false;
+        }
+        if(type=="搜专家"){
+            window.location.href="/expert?searchname="+content+"&role=null&supply=null&consult=null&address=null&ordertime=desc&ordercollect=null&ordermessage=null"
+        }else{
+            window.location.href="/supply?searchname="+content+"&role=null&supply=null&address=null&ordertime=desc&ordercollect=null&ordermessage=null"
+        }
 
+    })
+    $("#toCenter").on("click",function(){
+        if($.cookie('role')=="专家"){
+            window.location.href="{{asset('basic')}}"
+        }else{
+            window.location.href="{{asset('uct_basic')}}"
+        }
+    })
 </script>

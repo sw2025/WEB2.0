@@ -236,5 +236,31 @@
             window.location.href="{{asset('expert/detail')}}"+"/"+expertId;
         }
     }
+    var  getPath=function(type){
+        if(!$.cookie('userId')){
+            window.location.href="/login"
+            return false;
+        }
+        switch(type){
+            case "入驻平台":
+                    window.location.href="{{asset('uct_works')}}";
+            break;
+            case "成为专家":
+                window.location.href="{{asset('uct_expert')}}";
+                break;
+            case "发布需求":
+                    if($.cookie('role')=="专家"){
+                        window.location.href="{{asset('myneed/supplyNeed')}}";
+                    }else{
+                        window.location.href="{{asset('uct_myneed/supplyNeed')}}";
+                    }
+            break;
+        }
+    }
+    $(".homepage-link").on("click",function(){
+        var type=$(this).text();
+        getPath(type);
+    })
+
 </script>
 @endsection

@@ -7,7 +7,7 @@
     <div class="ucenter-con">
         <!-- 选择start -->
         <div class="v-myneed-top">
-            <a href="{{asset('uct_myneed/supplyNeed')}}" class="v-release-btn">发布需求</a>
+            <a href="{{asset('myneed/supplyNeed')}}" class="v-release-btn">发布需求</a>
             <div class="v-condition">
                 <a href="javascript:;" class="v-condition-link @if(!empty($action) && $action == '已发布')active @endif" index="myput">已发布<span class="v-count">{{$putcount}}</span></a>
                 <a href="javascript:;" class="v-condition-link v-c-link1 @if(!empty($action) && $action == '待审核')active @endif" index="waitverify">待审核<span class="v-count">{{$waitcount}}</span></a>
@@ -109,7 +109,7 @@
             <div class="myask-tab-box">
                 <ul class="supply-list clearfix">
                     @foreach($datas as $v)                        <li class="col-md-6">
-                            <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('uct_myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('uct_myneed/examineNeed',$v->needid)}} @else {{url('uct_myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
+                            <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('myneed/examineNeed',$v->needid)}} @else {{url('myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
                                 <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif" class="supp-list-img" />
                                 <span class="supp-list-time">{{date('Y-m-d',strtotime($v->needtime))}}</span>
                                 <div class="supp-list-brief">
