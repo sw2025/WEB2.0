@@ -40,14 +40,14 @@
             <!-- 登录后 -->
                 <span class="after-login" style="display:block;">
                     <a href="javascript:;" class="quit header-link">退出</a>
-                    <a href="javascript:;" class="log-username header-link"><i class="iconfont icon-touxiang"></i>路漫漫其修远兮</a>
+                    <a href="javascript:;" id="toCenter" class="log-username header-link"><i class="iconfont icon-touxiang"></i></a>
                 </span>
             <div class="searchbar">
                 <a href="javascript:;" class="search-cli"><i class="iconfont icon-sousuo"></i></a>
                 <div class="search-sear">
                     <form name="">
                         <div class="select-box">
-                            <div class="select-showbox"><span></span><i class="iconfont icon-xiangxiajiantou"></i></div>
+                            <div class="select-showbox"><span id="select-type"></span><i class="iconfont icon-xiangxiajiantou"></i></div>
                             <ul class="select-option">
                                 <li>搜专家</li>
                                 <li>搜供求</li>
@@ -131,34 +131,36 @@
             </div>
         </div>
 <script type="text/javascript">
-    var str=window.location.pathname;
-    var num1=str.indexOf('/');
-    var find = '/';//表示要找的字符
-    var flag = 2;//表示第几次出现
-    var num2=0;
-    for(var i=0;i<str.length;i++){
-        if(str.charAt(i)==find)
-            flag--;
-        if(flag==0){
-            num2=i;
-            break;
+    $(function(){
+        var str=window.location.pathname;
+        var num1=str.indexOf('/');
+        var find = '/';//表示要找的字符
+        var flag = 2;//表示第几次出现
+        var num2=0;
+        for(var i=0;i<str.length;i++){
+            if(str.charAt(i)==find)
+                flag--;
+            if(flag==0){
+                num2=i;
+                break;
+            }
         }
-    }
-    if(num2){
-        var string=str.substring(num1+1,num2);
-    }else{
-        var string=str.substring(num1+1);
-    }
-    $("#"+string).addClass('current');
-    if($.cookie('name')){
-        var name=$.cookie("name");
-        $(".before-login").hide();
-        $(".after-login").show();
-        $(".after-login").children(":last").text(name);
-    }else{
-        $(".before-login").show();
-        $(".after-login").hide();
-    }
+        if(num2){
+            var string=str.substring(num1+1,num2);
+        }else{
+            var string=str.substring(num1+1);
+        }
+        $("#"+string).addClass('current');
+        if($.cookie('name')){
+            var name=$.cookie("name");
+            $(".before-login").hide();
+            $(".after-login").show();
+            $(".after-login").children(":last").text(name);
+        }else{
+            $(".before-login").show();
+            $(".after-login").hide();
+        }
+    })
     $(".quit").on("click",function(){
         $.ajax({
             url:"{{asset("quit")}}",
@@ -176,6 +178,26 @@
                 }
             }
         })
+    })
+    $(".search-btn").on("click",function(){
+        var type=$("#select-type").text();
+        var content=$(".search-text").val();
+        if(!type || !content){
+            return false;
+        }
+        if(type=="搜专家"){
+            window.location.href="/expert?searchname="+content+"&role=null&supply=null&consult=null&address=null&ordertime=desc&ordercollect=null&ordermessage=null"
+        }else{
+            window.location.href="/supply?searchname="+content+"&role=null&supply=null&address=null&ordertime=desc&ordercollect=null&ordermessage=null"
+        }
+
+    })
+    $("#toCenter").on("click",function(){
+        if($.cookie('role')=="专家"){
+            window.location.href="{{asset('basic')}}"
+        }else{
+            window.location.href="{{asset('uct_basic')}}"
+        }
     })
 </script>
 </body>
