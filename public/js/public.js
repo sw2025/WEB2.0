@@ -27,18 +27,15 @@ $(function(){
         var $html = $this.html();
         $('.v-identity-cap').html($html);
         $this.parent().hide();
-        var $index = $(this).index();
-        $('.v-ucenter-nav-list').eq($index).show().siblings().hide();
+       /* var $index = $(this).index();
+        $('.v-ucenter-nav-list').eq($index).show().siblings().hide();*/
         if($('.v-identity-cap').html() == '我是专家'){
-            $('.iamenter').hide();
-            $('.iamexpert').show();
-            $('.v-aside').addClass('beexpert');
-        }else{
-            $('.iamenter').show();
-            $('.iamexpert').hide();
-            $('.v-aside').removeClass('beexpert');
-        }
 
+            window.location.href="http://sw2025.com/uct_mywork"
+        }else{
+
+            window.location.href="http://sw2025.com/uct_works"
+        }
     })
     //end 新增2017-08-24
     // 展开搜索框
@@ -235,28 +232,7 @@ $(function(){
         $('.money-cate-def').html(liHtml);
         $(this).parent().hide();
     });
-// 个人中心=======》充值提现end
-// // 兼容placeholder
-            // jQuery('[placeholder]').focus(function() {
-            //     var input = jQuery(this);
-            //     if (input.val() == input.attr('placeholder')) {
-            //         input.val('');
-            //         input.removeClass('placeholder');
-            //     }
-            // }).blur(function() {
-            //     var input = jQuery(this);
-            //     if (input.val() == '' || input.val() == input.attr('placeholder')) {
-            //         input.addClass('placeholder');
-            //         input.val(input.attr('placeholder'));
-            //     }
-            // }).blur().parents('form').submit(function() {
-            //     jQuery(this).find('[placeholder]').each(function() {
-            //         var input = jQuery(this);
-            //         if (input.val() == input.attr('placeholder')) {
-            //           input.val('');
-            //         }
-            //     })
-            // });
+
 // 个人中心=======》我的需求和专家资源start
     $('.three-icon').on('click', '.icon-row', function() {
         $(this).addClass('active').siblings().removeClass('active');

@@ -257,6 +257,12 @@ class PublicController extends Controller
     public function  service(){
         return view('public.service');
     }
+    /**首页服务介绍
+     * @return mixed
+     */
+    public function  us(){
+        return view('public.us');
+    }
 
     /**获取网易云token和accid;
      * @return array
@@ -294,11 +300,20 @@ class PublicController extends Controller
     public function getAvatar(){
         $res=array();
         $userId=$_POST['userId'];
-        $userInfos=DB::table("T_U_USER")->select('avatar','phone')->where("userid",$userId)->get();
-        foreach ($userInfos as $userInfo){
-            $res['avatar']=$userInfo->avatar;
-            $res['phone']=substr_replace($userInfo->phone,'****',3,4);
+        $phone=DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");
+        switch($_POST['type']){
+            case "enterprise":
+                $showimages=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("showimage");
+                $enterAvatar=($showimages)?$showimages:'/images/avatar.jpg';
+                $res['enterAvatar']=$enterAvatar;
+            break;
+            case "expert":
+                $showimages=DB::table("t_u_expert")->where("userid",$userId)->pluck("showimage");
+                $expertAvatar=($showimages)?$showimages:'/images/avatar.jpg';
+                $res['expertAvatar']=$expertAvatar;
+            break;
         }
+        $res['phone']=substr_replace($phone,'****',3,4);
         return $res;
 
     }

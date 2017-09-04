@@ -38,7 +38,6 @@
                 </a>
             </li>
           @endforeach
-
             @else
                 <li>
                     <div class="v-supply-tip">
