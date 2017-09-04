@@ -14,6 +14,7 @@
                 </div>
                 <ul class="v-manage-list-ul clearfix">
                     @if($datas->lastpage())
+
                         @foreach($datas as $data)
                             <li>
                         <a href="{{asset('uct_video/detail/'.$data->consultid)}}" class="v-manage-list-ul-link">
@@ -36,11 +37,15 @@
                             </div>
                             <span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>{{$data->starttime}}</span>
                             <span class="v-manage-link-time v-manage-link-time1"><i class="iconfont icon-shijian2"></i>{{$data->endtime}}</span>
+
+                     
                         </a>
                     </li>
                         @endforeach
                     @else
+
                          <li>
+
                         <div class="v-supply-tip">
                             <span class="v-supply-tip-top"><strong>升维网</strong>为<strong>企业</strong></span>
                             <div class="v-supply-tactic"><span>找资金</span><span>找技术</span><span>找市场</span><span>定战略</span></div>
@@ -48,6 +53,7 @@
                             <a href="javascript:;" class="goto-work1" id="applyVideo1"><i class="iconfont icon-woyaobanshi"></i>我要咨询</a>
                         </div>
                     </li>
+
                     @endif
                 </ul>
                 <div class="pages myinfo-page v-page">
@@ -148,5 +154,6 @@
         })
 
     })
+
 </script>
 @endsection

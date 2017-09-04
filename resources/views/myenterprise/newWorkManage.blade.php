@@ -3,11 +3,11 @@
     <div class="vmain-manage-list clearfix">
         <div class="v-works-manage-list-top clearfix">
             <div class="v-works-mlt-select">
-                <a href="javascript:;" class="v-works-mlt-opt @if($type == '全部') active @endif">全部</a>
-                <a href="javascript:;" class="v-works-mlt-opt @if($type == '找资金') active @endif">找资金</a>
-                <a href="javascript:;" class="v-works-mlt-opt @if($type == '找技术') active @endif">找技术</a>
-                <a href="javascript:;" class="v-works-mlt-opt @if($type == '找市场') active @endif">找市场</a>
-                <a href="javascript:;" class="v-works-mlt-opt @if($type == '定战略') active @endif">定战略</a>
+                <a href="javascript:;" class="v-works-mlt-opt @if(!$type || $type == '全部') active @endif">全部</a>
+                <a href="javascript:;" class="v-works-mlt-opt @if($type && $type == '找资金') active @endif">找资金</a>
+                <a href="javascript:;" class="v-works-mlt-opt @if($type && $type == '找技术') active @endif">找技术</a>
+                <a href="javascript:;" class="v-works-mlt-opt @if($type && $type == '找市场') active @endif">找市场</a>
+                <a href="javascript:;" class="v-works-mlt-opt @if($type && $type == '定战略') active @endif">定战略</a>
             </div>
             <div class="v-supply-con"></div>
             <a href="{{asset('uct_works/applyWork')}}" class="goto-work"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
