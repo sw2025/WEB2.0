@@ -54,10 +54,14 @@ class IndexController extends Controller
                 ->orderBy("T_U_EXPERT.created_at","desc")
                 ->get();
             foreach ($datas as $data){
-                if(empty($data->state)){
+                if($data->state==0){
                     $data->fee="免费";
                 }else{
-                    $data->fee=$data->fee."元";
+                    if(!empty($data->fee)){
+                        $data->fee=$data->fee."元";
+                    }else{
+                        $data->fee="免费";
+                    }
                 }
                 if(!empty(session('userId'))){
                     $userId=session('userId');

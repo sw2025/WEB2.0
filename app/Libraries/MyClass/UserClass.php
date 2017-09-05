@@ -31,6 +31,13 @@
             return $array;
         }
 
+        /**注册验证
+         * @param $phone
+         * @param $role
+         * @param $pwd
+         * @return array
+         * @throws Exception
+         */
         public static function regVerify($phone, $role, $pwd)
         {
             $result = array();
