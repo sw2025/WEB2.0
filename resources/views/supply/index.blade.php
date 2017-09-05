@@ -104,7 +104,9 @@
                     <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif " class="supp-list-img" />
                     <span class="supp-list-time">{{$v->needtime}}</span>
                     <div class="supp-list-brief">
+
                         <span class="supp-list-name">【{{$v->needtype}}】@if($v->needtype=="专家") {{$v->expertname}} @else {{$v->enterprisename}} @endif</span>
+
                         <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
                         <div class="supp-list-desc">
                             {{$v->brief}}

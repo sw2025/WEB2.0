@@ -97,6 +97,8 @@ Route::post('uct_flagread','CenterController@flagRead');
 Route::post('uct_myneed/addNeed','CenterController@addNeed');
 //解决需求
 Route::post('uct_myneed/solveNeed','CenterController@solveNeed');
+//验证发布需求身份
+Route::post('myneed/verifyputneed','CenterController@verifyPutNeed');
 
 /***************************************个人中心我是企业路由(公共部分)****************************************************************/
 //基本资料
@@ -156,6 +158,7 @@ Route::get('myneed/needDetail/{needid}','ExpertUcenterController@needDetail');
 Route::get('myneed/supplyNeed/{needid?}','ExpertUcenterController@supplyNeed');
 //审核需求
 Route::get('myneed/examineNeed/{needid?}','ExpertUcenterController@examineNeed');
+
 /************************************我是企业*********************************************************/
 //专家资源
 Route::get('uct_resource','MyEnterpriseController@resource');
