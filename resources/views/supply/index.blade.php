@@ -104,7 +104,7 @@
                     <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif " class="supp-list-img" />
                     <span class="supp-list-time">{{$v->needtime}}</span>
                     <div class="supp-list-brief">
-                        <span class="supp-list-name">【{{$v->role}}】@if(!empty($v->expertname) && !empty($v->enterprisename)) {{$v->enterprisename.' / '.$v->expertname}} @else {{$v->expertname or $v->enterprisename}} @endif</span>
+                        <span class="supp-list-name">【{{$v->needtype}}】@if(!empty($v->expertname) && !empty($v->enterprisename)) {{$v->enterprisename.' / '.$v->expertname}} @else {{$v->expertname or $v->enterprisename}} @endif</span>
                         <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
                         <div class="supp-list-desc">
                             {{$v->brief}}

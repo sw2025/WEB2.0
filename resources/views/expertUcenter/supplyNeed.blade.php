@@ -59,22 +59,27 @@
             });
 
             $('.publish-submit').on('click',function () {
+                $obj =  $(this);
+                $obj.attr('disabled',true);
                 var content = $('#content').val();
                 var domain =  $('.publ-need-sel-def').text();
                 if(content == '' || domain == '请选择'){
+                    $obj.attr('disabled',false);
                     layer.msg('请填写完整的需求描述');
                     return false;
                 }
                 if(content.length <= 30 || content.length >= 500){
+                    $obj.attr('disabled',false);
                     layer.msg('请输入30-500字的需求描述');
                     return false;
                 }
-                $.post('{{url('uct_myneed/addNeed')}}',{'content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
+                $.post('{{url('uct_myneed/addNeed')}}',{'role':'专家','content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
                     if (data.icon == 1){
                         layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
-                            window.location = '{{url('uct_myneed/examineNeed')}}';
+                            window.location = '{{url('myneed/examineNeed')}}'+'/'+data.id;
                         });
                     } else {
+                        $obj.attr('disabled',false);
                         layer.msg(data.msg,{'time':2000,'icon':data.icon});
                     }
                 });

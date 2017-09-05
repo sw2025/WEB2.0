@@ -191,6 +191,14 @@ class MyEnterpriseController extends Controller
             $data = $request->only(['entid','brief','enterprisename','licenceimage','showimage','size','industry','address']);
             $data['userid'] = session('userId');
             $data['updated_at'] = date('Y-m-d H:i:s',time());
+
+            $verifyname = DB::table('t_u_enterprise')->where('enterprisename',$data['enterprisename'])->first();
+            if($verifyname){
+                if(empty($info) || $info->enterprisename != $data['enterprisename']){
+                    return ['msg' => '该企业已认证','icon' => 2];
+                }
+            }
+
             if(!empty($data['entid'])){
                 $res = $data['entid'];
                 unset($data['entid']);
@@ -393,6 +401,11 @@ class MyEnterpriseController extends Controller
         $data = $request->input();
     }*/
 
+    /**办事的文件的上传
+     * @param $proid
+     * @param Request $request
+     * @return array
+     */
     public function eventUpload($proid,Request $request)
     {
         if(empty(session('userId'))){
