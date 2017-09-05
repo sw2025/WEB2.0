@@ -33,7 +33,7 @@
                                         <input class="enterprise-inp" type="text" id="entname" placeholder="请输入企业全称" value="{{$data->enterprisename or null}}"/>
                                     </div>
                                     <div class="datas-sel zindex1">
-                                        <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def" id="size">{{$data->size or null}}</a>
+                                        <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def" id="size">{{$data->size or '不限'}}</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
                                             <li>20人以下</li>
@@ -45,7 +45,7 @@
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex2">
-                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def" id="industry">{{$data->industry or null}}</a>
+                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def" id="industry">{{$data->industry or '不限'}}</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
                                             <li>IT|通信|电子|互联网</li>
@@ -64,7 +64,7 @@
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex3">
-                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def" id="address">{{$data->address or null}}</a>
+                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def" id="address">{{$data->address or '全国'}}</a>
                                         <ul class="datas-list zone-list">
                                             <li>全国</li>
                                             <li>北京</li>
@@ -184,7 +184,7 @@
             var content = $('#content').val();
             var img1 = $('.fileupload1').attr('index');
             var img2 = $('.fileupload2').attr('index');
-            var id = {{$data->enterpriseid or null}};
+            var id = '{{$data->enterpriseid or null}}';
             if(entname == '' || size == '不限' ||  industry == '不限' || address == '全国' || content == '' || img1 == '' || img2 == ''){
                 layer.msg('请填写完整的资料',{'icon':0});
                 $('#submit').attr('disabled',false);
