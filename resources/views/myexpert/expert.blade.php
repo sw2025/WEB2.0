@@ -41,8 +41,9 @@
                                 <div class="datas-sel zindex1">
                                     <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category" class="datas-sel-def">个人</a>
                                     <ul class="datas-list">
-                                        <li>个人</li>
+                                        <li>专家</li>
                                         <li>机构</li>
+                                        <li>企业家</li>
                                     </ul>
                                 </div>
                                 <div class="datas-sel">
