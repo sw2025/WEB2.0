@@ -257,7 +257,7 @@ class PublicController extends Controller
     public function  service(){
         return view('public.service');
     }
-    /**首页服务介绍
+    /**首页关于我们
      * @return mixed
      */
     public function  us(){
@@ -287,7 +287,6 @@ class PublicController extends Controller
      * @return array
      */
     public  function getTeamId(){
-
         $res=array();
         $teamId=DB::table("t_s_im")->where(["consultid"=>$_POST['consultId']])->pluck("tid");
         if($teamId){
