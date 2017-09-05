@@ -162,7 +162,7 @@ class MyEnterpriseController extends Controller
                     return redirect('uct_member/member3/'.$enterpriseid);
                 } elseif ($configids->configid == 4){
                     return redirect('uct_member/member4/'.$enterpriseid);
-                } elseif ($configids->configid == 2){
+                } elseif ($configids->configid == 1){
                     return redirect('uct_member/member2/'.$enterpriseid);
                 }
             }
