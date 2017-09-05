@@ -210,11 +210,11 @@ function fnc_collect (supplyid,action,obj) {
             });
         } else if(data == 'success') {
             if(action == 'collect'){
-                var number = $(obj).text() == '' ? 0:$(obj).text();
+                var number = $(obj).text() == ' ' ? 0:$(obj).text();
                 $(obj).children('span').text(parseInt(number)+1);
                 layer.msg('收藏成功');
             } else {
-                var number = $(obj).text() == 1 ? '' : parseInt($(obj).text())-1;
+                var number = $(obj).text() == 1 ? ' ' : parseInt($(obj).text())-1;
                 $(obj).children('span').text(number);
                 layer.msg('取消收藏成功');
             }

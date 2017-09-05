@@ -26,9 +26,9 @@
     <div class="experts-classify filter-row clearfix">
         <span class="left-cap">专家分类：</span>
         <a href="javascript:;" {{$role or 'class=active'}}>全部</a>
-        <a href="javascript:;" @if(isset($role) && $role == '知名专家') class=active @endif>知名专家</a>
-        <a href="javascript:;" @if(isset($role) && $role == '知名机构') class=active @endif>知名机构</a>
-        <a href="javascript:;" @if(isset($role) && $role == '知名企业家') class=active @endif>知名企业家</a>
+        <a href="javascript:;" @if(isset($role) && $role == '专家') class=active @endif>专家</a>
+        <a href="javascript:;" @if(isset($role) && $role == '机构') class=active @endif>机构</a>
+        <a href="javascript:;" @if(isset($role) && $role == '企业家') class=active @endif>企业家</a>
     </div>
     <div class="video-consult filter-row clearfix">
         <span class="left-cap">视频咨询：</span>

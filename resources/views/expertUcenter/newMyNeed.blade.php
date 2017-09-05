@@ -7,7 +7,7 @@
     <div class="ucenter-con">
         <!-- 选择start -->
         <div class="v-myneed-top">
-            <a href="{{asset('myneed/supplyNeed')}}" class="v-release-btn">发布需求</a>
+            <a href="javascript:;" class="v-release-btn" onclick="putneed()">发布需求</a>
             <div class="v-condition">
                 <a href="javascript:;" class="v-condition-link @if(!empty($action) && $action == '已发布')active @endif" index="myput">已发布<span class="v-count">{{$putcount}}</span></a>
                 <a href="javascript:;" class="v-condition-link v-c-link1 @if(!empty($action) && $action == '待审核')active @endif" index="waitverify">待审核<span class="v-count">{{$waitcount}}</span></a>
@@ -136,6 +136,29 @@
     </div>
 
     <script type="text/javascript">
+
+        function putneed (){
+            $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
+                if(data.type == 3){
+                    layer.msg(data.msg,{'icon':data.icon});
+                } else if(data.type == 2){
+                    layer.confirm(data.msg, {
+                        btn: ['去认证','暂不需要'], //按钮
+                        skin:'layui-layer-molv'
+                    }, function(){
+                        window.location.href=data.url;
+                    }, function(){
+                        layer.close();
+                    });
+                } else if (data.type == 1){
+                    layer.alert(data.msg,{'icon':data.icon});
+                } else {
+                    window.location = '{{asset('myneed/supplyNeed')}}';
+                }
+            });
+
+        }
+
         $(function(){
             $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':{{$datas->currentPage()-1}}});
 

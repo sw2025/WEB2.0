@@ -204,6 +204,7 @@ class MyEnterpriseController extends Controller
                 unset($data['entid']);
                 DB::table('t_u_enterprise')->where('enterpriseid',$res)->update($data);
             } else {
+                unset($data['entid']);
                 $res = DB::table('t_u_enterprise')->insertGetId($data);
             }
 
