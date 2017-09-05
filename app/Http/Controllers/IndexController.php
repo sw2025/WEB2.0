@@ -45,7 +45,7 @@ class IndexController extends Controller
         $datas=DB::table("T_U_EXPERT")
                 ->leftJoin("T_U_EXPERTFEE","T_U_EXPERTFEE.expertid","=","T_U_EXPERT.expertid")
                 ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERTVERIFY.expertid","=","T_U_EXPERT.expertid")
-                ->select("T_U_EXPERT.expertname","T_U_EXPERT.brief","T_U_EXPERT.expertid","T_U_EXPERT.category","T_U_EXPERT.domain1","T_U_EXPERTFEE.fee","T_U_EXPERTFEE.state")
+                ->select("T_U_EXPERT.expertname","T_U_EXPERT.brief","T_U_EXPERT.expertid","T_U_EXPERT.category","T_U_EXPERT.domain1","T_U_EXPERTFEE.fee","T_U_EXPERTFEE.state","T_U_EXPERT.showimage")
                 ->where("isfirst",1)
                 ->where("category",$expertType)
                 ->whereIn("T_U_EXPERTVERIFY.configid",[2,4])
