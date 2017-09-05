@@ -47,11 +47,11 @@
                                     </div>
                                     <div class="datas-upload-box clearfix">
                                         <div class="datas-upload-lt">
-                                            <img src="img/photo1.jpg" class="photo1" />
+                                            <img src="{{$data->licenceimage}}" class="photo1" />
                                             
                                         </div>
                                         <div class="datas-upload-rt">
-                                            <img src="img/photo2.jpg" class="photo1" />
+                                            <img src="{{$data->showimage}}" class="photo1" />
                                             
                                         </div>
                                     </div>

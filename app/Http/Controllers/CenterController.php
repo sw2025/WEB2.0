@@ -409,20 +409,24 @@ class CenterController extends Controller
                     if($verifyent){
                         $verentconfig = DB::table('t_u_enterpriseverify')->where('enterpriseid',$verifyent)->orderBy('id','desc')->first()->configid;
                         if($verentconfig != 4){
-                            return ['msg' => '您的企业未通过审核,暂不能发布','icon' => 2];
+
+                            return ['msg' => '您的企业未通过认证,暂不能发布','icon' => 2];
                         }
                     } else {
-                        return ['msg' => '无此企业','icon' => 2];
+                        return ['msg' => '您还未成为企业~','icon' => 2];
+
                     }
                 } elseif ($data['role'] == '专家') {
                     $verifyent = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
                     if($verifyent){
                         $verentconfig = DB::table('t_u_expertverify')->where('expertid',$verifyent)->orderBy('id','desc')->first()->configid;
                         if($verentconfig != 2){
-                            return ['msg' => '您的专家身份未通过审核,暂不能发布','icon' => 2];
+
+                            return ['msg' => '您的专家身份未通过认证,暂不能发布','icon' => 2];
                         }
                     } else {
-                        return ['msg' => '无此专家','icon' => 2];
+                        return ['msg' => '您还未成为专家~','icon' => 2];
+
                     }
                 } else{
                     return ['msg' => '非法操作','icon' => 2];
@@ -488,6 +492,43 @@ class CenterController extends Controller
         return ['msg' => '非法访问','icon' => 2];
     }
 
+
+    /**
+     * 验证发布需求的身份是否成立
+     *
+     */
+    public function verifyPutNeed(Request $request)
+    {
+        if($request->ajax()){
+            $data = $request->only('role');
+            if($data['role'] == '企业'){
+                $verifyent = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
+                if(!empty($verifyent->enterpriseid)){
+                    $verentconfig = DB::table('t_u_enterpriseverify')->where('enterpriseid',$verifyent->enterpriseid)->orderBy('id','desc')->first()->configid;
+                    if($verentconfig != 4){
+                        return ['msg' => '您的企业未通过认证,暂不能发布','icon' => 2,'type' => 1];
+                    }
+                } else {
+                    return ['msg' => '您还未成为企业~是否成为企业','icon' => 2,'type' => 2,'url' => url('uct_member')];
+                }
+            } elseif ($data['role'] == '专家') {
+                $verifyent = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+                if(!empty($verifyent->expertid)){
+                    $verentconfig = DB::table('t_u_expertverify')->where('expertid',$verifyent->expertid)->orderBy('id','desc')->first()->configid;
+                    if($verentconfig != 2){
+                        return ['msg' => '您的专家身份未通过认证,暂不能发布','icon' => 2,'type' => 1];
+                    }
+                } else {
+                    return ['msg' => '您还未成为专家~是否成为专家','icon' => 2,'type' => 2,'url' => url('uct_expert')];
+                }
+            } else {
+                return ['msg' => '非法操作FF0001','icon' => 2,'type' => 3];
+            }
+        } else {
+            return ['msg' => '非法操作FF0000','icon' => 2,'type' => 3];
+        }
+
+    }
 
     /**个人中心获取验证码
      * @return array
