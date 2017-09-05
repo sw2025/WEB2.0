@@ -118,7 +118,7 @@
             <div class="aside-top">
                 <span class="aside-top-icon"><i class="iconfont icon-tuijian"></i></span>
                 <span class="width2"></span>
-                <span class="aside-top-tit">推荐供求关系</span>
+                <span class="aside-top-tit">推荐相关专家</span>
             </div>
             <ul class="exp-recom-list">
                 @foreach($recommendNeed as $v)
