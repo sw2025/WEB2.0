@@ -199,7 +199,9 @@ function replymessage (datas,obj) {
     $.post('/replymessage',datas,function (data) {
         if(data == 'success'){
             layer.msg('回复成功',{time:2000},function () {
-                window.location = window.location;
+                var url = window.location.href;
+                url = url.replace(/\#reply/,'');
+                window.location = url;
             });
         }else if(data == 'nologin') {
             layer.confirm('您还未登陆是否去登陆？', {

@@ -402,9 +402,31 @@ class CenterController extends Controller
             //判断是否登陆
             if(!empty(session('userId'))){
                 $data = $request->input();
-                $role = DB::table('view_userrole')->where('userid',session('userId'))->first()->role;
                 $domain1 = explode('/',$data['domain'])[0];
                 $domain2 = explode('/',$data['domain'])[1];
+                if($data['role'] == '企业'){
+                    $verifyent = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterpriseid;
+                    if($verifyent){
+                        $verentconfig = DB::table('t_u_enterpriseverify')->where('enterpriseid',$verifyent)->orderBy('id','desc')->first()->configid;
+                        if($verentconfig != 4){
+                            return ['msg' => '您的企业未通过审核,暂不能发布','icon' => 2];
+                        }
+                    } else {
+                        return ['msg' => '无此企业','icon' => 2];
+                    }
+                } elseif ($data['role'] == '专家') {
+                    $verifyent = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+                    if($verifyent){
+                        $verentconfig = DB::table('t_u_expertverify')->where('expertid',$verifyent)->orderBy('id','desc')->first()->configid;
+                        if($verentconfig != 2){
+                            return ['msg' => '您的专家身份未通过审核,暂不能发布','icon' => 2];
+                        }
+                    } else {
+                        return ['msg' => '无此专家','icon' => 2];
+                    }
+                } else{
+                    return ['msg' => '非法操作','icon' => 2];
+                }
                 if(!empty($data['needid'])){
 
                     DB::beginTransaction();
@@ -443,7 +465,7 @@ class CenterController extends Controller
                         'domain2' => $domain2,
                         'brief' => $data['content'],
                         'needtime' => date('Y-m-d H:i:s',time()),
-                        'needtype' => $role,
+                        'needtype' => $data['role'],
                         'updated_at' => date('Y-m-d H:i:s',time())
                     ]);
                     DB::table('t_n_needverify')->insert([
