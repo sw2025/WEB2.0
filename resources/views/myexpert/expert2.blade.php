@@ -35,9 +35,11 @@
                                             <span class="datas-sel-cap">输入姓名</span>
                                             <input class="datas-sel-name" readonly="readonly" type="text" value="{{$data->expertname}}" />
                                         </div>
+                                        <div class="datas-sel zindex3">
+                                            <span class="datas-sel-cap">擅长行业</span><a href="javascript:;" class="datas-sel-def verify-default" id="industry">{{$data->industry}}</a>
+                                        </div>
                                         <div class="datas-sel zindex2">
-                                            <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->domain1}}</a>
-
+                                            <span class="datas-sel-cap">擅长领域</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->domain1}}</a>
                                         </div>
                                         <div class="datas-sel zindex3">
                                             <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->address}}</a>

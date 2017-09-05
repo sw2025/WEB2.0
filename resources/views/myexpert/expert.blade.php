@@ -49,6 +49,24 @@
                                     <span class="datas-sel-cap">输入姓名</span>
                                     <input class="datas-sel-name" type="text" placeholder="" />
                                 </div>
+                                <div class="datas-sel">
+                                    <span class="datas-sel-cap">擅长行业</span><a href="javascript:;" class="datas-sel-def" id="industrys"></a>
+                                    <ul class="datas-list">
+                                        <li>IT|通信|电子|互联网</li>
+                                        <li>金融业</li>
+                                        <li>房地产|建筑业</li>
+                                        <li>商业服务</li>
+                                        <li>贸易|批发|零售|租赁业</li>
+                                        <li>文体教育|工艺美术</li>
+                                        <li>生产|加工|制造</li>
+                                        <li>交通|运输|物流|仓储</li>
+                                        <li>服务业</li>
+                                        <li>文化|传媒|娱乐|体育</li>
+                                        <li>能源|矿产|环保</li>
+                                        <li>政府|非盈利机构</li>
+                                        <li>农|林|牧|渔|其他</li>
+                                    </ul>
+                                </div>
                                 <div class="publish-need-sel datas-newchange zindex1">
                                     <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
                                     <ul class="publish-need-list">
@@ -179,11 +197,6 @@
                 $(this).toggleClass('on');
                 $(this).closest('.publish-need-list>li').siblings().find('li').removeClass('on');
                 var y = $(this).parent('ul').prev('a').html();
-                // if($('.on').length > 5){
-                //     $(this).removeClass('on');
-                //     return false;
-                // }
-
                 var x = y+'-';
                 $('.publ-sub-list li').each(function(index, el) {
                     if($(el).hasClass('on')){
@@ -197,13 +210,6 @@
 
                 });
             });
-
-//            $('.publ-sub-list li').click(function() {
-//                var publishHtml = $(this).html();
-//                var parentHtml = $(this).parent().siblings('a').text();
-//                $('.publ-need-sel-def').html(parentHtml+'/'+publishHtml);
-//                $('.publish-need-list').hide();
-//            });
         })
 
         $(function () {
@@ -241,19 +247,20 @@
                 var category=$('#category').html();
                 var name=$('.datas-sel-name').val();
                 var industry=$('#industry').html();
+                var industrys=$("#industrys").html();
                 var address=$('#address').html();
                 var photo1=$('#avatar1').attr('src');
                 var photo2=$('#avatar2').attr('src');
                 var brief=$('#brief').val();
                 console.log(name=='' || photo1=='' || industry=='请选择');
-                if(name=='' || photo1=='' || industry=='请选择'){
+                if(name=='' || photo1=='' || industry=='请选择'  || industrys==''){
                     layer.msg('请把信息填写完整');
                     $('.submit-audit').attr('disabled',false);
                     return false;
                 } else {
                     $.ajax({
                         url:"{{asset('/uct_expertData')}}",
-                        data:{"category":category,"name":name,"industry":industry,"address":address,"photo1":photo1,"photo2":photo2,"brief":brief},
+                        data:{"category":category,"name":name,"industry":industry,"address":address,"photo1":photo1,"photo2":photo2,"brief":brief,"industrys":industrys},
                         dataType:"json",
                         type:"POST",
                         success:function(data){
