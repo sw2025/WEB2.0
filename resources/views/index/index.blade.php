@@ -96,7 +96,7 @@
 <!-- section3 / start -->
 <div class="section">
     <div class="container clearfix">
-        <div class="supply-service-tit supply-demand">供求信息<span class="short-line"></span></div>
+        <div class="supply-service-tit supply-demand">需求信息<span class="short-line"></span></div>
         <div class="supply-service-entit">SUPPLY AND DEMAND INFORMATION</div>
         <div class="row supply-categary clearfix">
             <div class="col-md-6">

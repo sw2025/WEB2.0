@@ -7,7 +7,7 @@
     <div class="container list-bg">
         <form action="" onsubmit="return false">
             <div class="list-search">
-                <input type="text" class="list-search-inp"  placeholder="请输入要搜索的供求信息关键字" value="{{$searchname or null}}"/>
+                <input type="text" class="list-search-inp"  placeholder="请输入要搜索的需求信息关键字" value="{{$searchname or null}}"/>
                 <button type="button" class="list-search-btn"><i class="iconfont icon-sousuo"></i></button>
             </div>
         </form>
@@ -95,7 +95,7 @@
             <a href="javascript:;" class="list-collect @if(!empty($ordercollect)) active @endif" >收藏数<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordercollect) && $ordercollect == 'asc') white-color @elseif(!empty($ordercollect) && $ordercollect == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordercollect) && $ordercollect == 'asc') blue-color  @elseif(!empty($ordercollect) && $ordercollect == 'desc') white-color  @endif"></i></span></a>
             <a href="javascript:;" class="list-reviews @if(!empty($ordermessage)) active @endif" >留言数<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordermessage) && $ordermessage == 'asc') white-color @elseif(!empty($ordermessage) && $ordermessage == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordermessage) && $ordermessage == 'asc') blue-color  @elseif(!empty($ordermessage) && $ordermessage == 'desc') white-color  @endif"></i></span></a>
         </div>
-        <!-- 供求列表/start -->
+        <!-- 需求列表/start -->
 
         <ul class="supply-list clearfix">
             @foreach($datas as $v)
@@ -113,14 +113,14 @@
                 </a>
                 <div class="supp-list-icon">
                     <a href="{{url('supply/detail',$v->needid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
-                    <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> {{$v->collcount}}</a>
+                    <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> <span>{{$v->collcount}}</span></a>
                 </div>
             </li>
             @endforeach
         </ul>
 
 
-        <!-- 供求列表/end -->
+        <!-- 需求列表/end -->
         <!-- 分页 -->
         <div class="pages">
             <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>

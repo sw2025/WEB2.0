@@ -22,15 +22,18 @@
                                 <span class="expert-certy-blue">
                                     <em>了解会员权益</em>FOR MEMBERSHIP RIGHTS
                                 </span>
+                            @if(!empty($data))
+                            <p style="color:red"><em>审核失败：{{$configids->remark}}</em> <br /> 请重新提交审核</p>
+                                @endif
                         </div>
                         <div class="datas">
                             <div class="datas-lt">
                                 <div class="datas-lt-enter">
                                     <div class="datas-sel">
-                                        <input class="enterprise-inp" type="text" id="entname" placeholder="请输入企业全称" />
+                                        <input class="enterprise-inp" type="text" id="entname" placeholder="请输入企业全称" value="{{$data->enterprisename or null}}"/>
                                     </div>
                                     <div class="datas-sel zindex1">
-                                        <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def" id="size">不限</a>
+                                        <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def" id="size">{{$data->size or null}}</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
                                             <li>20人以下</li>
@@ -42,7 +45,7 @@
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex2">
-                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def" id="industry">不限</a>
+                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def" id="industry">{{$data->industry or null}}</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
                                             <li>IT|通信|电子|互联网</li>
@@ -61,7 +64,7 @@
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex3">
-                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def" id="address">全国</a>
+                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def" id="address">{{$data->address or null}}</a>
                                         <ul class="datas-list zone-list">
                                             <li>全国</li>
                                             <li>北京</li>
@@ -103,21 +106,21 @@
                                 </div>
                                 <div class="datas-upload-box clearfix">
                                     <div class="datas-upload-lt">
-                                        <img src="img/photo1.jpg" class="photo1" id="photo1"/>
+                                        <img src="{{$data->licenceimage or 'img/photo1.jpg'}}" class="photo1" id="photo1"/>
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传营业执照</span>
-                                                <input class="fileupload1" type="file" name="files[]" data-url="{{asset('upload')}}" index="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                                <input class="fileupload1" type="file" name="files[]" data-url="{{asset('upload')}}" index="{{$data->licenceimage or null}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg" >
                                             </div>
                                             <p class="datas-lt-explain">营业执照仅做认证用，不用做其它用途</p>
                                         </div>
                                     </div>
                                     <div class="datas-upload-rt">
-                                        <img src="img/photo2.jpg" class="photo1" id="photo2"/>
+                                        <img src="{{$data->showimage or 'img/photo2.jpg'}}" class="photo1" id="photo2"/>
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传宣传照片</span>
-                                                <input class="fileupload2" type="file" name="files[]" data-url="{{asset('upload')}}" index="" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                                <input class="fileupload2" type="file" name="files[]" data-url="{{asset('upload')}}" index="{{$data->showimage or null}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg" >
                                             </div>
                                             <p class="datas-lt-explain">宣传照片用于展示企业，请选择企业Logo或展现企业风采的照片</p>
                                         </div>
@@ -126,11 +129,11 @@
                             </div>
                             <div class="datas-rt">
 
-                                <textarea onkeyup="checkLength(this);" placeholder="请输入需求描述" cols="30" rows="10" id="content"></textarea>
+                                <textarea onkeyup="checkLength(this);" placeholder="请输入需求描述" cols="30" rows="10" id="content">{{$data->brief or null}}</textarea>
 
                             </div>
                         </div>
-                        <div class="bottom-btn"><button class="test-btn submit-audit" type="button"  id="submit" ><a href="javascript:;"style="color:#fff;">提交认证</a></button></div>
+                        <div class="bottom-btn"><button class="test-btn submit-audit" type="button"  id="submit" ><a href="javascript:;"style="color:#fff;">@if(!empty($data)) 重新认证 @else 提交认证 @endif</a></button></div>
                     </div>
                 </div>
             </div>
@@ -181,12 +184,13 @@
             var content = $('#content').val();
             var img1 = $('.fileupload1').attr('index');
             var img2 = $('.fileupload2').attr('index');
+            var id = {{$data->enterpriseid or null}};
             if(entname == '' || size == '不限' ||  industry == '不限' || address == '全国' || content == '' || img1 == '' || img2 == ''){
                 layer.msg('请填写完整的资料',{'icon':0});
                 $('#submit').attr('disabled',false);
                 $(this).html('提交认证');
             } else {
-                $.post('{{asset("uct_member/entverify")}}',{'enterprisename':entname,'size':size,'industry':industry,'address':address,'brief':content,'licenceimage':img1,'showimage':img2},function (data) {
+                $.post('{{asset("uct_member/entverify")}}',{'entid':id,'enterprisename':entname,'size':size,'industry':industry,'address':address,'brief':content,'licenceimage':img1,'showimage':img2},function (data) {
                     if(data.icon == 1){
                         layer.msg(data.msg,{'icon':1,'time':2000},function () {
                             window.location = '{{url('uct_member/member2')}}'+'/'+data.id;

@@ -154,6 +154,8 @@ class MyEnterpriseController extends Controller
     public  function uct_member(){
 
         $enterprise = DB::table('t_u_enterprise')->where(['userid' => session('userId')])->first();
+        $data = null;
+        $configids = null;
         if(!empty($enterprise)){
             $enterpriseid = $enterprise->enterpriseid;
             $configids = DB::table('t_u_enterpriseverify')->where('enterpriseid',$enterpriseid)->orderBy('id','desc')->first();
@@ -164,10 +166,13 @@ class MyEnterpriseController extends Controller
                     return redirect('uct_member/member4/'.$enterpriseid);
                 } elseif ($configids->configid == 1){
                     return redirect('uct_member/member2/'.$enterpriseid);
+                } elseif ($configids->configid == 2){
+                    $data = DB::table('t_u_enterprise')->where('enterpriseid',$enterpriseid)->first();
                 }
             }
         }
-        return view("myenterprise.member");
+
+        return view("myenterprise.member",compact('data','configids'));
     }
 
     /**ajax处理会员认证
@@ -178,12 +183,22 @@ class MyEnterpriseController extends Controller
         if($request->ajax()){
             $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
             if($info){
-                return ['msg' => '提交失败，您已经认证过了','icon' => 2];
+                $verify = DB::table('t_u_enterpriseverify')->where('enterpriseid',$info->enterpriseid)->orderBy('id','desc')->first()->configid;
+                if($verify != 2){
+                    return ['msg' => '提交失败，您已经认证过了','icon' => 2];
+                }
             }
-            $data = $request->only(['brief','enterprisename','licenceimage','showimage','size','industry','address']);
+            $data = $request->only(['entid','brief','enterprisename','licenceimage','showimage','size','industry','address']);
             $data['userid'] = session('userId');
             $data['updated_at'] = date('Y-m-d H:i:s',time());
-            $res = DB::table('t_u_enterprise')->insertGetId($data);
+            if(!empty($data['entid'])){
+                $res = $data['entid'];
+                unset($data['entid']);
+                DB::table('t_u_enterprise')->where('enterpriseid',$res)->update($data);
+            } else {
+                $res = DB::table('t_u_enterprise')->insertGetId($data);
+            }
+
             if($res){
                 $res2 = DB::table('t_u_enterpriseverify')->insert([
                     'enterpriseid' => $res,
