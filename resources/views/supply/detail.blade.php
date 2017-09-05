@@ -8,7 +8,7 @@
             <div class="details-top clearfix">
                 <div class="details-bg">
                     <span class="blue-circle"><i class="iconfont icon-jianjie1"></i></span>
-                    <span class="details-ch-tit">供求信息</span>
+                    <span class="details-ch-tit">需求信息</span>
                 </div>
                 <span class="details-en-tit">SUPPLY AND DEMAND INFORMATION</span>
             </div>
@@ -115,7 +115,7 @@
             <div class="aside-top">
                 <span class="aside-top-icon"><i class="iconfont icon-tuijian"></i></span>
                 <span class="width2"></span>
-                <span class="aside-top-tit">推荐供求信息</span>
+                <span class="aside-top-tit">推荐需求信息</span>
             </div>
             <div class="ad-box">
                 <span class="ad-cap">更多种类</span>
