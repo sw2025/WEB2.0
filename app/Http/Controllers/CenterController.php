@@ -409,20 +409,24 @@ class CenterController extends Controller
                     if($verifyent){
                         $verentconfig = DB::table('t_u_enterpriseverify')->where('enterpriseid',$verifyent)->orderBy('id','desc')->first()->configid;
                         if($verentconfig != 4){
+
                             return ['msg' => '您的企业未通过认证,暂不能发布','icon' => 2];
                         }
                     } else {
                         return ['msg' => '您还未成为企业~','icon' => 2];
+
                     }
                 } elseif ($data['role'] == '专家') {
                     $verifyent = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
                     if($verifyent){
                         $verentconfig = DB::table('t_u_expertverify')->where('expertid',$verifyent)->orderBy('id','desc')->first()->configid;
                         if($verentconfig != 2){
+
                             return ['msg' => '您的专家身份未通过认证,暂不能发布','icon' => 2];
                         }
                     } else {
                         return ['msg' => '您还未成为专家~','icon' => 2];
+
                     }
                 } else{
                     return ['msg' => '非法操作','icon' => 2];

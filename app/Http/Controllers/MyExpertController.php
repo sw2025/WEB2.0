@@ -99,6 +99,7 @@ class MyExpertController extends Controller
                                 "brief" => $data['brief'],
                                 "domain1" => $domain1,
                                 "domain2" => $domain2,
+                                "industry"=>$data['industrys'],
                                 "created_at" => date("Y-m-d H:i:s", time()),
                                 "updated_at" => date("Y-m-d H:i:s", time())
                             ]);
@@ -114,6 +115,7 @@ class MyExpertController extends Controller
                                 "brief" => $data['brief'],
                                 "domain1" => $domain1,
                                 "domain2" => $domain2,
+                                "industry"=>$data['industrys'],
                                 "created_at" => date("Y-m-d H:i:s", time()),
                                 "updated_at" => date("Y-m-d H:i:s", time())
                             ]);
