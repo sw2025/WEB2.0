@@ -111,7 +111,7 @@
                         <li class="col-md-6">
                             <a href="{{url('expert/detail/'.$v->expertid)}}" class="expert-list-link"  target="_blank">
                                 <div class="exp-list-top">
-                                    <span class="exp-list-img"><img src="{{asset($v->showimage)}}" /></span>
+                                    <span class="exp-list-img"><img src="{{env('ImagePath').$v->showimage}}" /></span>
                                     <div class="exp-list-brief">
                                         <span class="exp-list-name">{{$v->expertname}}</span>
                                         <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}@else 免费 @endif</em></span>
@@ -128,7 +128,7 @@
                                     1996年，科比被当时的夏洛特黄蜂以首轮第13顺位选中，随即他被交易到湖人。在漫长的职业生涯里，科比帮助比被当时的...
                                 </div>
                             </a>
-                            <a href="javascript:;" class="xuanzhong" id="{{$v->expertid}}" showImg="{{$v->showimage}}"><i class="iconfont icon-xuanzhong"></i></a>
+                            <a href="javascript:;" class="xuanzhong" id="{{$v->expertid}}" showImg="{{env('ImagePath').$v->showimage}}"><i class="iconfont icon-xuanzhong"></i></a>
                         </li>
                     @endforeach
                 </ul>
@@ -176,16 +176,18 @@
             var img=$(this).attr("showImg");
             var value=key+img;
             var reselect;
+            var date = new Date();
+            date.setTime(date.getTime() + (120 * 60 * 1000));
             if($.cookie("reselect")){
                 reselect=$.cookie('reselect').split(",");
             }else{
                 reselect=[];
-                $.cookie("reselect",reselect,{expires:7,path:'/',domain:'sw2025.com'});
+                $.cookie("reselect",reselect,{expires:date,path:'/',domain:'sw2025.com'});
             }
             if(reselect.length==5){
                 if($.inArray(value,reselect)>=0){
                     deleteArray(reselect,value);
-                    $.cookie("reselect",reselect.join(","),{expires:7,path:'/',domain:'sw2025.com'});
+                    $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
                 }else{
                     layer.confirm('您已经指定5位专家', {
                         btn: ['确定'] //按钮
@@ -195,10 +197,10 @@
             }else{
                 if(!$(this).hasClass("xzchecked")){
                     reselect.push(value);
-                    $.cookie("reselect",reselect.join(','),{expires:7,path:'/',domain:'sw2025.com'});
+                    $.cookie("reselect",reselect.join(','),{expires:date,path:'/',domain:'sw2025.com'});
                 }else{
                     deleteArray(reselect,value);
-                    $.cookie("reselect",reselect.join(","),{expires:7,path:'/',domain:'sw2025.com'});
+                    $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
                 }
             }
             $(this).toggleClass('xzchecked');
@@ -213,10 +215,12 @@
             }
         }
         $(".reselect-btn").on("click",function(){
+            var date = new Date();
+            date.setTime(date.getTime() + (120 * 60 * 1000));
             if($(".myinfo-check-label").hasClass('ischecked')){
-                $.cookie("isAppoint",1,{expires:7,path:'/',domain:'sw2025.com'});
+                $.cookie("isAppoint",1,{expires:date,path:'/',domain:'sw2025.com'});
             }else{
-                $.cookie("isAppoint",0,{expires:7,path:'/',domain:'sw2025.com'});
+                $.cookie("isAppoint",0,{expires:date,path:'/',domain:'sw2025.com'});
             }
             window.location.href="{{asset('uct_video/applyVideo')}}";
         })

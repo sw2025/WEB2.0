@@ -85,7 +85,7 @@
                     var end=checked.indexOf("/");
                     var id=checked.substring(0,end);
                     var img=checked.substring(end);
-                    var str="<input type='hidden' name=expertId[] value="+id+"><img src=http://sw2025.com"+img+" class='uct-works-exp-img' id="+id+" />"
+                    var str="<input type='hidden' name=expertId[] value="+id+"><img src={{env('ImagePath')}}"+img+" class='uct-works-exp-img' id="+id+" />"
                     $(".uct-works-expava").append(str);
                 }
                 $("#appoint").addClass('active');
@@ -114,6 +114,8 @@
                 var dateStart=$('#start').text();
                 var dateEnd=$("#end").text();
                 var text=$(this).text();
+                var date = new Date();
+                date.setTime(date.getTime() + (120 * 60 * 1000));
                 if(text=="系统分配"){
                     $(".uct-works-expava").hide();
                 }else{
@@ -122,17 +124,17 @@
                         if(selected.length==5){
                             $(".uct-works-expava").show();
                         }else{
-                            $.cookie("domain",domain,{expires:1,path:'/',domain:'sw2025.com'});
-                            $.cookie("describe",describe,{expires:1,path:'/',domain:'sw2025.com'});
-                            $.cookie("dateStart",dateStart,{expires:1,path:'/',domain:'sw2025.com'});
-                            $.cookie("dateEnd",dateEnd,{expires:1,path:'/',domain:'sw2025.com'});
+                            $.cookie("domain",domain,{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("describe",describe,{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("dateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("dateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
                             window.location.href="{{asset('uct_video/videoSelect')}}"
                         }
                     }else{
-                        $.cookie("domain",domain,{expires:1,path:'/',domain:'sw2025.com'});
-                        $.cookie("describe",describe,{expires:1,path:'/',domain:'sw2025.com'});
-                        $.cookie("dateStart",dateStart,{expires:1,path:'/',domain:'sw2025.com'});
-                        $.cookie("dateEnd",dateEnd,{expires:1,path:'/',domain:'sw2025.com'});
+                        $.cookie("domain",domain,{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("describe",describe,{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("dateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("dateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('uct_video/videoSelect')}}"
                     }
                 }
@@ -184,12 +186,14 @@
                 dateType:"json",
                 type:"POST",
                 success:function(res){
+                    var date = new Date();
+                    date.setTime(date.getTime() + (120 * 60 * 1000));
                     if(res['code']=="success"){
-                        $.cookie("reselect","",{expires:7,path:'/',domain:'sw2025.com'});
-                        $.cookie("domain","",{expires:1,path:'/',domain:'sw2025.com'});
-                        $.cookie("describe","",{expires:1,path:'/',domain:'sw2025.com'});
-                        $.cookie("dateStart","",{expires:1,path:'/',domain:'sw2025.com'});
-                        $.cookie("dateEnd","",{expires:1,path:'/',domain:'sw2025.com'});
+                        $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("dateStart","",{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("dateEnd","",{expires:date,path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('uct_video')}}";
                     }else{
                         $(".publ-need-sel-def").text(domain);

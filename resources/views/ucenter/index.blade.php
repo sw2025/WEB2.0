@@ -25,7 +25,7 @@
                     <input type="text" name="nickName" id="nickName" class="inpName basic-nickname" value="{{$data->nickname}}" />
                 </p>
                 <div class="basic-photo basic-row clearfix">
-                    <div class="basic-rect"><img id="avatar" src="{{$data->avatar}}" /></div><!-- 上传的图片摆放位置 -->
+                    <div class="basic-rect"><img id="avatar" src="{{env('ImagePath').$data->avatar}}" /></div><!-- 上传的图片摆放位置 -->
                     <input type="hidden" id="myAvatar" name="myAvatar" value="{{$data->avatar}}">
                     <div class="basic-upload">
                             <span class="basic-span change-btn fileinput-button">
@@ -46,7 +46,7 @@
             maxFileSize: 1 * 1024 * 1024,
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
-                    $("#avatar").attr('src','/images/'+file.name).show();
+                    $("#avatar").attr('src','{{env('ImagePath')}}/images/'+file.name).show();
                     $("#myAvatar").val('/images/'+file.name);
                 });
             }

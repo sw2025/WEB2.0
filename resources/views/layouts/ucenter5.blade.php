@@ -195,7 +195,7 @@
             $(".after-login").hide();
         }
         if($.cookie("avexpertAvataratar") && $.cookie("phone")){
-            $(".v-avatar").attr('src',$.cookie("expertAvatar"));
+            $(".v-avatar").attr('src',"{{env('ImagePath')}}"+$.cookie("expertAvatar"));
             $(".v-nick").html($.cookie("phone"));
         }else{
             $.ajax({
@@ -204,7 +204,7 @@
                 dateType:"json",
                 type:"POST",
                 success:function(res){
-                    $(".v-avatar").attr('src',res['expertAvatar']);
+                    $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['expertAvatar']);
                     $(".v-nick").html(res['phone']);
                     var date = new Date();
                     date.setTime(date.getTime() + (120 * 60 * 1000));

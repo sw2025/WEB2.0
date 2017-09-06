@@ -15,7 +15,7 @@
 
             <div class="supp-details-con">
                 <div class="supp-det-con-top">
-                    <img src="@if(empty($datas->entimg)) {{asset($datas->extimg)}} @else {{asset($datas->entimg)}}  @endif" class="supp-details-img" />
+                    <img src="@if(empty($datas->entimg)) {{env('ImagePath').$datas->extimg}} @else {{env('ImagePath').$datas->entimg}}  @endif" class="supp-details-img" />
                     <div class="supp-details-brief">
                         <span class="supp-details-name"><i class="iconfont icon-gongsi"></i>【{{$datas->role}}】@if(!empty($datas->expertname) && !empty($datas->enterprisename)) {{$datas->enterprisename.' / '.$datas->expertname}} @else {{$datas->expertname or $datas->enterprisename}} @endif</span>
                         <a href="javascript:;" index="{{$datas->needid}}" class="collect-state @if(in_array($datas->needid,$collectids)) done @endif">@if(in_array($datas->needid,$collectids))已收藏 @else 收藏 @endif</a>
@@ -60,7 +60,7 @@
                             @if(!$v->parentid)
                             <div class="mes-list-box clearfix">
                                 <div class="floor-host">
-                                    <img src="{{asset($v->avatar)}}" class="floor-host-ava" />
+                                    <img src="{{env('ImagePath').$v->avatar}}" class="floor-host-ava" />
                                     <div class="floor-host-desc">
                                         <a href="javascript:;" class="floor-host-name">{{$v->nickname}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
                                         <span class="floor-host-words">{{$v->content}}</span>
@@ -75,7 +75,7 @@
                                         @foreach($message as $reply)
                                             @if(!$reply->use_userid && $reply->parentid == $v->id)
                                             <li>
-                                                <img src="{{asset($reply->avatar)}}" class="floor-guest-ava" />
+                                                <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
                                                 <div class="gloor-guest-cnt">
                                                     <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>
                                                     <span class="floor-guest-words">{{$reply->content}}</span>
@@ -87,7 +87,7 @@
                                             @elseif($reply->parentid == $v->id)
 
                                             <li>
-                                                <img src="{{asset($reply->avatar)}}" class="floor-guest-ava" />
+                                                <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
                                                 <div class="gloor-guest-cnt">
                                                     <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
                                                     <span class="floor-guest-words">{{$reply->content}}</span>

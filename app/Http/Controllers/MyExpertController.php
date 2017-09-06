@@ -298,7 +298,6 @@ class MyExpertController extends Controller
         } else {
             $expertid = $expert->expertid;
         }
-
         $countobj = DB::table('t_c_consultresponse as res')
             ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid');
         $countobj2 = clone $countobj;

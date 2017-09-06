@@ -196,7 +196,8 @@
             $(".after-login").hide();
         }
         if($.cookie("enterAvatar") && $.cookie("phone")){
-            $(".v-avatar").attr('src',$.cookie("enterAvatar"));
+            var enterAvatar=$.cookie("enterAvatar");
+            $(".v-avatar").attr('src',"{{env('ImagePath')}}"+enterAvatar);
             $(".v-nick").html($.cookie("phone"));
         }else{
             $.ajax({
@@ -205,7 +206,7 @@
                 dateType:"json",
                 type:"POST",
                 success:function(res){
-                    $(".v-avatar").attr('src',res['enterAvatar']);
+                    $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['enterAvatar']);
                     $(".v-nick").html(res['phone']);
                     var date = new Date();
                     date.setTime(date.getTime() + (120 * 60 * 1000));

@@ -26,7 +26,7 @@
                         <div class="rate">
                             <div class="rate-exp">
                                 <div class="rate-exp-icon">
-                                    <img src="http://sw2025.com{{$selExpert->showimage}}" class="new-add-img">
+                                    <img src="{{env('ImagePath').$selExpert->showimage}}" class="new-add-img">
                                     <span class="new-add-exp-name">{{$selExpert->expertname}}</span>
                                 </div>
                                 <div id="{{$selExpert->expertid}}" class="rating"></div>
