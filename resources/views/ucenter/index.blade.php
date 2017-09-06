@@ -46,9 +46,8 @@
             maxFileSize: 1 * 1024 * 1024,
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
-                    // console.log(file.name);
-                    $("#avatar").attr('src','../../swUpload/images/'+file.name).show();
-                    $("#myAvatar").val(file.name);
+                    $("#avatar").attr('src','/images/'+file.name).show();
+                    $("#myAvatar").val('/images/'+file.name);
                 });
             }
         });

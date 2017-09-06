@@ -179,7 +179,7 @@ class MyEnterpriseController extends Controller
      * @param Request $request
      * @return array
      */
-    public function entVerify (Request $request) {
+    /*public function entVerify (Request $request) {
         if($request->ajax()){
 
             $data = $request->only(['entid','brief','enterprisename','licenceimage','showimage','size','industry','address']);
@@ -202,7 +202,53 @@ class MyEnterpriseController extends Controller
                     return ['msg' => '该企业已认证','icon' => 2];
                 }
             }
+            if(!empty($data['entid'])){
+                $res = $data['entid'];
+                unset($data['entid']);
+                DB::table('t_u_enterprise')->where('enterpriseid',$res)->update($data);
+            } else {
+                unset($data['entid']);
+                $res = DB::table('t_u_enterprise')->insertGetId($data);
+            }
 
+            if($res){
+                $res2 = DB::table('t_u_enterpriseverify')->insert([
+                    'enterpriseid' => $res,
+                    'configid' => 1,
+                    'verifytime' => date('Y-m-d H:i:s',time()),
+                    'updated_at' => date('Y-m-d H:i:s',time())
+
+                ]);
+                if($res2){
+                    return ['msg' => '提交成功，进入审核阶段','icon' => 1,'id' => $res];
+                }
+                return ['msg' => '提交失败，请重新提交','icon' => 2];
+            } else {
+                return ['msg' => '提交失败，请重新提交','icon' => 2];
+            }
+        }
+        return ['msg' => '非法请求' ,'icon' => 2];
+    }*/
+    public function entVerify (Request $request) {
+        if($request->ajax()){
+            $data = $request->only(['entid','brief','enterprisename','licenceimage','showimage','size','industry','address']);
+            $data['userid'] = session('userId');
+            $data['updated_at'] = date('Y-m-d H:i:s',time());
+            $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
+            if($info){
+                $verify = DB::table('t_u_enterpriseverify')->where('enterpriseid',$info->enterpriseid)->orderBy('id','desc')->first();
+                if(!empty($verify) && $verify->configid != 2){
+                    return ['msg' => '提交失败，您已经认证过了','icon' => 2];
+                } elseif (empty($verify)){
+                    $data['entid'] = $info->enterpriseid;
+                }
+            }
+            $verifyname = DB::table('t_u_enterprise')->where('enterprisename',$data['enterprisename'])->first();
+            if($verifyname){
+                if(empty($info) || $info->enterprisename != $data['enterprisename']){
+                    return ['msg' => '该企业已认证','icon' => 2];
+                }
+            }
             if(!empty($data['entid'])){
                 $res = $data['entid'];
                 unset($data['entid']);

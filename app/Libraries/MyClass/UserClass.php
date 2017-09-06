@@ -143,7 +143,7 @@
         public static  function getAccId($userId,$phone){
             $AppKey = env('AppKey');
             $AppSecret = env('AppSecret');
-            $serverApi = new ServerApiClass($AppKey, $AppSecret);
+            $serverApi = new \ServerApiClass($AppKey, $AppSecret);
             $accid = "sw_" . $userId;
             $name = substr_replace($phone,'****',3,4);
             $props="";

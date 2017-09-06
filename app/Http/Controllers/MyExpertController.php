@@ -133,7 +133,7 @@ class MyExpertController extends Controller
                     DB::commit();
                     return ['msg' => '添加专家认证成功,进入审核阶段','icon' => 1];
                 }catch(Exception $e)
-                {
+                
                     DB::rollBack();
                     return ['msg' => '处理失败','icon' => 2];
                 }
@@ -153,68 +153,69 @@ class MyExpertController extends Controller
             return redirect('uct_expert');
         } else {
             $expertid = $expert->expertid;
-        }
-        $countobj = DB::table('t_e_eventresponse as res')
-            ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid');
-        $countobj2 = clone $countobj;
-        $countobj3 = clone $countobj;
-        //专家已响应的办事数量
-        $responsecount = $countobj->where(['res.state' => 2,'res.expertid' => $expertid,'status.configid' => 5])->count();
-        //专家受邀请（被推送）的办事数量
-        $putcount = $countobj2->where(['res.expertid' => $expertid,'status.configid' => 4])->count();
-        //专家已经完成的办事数量
-        $complatecount = $countobj3->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 7])->count();
-        $datas = DB::table('t_e_eventresponse as res')
-            ->leftJoin('t_e_event as event','event.eventid','=','res.eventid')
-            ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
-            ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
-            ->select('res.*','event.domain1','event.domain2','event.brief','status.configid','event.eventtime','ent.enterprisename as name','res.state')
-            ->whereRaw('res.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`expertid`,eventid)');
-        $obj = clone $datas;
-        $ajaxobj = clone $datas;
-        $eventobj = clone $datas;
-        //克隆ajax请求的对象
-        $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
-        //datas为办事推送列表
-        $datas = $datas
-            ->where(['res.expertid' => $expertid])
-            ->whereIn('status.configid',[4,5])
-            ->whereIn('res.state',[0,1])
-            ->orderBy('res.id','desc')
-            ->paginate(1);
 
-        $waitcount = $eventobj
-            ->where(['res.expertid' => $expertid])
-            ->whereIn('status.configid',[4,5])
-            ->whereIn('res.state',[0,1])
-            ->count();
-        //datas2为我的办事列表
-        $datas2 = $obj
-            ->where(['res.expertid' => $expertid])
-            ->whereIn('status.configid',[5,6,7])
-            ->orderBy('res.id','desc')
-            ->paginate(1);
-        //调用eventclass中的方法进行对象的处理
-        $datas = \EventClass::handelObj($datas);
-        $datas2 = \EventClass::handelObj($datas2);
-        //ajax请求判定返回指定的对象
-        if($request->ajax()){
-            $action = $request->input()['action'];
-            if(!$action){
-                //action为0时世界返回的是办事推送列表
-                return $datas;
-            } elseif($action == 1){
-                //action为1的时候返回的是我的办事列表
-                return $datas2;
-            } else {
-                //其余的action在ajax请求的时候是configid 通过where条件来进行查询
-                $ajaxobj = $ajaxobj->where(['status.configid' => $action])->paginate(2);
-                $ajaxobj = \EventClass::handelObj($ajaxobj);
-                return $ajaxobj;
+       }
+            $countobj = DB::table('t_e_eventresponse as res')
+                ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid');
+            $countobj2 = clone $countobj;
+            $countobj3 = clone $countobj;
+            //专家已响应的办事数量
+            $responsecount = $countobj->where(['res.state' => 2,'res.expertid' => $expertid,'status.configid' => 5])->count();
+            //专家受邀请（被推送）的办事数量
+            $putcount = $countobj2->where(['res.expertid' => $expertid,'status.configid' => 4])->count();
+            //专家已经完成的办事数量
+            $complatecount = $countobj3->where(['res.state' => 3,'res.expertid' => $expertid,'status.configid' => 7])->count();
+            $datas = DB::table('t_e_eventresponse as res')
+                ->leftJoin('t_e_event as event','event.eventid','=','res.eventid')
+                ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
+                ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
+                ->select('res.*','event.domain1','event.domain2','event.brief','status.configid','event.eventtime','ent.enterprisename as name','res.state')
+                ->whereRaw('res.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`expertid`,eventid)');
+            $obj = clone $datas;
+            $ajaxobj = clone $datas;
+            $eventobj = clone $datas;
+            //克隆ajax请求的对象
+            $ajaxobj = $ajaxobj->where(['res.expertid' => $expertid]);
+            //datas为办事推送列表
+            $datas = $datas
+                ->where(['res.expertid' => $expertid])
+                ->whereIn('status.configid',[4,5])
+                ->whereIn('res.state',[0,1])
+                ->orderBy('res.id','desc')
+                ->paginate(1);
+
+            $waitcount = $eventobj
+                ->where(['res.expertid' => $expertid])
+                ->whereIn('status.configid',[4,5])
+                ->whereIn('res.state',[0,1])
+                ->count();
+            //datas2为我的办事列表
+            $datas2 = $obj
+                ->where(['res.expertid' => $expertid])
+                ->whereIn('status.configid',[5,6,7])
+                ->orderBy('res.id','desc')
+                ->paginate(1);
+            //调用eventclass中的方法进行对象的处理
+            $datas = \EventClass::handelObj($datas);
+            $datas2 = \EventClass::handelObj($datas2);
+            //ajax请求判定返回指定的对象
+            if($request->ajax()){
+                $action = $request->input()['action'];
+                if(!$action){
+                    //action为0时世界返回的是办事推送列表
+                    return $datas;
+                } elseif($action == 1){
+                    //action为1的时候返回的是我的办事列表
+                    return $datas2;
+                } else {
+                    //其余的action在ajax请求的时候是configid 通过where条件来进行查询
+                    $ajaxobj = $ajaxobj->where(['status.configid' => $action])->paginate(2);
+                    $ajaxobj = \EventClass::handelObj($ajaxobj);
+                    return $ajaxobj;
+                }
             }
-        }
-        $token = Crypt::encrypt(session('userId'));
-        return view("myexpert.newMyWork",compact('datas','datas2','responsecount','putcount','complatecount','token','waitcount'));
+            $token = Crypt::encrypt(session('userId'));
+            return view("myexpert.newMyWork",compact('datas','datas2','responsecount','putcount','complatecount','token','waitcount'));
     }
 
     /**我的办事详情

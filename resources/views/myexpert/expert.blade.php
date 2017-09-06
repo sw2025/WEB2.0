@@ -221,7 +221,7 @@
                 done: function (e, data) {
                     $.each(data.result.files, function (index, file) {
                         // console.log(file.name);
-                        $("#avatar1").attr('src','../../swUpload/images/'+file.name).show();
+                        $("#avatar1").attr('src','/images/'+file.name).show();
                     });
                 }
             });
@@ -235,7 +235,7 @@
                 done: function (e, data) {
                     $.each(data.result.files, function (index, file) {
                         // console.log(file.name);
-                        $("#avatar2").attr('src','../../swUpload/images/'+file.name).show();
+                        $("#avatar2").attr('src','/images/'+file.name).show();
                     });
                 }
             });
