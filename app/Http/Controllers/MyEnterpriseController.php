@@ -181,16 +181,20 @@ class MyEnterpriseController extends Controller
      */
     /*public function entVerify (Request $request) {
         if($request->ajax()){
-            $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
-            if($info){
-                $verify = DB::table('t_u_enterpriseverify')->where('enterpriseid',$info->enterpriseid)->orderBy('id','desc')->first()->configid;
-                if($verify != 2){
-                    return ['msg' => '提交失败，您已经认证过了','icon' => 2];
-                }
-            }
+
             $data = $request->only(['entid','brief','enterprisename','licenceimage','showimage','size','industry','address']);
             $data['userid'] = session('userId');
             $data['updated_at'] = date('Y-m-d H:i:s',time());
+
+            $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
+            if($info){
+                $verify = DB::table('t_u_enterpriseverify')->where('enterpriseid',$info->enterpriseid)->orderBy('id','desc')->first();
+                if(!empty($verify) && $verify->configid != 2){
+                    return ['msg' => '提交失败，您已经认证过了','icon' => 2];
+                } elseif (empty($verify)){
+                    $data['entid'] = $info->enterpriseid;
+                }
+            }
 
             $verifyname = DB::table('t_u_enterprise')->where('enterprisename',$data['enterprisename'])->first();
             if($verifyname){
@@ -286,6 +290,8 @@ class MyEnterpriseController extends Controller
             return redirect('uct_member/member3/'.$entid);
         } elseif ($configid == 4){
             return redirect('uct_member/member4/'.$entid);
+        } elseif ($configid == 2){
+            return redirect('uct_member');
         }
         return view("myenterprise.member2",compact('data'));
     }
