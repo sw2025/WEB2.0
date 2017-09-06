@@ -129,7 +129,7 @@
                             </div>
                             <div class="datas-rt">
 
-                                <textarea onkeyup="checkLength(this);" placeholder="请输入需求描述" cols="30" rows="10" id="content">{{$data->brief or null}}</textarea>
+                                <textarea onkeyup="checkLength(this);" placeholder="请输入企业简介（30-500字）" cols="30" rows="10" id="content">{{$data->brief or null}}</textarea>
 
                             </div>
                         </div>

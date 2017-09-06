@@ -79,7 +79,7 @@ class MyExpertController extends Controller
         if($request->ajax()){
             //判断是否登陆
             if(!empty(session('userId'))){
-                $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+                $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first();
                 $data = $request->input();
                 $domain1 = explode('-',$data['industry'])[0];
                 $domain2 = explode('-',$data['industry'])[1];
@@ -87,7 +87,7 @@ class MyExpertController extends Controller
                 //开启事务
                 DB::beginTransaction();
                 try{
-                    if(empty($expertid)) {
+                    if(empty($expertid->expertid)) {
                         $expertid = DB::table("T_U_EXPERT")
                             ->insertGetId([
                                 "userid" => session('userId'),
@@ -105,7 +105,7 @@ class MyExpertController extends Controller
                             ]);
                     }else{
                         $expertdata = DB::table("T_U_EXPERT")
-                            ->where('expertid',$expertid)
+                            ->where('expertid',$expertid->expertid)
                             ->update([
                                 "expertname" => $data['name'],
                                 "category" => $data['category'],
@@ -119,6 +119,7 @@ class MyExpertController extends Controller
                                 "created_at" => date("Y-m-d H:i:s", time()),
                                 "updated_at" => date("Y-m-d H:i:s", time())
                             ]);
+                        $expertid = $expertid->expertid;
                     }
                     if(!empty($expertid)){
                         $result=DB::table("T_U_EXPERTVERIFY")
@@ -132,7 +133,7 @@ class MyExpertController extends Controller
                     DB::commit();
                     return ['msg' => '添加专家认证成功,进入审核阶段','icon' => 1];
                 }catch(Exception $e)
-                {
+                
                     DB::rollBack();
                     return ['msg' => '处理失败','icon' => 2];
                 }
@@ -152,7 +153,8 @@ class MyExpertController extends Controller
             return redirect('uct_expert');
         } else {
             $expertid = $expert->expertid;
-        }
+
+       }
             $countobj = DB::table('t_e_eventresponse as res')
                 ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid');
             $countobj2 = clone $countobj;
@@ -297,6 +299,7 @@ class MyExpertController extends Controller
         } else {
             $expertid = $expert->expertid;
         }
+
         $countobj = DB::table('t_c_consultresponse as res')
             ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid');
         $countobj2 = clone $countobj;

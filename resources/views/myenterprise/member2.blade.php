@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                             <div class="datas-rt">
-                                <textarea placeholder="请输入需求描述" readonly="readonly" cols="30" rows="10">{{$data->brief}}</textarea>
+                                <textarea placeholder="请输入企业简介（30-500字）" readonly="readonly" cols="30" rows="10">{{$data->brief}}</textarea>
                             </div>
                         </div>
 
