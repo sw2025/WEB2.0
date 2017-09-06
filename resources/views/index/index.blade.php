@@ -41,7 +41,7 @@
                         <span class="item-tit">找资金</span>
                     </div>
                     <div class="item-con-hover">
-                        <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
+                        <p><br /><span href="">企业债</span><br /><span href="">资产证券化</span><br /><span href="">应收账款</span><br /><span href="">国外债券融资</span><br /><span href="">国外股权融合</span> <br /><span href="">租赁</span><br /><span href="">私募股权</span><br /><span href="">并购</span></p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
@@ -51,7 +51,7 @@
                         <span class="item-tit">找技术</span>
                     </div>
                     <div class="item-con-hover">
-                        <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
+                        <p><br /><span href="">委托研发</span><br /><span href="">新技术</span><br /><span href="">生产自动化</span><br /><span href="">产能合作</span> </p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
@@ -61,7 +61,7 @@
                         <span class="item-tit">找市场</span>
                     </div>
                     <div class="item-con-hover">
-                        <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
+                        <p><br /><span href="">开拓新市场</span><br /><span href="">发展代理</span><br /><span href="">兼职销售</span> </p>
                     </div>
                 </a></li>
         </ul>
@@ -101,7 +101,7 @@
         <div class="row supply-categary clearfix">
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">投融资<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">找资金<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($invests as $invest)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$invest->needid)}}"><span class="dem-li-tit">{{$invest->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$invest->created_at}}</span></a></li>
@@ -111,7 +111,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">战略合作<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">定战略<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($works as $work)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$work->needid)}}"><span class="dem-li-tit">{{$work->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$work->created_at}}</span></a></li>
@@ -121,7 +121,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">产品升级<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">找技术<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($products as $product)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$product->needid)}}"><span class="dem-li-tit">{{$product->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$product->created_at}}</span></a></li>
@@ -131,7 +131,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">市场运营<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">找市场<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($markets as $market)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$market->needid)}}"><span class="dem-li-tit">{{$market->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$market->created_at}}</span></a></li>
