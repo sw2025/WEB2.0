@@ -132,7 +132,7 @@ class MyExpertController extends Controller
                     }
                     DB::commit();
                     return ['msg' => '添加专家认证成功,进入审核阶段','icon' => 1];
-                }catch(Exception $e)
+                }catch(Exception $e){
                 
                     DB::rollBack();
                     return ['msg' => '处理失败','icon' => 2];
@@ -150,11 +150,10 @@ class MyExpertController extends Controller
         //获取到登陆用户的专家的id
         $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
         if(empty($expert)){
-            return redirect('uct_expert');
+            $expertid = 0;
         } else {
             $expertid = $expert->expertid;
-
-       }
+        }
             $countobj = DB::table('t_e_eventresponse as res')
                 ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid');
             $countobj2 = clone $countobj;
@@ -295,7 +294,7 @@ class MyExpertController extends Controller
         //获取到登陆用户的专家的id
         $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
         if(empty($expert)){
-            return redirect('uct_expert');
+            $expertid = 0;
         } else {
             $expertid = $expert->expertid;
         }
