@@ -147,8 +147,8 @@
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
                     // console.log(file.name);
-                    $("#photo1").attr('src','../../swUpload/images/'+file.name).show();
-                    $('.fileupload1').attr('index',file.name);
+                    $("#photo1").attr('src','/images/'+file.name).show();
+                    $('.fileupload1').attr('index','/images/'+file.name);
                 });
             }
         });
@@ -159,8 +159,8 @@
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
                     // console.log(file.name);
-                    $("#photo2").attr('src','../../swUpload/images/'+file.name).show();
-                    $('.fileupload2').attr('index',file.name);
+                    $("#photo2").attr('src','/images/'+file.name).show();
+                    $('.fileupload2').attr('index','/images/'+file.name);
                 });
             }
         });
