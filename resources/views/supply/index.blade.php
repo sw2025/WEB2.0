@@ -101,7 +101,7 @@
             @foreach($datas as $v)
             <li class="col-md-6">
                 <a href="{{url('supply/detail',$v->needid)}}" class="supply-list-link">
-                    <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif " class="supp-list-img" />
+                    <img src="@if(empty($v->entimg)) {{env('ImagePath').$v->extimg}} @else {{env('ImagePath').$v->entimg}}  @endif " class="supp-list-img" />
                     <span class="supp-list-time">{{$v->needtime}}</span>
                     <div class="supp-list-brief">
 

@@ -11,11 +11,13 @@ $.ajax({
     success:function(res){
         if(res['code']=="success"){
             //setCookie('uid',res['accid'].toLocaleLowerCase());
-            $.cookie("uid",res['accid'].toLocaleLowerCase(),{expires:2,path:'/',domain:'sw2025.com'});
+            var date = new Date();
+            date.setTime(date.getTime() + (120 * 60 * 1000));
+            $.cookie("uid",res['accid'].toLocaleLowerCase(),{expires:date,path:'/',domain:'sw2025.com'});
             //自己的appkey就不用加密了
             // setCookie('sdktoken',pwd);
             //setCookie('sdktoken',res['imtoken']);
-            $.cookie("sdktoken",res['imtoken'].toLocaleLowerCase(),{expires:2,path:'/',domain:'sw2025.com'});
+            $.cookie("sdktoken",res['imtoken'].toLocaleLowerCase(),{expires:date,path:'/',domain:'sw2025.com'});
         }else{
             window.location.href="/login";
         }

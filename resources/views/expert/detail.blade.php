@@ -14,7 +14,7 @@
             </div>
             <div class="exp-details-con">
                 <div class="exp-det-con-top">
-                    <img src="{{asset($datas->showimage)}}" class="exp-details-img" />
+                    <img src="{{env('ImagePath').$datas->showimage}}" class="exp-details-img" />
                     <div class="exp-details-brief">
                         <span class="exp-details-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
                         <a href="javascript:;" index="{{$datas->expertid}}" class="collect-state @if(in_array($datas->expertid,$collectids)) done @endif">@if(in_array($datas->expertid,$collectids))已收藏 @else 收藏 @endif</a>

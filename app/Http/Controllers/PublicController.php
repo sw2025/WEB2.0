@@ -18,7 +18,7 @@ class PublicController extends Controller
     public function upload(){
         error_reporting(E_ALL | E_STRICT);
        // require_once("FileUpload/server/php/UploadHandler.php");
-        $uploadHandler =new \App\UploadHandler(["upload_dir" => base_path() . "/public/images/", "upload_url" => base_path() . "/public/images/"]);
+        $uploadHandler =new \App\UploadHandler(["upload_dir" => dirname(base_path()) . "/swUpload/images/", "upload_url" => dirname(base_path()) . "/swUpload/images/"]);
     }
 
     //办事的上传资料的方法

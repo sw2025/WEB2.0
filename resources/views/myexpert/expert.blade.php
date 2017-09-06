@@ -132,6 +132,7 @@
                             <div class="datas-upload-box clearfix">
                                 <div class="datas-upload-lt">
                                     <img src="img/photo1.jpg" class="photo1" id="avatar1"/>
+                                    <input type="hidden" id="myAvatar1" name="myAvatar1" >
                                     <div class="photo-upload">
                                         <div class="photo-btn-box fileinput-button">
                                             <span class="photo-btn-tip">上传营业执照</span>
@@ -142,6 +143,7 @@
                                 </div>
                                 <div class="datas-upload-rt">
                                     <img src="img/photo2.jpg" id="avatar2" class="photo1" />
+                                    <input type="hidden" id="myAvatar2" name="myAvatar2" ">
                                     <div class="photo-upload">
                                         <div class="photo-btn-box fileinput-button">
                                             <span class="photo-btn-tip">上传宣传照片</span>
@@ -221,7 +223,8 @@
                 done: function (e, data) {
                     $.each(data.result.files, function (index, file) {
                         // console.log(file.name);
-                        $("#avatar1").attr('src','/images/'+file.name).show();
+                        $("#avatar1").attr('src','{{env('ImagePath')}}/images/'+file.name).show();
+                        $("#myAvatar1").val('/images/'+file.name);
                     });
                 }
             });
@@ -235,7 +238,8 @@
                 done: function (e, data) {
                     $.each(data.result.files, function (index, file) {
                         // console.log(file.name);
-                        $("#avatar2").attr('src','/images/'+file.name).show();
+                        $("#avatar2").attr('src','{{env('ImagePath')}}/images/'+file.name).show();
+                        $("#myAvatar2").val('/images/'+file.name);
                     });
                 }
             });
@@ -250,8 +254,8 @@
                 var industry=$('#industry').html();
                 var industrys=$("#industrys").html();
                 var address=$('#address').html();
-                var photo1=$('#avatar1').attr('src');
-                var photo2=$('#avatar2').attr('src');
+                var photo1=$('#myAvatar1').val();
+                var photo2=$('#myAvatar2').val();
                 var brief=$('#brief').val();
                 console.log(name=='' || photo1=='' || industry=='请选择');
                 if(name=='' || photo1=='' || industry=='请选择'  || industrys==''){

@@ -44,14 +44,14 @@
                             <div class="emcee">
                                 <span class="light-color emcee-cap">主持人：</span>
                                 @foreach($comperes as $compere)
-                                    <span class="emceer-pers"><img src="httP://sw2025.com{{$compere->avatar}}" class="vid-new-ava">{{$compere->nickname}}</span>
+                                    <span class="emceer-pers"><img src="{{env('ImagePath').$compere->avatar}}" class="vid-new-ava">{{$compere->nickname}}</span>
                                 @endforeach
                             </div>
                             <div class="emcee-bottom">
                                 <span class="light-color emcee-cap emcee-bot-cap">成员：</span>
                                 <div class="emcee-members">
                                     @foreach($selExperts as $selExpert)
-                                        <span class="emceer-pers"><img src="http://sw2025.com{{$selExpert->showimage}}" class="vid-new-ava">{{$selExpert->expertname}}</span>
+                                        <span class="emceer-pers"><img src="{{env('ImagePath').$selExpert->showimage}}" class="vid-new-ava">{{$selExpert->expertname}}</span>
                                     @endforeach
                                 </div>
                             </div>

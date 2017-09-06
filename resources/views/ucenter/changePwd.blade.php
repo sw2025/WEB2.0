@@ -51,9 +51,11 @@
             dateType:"json",
             "type":"POST",
             success:function(res){
+                var date = new Date();
+                date.setTime(date.getTime() + (120 * 60 * 1000));
                 if(res['code']=="success"){
-                    $.cookie("userId",'',{expires:7,path:'/',domain:'sw2025.com'});
-                    $.cookie("name",'',{expires:7,path:'/',domain:'sw2025.com'});
+                    $.cookie("userId",'',{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("name",'',{expires:date,path:'/',domain:'sw2025.com'});
                     layer.msg("密码修改成功")
                 }else{
                     layer.msg("密码修改失败")

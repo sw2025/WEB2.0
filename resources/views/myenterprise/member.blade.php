@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="datas-upload-box clearfix">
                                     <div class="datas-upload-lt">
-                                        <img src="{{$data->licenceimage or 'img/photo1.jpg'}}" class="photo1" id="photo1"/>
+                                        <img src="{{env('ImagePath').$data->licenceimage or 'img/photo1.jpg'}}" class="photo1" id="photo1"/>
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传营业执照</span>
@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                     <div class="datas-upload-rt">
-                                        <img src="{{$data->showimage or 'img/photo2.jpg'}}" class="photo1" id="photo2"/>
+                                        <img src="{{env('ImagePath').$data->showimage or 'img/photo2.jpg'}}" class="photo1" id="photo2"/>
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传宣传照片</span>
@@ -147,7 +147,7 @@
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
                     // console.log(file.name);
-                    $("#photo1").attr('src','/images/'+file.name).show();
+                    $("#photo1").attr('src','{{env('ImagePath')}}/images/'+file.name).show();
                     $('.fileupload1').attr('index','/images/'+file.name);
                 });
             }
@@ -159,7 +159,7 @@
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
                     // console.log(file.name);
-                    $("#photo2").attr('src','/images/'+file.name).show();
+                    $("#photo2").attr('src','{{env('ImagePath')}}/images/'+file.name).show();
                     $('.fileupload2').attr('index','/images/'+file.name);
                 });
             }

@@ -666,7 +666,7 @@ class CenterController extends Controller
      */
     public function changeBasics(){
         $nickName=!empty($_POST['nickName'])?$_POST['nickName']:"";
-        $avatar=!empty($_POST['myAvatar'])?$_POST['myAvatar']:"/avatar.jpg";
+        $avatar=!empty($_POST['myAvatar'])?$_POST['myAvatar']:"/images/avatar.jpg";
         $userId=$_POST["userId"];
         $res=array();
         $result=DB::table("T_U_USER")->where("userid",$userId)->update([
@@ -676,7 +676,8 @@ class CenterController extends Controller
         ]);
         if($result){
             $accid=DB::table("t_u_user")->where("userid",$userId)->pluck("accid");
-            \UserClass::updateName($accid,$nickName,"httP://sw2025.com/images/15033817982959.jpg");
+            $avatars=env('ImagePath').$avatar;
+            \UserClass::updateName($accid,$nickName,$avatars);
             $res['code']="success";
         }else{
             $res['code']="error";

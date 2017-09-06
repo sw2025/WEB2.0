@@ -77,7 +77,7 @@
                 var end=checked.indexOf("/");
                 var id=checked.substring(0,end);
                 var img=checked.substring(end);
-                var str="<input type='hidden' name=expertId[] value="+id+"><img src=http://sw2025.com"+img+" class='uct-works-exp-img' id="+id+" />"
+                var str="<input type='hidden' name=expertId[] value="+id+"><img src={{env('ImagePath')}}"+img+" class='uct-works-exp-img' id="+id+" />"
                $(".uct-works-expava").append(str);
             }
             $("#appoint").addClass('active');
@@ -100,6 +100,8 @@
         });
 
         $('.uct-works-exp a').click(function(event) {
+            var date = new Date();
+            date.setTime(date.getTime() + (120 * 60 * 1000));
             $(this).addClass('active').siblings().removeClass('active');
             var text=$(this).text();
             if(text=="系统分配"){
@@ -112,8 +114,8 @@
                     }else{
                         var domain=$(".publ-need-sel-def").text();
                         var describe=$(".uct-works-txt").val();
-                        $.cookie("domain",domain,{expires:1,path:'/',domain:'sw2025.com'});
-                        $.cookie("describe",describe,{expires:1,path:'/',domain:'sw2025.com'});
+                        $.cookie("domain",domain,{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("describe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('uct_works/reselect')}}"
                     }
                 }else{
@@ -152,10 +154,12 @@
             dateType:"json",
             type:"POST",
             success:function(res){
+                var date = new Date();
+                date.setTime(date.getTime() + (120 * 60 * 1000));
                 if(res['code']=="success"){
-                    $.cookie("reselect","",{expires:7,path:'/',domain:'sw2025.com'});
-                    $.cookie("domain","",{expires:1,path:'/',domain:'sw2025.com'});
-                    $.cookie("describe","",{expires:1,path:'/',domain:'sw2025.com'});
+                    $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('uct_works')}}";
                 }else{
                     $(".publ-need-sel-def").text(domain);

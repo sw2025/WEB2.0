@@ -166,7 +166,7 @@
                     $.each(res['msg'],function(key,value){
                         var str=" <li class=''>";
                             str+="<a href='{{asset('expert/detail/')}}"+"/"+value.expertid+"'class='tab-list-link'>";
-                            str+="<span class='ex-res-img'><img src='"+value.showimage+"' /></span>";
+                            str+="<span class='ex-res-img'><img src={{env('ImagePath')}}'"+value.showimage+"' /></span>";
                             str+="<div class='ex-res-con'>";
                             str+="<div class='triangle-bottom'></div>"
                             str+="<div class='ex-res-con-tit'>"
