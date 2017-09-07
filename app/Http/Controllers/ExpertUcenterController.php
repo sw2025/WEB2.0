@@ -288,4 +288,119 @@ class ExpertUcenterController extends Controller
 
         return view('expertUcenter.examineNeed',compact('lastdata'));
     }
+
+    /**办事详情
+     * @param $eventId
+     * @return mixed
+     */
+    public function workDetail($eventId,Request $request){
+        $datas=DB::table("t_e_event")
+            ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
+            ->where("t_e_event.eventid",$eventId)
+            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
+            ->get();
+        $counts=DB::table("t_e_eventresponse")->where("eventid",$eventId)->count();
+        foreach ($datas as $data){
+            $configId=$data->configid;
+            if($counts!=0){
+                $data->state="指定专家";
+            }else{
+                $data->state="系统分配";
+            }
+        }
+        if($request->ajax()){
+            $data = $request->input();
+            $res = DB::table('t_e_eventprocessremark')->where('epid',$data['epid'])->paginate(1);
+            return $res;
+        }
+        switch($configId){
+            case 5:
+                $selExperts=DB::table("t_e_eventresponse")
+                    ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_e_eventresponse.state",2)
+                    ->where("eventid",$eventId)
+                    ->get();
+                $selected=count($selExperts);
+                break;
+            case 7:
+                $selExperts=DB::table("t_e_eventresponse")
+                    ->leftJoin("t_e_eventtcomment","t_e_eventresponse.expertid","=","t_e_eventtcomment.expertid" )
+                    ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_e_eventresponse.state",3)
+                    ->where("t_e_eventresponse.eventid",$eventId)
+                    ->get();
+                break;
+            case 6:
+                //当config为6正在办事的状态的时候
+                //获取到被选择的专家的信息
+                $info = DB::table('t_e_eventresponse as res')
+                    ->leftJoin('t_u_expert as ext','ext.expertid','=','res.expertid')
+                    ->leftJoin('t_u_expertfee as fee','fee.expertid','=','res.expertid')
+                    ->where(['eventid' => $eventId,'res.state' => 3])
+                    ->select('ext.expertname','ext.userid','fee.fee','ext.showimage')
+                    ->first();
+                //获取到该办事的相关信息
+                $datas = DB::table("t_e_event")
+                    ->leftJoin("view_eventstatus as status","status.eventid","=","t_e_event.eventid")
+                    ->leftJoin('t_u_enterprise as ent','ent.userid','=','t_e_event.userid')
+                    ->where("t_e_event.eventid",$eventId)
+                    ->first();
+                //获取到办事的流程的信息
+                $configinfo = DB::table('t_e_eventprocessconfig as con')
+                    ->leftJoin('t_e_eventprocess as pro','con.pid','=','pro.pid')
+                    ->select('con.pid as ppid','con.*','pro.*')
+                    ->where('con.domain',$datas->domain1)
+                    ->orderBy('con.step')
+                    ->get();
+                //对信息进行封装
+                $configinfo = \EnterpriseClass::processInsert($configinfo);
+
+                //获取到该办事的所有的过程id
+                $epids = DB::table('t_e_eventprocess')->where('eventid',$eventId)->lists('epid');
+
+                //获取到办事进行到的过程
+                $stepepid = !empty($_GET['step']) && in_array($_GET['step'],$epids) ? ['t_e_eventprocess.epid' => $_GET['step']] : [];
+                $lastpid = DB::table('t_e_eventprocess')
+                    ->leftJoin('t_e_eventprocessconfig as con','con.pid','=','t_e_eventprocess.pid')
+                    ->where($stepepid)
+                    ->where('eventid',$eventId)
+                    ->orderBy('epid','desc')
+                    ->first();
+                //生成办事对应的状态
+                $stmpstate = DB::table('t_e_eventprocess')->leftJoin('t_e_eventprocessconfig as con','con.pid','=','t_e_eventprocess.pid')->where('eventid',$eventId)->orderBy('epid','desc')->first();
+                if(!empty($stmpstate) && $stmpstate->state == 2){
+                    $stmpstate->step = $stmpstate->step+1;
+                }
+                //若不存在状态 为1
+                if(empty($lastpid)){
+                    $lastpid = (object)$lastpid;
+                    $lastpid->step = 1;
+                } elseif ($lastpid->state == 2 && empty($stepepid)){
+                    $step = DB::table('t_e_eventprocessconfig')->where('pid',$lastpid->pid)->first()->step;
+                    if(!empty($configinfo[$step])){
+                        $x = $step+1;
+                        $lastpid = (object)null;
+                        $lastpid->step = $x;
+                    }
+                }
+
+
+                //获取所有的日程
+                $task = DB::table('t_e_eventtask')->whereIn('epid',$epids)->where('state','<>','2')->orderBy('etid','desc')->get();
+                $remark = [];
+                foreach($epids as $v){
+                    $data1 = DB::table('t_e_eventprocessremark')->where('epid',$v)->paginate(1);
+                    $data2 = DB::table('t_e_eventprocessremark')->where('epid',$v)->count();
+                    if($data2){
+                        //若有返回信息则吧反馈的信息对象存放到数组中
+                        $remark[$v] = [$data1,$data2];
+                    }
+                }
+                return view("expertUcenter.new_uct_works5",compact('task',"datas","eventId",'info','configinfo','lastpid','remark','stmpstate'));
+        }
+        $selExperts=!empty($selExperts)?$selExperts:"";
+        $selected=!empty($selected)?$selected:"";
+        $view="new_uct_works".$configId;
+        return view("expertUcenter.".$view,compact("datas","counts","selected","selExperts","eventId"));
+    }
 }

@@ -258,7 +258,7 @@
                 var photo2=$('#myAvatar2').val();
                 var brief=$('#brief').val();
                 console.log(name=='' || photo1=='' || industry=='请选择');
-                if(name=='' || photo1=='' || industry=='请选择'  || industrys==''){
+                if(name=='' || photo1=='' || industry=='请选择'  || industrys=='' || brief==''){
                     layer.msg('请把信息填写完整');
                     $('.submit-audit').attr('disabled',false);
                     return false;

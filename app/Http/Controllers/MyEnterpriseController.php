@@ -311,6 +311,7 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public  function works(){
+
         $userId=session('userId');
         $type=isset($_GET['type'])?$_GET['type']:0;
         $typeWhere=($type!=0)?array("configid"=>$type):array();
@@ -363,6 +364,35 @@ class MyEnterpriseController extends Controller
         }
         return view("myenterprise.works",compact("datas","type","counts"));
     }
+
+    public function verifyEnterprise()
+    {
+        $userid = session('userId');
+        $verify = DB::table('t_u_enterprise')->where('userid',$userid)->first();
+        if(!empty($verify)){
+           $verifyconfigid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$verify->enterpriseid)->orderBy('id','desc')->first();
+            if(!empty($verifyconfigid->configid)){
+                switch($verifyconfigid->configid){
+                    case 1:
+                        $return = 1;
+                        break;
+                    case 2:
+                        $return = 2;
+                        break;
+                    case 3:
+                        $return = 3;
+                        break;
+                    case 4:
+                        $return = 4;
+                        break;
+                }
+                return ['no' => $return,'url' => 'uct_member'];
+            }
+            return ['no' => 0,'url' => 'uct_member'];
+        }
+        return ['no' => 0,'url' => 'uct_member'];
+    }
+
     /**办事详情
      * @param $eventId
      * @return mixed
@@ -409,7 +439,9 @@ class MyEnterpriseController extends Controller
                 //获取到被选择的专家的信息
                 $info = DB::table('t_e_eventresponse as res')
                     ->leftJoin('t_u_expert as ext','ext.expertid','=','res.expertid')
-                    ->where(['eventid' => $eventId,'state' => 3])
+                    ->leftJoin('t_u_expertfee as fee','fee.expertid','=','res.expertid')
+                    ->where(['eventid' => $eventId,'res.state' => 3])
+                    ->select('ext.expertname','ext.userid','fee.fee','ext.showimage')
                     ->first();
                 //获取到该办事的相关信息
                 $datas = DB::table("t_e_event")
@@ -421,15 +453,42 @@ class MyEnterpriseController extends Controller
                 $configinfo = DB::table('t_e_eventprocessconfig as con')
                     ->leftJoin('t_e_eventprocess as pro','con.pid','=','pro.pid')
                     ->select('con.pid as ppid','con.*','pro.*')
-                    ->orderBy('con.pid')
+                    ->where('con.domain',$datas->domain1)
+                    ->orderBy('con.step')
                     ->get();
                 //对信息进行封装
                 $configinfo = \EnterpriseClass::processInsert($configinfo);
 
-                //获取到办事进行到的过程
-                $lastpid = DB::table('t_e_eventprocess')->where('eventid',$eventId)->orderBy('epid','desc')->first();
                 //获取到该办事的所有的过程id
                 $epids = DB::table('t_e_eventprocess')->where('eventid',$eventId)->lists('epid');
+
+                //获取到办事进行到的过程
+                $stepepid = !empty($_GET['step']) && in_array($_GET['step'],$epids) ? ['t_e_eventprocess.epid' => $_GET['step']] : [];
+                $lastpid = DB::table('t_e_eventprocess')
+                    ->leftJoin('t_e_eventprocessconfig as con','con.pid','=','t_e_eventprocess.pid')
+                    ->where($stepepid)
+                    ->where('eventid',$eventId)
+                    ->orderBy('epid','desc')
+                    ->first();
+                //生成办事对应的状态
+                $stmpstate = DB::table('t_e_eventprocess')->leftJoin('t_e_eventprocessconfig as con','con.pid','=','t_e_eventprocess.pid')->where('eventid',$eventId)->orderBy('epid','desc')->first();
+                if(!empty($stmpstate) && $stmpstate->state == 2){
+                    $stmpstate->step = $stmpstate->step+1;
+                }
+                //若不存在状态 为1
+                if(empty($lastpid)){
+                    $lastpid = (object)$lastpid;
+                    $lastpid->step = 1;
+                } elseif ($lastpid->state == 2 && empty($stepepid)){
+                    $step = DB::table('t_e_eventprocessconfig')->where('pid',$lastpid->pid)->first()->step;
+                    if(!empty($configinfo[$step])){
+                        $x = $step+1;
+                        $lastpid = (object)null;
+                        $lastpid->step = $x;
+                    }
+                }
+
+
                 //获取所有的日程
                 $task = DB::table('t_e_eventtask')->whereIn('epid',$epids)->where('state','<>','2')->orderBy('etid','desc')->get();
                 $remark = [];
@@ -441,12 +500,46 @@ class MyEnterpriseController extends Controller
                         $remark[$v] = [$data1,$data2];
                     }
                 }
-                return view("myenterprise.works6",compact('task',"datas","eventId",'info','configinfo','lastpid','remark'));
+                return view("myenterprise.new_uct_works5",compact('task',"datas","eventId",'info','configinfo','lastpid','remark','stmpstate'));
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
         $view="works".$configId;
         return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","eventId"));
+    }
+
+
+    /**
+     * 终止合作
+     */
+    public function stopEvent(Request $request)
+    {
+        if($request->ajax()){
+            $data = $request->input();
+            if($data['action']){
+                $res = DB::table('t_e_eventverify')->insert([
+                    'eventid' => $data['eventid'],
+                    'configid' => 7,
+                    'verifytime' => date('Y-m-d H:i:s',time()),
+                    'remark' => ''
+                ]);
+                $action = '办事已完成';
+            } else {
+                $res = DB::table('t_e_eventverify')->insert([
+                    'eventid' => $data['eventid'],
+                    'configid' => 9,
+                    'verifytime' => date('Y-m-d H:i:s',time()),
+                    'remark' => ''
+                ]);
+                $action = '办事中止...';
+            }
+
+            if($res){
+                return ['msg' => $action,'icon' => 1];
+            }
+            return ['msg' => '操作失败','icon' => 2];
+        }
+        return ['msg' => '操作失败','icon' => 2];
     }
 
     /*public function getajaxpage (Request $request) {
@@ -472,7 +565,7 @@ class MyEnterpriseController extends Controller
             //$realPath = $file -> getRealPath();
             $entension = $file -> getClientOriginalExtension();
             //$mimeTye = $file -> getMimeType();
-            $fileTypes = ['html','pdf','doc','txt','docx'];
+            $fileTypes = ['pdf','doc','txt','excel','docx'];
             if(!in_array($entension,$fileTypes)){
                 return ['error' => '您上传的不是正确的类型文件','icon' => 2];
             }
@@ -492,12 +585,14 @@ class MyEnterpriseController extends Controller
             }
             //将获取到的文件名装换成gb2312的编码方式
             $name = iconv("UTF-8","gb2312", $file->getClientOriginalName());
-            $path = $file->move('swUpload/event/'.$data['eventid'].'/'.$proid.'/'.date('mdHis',time()).'/',$name);
-            if(!empty($path)){
+            $uploadpath = $data['eventid'].'/'.$proid.'/'.date('mdHis',time()).'/';
+            $path1 = $file->move('../../swUpload/event/'.$uploadpath,$name);
+            $path = '/event/'.$uploadpath.$name;
+            if(!empty($path1)){
                 //吧路径的编码方式转换成utf-8
                 $path = iconv("gb2312","UTF-8", $path);
                 //加密路径
-                $down = Crypt::encrypt($path);
+                $down = Crypt::encrypt('../../swUpload'.$path);
                 $data['pid'] = $proid;
                 $data['documenturl'] = $path;
                 $data['state'] = 0;
@@ -510,13 +605,13 @@ class MyEnterpriseController extends Controller
                 } else {
                     $epid = DB::table('t_e_eventprocess')->insertGetId($data);
                 }
-                return ['path' => $path,'name' => $clientName,'icon' => 1,'downpath' => $down,'epid' => $epid];
+                return ['msg' => '上传文件成功','path' => $path,'name' => $clientName,'icon' => 1,'downpath' => $down,'epid' => $epid];
             }
-            return ['error' => '上传文件失败','icon' => 2];
+            return ['error' => '上传文件失败FF000002','icon' => 2];
 
 
         }
-        return ['error' => '上传文件失败','icon' => 2];
+        return ['error' => '上传文件失败FF000001','icon' => 2];
     }
 
     /**确认资料
@@ -526,6 +621,9 @@ class MyEnterpriseController extends Controller
     public function trueDocument (Request $request) {
         if($request->ajax()){
             $data = $request->only('epid','pid','eventid');
+            if(!$data['epid']){
+                return ['error' => '系统错误，请刷新页面','icon' => 2];
+            }
             //验证是否为指定身份提交
             $starttype = DB::table('t_e_eventprocessconfig')->where('pid',$data['pid'])->first()->starttype;
             $eventuserid = DB::table('t_e_event')->where('eventid',$data['eventid'])->first()->userid;
@@ -809,7 +907,9 @@ class MyEnterpriseController extends Controller
         $expertIds=$_POST['expertIds'];
         try{
             foreach ($expertIds as $expertId){
-                DB::table("t_e_eventresponse")->where("eventid",$_POST['eventId'])->where("expertid",$expertId)->update([
+                DB::table("t_e_eventresponse")->insert([
+                    'eventid' => $_POST['eventId'],
+                    'expertid' => $expertId,
                     "state"=>3,
                     "updated_at"=>date("Y-m-d H:i:s")
                 ]);
@@ -1252,8 +1352,15 @@ class MyEnterpriseController extends Controller
         }
         return $result;
     }
-    
+
+    /**新办事服务
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function manage(){
+        $resverify = $this->verifyEnterprise();
+        if($resverify['no'] != 4){
+            return redirect($resverify['url']);
+        }
         $userId=session('userId');
         $type=isset($_GET['domain'])?$_GET['domain']:false;
         switch ($type){
@@ -1315,6 +1422,10 @@ class MyEnterpriseController extends Controller
     }
 
     public function manageVideo(){
+        $resverify = $this->verifyEnterprise();
+        if($resverify['no'] != 4){
+            return redirect($resverify['url']);
+        }
         $userId=session('userId');
         $type=isset($_GET['type'])?$_GET['type']:"全部";
         if($type){
