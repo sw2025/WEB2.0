@@ -158,6 +158,8 @@ Route::get('myneed/needDetail/{needid}','ExpertUcenterController@needDetail');
 Route::get('myneed/supplyNeed/{needid?}','ExpertUcenterController@supplyNeed');
 //审核需求
 Route::get('myneed/examineNeed/{needid?}','ExpertUcenterController@examineNeed');
+//我的办事详情
+Route::get('mywork/workDetail/{eventid}','ExpertUcenterController@workDetail');
 
 /************************************我是企业*********************************************************/
 //专家资源
@@ -180,6 +182,8 @@ Route::get('uct_works','MyEnterpriseController@manage');
 Route::get('uct_works/detail/{eventId}','MyEnterpriseController@workDetail');
 //处理上传的资料
 Route::post('uct_works/upload/{proid}','MyEnterpriseController@eventUpload');
+//终止办事
+Route::post('stopevent','MyEnterpriseController@stopEvent');
 //确认资料
 Route::post('truedocument','MyEnterpriseController@trueDocument');
 //确认资料
