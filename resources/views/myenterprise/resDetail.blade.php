@@ -1,4 +1,4 @@
-@extends("layouts.ucenter")
+@extends("layouts.ucenter2")
 @section("content")
     <script type="text/javascript" src="{{asset('js/reply.js')}}"></script>
         <!-- 侧边栏公共部分/end -->
@@ -9,7 +9,7 @@
                 <div class="main-right">
                     <div class="myexpert">
                         <div class="myexpert-top">
-                            <img src="{{asset($datas->showimage)}}" class="myexpert-img" />
+                            <img src="{{env('ImagePath').$datas->showimage}}" class="myexpert-img" />
                             <div class="myexpert-rt">
                                 <span class="myexp-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
                                 <span class="myexp-best">擅长领域：<em>{{$datas->domain1}}</em></span>
@@ -42,7 +42,7 @@
                                     @if(!$v->parentid)
                                         <div class="mes-list-box clearfix">
                                             <div class="floor-host">
-                                                <img src="{{asset($v->avatar)}}" class="floor-host-ava" />
+                                                <img src="{{env('ImagePath').$v->avatar}}" class="floor-host-ava" />
                                                 <div class="floor-host-desc">
                                                     <a href="javascript:;" class="floor-host-name">{{$v->nickname}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
                                                     <span class="floor-host-words">{{$v->content}}</span>
@@ -57,7 +57,7 @@
                                                     @foreach($message as $reply)
                                                         @if(!$reply->use_userid && $reply->parentid == $v->id)
                                                             <li>
-                                                                <img src="{{asset($reply->avatar)}}" class="floor-guest-ava" />
+                                                                <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
                                                                 <div class="gloor-guest-cnt">
                                                                     <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>
                                                                     <span class="floor-guest-words">{{$reply->content}}</span>
@@ -69,7 +69,7 @@
                                                         @elseif($reply->parentid == $v->id)
 
                                                             <li>
-                                                                <img src="{{asset($reply->avatar)}}" class="floor-guest-ava" />
+                                                                <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
                                                                 <div class="gloor-guest-cnt">
                                                                     <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
                                                                     <span class="floor-guest-words">{{$reply->content}}</span>
@@ -94,6 +94,7 @@
                 </div>
             </div>
         </div>
+    </div>
     <script type="text/javascript">
         $(function(){
             $('.bank-card').keyup(function(){

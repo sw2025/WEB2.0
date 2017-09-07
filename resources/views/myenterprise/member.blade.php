@@ -30,10 +30,10 @@
                             <div class="datas-lt">
                                 <div class="datas-lt-enter">
                                     <div class="datas-sel">
-                                        <input class="enterprise-inp" type="text" id="entname" placeholder="请输入企业全称" value="{{$data->enterprisename or null}}"/>
+                                        <input class="enterprise-inp" type="text" id="entname" placeholder="请输入企业全称" value="@if(!empty($data)){{$data->enterprisename }}@endif"/>
                                     </div>
                                     <div class="datas-sel zindex1">
-                                        <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def" id="size">{{$data->size or '不限'}}</a>
+                                        <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def" id="size">@if(!empty($data)){{$data->size}} @else 不限@endif</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
                                             <li>20人以下</li>
@@ -45,7 +45,7 @@
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex2">
-                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def" id="industry">{{$data->industry or '不限'}}</a>
+                                        <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def" id="industry">@if(!empty($data)){{$data->industry }}@else 不限 @endif</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
                                             <li>IT|通信|电子|互联网</li>
@@ -106,21 +106,21 @@
                                 </div>
                                 <div class="datas-upload-box clearfix">
                                     <div class="datas-upload-lt">
-                                        <img src="{{env('ImagePath').$data->licenceimage or 'img/photo1.jpg'}}" class="photo1" id="photo1"/>
+                                        <img src="@if(!empty($data)){{env('ImagePath').$data->licenceimage}}@else img/photo1.jpg @endif" class="photo1" id="photo1"/>
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传营业执照</span>
-                                                <input class="fileupload1" type="file" name="files[]" data-url="{{asset('upload')}}" index="{{$data->licenceimage or null}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg" >
+                                                <input class="fileupload1" type="file" name="files[]" data-url="{{asset('upload')}}" index="@if(!empty($data)){{$data->licenceimage}}@endif" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg" >
                                             </div>
                                             <p class="datas-lt-explain">营业执照仅做认证用，不用做其它用途</p>
                                         </div>
                                     </div>
                                     <div class="datas-upload-rt">
-                                        <img src="{{env('ImagePath').$data->showimage or 'img/photo2.jpg'}}" class="photo1" id="photo2"/>
+                                        <img src="@if(!empty($data)){{env('ImagePath').$data->lshowimage}}@else img/photo2.jpg @endif" class="photo1" id="photo2"/>
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传宣传照片</span>
-                                                <input class="fileupload2" type="file" name="files[]" data-url="{{asset('upload')}}" index="{{$data->showimage or null}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg" >
+                                                <input class="fileupload2" type="file" name="files[]" data-url="{{asset('upload')}}" index="@if(!empty($data)){{$data->showimage}}@endif" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg" >
                                             </div>
                                             <p class="datas-lt-explain">宣传照片用于展示企业，请选择企业Logo或展现企业风采的照片</p>
                                         </div>
@@ -129,7 +129,7 @@
                             </div>
                             <div class="datas-rt">
 
-                                <textarea onkeyup="checkLength(this);" placeholder="请输入企业简介（30-500字）" cols="30" rows="10" id="content">{{$data->brief or null}}</textarea>
+                                <textarea onkeyup="checkLength(this);" placeholder="请输入企业简介（30-500字）" cols="30" rows="10" id="content">@if(!empty($data)){{$data->brief}}@endif</textarea>
 
                             </div>
                         </div>

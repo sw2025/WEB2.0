@@ -105,7 +105,7 @@
                         <li class="col-md-6">
                             <a href="{{url('uct_resource/resDetail',$v->expertid)}}" class="expert-list-link">
                                 <div class="exp-list-top">
-                                    <span class="exp-list-img"><img src="{{asset($v->showimage)}}" /></span>
+                                    <span class="exp-list-img"><img src="{{env('ImagePath').$v->showimage}}" /></span>
                                     <div class="exp-list-brief">
                                         <span class="exp-list-name">{{$v->expertname}}</span>
                                         <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}@else 免费 @endif</em></span>

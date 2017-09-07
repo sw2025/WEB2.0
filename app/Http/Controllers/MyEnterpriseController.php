@@ -152,7 +152,6 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public  function uct_member(){
-
         $enterprise = DB::table('t_u_enterprise')->where(['userid' => session('userId')])->first();
         $data = null;
         $configids = null;

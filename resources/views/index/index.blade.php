@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/index.css')}}" />
 <div class="banner">
     <ul>
-        <li class="img01"><div class="container"><span class="anim anim-left"></span><span class="anim anim-right"></span></div></li>
+        <li class="img01"></li>
         <li class="img02"></li>
         <li class="img03"></li>
     </ul>
@@ -101,7 +101,7 @@
         <div class="row supply-categary clearfix">
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">投融资<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">找资金<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($invests as $invest)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$invest->needid)}}"><span class="dem-li-tit">{{$invest->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$invest->created_at}}</span></a></li>
@@ -111,7 +111,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">战略合作<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">定战略<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($works as $work)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$work->needid)}}"><span class="dem-li-tit">{{$work->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$work->created_at}}</span></a></li>
@@ -121,7 +121,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">产品升级<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">找技术<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($products as $product)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$product->needid)}}"><span class="dem-li-tit">{{$product->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$product->created_at}}</span></a></li>
@@ -131,7 +131,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">市场运营<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">找市场<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($markets as $market)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$market->needid)}}"><span class="dem-li-tit">{{$market->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$market->created_at}}</span></a></li>
@@ -166,7 +166,7 @@
                     $.each(res['msg'],function(key,value){
                         var str=" <li class=''>";
                             str+="<a href='{{asset('expert/detail/')}}"+"/"+value.expertid+"'class='tab-list-link'>";
-                            str+="<span class='ex-res-img'><img src={{env('ImagePath')}}'"+value.showimage+"' /></span>";
+                            str+="<span class='ex-res-img'><img src={{env('ImagePath')}}"+value.showimage+" /></span>";
                             str+="<div class='ex-res-con'>";
                             str+="<div class='triangle-bottom'></div>"
                             str+="<div class='ex-res-con-tit'>"

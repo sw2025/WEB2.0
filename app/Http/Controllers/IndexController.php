@@ -24,10 +24,10 @@ class IndexController extends Controller
         $work=clone $invest;
         $product=clone $invest;
         $market=clone $invest;
-        $invests=$invest->where("DOMAIN1","投融资")->take(5)->get();
-        $works=$work->where("DOMAIN1","战略合作")->take(5)->get();
-        $products=$product->where("DOMAIN1","产品升级")->take(5)->get();
-        $markets=$market->where("DOMAIN1","市场运营")->take(5)->get();
+        $invests=$invest->where("domain1","找资金")->take(5)->get();
+        $works=$work->where("domain1","定战略")->take(5)->get();
+        $products=$product->where("domain1","找技术")->take(5)->get();
+        $markets=$market->where("domain1","找市场")->take(5)->get();
         $invests=\NeedClass::dataHandle($invests);
         $works=\NeedClass::dataHandle($works);
         $products=\NeedClass::dataHandle($products);
@@ -42,6 +42,17 @@ class IndexController extends Controller
     public  function returnData(){
         $result=array();
         $expertType=!empty($_POST['type'])?$_POST['type']:"知名机构";
+        switch($expertType){
+            case "知名机构":
+                $expertType="机构";
+            break;
+            case "知名专家":
+                $expertType="专家";
+                break;
+            case "知名企业家":
+                $expertType="企业家";
+                break;
+        }
         $datas=DB::table("T_U_EXPERT")
                 ->leftJoin("T_U_EXPERTFEE","T_U_EXPERTFEE.expertid","=","T_U_EXPERT.expertid")
                 ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERTVERIFY.expertid","=","T_U_EXPERT.expertid")
