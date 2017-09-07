@@ -41,7 +41,7 @@
                         <span class="item-tit">找资金</span>
                     </div>
                     <div class="item-con-hover">
-                        <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
+                        <p><br /><span href="">企业债</span><br /><span href="">资产证券化</span><br /><span href="">应收账款</span><br /><span href="">国外债券融资</span><br /><span href="">国外股权融合</span> <br /><span href="">租赁</span><br /><span href="">私募股权</span><br /><span href="">并购</span></p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
@@ -51,7 +51,7 @@
                         <span class="item-tit">找技术</span>
                     </div>
                     <div class="item-con-hover">
-                        <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
+                        <p><br /><span href="">委托研发</span><br /><span href="">新技术</span><br /><span href="">生产自动化</span><br /><span href="">产能合作</span> </p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
@@ -61,7 +61,7 @@
                         <span class="item-tit">找市场</span>
                     </div>
                     <div class="item-con-hover">
-                        <p>岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划，岁的法国红酒看，首先想到法国红酒岁的法国红酒sad法国红酒岁的法国红酒士大夫规划</p>
+                        <p><br /><span href="">开拓新市场</span><br /><span href="">发展代理</span><br /><span href="">兼职销售</span> </p>
                     </div>
                 </a></li>
         </ul>
