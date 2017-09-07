@@ -12,10 +12,12 @@
                 if(!empty($v->documenturl)){
                     //对文档的路径进行加密
                     $v->downurl = \Illuminate\Support\Facades\Crypt::encrypt($v->documenturl);
+                    $v->truedocumenturl = '../../swUpload'.$v->documenturl;
                     //获取到文档路径的上二级文件夹路径
-                    $pathname = dirname(dirname($v->documenturl));
+                    $pathname = dirname(dirname($v->truedocumenturl));
                     //获取到文档的上个文件夹路径
-                    $firstname = dirname($v->documenturl);
+                    $firstname = dirname($v->truedocumenturl);
+
                     if ($dh = opendir($pathname)) {
                         while (($file = readdir($dh)) !== false) {
                             //若文件名不是. .. 或者这个文件的本身
