@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/index.css')}}" />
 <div class="banner">
     <ul>
-        <li class="img01"><div class="container"><span class="anim anim-left"></span><span class="anim anim-right"></span></div></li>
+        <li class="img01"></li>
         <li class="img02"></li>
         <li class="img03"></li>
     </ul>
@@ -166,7 +166,7 @@
                     $.each(res['msg'],function(key,value){
                         var str=" <li class=''>";
                             str+="<a href='{{asset('expert/detail/')}}"+"/"+value.expertid+"'class='tab-list-link'>";
-                            str+="<span class='ex-res-img'><img src={{env('ImagePath')}}'"+value.showimage+"' /></span>";
+                            str+="<span class='ex-res-img'><img src={{env('ImagePath')}}"+value.showimage+" /></span>";
                             str+="<div class='ex-res-con'>";
                             str+="<div class='triangle-bottom'></div>"
                             str+="<div class='ex-res-con-tit'>"

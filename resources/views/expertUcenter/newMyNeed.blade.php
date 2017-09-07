@@ -110,7 +110,7 @@
                 <ul class="supply-list clearfix">
                     @foreach($datas as $v)                        <li class="col-md-6">
                             <a href="@if($v->userid == session('userId') && $v->flag == 2) {{url('myneed/supplyNeed',$v->needid)}} @elseif($v->userid == session('userId') && $v->flag == 1) {{url('myneed/examineNeed',$v->needid)}} @else {{url('myneed/needDetail',$v->needid)}} @endif" class="supply-list-link">
-                                <img src="@if(empty($v->entimg)) {{asset($v->extimg)}} @else {{asset($v->entimg)}}  @endif" class="supp-list-img" />
+                                <img src="@if(empty($v->entimg)){{env('ImagePath').$v->extimg}} @else {{env('ImagePath').$v->entimg}}  @endif" class="supp-list-img" />
                                 <span class="supp-list-time">{{date('Y-m-d',strtotime($v->needtime))}}</span>
                                 <div class="supp-list-brief">
                                     <span class="supp-list-name">@if(!empty($v->expertname) && !empty($v->enterprisename)) {{$v->enterprisename.' / '.$v->expertname}} @else {{$v->expertname or $v->enterprisename}} @endif</span>

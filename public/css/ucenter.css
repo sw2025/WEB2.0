@@ -529,3 +529,6 @@
 #show{width:680px; margin:20px auto;}
 #facebox{background:#fff;}
 .chat-room-me-desc img,.chat-room-other-desc img{display: inline-block;}
+.z-index4{z-index: 4;}
+.htxt1 textarea{
+    height:505px;}

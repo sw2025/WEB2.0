@@ -39,7 +39,7 @@
                         <div class="datas-lt">
                             <div class="datas-lt-enter">
                                 <div class="datas-sel zindex1">
-                                    <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category" class="datas-sel-def">个人</a>
+                                    <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category" class="datas-sel-def">专家</a>
                                     <ul class="datas-list">
                                         <li>专家</li>
                                         <li>机构</li>
@@ -50,7 +50,7 @@
                                     <span class="datas-sel-cap">输入姓名</span>
                                     <input class="datas-sel-name" type="text" placeholder="" />
                                 </div>
-                                <div class="datas-sel">
+                                <div class="datas-sel z-index4">
                                     <span class="datas-sel-cap">擅长行业</span><a href="javascript:;" class="datas-sel-def" id="industrys"></a>
                                     <ul class="datas-list">
                                         <li>IT|通信|电子|互联网</li>
@@ -154,7 +154,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="datas-rt">
+                        <div class="datas-rt htxt1">
                             <textarea onkeyup="checkLength(this);" placeholder="请输入专家描述" id="brief" cols="30" rows="10"></textarea>
                         </div>
                     </div>

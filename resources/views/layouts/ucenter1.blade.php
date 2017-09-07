@@ -224,7 +224,7 @@
                 if(res['code']=="success"){
                     $.cookie("userId",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("name",'',{path:'/',domain:'sw2025.com'});
-                    $.cookie("avatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("enterAvatar",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('/')}}"
                 }else{

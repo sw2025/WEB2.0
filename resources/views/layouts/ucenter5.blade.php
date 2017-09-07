@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+s<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -223,7 +223,7 @@
                 if(res['code']=="success"){
                     $.cookie("userId",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("name",'',{path:'/',domain:'sw2025.com'});
-                    $.cookie("avatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("expertAvatar",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('/')}}"
                 }else{
