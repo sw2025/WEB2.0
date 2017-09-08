@@ -191,7 +191,7 @@ class MyExpertController extends Controller
             //datas2为我的办事列表
             $datas2 = $obj
                 ->where(['res.expertid' => $expertid])
-                ->whereIn('status.configid',[5,6,7])
+                ->whereIn('status.configid',[5,6,7,8])
                 ->orderBy('res.id','desc')
                 ->paginate(1);
             //调用eventclass中的方法进行对象的处理
@@ -231,7 +231,7 @@ class MyExpertController extends Controller
             ->first();
         if(!$datas){
             return redirect('/');
-        } elseif ($datas->configid == 6){
+        } elseif ($datas->configid == 6 || $datas->configid == 8 || $datas->configid == 7){
             return redirect('mywork/workDetail/'.$eventid);
         }
         $token = Crypt::encrypt(session('userId'));

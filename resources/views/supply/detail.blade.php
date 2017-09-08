@@ -17,7 +17,7 @@
                 <div class="supp-det-con-top">
                     <img src="@if(empty($datas->entimg)) {{env('ImagePath').$datas->extimg}} @else {{env('ImagePath').$datas->entimg}}  @endif" class="supp-details-img" />
                     <div class="supp-details-brief">
-                        <span class="supp-details-name"><i class="iconfont icon-gongsi"></i>【{{$datas->role}}】@if(!empty($datas->expertname) && !empty($datas->enterprisename)) {{$datas->enterprisename.' / '.$datas->expertname}} @else {{$datas->expertname or $datas->enterprisename}} @endif</span>
+                        <span class="supp-details-name"><i class="iconfont icon-gongsi"></i>【{{$datas->needtype}}】@if($datas->needtype=="专家") {{$datas->expertname}} @else {{$datas->enterprisename}} @endif</span>
                         <a href="javascript:;" index="{{$datas->needid}}" class="collect-state @if(in_array($datas->needid,$collectids)) done @endif">@if(in_array($datas->needid,$collectids))已收藏 @else 收藏 @endif</a>
                         <span class="supp-details-time">发布时间：<em>{{$datas->needtime}}</em></span>
                         <span class="supp-details-zone">地<b class="wem2"></b>区：<em>{{$datas->address}}</em></span>

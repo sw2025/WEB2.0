@@ -1,4 +1,4 @@
-@extends("layouts.ucenter")
+@extends("layouts.ucenter4")
 @section("content")
     <script type="text/javascript" src="{{asset('js/jquery.raty.min.js')}}"></script>
     <div class="main">
@@ -22,6 +22,7 @@
                                     <em>完成</em>COMPLETE
                                 </span>
                     </div>
+
                     @foreach($selExperts as $selExpert)
                     <div class="rate">
                         <div class="rate-exp">
@@ -30,27 +31,27 @@
                                 <span class="new-add-exp-name">{{$selExpert->expertname}}</span>
                             </div>
                             <div id="{{$selExpert->expertid}}" class="rating"></div>
-                            <a href="javascript:;" class="rate-btn">评价</a>
+                            <br />
+                            <br />
+                            <br />
                                 @if(!empty($selExpert->comment))
                                     <div class="rate-box" style="display: block">
-                                        <input type="text" class="rate-inp" value="{{$selExpert->comment}}" readonly/>
-                                        <button type="button" index="{{$selExpert->expertid}}" class="rate-confirm-btn" style="display: none">确定</button>
-                                    </div>
-                                @else
-                                    <div class="rate-box">
-                                        <input type="text" class="rate-inp" />
-                                        <button type="button" index="{{$selExpert->expertid}}" class="rate-confirm-btn">确定</button>
+                                        企业给您的评价 : <input type="text" class="rate-inp" value="{{$selExpert->comment}}" readonly />
                                     </div>
                                 @endif
+
 
                          </div>
                     </div>
                     @endforeach
-                    @if(empty($selExpert->comment))
-                    <div class="uct-works-con">
-                        <button class="test-btn rate-star-btn" type="button">确认</button>
-                    </div>
-                        @endif
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+
                 </div>
             </div>
         </div>
@@ -61,30 +62,7 @@
                 $(this).next('.rate-box').toggleClass('dib');
             });
 
-            $(".rate-confirm-btn").on("click",function(){
-                var content=$(this).prev().val();
-                var expertId= $(this).attr("index");
-                var eventId=$("#event").val();
-                $.ajax({
-                    url:"{{asset('toExpertContent')}}",
-                    data:{"content":content,"expertId":expertId,"eventId":eventId},
-                    dateType:"json",
-                    type:"POST",
-                    success:function(res){
-                        if(res['code']=="success"){
-                           layer.msg("评论成功")
-                            $(".rate-confirm-btn").hide();
-                            $(".rate-star-btn").hide();
-                        }else{
-                            layer.confirm('评论失败', {
-                                btn: ['确定'] //按钮
-                            });
-                            return false;
-                        }
-                    }
 
-                })
-            })
             @foreach($selExperts as $selExpert)
                 @if(!empty($selExpert->score))
                     var scores=parseInt("{{$selExpert->score}}");
