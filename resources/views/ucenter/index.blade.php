@@ -53,6 +53,8 @@
         });
     });
     $(".basic-btn").on("click",function(){
+        $(this).attr('disabled',true);
+        $(this).html('正在修改');
         var nickName=$("#nickName").val();
         var myAvatar=$("#myAvatar").val();
         var userId=$.cookie("userId");
@@ -62,6 +64,8 @@
             dataType:"json",
             type:"POST",
             success:function(res){
+                $(this).attr('disabled',false);
+                $(this).html('修改');
                 if(res['code']=="success"){
                     layer.msg("修改成功")
                 }else{

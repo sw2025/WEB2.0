@@ -82,7 +82,9 @@
         var phone=$(".user-tel-inp").val();
         var code=$(".user-test-inp").val();
         var passWord=$(".user-test-inp").val();
-       $.ajax({
+        $(this).attr('disabled',true);
+        $(this).html('正在设置');
+        $.ajax({
            url:"{{asset('forgetHandle')}}",
            data:{"phone":phone,"code":code,"passWord":passWord},
            dateType:"json",
@@ -94,12 +96,16 @@
                           tips: [2, '#00a7ed'],
                           time: 4000
                       });
+                      $(this).attr('disabled',false);
+                      $(this).html('设置');
                   break;
                   case "phone":
                       layer.tips(res['msg'], '.user-tel', {
                           tips: [2, '#00a7ed'],
                           time: 4000
                       });
+                      $(this).attr('disabled',false);
+                      $(this).html('设置');
                   break;
                   case "success":
                           window.location.href="{{asset('login')}}"

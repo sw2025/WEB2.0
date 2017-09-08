@@ -41,6 +41,8 @@
           });
           return false;
       };
+      $(this).attr('disabled',true);
+      $(this).html('登录中...');
       $.ajax({
           url:"{{asset('loginHandle')}}",
           data:{"phone":phone,"passWord":passWord},
@@ -52,11 +54,15 @@
                       tips: [2, '#00a7ed'],
                       time: 4000
                   });
+                  $(this).attr('disabled',false);
+                  $(this).html('登录');
               }else if(res['code']=="pwd"){
                   layer.tips(res['msg'], '.user-pwd', {
                       tips: [2, '#00a7ed'],
                       time: 4000
                   });
+                  $(this).attr('disabled',false);
+                  $(this).html('登录');
               }else{
                   var date = new Date();
                   date.setTime(date.getTime() + (120 * 60 * 1000));

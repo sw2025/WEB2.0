@@ -128,7 +128,7 @@
                                     1996年，科比被当时的夏洛特黄蜂以首轮第13顺位选中，随即他被交易到湖人。在漫长的职业生涯里，科比帮助比被当时的...
                                 </div>
                             </a>
-                            <a href="javascript:;" class="xuanzhong" id="{{$v->expertid}}" showImg="{{env('ImagePath').$v->showimage}}"><i class="iconfont icon-xuanzhong"></i></a>
+                            <a href="javascript:;" class="xuanzhong" id="{{$v->expertid}}" showImg="{{$v->showimage}}"><i class="iconfont icon-xuanzhong"></i></a>
                         </li>
                     @endforeach
                 </ul>

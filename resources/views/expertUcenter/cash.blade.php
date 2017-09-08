@@ -43,6 +43,8 @@
             }
         })
         $('.cash-btn').click(function() {
+            $(this).attr('disabled',true);
+            $(this).html('正在申请');
             var userId=$.cookie("userId");
             var $money = $('.cash-num').val();
             var $leftNum = $('.avai-money-sum').html();
@@ -62,6 +64,8 @@
                         dateType:"json",
                         "type":"POST",
                         success:function(res){
+                            $(this).attr('disabled',false);
+                            $(this).html('提现申请');
                             if(res['code']=="success"){
                                 layer.confirm('稍后将为您处理', {
                                     btn: ['确定'] //按钮

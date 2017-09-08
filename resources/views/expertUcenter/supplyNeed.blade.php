@@ -31,11 +31,11 @@
                                     </li>
                                     @endforeach
                         </ul>
-
-
-                       <textarea   name="" id="content" class="publish-need-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入需求描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea>
                     </div>
-                    <div><button class="test-btn publish-submit" type="button">提交</button></div>
+                    <div>
+                        <textarea   name="" id="content" class="publish-need-txt new-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入需求描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea>
+                        <button class="test-btn publish-submit" type="button">提交</button>
+                    </div>
                 </div>
             </div>
         </div>

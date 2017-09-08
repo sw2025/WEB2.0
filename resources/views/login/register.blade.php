@@ -126,6 +126,8 @@
             });
             return false;
         }
+        $(this).attr('disabled',true);
+        $(this).html('注册中...');
         $.ajax({
             url:"{{asset('registerHandle')}}",
             data:{"phone":phone,"passWord":pwd,"codes":code,"role":role},
@@ -137,11 +139,15 @@
                         tips: [2, '#00a7ed'],
                         time: 4000
                     });
+                    $(this).attr('disabled',false);
+                    $(this).html('注册');
                 }else if(res['code']=="code"){
                     layer.tips(res['msg'], '.user-test-inp', {
                         tips: [2, '#00a7ed'],
                         time: 4000
                     });
+                    $(this).attr('disabled',false);
+                    $(this).html('注册');
                 }else{
                     window.location.href="{{asset('login')}}"
                 }

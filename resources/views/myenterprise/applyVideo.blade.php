@@ -141,6 +141,8 @@
             });
         })
         $(".submit-audit").on("click",function(){
+            $(this).attr('disabled',true);
+            $(this).html('正在提交');
             var domain=$(".publ-need-sel-def").text();
             var describe=$(".uct-works-txt").val();
             var dateStart=$('#start').text();
@@ -203,6 +205,8 @@
                         layer.confirm('申请失败,请重新申请', {
                             btn: ['确定'] //按钮
                         });
+                        $(this).attr('disabled',false);
+                        $(this).html('提交审核');
                     }
                 }
             })
