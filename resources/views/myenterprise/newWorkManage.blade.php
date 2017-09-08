@@ -10,7 +10,7 @@
                 <a href="javascript:;" class="v-works-mlt-opt @if($type && $type == '定战略') active @endif">定战略</a>
             </div>
             <div class="v-supply-con"></div>
-            <a href="{{asset('uct_works/applyWork')}}" class="goto-work"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
+            <a href="javascript:;" id="applyVideo" class="goto-work"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
         </div>
         <ul class="v-manage-list-ul clearfix">
             @if($datas->lastpage())
@@ -44,7 +44,7 @@
                         <span class="v-supply-tip-top"><strong>升维网</strong>为<strong>企业</strong></span>
                         <div class="v-supply-tactic"><span>找资金</span><span>找技术</span><span>找市场</span><span>定战略</span></div>
                         <img src="{{asset('img/nolength.png')}}" class="nolength" />
-                        <a href="{{asset('uct_works/applyWork')}}" class="goto-work1"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
+                        <a href="javascript:;" id="applyVideo1" class="goto-work1"><i class="iconfont icon-woyaobanshi"></i>我要办事</a>
                     </div>
                 </li>
             @endif
@@ -85,5 +85,68 @@
             //阻止单击事件
             return false;
         }
+
+        $("#applyVideo").on("click",function(){
+            var userId=$.cookie('userId');
+            $.ajax({
+                url:"{{asset('IsMember')}}",
+                data:{"userId":userId},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        window.location.href="{{asset('uct_works/applyWork')}}"
+                    }else if(res['code']=="error"){
+                        layer.confirm('您尚未开通会员', {
+                            btn: ['开通','取消'], //按钮
+                        }, function(){
+                            window.location.href='{{asset('uct_member')}}';
+                        }, function(){
+                            layer.close();
+                        });
+                    }else{
+                        layer.confirm('您的会员已过期,请续费', {
+                            btn: ['续费','取消'], //按钮
+                        }, function(){
+                            window.location.href='{{asset('uct_member/member4/2')}}';
+                        }, function(){
+                            layer.close();
+                        });
+                    }
+                }
+            })
+
+        })
+        $("#applyVideo1").on("click",function(){
+            var userId=$.cookie('userId');
+            $.ajax({
+                url:"{{asset('IsMember')}}",
+                data:{"userId":userId},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        window.location.href="{{asset('uct_works/applyWork')}}"
+                    }else if(res['code']=="error"){
+                        layer.confirm('您尚未开通会员', {
+                            btn: ['开通','取消'], //按钮
+                        }, function(){
+                            window.location.href='{{asset('uct_member')}}';
+                        }, function(){
+                            layer.close();
+                        });
+                    }else{
+                        layer.confirm('您的会员已过期,请续费', {
+                            btn: ['续费','取消'], //按钮
+                        }, function(){
+                            window.location.href='{{asset('uct_member/member4/2')}}';
+                        }, function(){
+                            layer.close();
+                        });
+                    }
+                }
+            })
+
+        })
     </script>
 @endsection
