@@ -1,4 +1,4 @@
-s@extends("layouts.ucenter")
+@extends("layouts.ucenter")
 @section("content")
 <script type="text/javascript" src="{{asset('js/laydate/laydate.js')}}"></script>
 <div class="main">
