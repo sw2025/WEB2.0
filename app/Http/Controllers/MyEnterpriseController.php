@@ -178,56 +178,6 @@ class MyEnterpriseController extends Controller
      * @param Request $request
      * @return array
      */
-    /*public function entVerify (Request $request) {
-        if($request->ajax()){
-
-            $data = $request->only(['entid','brief','enterprisename','licenceimage','showimage','size','industry','address']);
-            $data['userid'] = session('userId');
-            $data['updated_at'] = date('Y-m-d H:i:s',time());
-
-            $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
-            if($info){
-                $verify = DB::table('t_u_enterpriseverify')->where('enterpriseid',$info->enterpriseid)->orderBy('id','desc')->first();
-                if(!empty($verify) && $verify->configid != 2){
-                    return ['msg' => '提交失败，您已经认证过了','icon' => 2];
-                } elseif (empty($verify)){
-                    $data['entid'] = $info->enterpriseid;
-                }
-            }
-
-            $verifyname = DB::table('t_u_enterprise')->where('enterprisename',$data['enterprisename'])->first();
-            if($verifyname){
-                if(empty($info) || $info->enterprisename != $data['enterprisename']){
-                    return ['msg' => '该企业已认证','icon' => 2];
-                }
-            }
-            if(!empty($data['entid'])){
-                $res = $data['entid'];
-                unset($data['entid']);
-                DB::table('t_u_enterprise')->where('enterpriseid',$res)->update($data);
-            } else {
-                unset($data['entid']);
-                $res = DB::table('t_u_enterprise')->insertGetId($data);
-            }
-
-            if($res){
-                $res2 = DB::table('t_u_enterpriseverify')->insert([
-                    'enterpriseid' => $res,
-                    'configid' => 1,
-                    'verifytime' => date('Y-m-d H:i:s',time()),
-                    'updated_at' => date('Y-m-d H:i:s',time())
-
-                ]);
-                if($res2){
-                    return ['msg' => '提交成功，进入审核阶段','icon' => 1,'id' => $res];
-                }
-                return ['msg' => '提交失败，请重新提交','icon' => 2];
-            } else {
-                return ['msg' => '提交失败，请重新提交','icon' => 2];
-            }
-        }
-        return ['msg' => '非法请求' ,'icon' => 2];
-    }*/
     public function entVerify (Request $request) {
         if($request->ajax()){
             $data = $request->only(['entid','brief','enterprisename','licenceimage','showimage','size','industry','address']);
@@ -311,7 +261,6 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public  function works(){
-
         $userId=session('userId');
         $type=isset($_GET['type'])?$_GET['type']:0;
         $typeWhere=($type!=0)?array("configid"=>$type):array();
@@ -500,8 +449,6 @@ class MyEnterpriseController extends Controller
                         $lastpid->step = $x;
                     }
                 }
-
-
                 //获取所有的日程
                 $task = DB::table('t_e_eventtask')->whereIn('epid',$epids)->where('state','<>','2')->orderBy('etid','desc')->get();
                 $remark = [];
@@ -520,7 +467,6 @@ class MyEnterpriseController extends Controller
         $view="works".$configId;
         return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","eventId"));
     }
-
 
     /**
      * 终止合作
@@ -554,10 +500,6 @@ class MyEnterpriseController extends Controller
         }
         return ['msg' => '操作失败','icon' => 2];
     }
-
-    /*public function getajaxpage (Request $request) {
-        $data = $request->input();
-    }*/
 
     /**办事的文件的上传
      * @param $proid
@@ -864,6 +806,7 @@ class MyEnterpriseController extends Controller
             ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
             ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
             ->whereIn('status.configid',[2,4])
+            ->where("ext.userid","<>",session('userId'))
             ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
         //获得用户的收藏
         $collectids = [];
@@ -1197,6 +1140,7 @@ class MyEnterpriseController extends Controller
             ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
             ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
             ->whereIn('status.configid',[2,4])
+            ->where("ext.userid","<>",session('userId'))
             ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
         //获得用户的收藏
         $collectids = [];
@@ -1291,17 +1235,37 @@ class MyEnterpriseController extends Controller
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
-
-            DB::table("t_c_consultresponse")->where("consultid",$_POST['consultId'])->whereIn("expertid",$expertIDS)->update([
-                "state"=>3,
-                "updated_at"=>date("Y-m-d H:i:s")
-            ]);
-            DB::table("t_c_consultresponse")->where("consultid",$_POST['consultId'])->whereNotIn("expertid",$expertIDS)->update([
-                "state"=>4,
-                "updated_at"=>date("Y-m-d H:i:s")
-            ]);
-            DB::table("t_c_consultverify")->where("consultid",$_POST['consultId'])->update([
+            $Ids=DB::table("T_C_CONSULTRESPONSE")
+                ->where("consultid",$_POST['consultId'])
+                ->whereRaw('T_C_CONSULTRESPONSE.id in (select max(id) from T_C_CONSULTRESPONSE group by  T_C_CONSULTRESPONSE.expertid)')
+                ->select('expertid')
+                ->get();
+            foreach ($Ids as $ID){
+                if(in_array($ID->expertid,$expertIDS)){
+                    DB::table("T_C_CONSULTRESPONSE")->insert([
+                        "consultid"=>$_POST['consultId'],
+                        "state"=>3,
+                        "expertid"=>$ID->expertid,
+                        "responsetime"=>date("Y-m-d H:i:s",time()),
+                        "created_at"=>date("Y-m-d H:i:s",time()),
+                        "updated_at"=>date("Y-m-d H:i:s")
+                    ]);
+                }else{
+                    DB::table("T_C_CONSULTRESPONSE")->insert([
+                        "consultid"=>$_POST['consultId'],
+                        "state"=>5,
+                        "expertid"=>$ID->expertid,
+                        "responsetime"=>date("Y-m-d H:i:s",time()),
+                        "created_at"=>date("Y-m-d H:i:s",time()),
+                        "updated_at"=>date("Y-m-d H:i:s")
+                    ]);
+                }
+            }
+            DB::table("t_c_consultverify")->insert([
+                "consultid"=>$_POST['consultId'],
                 "configid"=>6,
+                "verifytime"=>date("Y-m-d H:i:s",time()),
+                "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
             DB::commit();
@@ -1376,10 +1340,7 @@ class MyEnterpriseController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function manage(){
-        /*$resverify = $this->verifyEnterprise();
-        if($resverify['no'] != 4){
-            return redirect($resverify['url']);
-        }*/
+
         $userId=session('userId');
         $type=isset($_GET['domain'])?$_GET['domain']:false;
         switch ($type){
@@ -1440,11 +1401,11 @@ class MyEnterpriseController extends Controller
         return view("myenterprise.newWorkManage",compact("datas","type","counts",'type2'));
     }
 
+    /**新咨询
+     * @return Redirect
+     */
     public function manageVideo(){
-       /* $resverify = $this->verifyEnterprise();
-        if($resverify['no'] != 4){
-            return redirect($resverify['url']);
-        }*/
+
         $userId=session('userId');
         $type=isset($_GET['type'])?$_GET['type']:"全部";
         if($type){

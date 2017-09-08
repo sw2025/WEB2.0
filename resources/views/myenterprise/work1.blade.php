@@ -69,6 +69,7 @@
         if($.cookie("describe")){
             $(".uct-works-txt").val($.cookie("describe"));
         }
+        console.log($.cookie('domain'));
         if($.cookie("reselect")){
             $(".uct-works-expava").show();
             var expertChecked=$.cookie('reselect').split(",");
@@ -112,10 +113,11 @@
                     if(selected.length==5){
                         $(".uct-works-expava").show();
                     }else{
-                        var domain=$(".publ-need-sel-def").text();
-                        var describe=$(".uct-works-txt").val();
-                        $.cookie("domain",domain,{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("describe",describe,{expires:date,path:'/',domain:'sw2025.com'});
+                        var domains=$(".publ-need-sel-def").text();
+                        var describes=$(".uct-works-txt").val();
+                        $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                        console.log($.cookie("domain"));
                         window.location.href="{{asset('uct_works/reselect')}}"
                     }
                 }else{
@@ -125,6 +127,8 @@
         });
     })
     $(".submit-audit").on("click",function(){
+        $(this).attr('disabled',true);
+        $(this).html('正在提交');
         var domain=$(".publ-need-sel-def").text();
         var describe=$(".uct-works-txt").val();
         var isAppoint=$.cookie("isAppoint");
@@ -167,6 +171,8 @@
                     layer.confirm('申请失败,请重新申请', {
                         btn: ['确定'] //按钮
                     });
+                    $(this).attr('disabled',false);
+                    $(this).html('提交审核');
                 }
             }
         })
