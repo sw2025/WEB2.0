@@ -169,6 +169,9 @@ class ExpertController extends Controller
         //判断是否为ajax请求
         if($request->ajax()){
             $data = $request->only('action', 'supplyid');
+            if(empty($data['supplyid'])){
+                return 'error';
+            }
             $userid = session('userId');
             $where = ['expertid' => $data['supplyid'],'userid' => $userid];
             if($data['action'] == 'collect'){

@@ -139,6 +139,9 @@ class SupplyController extends Controller
         //判断是否为ajax请求
         if($request->ajax()){
             $data = $request->only('action', 'supplyid');
+            if(empty($data['supplyid'])){
+                return 'error';
+            }
             $userid = session('userId');
             $where = ['needid' => $data['supplyid'],'userid' => $userid];
             $verify = DB::table('view_needstatus')->where('needid',$data['supplyid'])->first()->configid;
