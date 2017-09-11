@@ -74,7 +74,7 @@
                                         @foreach($cate as $v)
                                             @if($v->level == 1)
                                                 <li>
-                                                    <a href="javascript:;">{{$v->domainname}}</a>
+                                                    <a href="javascript:;">{{$v->exdomainname}}</a>
                                                     <ul class="publ-sub-list">
                                                         @foreach($cate as $small)
                                                             @if($small->parentid == $v->domainid && $small->level == 2)
