@@ -23,6 +23,7 @@
 <!-- 登录 / end -->
 <script>
   $(".login-btn").on("click",function(){
+      var that=this;
       var reg1 = /^1[3578][0-9]{9}$/;//手机号
       var reg2 = /^[a-zA-Z0-9]{6,18}$/;//密码
       var phone=$(".user-tel-inp").val();
@@ -54,15 +55,15 @@
                       tips: [2, '#00a7ed'],
                       time: 4000
                   });
-                  $(this).attr('disabled',false);
-                  $(this).html('登录');
+                  $(that).removeAttr('disabled');
+                  $(that).html('登录');
               }else if(res['code']=="pwd"){
+                  $(that).removeAttr('disabled');
+                  $(that).html('登录');
                   layer.tips(res['msg'], '.user-pwd', {
                       tips: [2, '#00a7ed'],
                       time: 4000
                   });
-                  $(this).attr('disabled',false);
-                  $(this).html('登录');
               }else{
                   var date = new Date();
                   date.setTime(date.getTime() + (120 * 60 * 1000));

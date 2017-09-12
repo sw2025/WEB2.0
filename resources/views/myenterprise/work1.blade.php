@@ -117,21 +117,23 @@
                         var describes=$(".uct-works-txt").val();
                         $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
-                        console.log($.cookie("domain"));
                         window.location.href="{{asset('uct_works/reselect')}}"
                     }
                 }else{
+                    var domains=$(".publ-need-sel-def").text();
+                    var describes=$(".uct-works-txt").val();
+                    $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('uct_works/reselect')}}"
                 }
             }
         });
     })
     $(".submit-audit").on("click",function(){
-        $(this).attr('disabled',true);
-        $(this).html('正在提交');
+        var that=this;
         var domain=$(".publ-need-sel-def").text();
         var describe=$(".uct-works-txt").val();
-        var isAppoint=$.cookie("isAppoint");
+        var isAppoint=($.cookie("isAppoint"))?$.cookie("isAppoint"):1;
         var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
         if($("#random").hasClass('active')){
             var state=1;
@@ -152,6 +154,8 @@
             });
             return false;
         }
+        $(this).attr('disabled',true);
+        $(this).html('正在提交');
         $.ajax({
             url:"{{asset('saveEvent')}}",
             data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state},
@@ -171,8 +175,8 @@
                     layer.confirm('申请失败,请重新申请', {
                         btn: ['确定'] //按钮
                     });
-                    $(this).attr('disabled',false);
-                    $(this).html('提交审核');
+                    $(that).removeAttr('disabled');
+                    $(that).html('提交审核');
                 }
             }
         })

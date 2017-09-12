@@ -32,7 +32,7 @@
                                     <div class="datas-sel">
                                         <input class="enterprise-inp" type="text" id="entname" placeholder="请输入企业全称" value="@if(!empty($data)){{$data->enterprisename }}@endif"/>
                                     </div>
-                                    <div class="datas-sel zindex1">
+                                    <div class="datas-sel zindex4">
                                         <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def" id="size">@if(!empty($data)){{$data->size}} @else 不限@endif</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
@@ -44,7 +44,7 @@
                                             <li>10000人以上</li>
                                         </ul>
                                     </div>
-                                    <div class="datas-sel zindex2">
+                                    <div class="datas-sel zindex3">
                                         <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def" id="industry">@if(!empty($data)){{$data->industry }}@else 不限 @endif</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
@@ -63,7 +63,7 @@
                                             <li>农|林|牧|渔|其他</li>
                                         </ul>
                                     </div>
-                                    <div class="datas-sel zindex3">
+                                    <div class="datas-sel zindex2">
                                         <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def" id="address">{{$data->address or '全国'}}</a>
                                         <ul class="datas-list zone-list">
                                             <li>全国</li>
@@ -196,8 +196,8 @@
                             window.location = '{{url('uct_member/member2')}}'+'/'+data.id;
                         });
                     } else {
-                        $('#submit').attr('disabled',false);
-                        $(this).html('提交认证');
+                        $('#submit').removeAttr('disabled');
+                        $('#submit').html('提交认证');
                         layer.msg(data.msg,{'icon':data.icon,'time':2000});
 
                     }

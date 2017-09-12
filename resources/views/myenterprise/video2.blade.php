@@ -18,7 +18,7 @@
                         <div class="expert-certy-state">
                             <i class="iconfont icon-chenggong"></i>
                                     <span class="publish-need-blue">
-                                        <em>审核通过</em>IS REVIEWING
+                                        <em>等待推送</em>IS REVIEWING
                                     </span>
                         </div>
                         <div class="publish-need-sel">

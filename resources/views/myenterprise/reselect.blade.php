@@ -135,7 +135,7 @@
                         <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
                     </div>
                     <div class="reselect-btn-box">
-                        <a href="{{asset('uct_works/applyWork')}}" class="back-btn reselect-btn">返回</a>
+                        <a href="javascript:;" class="back-btn reselect-btn" id="return">返回</a>
                         <button type="button" class="select-btn reselect-btn">确定</button>
                     </div>
                 </div>
@@ -224,6 +224,10 @@
         }
         window.location.href="{{asset('uct_works/applyWork')}}";
     })
+        $("#return").on("click",function(){
+            $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
+            window.location.href="{{url('uct_works/applyWork')}}";
+        })
 
 </script>
 @endsection

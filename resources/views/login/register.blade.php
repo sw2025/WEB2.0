@@ -139,15 +139,15 @@
                         tips: [2, '#00a7ed'],
                         time: 4000
                     });
-                    $(this).attr('disabled',false);
-                    $(this).html('注册');
+                    $(that).removeAttr('disabled');
+                    $(that).html('注册');
                 }else if(res['code']=="code"){
                     layer.tips(res['msg'], '.user-test-inp', {
                         tips: [2, '#00a7ed'],
                         time: 4000
                     });
-                    $(this).attr('disabled',false);
-                    $(this).html('注册');
+                    $(that).removeAttr('disabled');
+                    $(that).html('注册');
                 }else{
                     window.location.href="{{asset('login')}}"
                 }

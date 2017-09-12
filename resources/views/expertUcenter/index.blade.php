@@ -25,7 +25,7 @@
                     <input type="text" name="nickName" id="nickName" class="inpName basic-nickname" value="{{$data->nickname}}" />
                 </p>
                 <div class="basic-photo basic-row clearfix">
-                    <div class="basic-rect"><img id="avatar" src="{{$data->avatar}}" /></div><!-- 上传的图片摆放位置 -->
+                    <div class="basic-rect"><img id="avatar" src="{{env('ImagePath').$data->avatar}}" /></div><!-- 上传的图片摆放位置 -->
                     <input type="hidden" id="myAvatar" name="myAvatar" value="{{$data->avatar}}">
                     <div class="basic-upload">
                             <span class="basic-span change-btn fileinput-button">
@@ -54,6 +54,7 @@
         });
     });
     $(".basic-btn").on("click",function(){
+        var that=this;
         $(this).attr('disabled',true);
         $(this).html('正在修改');
         var nickName=$("#nickName").val();
@@ -65,8 +66,8 @@
             dataType:"json",
             type:"POST",
             success:function(res){
-                $(this).attr('disabled',false);
-                $(this).html('修改');
+                $(that).removeAttr('disabled');
+                $(that).html('修改');
                 if(res['code']=="success"){
                     layer.msg("修改成功")
                 }else{

@@ -178,9 +178,10 @@
 .zone-list li{float: left;width:25%;}
 .expert-certy-state{text-align: center;}
 .expert-certy-blue{vertical-align: -2px;}
-.zindex1{position: relative;z-index: 3;}
+.zindex1{position: relative;z-index: 1;}
 .zindex2{position: relative;z-index: 2;}
-.zindex3{position: relative;z-index: 1;}
+.zindex3{position: relative;z-index: 3;}
+.zindex4{position: relative;z-index: 4;}
 .photo1{width: 158px;height: 128px;border: 1px solid #cccccc;border-radius: 3px;}
 .photo-upload{margin-top: 10px;}
 .photo-btn-box{width: 160px;height: 36px;line-height: 36px;overflow: hidden;background:#00a7ed;border-radius: 3px;text-align: center;color:#fff;position: relative;cursor: pointer;}
@@ -529,6 +530,6 @@
 #show{width:680px; margin:20px auto;}
 #facebox{background:#fff;}
 .chat-room-me-desc img,.chat-room-other-desc img{display: inline-block;}
-.z-index4{z-index: 4;}
+
 .htxt1 textarea{height:505px;}
 .new-txt{display: block;margin:20px auto 0;}
