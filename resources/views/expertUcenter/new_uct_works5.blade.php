@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="v-manage-link-rate">
                                     @foreach($configinfo as $k => $v)
-                                        <a href="@if(!empty($v->epid && $v->state == 2)) {{url('uct_works/detail',$eventId).'?step='.$v->epid}} @else {{url('uct_works/detail',$eventId)}} @endif"><span class="vprogress vprog{{$k+1}} @if((!empty($stmpstate->step) || $k == 0) && ($stmpstate->step >= $k+1)) vping @endif" title="{{$v->processname}}"></span></a>
+                                        <a href="@if(!empty($v->epid && $v->state == 2)) {{url('mywork/workDetail',$eventId).'?step='.$v->epid}} @else {{url('mywork/workDetail',$eventId)}} @endif"><span class="vprogress vprog{{$k+1}} @if((!empty($stmpstate->step) || $k == 0) && ($stmpstate->step >= $k+1)) vping @endif" title="{{$v->processname}}"></span></a>
                                     @endforeach
                                     {{--<span class="vprogress vprog2" title="专家提交资料目录"></span>
                                     <span class="vprogress vprog3" title="企业提交办事资料"></span>

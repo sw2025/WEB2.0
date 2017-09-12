@@ -381,6 +381,10 @@ class ExpertUcenterController extends Controller
                 if(!empty($stmpstate) && $stmpstate->state == 2){
                     $stmpstate->step = $stmpstate->step+1;
                 }
+                if(empty($stmpstate)){
+                    $stmpstate = (object)$stmpstate;
+                    $stmpstate->step = 1;
+                }
                 //若不存在状态 为1
                 if(empty($lastpid)){
                     $lastpid = (object)$lastpid;
