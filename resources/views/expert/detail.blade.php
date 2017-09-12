@@ -130,12 +130,11 @@
                             </span>
                         <div class="exp-rec-right">
                             <span class="exp-rec-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}@else 免费 @endif</em></span>
-                            <span class="exp-rec-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
+                            <span class="exp-rec-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$v->domain1}}</em></span>
                             <div class="exp-rec-lab">
-                                <span class="exp-lab-a">不知道</span>
-                                <span class="exp-lab-a">不知道</span>
-                                <span class="exp-lab-a">不知道</span>
-                                <span class="exp-lab-a">不知道</span>
+                                @foreach(explode(',',$v->domain2) as $v2)
+                                <span class="exp-lab-a">{{$v2}}</span>
+                                    @endforeach
                             </div>
                             <p class="exp-rec-brief">
                                 {{$v->brief}}

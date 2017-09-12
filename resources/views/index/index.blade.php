@@ -21,7 +21,7 @@
 <div class="section bg-white">
     <div class="container">
         <div class="supply-service-tit">升维网为企业提供的服务<span class="long-line"></span></div>
-        <div class="supply-service-entit">SERVICE PROVIDED BY SHENGWEI FOR ENTERPRISES</div>
+        <div class="supply-service-entit">{{--SERVICE PROVIDED BY SHENGWEI FOR ENTERPRISES--}}</div>
         <ul class="clearfix">
             <li class="item col-md-3"><a href="javascript:;">
                     <div class="item-con dif-hexagon1">
@@ -73,7 +73,7 @@
 <div class="section fix-bg">
     <div class="container">
         <div class="supply-service-tit supply-demand">专家资源库<span class="middle-line"></span></div>
-        <div class="supply-service-entit">EXPERT RESOURCE BASE</div>
+        <div class="supply-service-entit">{{--EXPERT RESOURCE BASE--}}</div>
         <div class="more-box"><a href="{{asset('expert')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
         <div class="row tab-resources">
             <div class="tabar clearfix" id="knowExpert">
@@ -97,7 +97,7 @@
 <div class="section">
     <div class="container clearfix">
         <div class="supply-service-tit supply-demand">需求信息<span class="short-line"></span></div>
-        <div class="supply-service-entit">SUPPLY AND DEMAND INFORMATION</div>
+        <div class="supply-service-entit">{{--SUPPLY AND DEMAND INFORMATION--}}</div>
         <div class="row supply-categary clearfix">
             <div class="col-md-6">
                 <div class="demands">
@@ -247,9 +247,57 @@
                 break;
             case "发布需求":
                     if($.cookie('role')=="专家"){
-                        window.location.href="{{asset('myneed/supplyNeed')}}";
+                        $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
+                            if(data.type == 3){
+                                layer.msg(data.msg,{'icon':data.icon});
+                            } else if(data.type == 2){
+                                layer.confirm(data.msg, {
+                                    btn: ['去认证','以企业身份发起需求'], //按钮
+                                    skin:'layui-layer-molv'
+                                }, function(){
+                                    window.location.href=data.url;
+                                }, function(){
+                                    enterpriseputneed();
+                                });
+                            } else if (data.type == 1){
+                                layer.confirm(data.msg+', 您是否以企业身份发起需求？', {
+                                    btn: ['是','否'], //按钮
+                                    skin:'layui-layer-molv'
+                                }, function(){
+                                    enterpriseputneed();
+                                }, function(){
+                                    layer.close();
+                                });
+                            } else {
+                                window.location = '{{asset('myneed/supplyNeed')}}';
+                            }
+                        });
                     }else{
-                        window.location.href="{{asset('uct_myneed/supplyNeed')}}";
+                        $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
+                            if(data.type == 3){
+                                layer.msg(data.msg,{'icon':data.icon});
+                            } else if(data.type == 2){
+                                layer.confirm(data.msg, {
+                                    btn: ['去认证','以专家身份发起需求'], //按钮
+                                    skin:'layui-layer-molv'
+                                }, function(){
+                                    window.location.href=data.url;
+                                }, function(){
+                                    expertputneed();
+                                });
+                            } else if (data.type == 1){
+                                layer.confirm(data.msg+', 您是否以专家身份发起需求？', {
+                                    btn: ['是','否'], //按钮
+                                    skin:'layui-layer-molv'
+                                }, function(){
+                                    expertputneed();
+                                }, function(){
+                                    layer.close();
+                                });
+                            } else {
+                                window.location = '{{asset('uct_myneed/supplyNeed')}}';
+                            }
+                        });
                     }
             break;
         }
@@ -259,5 +307,58 @@
         getPath(type);
     })
 
+
+    $('.item-con-hover span').on('click',function () {
+        if(!$.cookie('userId')){
+            window.location.href="/login"
+            return false;
+        } else {
+            window.location.href="{{asset('uct_works')}}";
+        }
+
+    });
+
+
+    function expertputneed () {
+        $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
+            if(data.type == 3){
+                layer.msg(data.msg,{'icon':data.icon});
+            } else if(data.type == 2){
+                layer.confirm(data.msg, {
+                    btn: ['去认证','暂不需要'], //按钮
+                    skin:'layui-layer-molv'
+                }, function(){
+                    window.location.href=data.url;
+                }, function(){
+                    layer.close();
+                });
+            } else if (data.type == 1){
+                layer.alert(data.msg,{'icon':data.icon});
+            } else {
+                window.location = '{{asset('myneed/supplyNeed')}}';
+            }
+        });
+    }
+
+    function enterpriseputneed () {
+        $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
+            if(data.type == 3){
+                layer.msg(data.msg,{'icon':data.icon});
+            } else if(data.type == 2){
+                layer.confirm(data.msg, {
+                    btn: ['去认证','暂不需要'], //按钮
+                    skin:'layui-layer-molv'
+                }, function(){
+                    window.location.href=data.url;
+                }, function(){
+                    layer.close();
+                });
+            } else if (data.type == 1){
+                layer.alert(data.msg,{'icon':data.icon});
+            } else {
+                window.location = '{{asset('uct_myneed/supplyNeed')}}';
+            }
+        });
+    }
 </script>
 @endsection

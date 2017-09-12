@@ -247,8 +247,21 @@ class MyEnterpriseController extends Controller
     /**会员认证3
      * @return mixed
      */
-    public  function member3(){
-        return view("myenterprise.member3");
+    public  function member3($entid){
+        $data = DB::table('t_u_enterprise')->where(['enterpriseid' => $entid,'userid' => session('userId')])->first();
+        $member = DB::table('t_u_memberright')->get();
+        if(!$data){
+            return redirect('/');
+        }
+        $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first()->configid;
+        if($configid == 1){
+            return redirect('uct_member');
+        } elseif ($configid == 4){
+            return redirect('uct_member/member4/'.$entid);
+        } elseif ($configid == 2){
+            return redirect('uct_member');
+        }
+        return view("myenterprise.member3",compact('member'));
     }
     /**会员认证4
      * @return mixed
@@ -585,12 +598,13 @@ class MyEnterpriseController extends Controller
             $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
             $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
             if($starttype){
-                if($expertid != $eventexpertid){
-                    return ['error' => '该资料应由专家确定','icon' => 2];
-                }
-            } else{
+
                 if($eventuserid != session('userId')){
                     return ['error' => '该资料应由企业确定','icon' => 2];
+                }
+            } else{
+                if($expertid != $eventexpertid){
+                    return ['error' => '该资料应由专家确定','icon' => 2];
                 }
             }
             $res = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->update(['state' => 2]);
@@ -1341,8 +1355,10 @@ class MyEnterpriseController extends Controller
      */
     public function manage(){
         $userId=session('userId');
+
         $type=isset($_GET['domain'])?$_GET['domain']:"全部";
         $typeWhere=($type!="全部")?array("t_e_event.domain1"=>$type):array();
+
             $result=DB::table("t_e_event")
             ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
             ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")

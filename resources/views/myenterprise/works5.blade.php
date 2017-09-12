@@ -34,7 +34,7 @@
                     <div class="uct-works-exps">
                         <ul class="uct-works-exps-list">
                             @foreach($selExperts as $selExpert)
-                                <li id="{{$selExpert->expertid}}"><a href="javascript:;"><img src="{{asset($selExpert->showimage)}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;">{{$selExpert->expertname}}</a></li>
+                                <li id="{{$selExpert->expertid}}"><a href="javascript:;"><img src="{{env('ImagePath').$selExpert->showimage}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;">{{$selExpert->expertname}}</a></li>
                             @endforeach
                         </ul>
                         <button type="button" class="test-btn">确认</button>

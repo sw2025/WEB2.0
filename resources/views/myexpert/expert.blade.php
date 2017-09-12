@@ -40,6 +40,7 @@
                             <div class="datas-lt-enter">
                                 <div class="datas-sel zindex4">
                                     <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category" class="datas-sel-def">专家</a>
+
                                     <ul class="datas-list">
                                         <li>专家</li>
                                         <li>机构</li>
@@ -48,10 +49,11 @@
                                 </div>
                                 <div class="datas-sel">
                                     <span class="datas-sel-cap">输入姓名</span>
-                                    <input class="datas-sel-name" type="text" placeholder="" />
-                                </div>
+                                    <input class="datas-sel-name" type="text" placeholder="" value="@if(!empty($result)){{$result->expertname }}@else @endif"/>
+
                                 <div class="datas-sel zindex3">
                                     <span class="datas-sel-cap">擅长行业</span><a href="javascript:;" class="datas-sel-def" id="industrys"></a>
+
                                     <ul class="datas-list">
                                         <li>IT|通信|电子|互联网</li>
                                         <li>金融业</li>
@@ -68,13 +70,15 @@
                                         <li>农|林|牧|渔|其他</li>
                                     </ul>
                                 </div>
+
                                 <div class="publish-need-sel datas-newchange zindex2">
                                     <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
+
                                     <ul class="publish-need-list">
                                         @foreach($cate as $v)
                                             @if($v->level == 1)
                                                 <li>
-                                                    <a href="javascript:;">{{$v->domainname}}</a>
+                                                    <a href="javascript:;">{{$v->exdomainname}}</a>
                                                     <ul class="publ-sub-list">
                                                         @foreach($cate as $small)
                                                             @if($small->parentid == $v->domainid && $small->level == 2)
@@ -87,8 +91,10 @@
                                         @endforeach
                                     </ul>
                                 </div>
+
                                 <div class="datas-sel zindex1">
                                     <span class="datas-sel-cap">地区</span><a href="javascript:;" id="address" class="datas-sel-def">全国</a>
+
 
                                     <ul class="datas-list zone-list">
                                         <li>全国</li>
@@ -131,31 +137,29 @@
                             </div>
                             <div class="datas-upload-box clearfix">
                                 <div class="datas-upload-lt">
-                                    <img src="img/photo1.jpg" class="photo1" id="avatar1"/>
-                                    <input type="hidden" id="myAvatar1" name="myAvatar1" >
+                                    <img src="@if(!empty($result)){{env('ImagePath').$result->licenceimage}}@else img/photo1.jpg @endif" class="photo1" id="avatar1"/>
                                     <div class="photo-upload">
                                         <div class="photo-btn-box fileinput-button">
-                                            <span class="photo-btn-tip">上传营业执照</span>
-                                            <input id="photo1" type="file" name="files[]" data-url="{{asset('upload')}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                            <span class="photo-btn-tip">上传专家执照</span>
+                                            <input id="photo1" type="file" name="files[]" data-url="{{asset('upload')}}" index="@if(!empty($result)){{$result->licenceimage}}@endif" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                                         </div>
-                                        <p class="datas-lt-explain">营业执照仅做认证用，不用做其它用途</p>
+                                        <p class="datas-lt-explain">专家执照仅做认证用，不用做其它用途</p>
                                     </div>
                                 </div>
                                 <div class="datas-upload-rt">
-                                    <img src="img/photo2.jpg" id="avatar2" class="photo1" />
-                                    <input type="hidden" id="myAvatar2" name="myAvatar2" ">
+                                    <img src="@if(!empty($result)){{env('ImagePath').$result->showimage}}@else img/photo2.jpg @endif" id="avatar2" class="photo1" />
                                     <div class="photo-upload">
                                         <div class="photo-btn-box fileinput-button">
-                                            <span class="photo-btn-tip">上传宣传照片</span>
-                                            <input id="photo2" type="file" name="files[]" data-url="{{asset('upload')}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
+                                            <span class="photo-btn-tip">上传专家照片</span>
+                                            <input id="photo2" type="file" name="files[]" data-url="{{asset('upload')}}" multiple="" index="@if(!empty($result)){{$result->showimage}}@endif" accept="image/png, image/gif, image/jpg, image/jpeg">
                                         </div>
-                                        <p class="datas-lt-explain">宣传照片用于展示企业，请选择企业Logo或展现企业风采的照片</p>
+                                        <p class="datas-lt-explain">专家照片用于展示专家，请选择能展现专家风采的照片</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="datas-rt htxt1">
-                            <textarea onkeyup="checkLength(this);" placeholder="请输入专家描述" id="brief" cols="30" rows="10"></textarea>
+                            <textarea onkeyup="checkLength(this);" placeholder="请输入专家描述" id="brief" cols="30" rows="10">@if(!empty($result)){{$result->brief}}@endif</textarea>
                         </div>
                     </div>
                     <div class="bottom-btn"><button class="test-btn submit-audit" type="button">提交审核</button></div>
@@ -224,7 +228,7 @@
                     $.each(data.result.files, function (index, file) {
                         // console.log(file.name);
                         $("#avatar1").attr('src','{{env('ImagePath')}}/images/'+file.name).show();
-                        $("#myAvatar1").val('/images/'+file.name);
+                        $('#photo1').attr('index','/images/'+file.name);
                     });
                 }
             });
@@ -239,7 +243,7 @@
                     $.each(data.result.files, function (index, file) {
                         // console.log(file.name);
                         $("#avatar2").attr('src','{{env('ImagePath')}}/images/'+file.name).show();
-                        $("#myAvatar2").val('/images/'+file.name);
+                        $('#photo2').attr('index','/images/'+file.name);
                     });
                 }
             });
@@ -254,8 +258,8 @@
                 var industry=$('#industry').html();
                 var industrys=$("#industrys").html();
                 var address=$('#address').html();
-                var photo1=$('#myAvatar1').val();
-                var photo2=$('#myAvatar2').val();
+                var photo1=$('#photo1').attr('index');
+                var photo2=$('#photo2').attr('index');
                 var brief=$('#brief').val();
                 console.log(name=='' || photo1=='' || industry=='请选择');
                 if(name=='' || photo1=='' || industry=='请选择'  || industrys=='' || brief==''){
@@ -280,8 +284,6 @@
                         }
                     })
                 }
-
-
 
             });
         })

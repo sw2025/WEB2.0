@@ -42,7 +42,7 @@
         @foreach($cate as $big)
             @if($big->level == 1)
                 <div class="serve-field-list">
-                    <a href="javascript:;" class="serve-field-list-deft @if(isset($supply) && $supply[0] == $big->domainname) active @endif">{{$big->domainname}}</a>
+                    <a href="javascript:;" class="serve-field-list-deft @if(isset($supply) && $supply[0] == $big->exdomainname) active @endif">{{$big->exdomainname}}</a>
                     <ul class="serve-field-list-show" >
                         @foreach($cate as $small)
                             @if($small->level == 2 && $small->parentid == $big->domainid)
