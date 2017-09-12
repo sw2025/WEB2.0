@@ -107,7 +107,7 @@
 .aside .icon-renzheng1,.aside .icon-shoufeixitong{font-size: 24px;}
 /***********侧边栏 end***********/
 /*.main{float: right;width:80.83333%;overflow-x:hidden;}*/
-.main-top{padding-top: 38px;padding-bottom: 18px;color:#333;font-size: 16px;}
+.main-top{padding: 18px;color:#333;font-size: 16px;}
 /***********v2==>>侧边栏 start***********/
 .ucenter{padding:95px 0 35px;min-height: 686px;}
 .wrap{min-width: 970px;max-width: 1200px;margin:0 auto;position: relative;}

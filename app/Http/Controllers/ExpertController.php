@@ -108,7 +108,6 @@ class ExpertController extends Controller
         if(session('userId')){
             $collectids = DB::table('t_u_collectexpert')->where(['userid' => session('userId'),'remark' => 1])->lists('expertid');
         }
-
         //查询留言的信息
         $message = DB::table('t_u_messagetoexpert as msg')
             ->leftJoin('view_userrole as view','view.userid', '=','msg.userid')

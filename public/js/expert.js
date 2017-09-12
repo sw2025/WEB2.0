@@ -174,8 +174,8 @@ function fnc_collect (supplyid,action,obj) {
 
     $.post('/dealextcollect',{'supplyid':supplyid,'action':action},function (data) {
         if(data == 'nologin'){
-            layer.confirm('您还未登陆是否去登陆？', {
-                btn: ['去登陆','暂不需要'], //按钮
+            layer.confirm('您还未登陆是否去登录？', {
+                btn: ['去登录','暂不需要'], //按钮
                 skin:'layui-layer-molv'
             }, function(){
                 window.location.href='/login';
@@ -221,8 +221,8 @@ function replymessage (datas,obj) {
                 window.location = url;
             });
         }else if(data == 'nologin') {
-            layer.confirm('您还未登陆是否去登陆？', {
-                btn: ['去登陆','暂不需要'], //按钮
+            layer.confirm('您还未登陆是否去登录？', {
+                btn: ['去登录','暂不需要'], //按钮
                 skin:'layui-layer-molv'
             }, function(){
                 window.location.href='/login';

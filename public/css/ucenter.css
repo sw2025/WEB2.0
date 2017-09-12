@@ -313,8 +313,8 @@
 .myexpert-lab{overflow: hidden;padding-bottom: 10px;}
 .myexp-lab-a{float: left; display: block; border: 1px solid #ccc; color: #999; border-radius: 3px; margin-right: 4px; margin-bottom: 2px; white-space: nowrap; font-size: 12px; padding: 0 3px;}
 .myexpert-brief{position: relative;}
-.myexp-brief-desc{padding-top: 10px;text-align: justify;text-indent: 2em;padding-bottom: 32px;border-bottom: 2px solid #ccc;}
-.myexpert-brief .collect{position: absolute;bottom: 12px;right: 0px;color: #c4c4c4;}
+.myexp-brief-desc{padding: 10px 50px 32px;text-align: justify;text-indent: 2em;border-bottom: 2px solid #ccc;}
+.myexpert-brief .collect{position: absolute;bottom: 12px;right: 50px;color: #c4c4c4;}
 .myexpert-brief .red{color: #e00909;}
 /***********专家资源详情 end***********/
 /***********我的办事 start***********/

@@ -1,4 +1,4 @@
-.uct-list-filter{max-width: initial;min-width:auto;border: none;border-radius: 5px;margin:0 22px;overflow: hidden;}
+.uct-list-filter{max-width: initial;min-width:auto;border: none;border-radius: 5px;margin:0 22px;/*overflow: hidden;*/}
 .main-right{background:none;border: none;}
 .main-right .supply-list{margin:0;}
 .supply-list li{padding:0 22px;}
