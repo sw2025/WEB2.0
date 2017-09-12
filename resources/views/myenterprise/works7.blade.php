@@ -19,7 +19,7 @@
                     <div class="expert-certy-state">
                         <i class="iconfont icon-chenggong"></i>
                                 <span class="expert-certy-blue">
-                                    <em>完成</em>COMPLETE
+                                    <em>@if(!empty($selExperts[0]->comment)) 完成 @else 请给为您办事的专家做出评价 @endif</em>COMPLETE
                                 </span>
                     </div>
                     @foreach($selExperts as $selExpert)
@@ -30,39 +30,41 @@
                                 <span class="new-add-exp-name">{{$selExpert->expertname}}</span>
                             </div>
                             <div id="{{$selExpert->expertid}}" class="rating"></div>
-                            <a href="javascript:;" class="rate-btn">评价</a>
                                 @if(!empty($selExpert->comment))
                                     <div class="rate-box" style="display: block">
-                                        <input type="text" class="rate-inp" value="{{$selExpert->comment}}" readonly/>
+                                      {{--<input type="text" class="rate-inp" value="{{$selExpert->comment}}" readonly/>--}}
+                                        <em>评价：</em>{{--<input type="text" class="rate-inp" style="width:290px;"/>--}}
+                                        <textarea class="rate-inp" style="width:270px;height: 80px;line-height: 20px">{{$selExpert->comment}}</textarea><br />
                                         <button type="button" index="{{$selExpert->expertid}}" class="rate-confirm-btn" style="display: none">确定</button>
                                     </div>
                                 @else
-                                    <div class="rate-box">
-                                        <input type="text" class="rate-inp" />
-                                        <button type="button" index="{{$selExpert->expertid}}" class="rate-confirm-btn">确定</button>
+                                    <div class="rate-box dib">
+                                        <em>评价：</em>{{--<input type="text" class="rate-inp" style="width:290px;"/>--}}
+                                        <textarea class="rate-inp" style="width:270px;height: 80px;line-height: 20px"></textarea><br />
+                                        <button type="button" index="{{$selExpert->expertid}}" class="rate-confirm-btn" style="height:34px;width:208px;margin-top:21px;">确定</button>
                                     </div>
                                 @endif
 
                          </div>
                     </div>
                     @endforeach
-                    @if(empty($selExpert->comment))
+                    {{--@if(empty($selExpert->comment))
                     <div class="uct-works-con">
                         <button class="test-btn rate-star-btn" type="button">确认</button>
                     </div>
-                        @endif
+                        @endif--}}
                 </div>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         $(function(){
-            $('.rate-btn').click(function() {
+            /*$('.rate-btn').click(function() {
                 $(this).next('.rate-box').toggleClass('dib');
-            });
+            });*/
 
             $(".rate-confirm-btn").on("click",function(){
-                var content=$(this).prev().val();
+                var content=$(this).siblings('textarea').val();
                 var expertId= $(this).attr("index");
                 var eventId=$("#event").val();
                 $.ajax({
@@ -75,6 +77,7 @@
                            layer.msg("评论成功")
                             $(".rate-confirm-btn").hide();
                             $(".rate-star-btn").hide();
+                            $('.expert-certy-blue').text('完成');
                         }else{
                             layer.confirm('评论失败', {
                                 btn: ['确定'] //按钮

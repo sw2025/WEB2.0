@@ -21,29 +21,45 @@
                         <div class="member-box">
                             <div class="member-box-type member-type-differ clearfix">
                                 <b class="member-type-cap">会员类别</b>
-                                <label class="member-type-lab member-types focus" for="leib1" data-type="1">
-                                    <input id="leib1" checked="checked" name="type" type="radio" />
-                                    <span class="define-rad"></span><span class="member-opt">普通</span>
-                                </label>
-                                <label class="member-type-lab member-types" for="leib2" data-type="2">
+                                @foreach($member as $k => $v)
+                                    @if($v->typename == 'VIP会员' &&  $k>1)
+
+                                    @else
+                                        <label class="member-type-lab member-types @if(!$k) focus @endif" for="leib{{$k+1}}" data-type="{{$k+1}}">
+                                            <input id="leib{{$k+1}}" checked="checked" name="type" type="radio" />
+                                            <span class="define-rad"></span><span class="member-opt">{{$v->typename}}</span>
+                                        </label>
+                                    @endif
+
+                                @endforeach
+                               {{-- <label class="member-type-lab member-types" for="leib2" data-type="2">
                                     <input id="leib2" name="type" type="radio" />
                                     <span class="define-rad"></span><span class="member-opt">VIP</span>
-                                </label>
+                                </label>--}}
                             </div>
                             <div class="member-box-type member-times-limit clearfix">
                                 <b class="member-type-cap">时间期限</b>
-                                <label class="member-type-lab member-times focus" for="limit1" data-type="3">
-                                    <input id="limit1" checked="checked" name="time" type="radio" />
-                                    <span class="define-rad"></span><span class="member-opt">一年</span>
+                                @foreach($member as $k => $v)
+                                    @if($v->typename != '普通会员')
+                                <label class="member-type-lab member-times @if(!$k) @endif" for="limit{{$k+1}}" data-type="{{$k+3}}" cost="{{$v->cost}}">
+                                    <input id="limit{{$k+1}}" checked="checked" name="time" type="radio" />
+                                    <span class="define-rad"></span><span class="member-opt">{{$v->termtime}}年</span>
                                 </label>
-                                <label class="member-type-lab member-times" for="limit2" data-type="4">
+                                    @endif
+
+                                @endforeach
+                                <label class="member-type-lab member-times focus" for="limit4" data-type="6" cost="0" id="wuxianhzi">
+                                    <input id="limit4" checked="checked" name="time" type="radio" />
+                                    <span class="define-rad"></span><span class="member-opt">无限制(只限普通会员)</span>
+                                </label>
+                                {{--<label class="member-type-lab member-times" for="limit2" data-type="4">
                                     <input id="limit2" name="time" type="radio" />
                                     <span class="define-rad"></span><span class="member-opt">两年</span>
-                                </label>
+                                </label>--}}
                             </div>
                             <div class="member-box-type clearfix">
                                 <b class="member-type-cap">支付费用</b>
-                                <strong class="member-fees">￥<span class="pay-money-num">1000</span></strong>
+                                <strong class="member-fees">￥<span class="pay-money-num">0</span></strong>
                             </div>
                             <div class="member-box-type member-payways clearfix">
                                 <b class="member-type-cap">支付方式</b>
@@ -75,6 +91,13 @@
 
         $('.member-types').click(function(event) {
             var $focus = $('.member-times-limit .focus');
+            if($(this).text().trim() == '普通会员'){
+                $focus.removeClass('focus');
+                $('#wuxianhzi').addClass('focus');
+            } else if($(this).text().trim() == 'VIP会员') {
+                $('.member-times').eq(0).addClass('focus');
+                $('#wuxianhzi').removeClass('focus');
+            }
             if($(this).data('type') == "1"){
                 if($focus.data('type') == "3"){
                     $('.pay-money-num').html('1000');
@@ -91,10 +114,25 @@
         });
 
         $('.member-times').click(function(event) {
+            var time = $(this).attr('cost');
             var $focus = $('.member-type-differ .focus');
-            if($(this).data('type') == "3"){
+            if($focus.text().trim() == '普通会员'){
+                layer.msg('普通会员没有日期限制');
+                $(this).removeClass('focus');
+                $('#wuxianhzi').addClass('focus');
+                return false;
+            } else {
+                if(time == 0){
+                    layer.msg('VIP会员有日期限制');
+                    $(this).removeClass('focus');
+                    $('.member-times').eq(0).addClass('focus');
+                    return false;
+                }
+            }
+            $('.pay-money-num').html(time);
+           /* if($(this).data('type') == "3"){
                 if($focus.data('type') == "1"){
-                    $('.pay-money-num').html('1000');
+
                 }else if($focus.data('type') == "2"){
                     $('.pay-money-num').html('3000');
                 }
@@ -104,7 +142,7 @@
                 }else if($focus.data('type') == "2"){
                     $('.pay-money-num').html('6000');
                 }
-            }
+            }*/
         });
     })
 </script>

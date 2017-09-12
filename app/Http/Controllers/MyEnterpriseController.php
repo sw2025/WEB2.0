@@ -247,8 +247,21 @@ class MyEnterpriseController extends Controller
     /**会员认证3
      * @return mixed
      */
-    public  function member3(){
-        return view("myenterprise.member3");
+    public  function member3($entid){
+        $data = DB::table('t_u_enterprise')->where(['enterpriseid' => $entid,'userid' => session('userId')])->first();
+        $member = DB::table('t_u_memberright')->get();
+        if(!$data){
+            return redirect('/');
+        }
+        $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first()->configid;
+        if($configid == 1){
+            return redirect('uct_member');
+        } elseif ($configid == 4){
+            return redirect('uct_member/member4/'.$entid);
+        } elseif ($configid == 2){
+            return redirect('uct_member');
+        }
+        return view("myenterprise.member3",compact('member'));
     }
     /**会员认证4
      * @return mixed
@@ -585,12 +598,13 @@ class MyEnterpriseController extends Controller
             $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
             $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
             if($starttype){
-                if($expertid != $eventexpertid){
-                    return ['error' => '该资料应由专家确定','icon' => 2];
-                }
-            } else{
+
                 if($eventuserid != session('userId')){
                     return ['error' => '该资料应由企业确定','icon' => 2];
+                }
+            } else{
+                if($expertid != $eventexpertid){
+                    return ['error' => '该资料应由专家确定','icon' => 2];
                 }
             }
             $res = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->update(['state' => 2]);
@@ -1345,16 +1359,20 @@ class MyEnterpriseController extends Controller
         $type=isset($_GET['domain'])?$_GET['domain']:false;
         switch ($type){
             case '找资金':
-                $type2 = '投融资';
+                //$type2 = '投融资';
+                $type2 = '找资金';
                 break;
             case '找技术':
-                $type2 = '产品升级换代';
+                //$type2 = '产品升级换代';
+                $type2 = '找技术';
                 break;
             case '定战略':
-                $type2 = '战略定位';
+                //$type2 = '战略定位';
+                $type2 = '定战略';
                 break;
             case '找市场':
-                $type2 = '市场拓展';
+                //$type2 = '市场拓展';
+                $type2 = '找市场';
                 break;
             default :
                 $type2 = 0;
