@@ -1354,31 +1354,11 @@ class MyEnterpriseController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function manage(){
-
         $userId=session('userId');
-        $type=isset($_GET['domain'])?$_GET['domain']:false;
-        switch ($type){
-            case '找资金':
-                //$type2 = '投融资';
-                $type2 = '找资金';
-                break;
-            case '找技术':
-                //$type2 = '产品升级换代';
-                $type2 = '找技术';
-                break;
-            case '定战略':
-                //$type2 = '战略定位';
-                $type2 = '定战略';
-                break;
-            case '找市场':
-                //$type2 = '市场拓展';
-                $type2 = '找市场';
-                break;
-            default :
-                $type2 = 0;
-                break;
-        }
-        $typeWhere=($type2)?array("t_e_event.domain1"=>$type2):array();
+
+        $type=isset($_GET['domain'])?$_GET['domain']:"全部";
+        $typeWhere=($type!="全部")?array("t_e_event.domain1"=>$type):array();
+
             $result=DB::table("t_e_event")
             ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
             ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
@@ -1416,7 +1396,8 @@ class MyEnterpriseController extends Controller
             $configname = DB::table('t_e_eventverifyconfig')->where('configid',$data->configid)->first()->name;
             $data->configname = $configname;
         }
-        return view("myenterprise.newWorkManage",compact("datas","type","counts",'type2'));
+        $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
+        return view("myenterprise.newWorkManage",compact("datas","type","counts","domains"));
     }
 
     /**新咨询
@@ -1426,30 +1407,7 @@ class MyEnterpriseController extends Controller
 
         $userId=session('userId');
         $type=isset($_GET['type'])?$_GET['type']:"全部";
-        if($type){
-            switch ($type){
-                case '找资金':
-                    $type2 = '投融资';
-                    break;
-                case '找技术':
-                    $type2 = '产品升级换代';
-                    break;
-                case '定战略':
-                    $type2 = '战略定位';
-                    break;
-                case '找市场':
-                    $type2 = '市场拓展';
-                    break;
-                default :
-                    $type2 = 0;
-                    break;
-            }
-        }else{
-            $type = '全部';
-            $type2 = 0;
-
-        }
-        $typeWhere=($type2)?array("t_c_consult.domain1"=>$type2):array();
+        $typeWhere=($type!="全部")?array("t_c_consult.domain1"=>$type):array();
         $result=DB::table("t_c_consult")
             ->leftJoin("t_c_consultverify","t_c_consultverify.consultid","=","t_c_consult.consultid")
             ->select("t_c_consult.consultid",'t_c_consultverify.configid',"t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief")
@@ -1487,7 +1445,8 @@ class MyEnterpriseController extends Controller
             $configname = DB::table('t_c_consultverifyconfig')->where('configid',$data->configid)->first()->name;
             $data->configname = $configname;
         }
-        return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2'));
+        $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
+        return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2','domains'));
     }
 
 }

@@ -24,7 +24,7 @@
                                     <div class="datas-sel">
                                         <input class="enterprise-inp" readonly="readonly" type="text" value="{{$data->enterprisename}}" placeholder="请输入企业全称" />
                                     </div>
-                                    <div class="datas-sel zindex1">
+                                    <div class="datas-sel zindex4">
                                         <span class="datas-sel-cap">企业规模</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->size}}</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
@@ -36,7 +36,7 @@
                                             <li>10000人以上</li>
                                         </ul>
                                     </div>
-                                    <div class="datas-sel zindex2">
+                                    <div class="datas-sel zindex3">
                                         <span class="datas-sel-cap">所在行业</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->industry}}</a>
                                         <ul class="datas-list">
                                             <li>不限</li>
@@ -55,7 +55,7 @@
                                             <li>农|林|牧|渔|其他</li>
                                         </ul>
                                     </div>
-                                    <div class="datas-sel zindex3">
+                                    <div class="datas-sel zindex2">
                                         <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->address}}</a>
                                         <ul class="datas-list zone-list">
                                             <li>全国</li>

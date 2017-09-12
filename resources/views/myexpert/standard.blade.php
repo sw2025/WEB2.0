@@ -45,8 +45,6 @@
     <script>
         $(function(){
             $('#submit').click(function () {
-
-
                 if(document.getElementById("rad4").checked)
                 {
                     var fee=$('#money').val();

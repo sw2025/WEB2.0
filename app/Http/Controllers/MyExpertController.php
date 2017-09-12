@@ -459,15 +459,39 @@ class MyExpertController extends Controller
     public function standard(Request $request){
 
         $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
-        $fee=DB::table('t_u_expertfee')->where('expertid',$expertid)->orderBy('expertid', 'desc')->first()->fee;
-
+        $fees=DB::table('t_u_expertfee')->where('expertid',$expertid)->orderBy('expertid', 'desc')->first();
+        if($fees){
+            $fee=$fees->fee;
+        }else{
+            $fee=0;
+        }
         if($request->ajax()){
             $data = $request->input();
             //dd($expertid);
+            $count= DB::table('t_u_expertfee')->where('expertid',$expertid)->count();
+            if($data['fee']==0){
+                $state=0;
+            }else{
+                $state=1;
+            }
+            if($count){
+                $result = DB::table('t_u_expertfee')
+                    ->where('expertid',$expertid)
+                    ->update([
+                        'fee' => $data['fee'],
+                        'state'=>$state,
+                    ]);
+            }else{
+                $result = DB::table('t_u_expertfee')->insert([
+                    "expertid"=>$expertid,
+                    "fee" => $data['fee'],
+                    "state"=>$state,
+                    "created_at"=>date("Y-m-d H:i:s",time()),
+                    "updated_at"=>date("Y-m-d H:i:s",time())
+                ]);
 
-            $result = DB::table('t_u_expertfee')
-                ->where('expertid',$expertid)
-                ->update(['fee' => $data['fee']]);
+            }
+
 
             //dd($result);
 

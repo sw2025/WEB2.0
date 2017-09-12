@@ -98,10 +98,10 @@
                                 </div>
                                 <div class="datas-upload-box clearfix">
                                     <div class="datas-upload-lt">
-                                        <img src="{{$data->licenceimage}}" class="photo1" />
+                                        <img src="{{env('ImagePath').$data->licenceimage}}" class="photo1" />
                                     </div>
                                     <div class="datas-upload-rt">
-                                        <img src="{{$data->showimage}}" class="photo1" />
+                                        <img src="{{env('ImagePath').$data->showimage}}" class="photo1" />
                                     </div>
                                 </div>
                                 <div class="expert-certy-state success-state">
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                             <div class="datas-rt">
-                                <textarea placeholder="请输入企业简介（30-500字）" readonly="readonly" cols="30" rows="10">{{$data->brief}}    b </textarea>
+                                <textarea placeholder="请输入企业简介（30-500字）" readonly="readonly" cols="30" rows="10">{{$data->brief}}</textarea>
                             </div>
                         </div>
                         <div class="bottom-btn"><button class="test-btn renew-btn" type="button">续费</button></div>

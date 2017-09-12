@@ -235,11 +235,11 @@ class PublicController extends Controller
         $enterpriseId=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("enterpriseid");
         $members=DB::table("t_u_enterprisemember")->where("enterpriseid",$enterpriseId)->get();
         if($members){
-            $currentTime=time();
+            $currentTime=date('Y-m-d H:i:s');
             foreach ($members as $member){
-                $endTime=strtotime($member->endtime);
+                $endTime=$member->endtime;
             }
-            if($currentTime<$endTime){
+            if(strtotime($currentTime)<strtotime($endTime)){
                 $result['code']="success";
             }else{
                 $result['code']="expried";

@@ -38,8 +38,9 @@
                     <div class="datas">
                         <div class="datas-lt">
                             <div class="datas-lt-enter">
-                                <div class="datas-sel zindex1">
-                                    <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category" class="datas-sel-def">@if(!empty($result)){{$result->category}}@else 专家@endif</a>
+                                <div class="datas-sel zindex4">
+                                    <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category" class="datas-sel-def">专家</a>
+
                                     <ul class="datas-list">
                                         <li>专家</li>
                                         <li>机构</li>
@@ -49,9 +50,10 @@
                                 <div class="datas-sel">
                                     <span class="datas-sel-cap">输入姓名</span>
                                     <input class="datas-sel-name" type="text" placeholder="" value="@if(!empty($result)){{$result->expertname }}@else @endif"/>
-                                </div>
-                                <div class="datas-sel z-index4">
-                                    <span class="datas-sel-cap">擅长行业</span><a href="javascript:;" class="datas-sel-def" id="industrys">@if(!empty($result)){{$result->industry }}@else 不限 @endif</a>
+
+                                <div class="datas-sel zindex3">
+                                    <span class="datas-sel-cap">擅长行业</span><a href="javascript:;" class="datas-sel-def" id="industrys"></a>
+
                                     <ul class="datas-list">
                                         <li>IT|通信|电子|互联网</li>
                                         <li>金融业</li>
@@ -68,8 +70,10 @@
                                         <li>农|林|牧|渔|其他</li>
                                     </ul>
                                 </div>
-                                <div class="publish-need-sel datas-newchange zindex1">
-                                    <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($result)) {{$result->domain1}}-{{join('/',explode(',',$result->domain2))}}/ @else请选择 @endif</a>
+
+                                <div class="publish-need-sel datas-newchange zindex2">
+                                    <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
+
                                     <ul class="publish-need-list">
                                         @foreach($cate as $v)
                                             @if($v->level == 1)
@@ -87,8 +91,10 @@
                                         @endforeach
                                     </ul>
                                 </div>
-                                <div class="datas-sel zindex2">
-                                    <span class="datas-sel-cap">地区</span><a href="javascript:;" id="address" class="datas-sel-def">{{$result->address or '全国'}}</a>
+
+                                <div class="datas-sel zindex1">
+                                    <span class="datas-sel-cap">地区</span><a href="javascript:;" id="address" class="datas-sel-def">全国</a>
+
 
                                     <ul class="datas-list zone-list">
                                         <li>全国</li>

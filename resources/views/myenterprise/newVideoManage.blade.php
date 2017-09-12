@@ -4,10 +4,9 @@
                 <div class="v-works-manage-list-top clearfix">
                     <div class="v-works-mlt-select">
                         <a href="javascript:;" class="v-works-mlt-opt @if($type == '全部') active @endif">全部</a>
-                        <a href="javascript:;" class="v-works-mlt-opt @if($type == '找资金') active @endif">找资金</a>
-                        <a href="javascript:;" class="v-works-mlt-opt @if($type == '找技术') active @endif">找技术</a>
-                        <a href="javascript:;" class="v-works-mlt-opt @if($type == '找市场') active @endif">找市场</a>
-                        <a href="javascript:;" class="v-works-mlt-opt @if($type == '定战略') active @endif">定战略</a>
+                        @foreach($domains as $value)
+                            <a href="javascript:;" class="v-works-mlt-opt @if($type && $type ==$value->domainname) active @endif">{{$value->domainname}}</a>
+                        @endforeach
                     </div>
                     <div class="v-supply-con"></div>
                     <a href="javascript:;" class="goto-work" id="applyVideo"><i class="iconfont icon-woyaobanshi"></i>我要咨询</a>
