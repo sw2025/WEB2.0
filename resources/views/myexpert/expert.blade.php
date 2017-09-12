@@ -135,10 +135,10 @@
                                     <input type="hidden" id="myAvatar1" name="myAvatar1" >
                                     <div class="photo-upload">
                                         <div class="photo-btn-box fileinput-button">
-                                            <span class="photo-btn-tip">上传营业执照</span>
+                                            <span class="photo-btn-tip">上传专家执照</span>
                                             <input id="photo1" type="file" name="files[]" data-url="{{asset('upload')}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                                         </div>
-                                        <p class="datas-lt-explain">营业执照仅做认证用，不用做其它用途</p>
+                                        <p class="datas-lt-explain">专家执照仅做认证用，不用做其它用途</p>
                                     </div>
                                 </div>
                                 <div class="datas-upload-rt">
@@ -146,10 +146,10 @@
                                     <input type="hidden" id="myAvatar2" name="myAvatar2" ">
                                     <div class="photo-upload">
                                         <div class="photo-btn-box fileinput-button">
-                                            <span class="photo-btn-tip">上传宣传照片</span>
+                                            <span class="photo-btn-tip">上传专家照片</span>
                                             <input id="photo2" type="file" name="files[]" data-url="{{asset('upload')}}" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg">
                                         </div>
-                                        <p class="datas-lt-explain">宣传照片用于展示企业，请选择企业Logo或展现企业风采的照片</p>
+                                        <p class="datas-lt-explain">专家照片用于展示专家，请选择能展现专家风采的照片</p>
                                     </div>
                                 </div>
                             </div>
