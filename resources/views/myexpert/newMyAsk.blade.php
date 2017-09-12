@@ -6,14 +6,10 @@
                         <a href="javascript:;" class="v-works-mlt-opt active" index="0" page="0">咨询请求</a>
                         <a href="javascript:;" class="v-works-mlt-opt" index="1" page="0">我的咨询</a>
                     </div>
-                    @if($count)
                     <div class="v-feedback">
                             <span class="v-feedback-span"><i class="iconfont icon-laba"></i>
-                            <span class="v-feedback-count">2</span>个企业向您发出咨询请求</span>
+                            <span class="v-feedback-count">{{$count or 0}}</span>个企业向您发出咨询请求</span>
                     </div>
-                        @else
-                    @endif
-
                 </div>
                 <div class="v-m-list-box">
                     <ul class="v-manage-list-ul v-m-l-show clearfix">
