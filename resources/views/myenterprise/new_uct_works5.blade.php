@@ -79,11 +79,11 @@
                                         </div>
                                         <div class="datum-manage">
                                             <a href="javascript:;" class="datum-btn datum-confirm" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}" pid="{{$configinfo[$lastpid->step-1]->ppid}}">确认资料</a>
-                                            <a href="javascript:;" class="datum-btn datum-change" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}">修改意见</a>
+                                            <a href="javascript:;" class="datum-btn datum-change" index="{{$lastpid->epid or 0}}" eventid=" {{$eventId}}">修改意见</a>
                                         </div>
                                         <div class="v-manage-link-rate">
                                             @foreach($configinfo as $k => $v)
-                                                <a href="@if(!empty($v->epid && $v->state == 2)) {{url('uct_works/detail',$eventId).'?step='.$v->epid}} @else {{url('uct_works/detail',$eventId)}} @endif"><span class="vprogress vprog{{$k+1}} @if((!empty($stmpstate->step) || $k == 0) && ($stmpstate->step >= $k+1)) vping @endif" title="{{$v->processname}}"></span></a>
+                                                <a href="@if(!empty($v->epid) && $v->state == 2) {{url('uct_works/detail',$eventId).'?step='.$v->epid}} @else {{url('uct_works/detail',$eventId)}} @endif"><span class="vprogress vprog{{$k+1}} @if((!empty($stmpstate->step) || $k == 0) && (!empty($stmpstate->step) && $stmpstate->step >= $k+1)) vping @endif" title="{{$v->processname}}"></span></a>
                                             @endforeach
                                             {{--<span class="vprogress vprog2" title="专家提交资料目录"></span>
                                             <span class="vprogress vprog3" title="企业提交办事资料"></span>
@@ -154,11 +154,11 @@
                         </div>
                         @if($lastpid->step == count($configinfo))
                             <div class="works-f-s">
-                                <button class="stop red-finish" type="button">完成</button>
-                                <button class="stop" type="button">终止合作</button>
+                                <button class="stop red-finish" id="finish" type="button">完成</button>
+                                <button class="stop" id="stop" type="button">终止合作</button>
                             </div>
                         @else
-                            <button class="stop" type="button">终止合作</button>
+                            <button class="stop" id="stop" type="button">终止合作</button>
                         @endif
 
                     </div>
@@ -259,7 +259,7 @@
 
             })
 
-            $('.red-finish').on('click',function () {
+            $('#finish').on('click',function () {
                 layer.confirm('确认要完成办事么？', {
                     title:false,
                     btn: ['确认','取消']
@@ -501,7 +501,7 @@
                 $(this).closest('.cover').fadeOut();
             });
 
-            $('.stop').on('click',function () {
+            $('#stop').on('click',function () {
                 layer.confirm('确认要终止合作么？', {
                     title:false,
                     btn: ['确认','取消']

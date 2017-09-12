@@ -377,12 +377,22 @@ class MyEnterpriseController extends Controller
             break;
             case 7:
                 $selExperts=DB::table("t_e_eventresponse")
-                    ->leftJoin("t_e_eventtcomment","t_e_eventresponse.expertid","=","t_e_eventtcomment.expertid" )
+                    ->leftJoin("t_e_eventtcomment","t_e_eventresponse.eventid","=","t_e_eventtcomment.eventid" )
                     ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
                     ->where("t_e_eventresponse.state",3)
                     ->where("t_e_eventresponse.eventid",$eventId)
                     ->get();
                 break;
+            case 8:
+                $selExperts=DB::table("t_e_eventresponse")
+                    ->leftJoin("t_e_eventtcomment","t_e_eventresponse.eventid","=","t_e_eventtcomment.eventid" )
+                    ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_e_eventresponse.state",3)
+                    ->where("t_e_eventresponse.eventid",$eventId)
+                    ->get();
+                $configId = 7;
+                break;
+
             case 6:
                 //当config为6正在办事的状态的时候
                 //获取到被选择的专家的信息
@@ -410,7 +420,6 @@ class MyEnterpriseController extends Controller
 
                 //获取到该办事的所有的过程id
                 $epids = DB::table('t_e_eventprocess')->where('eventid',$eventId)->lists('epid');
-
                 //获取到办事进行到的过程
                 $stepepid = !empty($_GET['step']) && in_array($_GET['step'],$epids) ? ['t_e_eventprocess.epid' => $_GET['step']] : [];
                 $lastpid = DB::table('t_e_eventprocess')
@@ -423,6 +432,10 @@ class MyEnterpriseController extends Controller
                 $stmpstate = DB::table('t_e_eventprocess')->leftJoin('t_e_eventprocessconfig as con','con.pid','=','t_e_eventprocess.pid')->where('eventid',$eventId)->orderBy('epid','desc')->first();
                 if(!empty($stmpstate) && $stmpstate->state == 2){
                     $stmpstate->step = $stmpstate->step+1;
+                }
+                if(empty($stmpstate)){
+                    $stmpstate = (object)$stmpstate;
+                    $stmpstate->step = 1;
                 }
                 //若不存在状态 为1
                 if(empty($lastpid)){
@@ -666,7 +679,7 @@ class MyEnterpriseController extends Controller
             //获取到当前登录用户的专家的id
             $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
             if($eventuserid == session('userId') || $expertid == $eventexpertid){
-                if(!$data['state']){
+                if(!$data['state'] && $eventuserid == session('userId') ){
                     $etid = DB::table('t_e_eventtask')->insertGetId([
                         'epid' => $data['epid'],
                         'taskname' => $data['taskname'],
@@ -677,7 +690,7 @@ class MyEnterpriseController extends Controller
                     if($etid){
                         return ['msg' => '添加日程成功','icon' => 1,'etid' => $etid];
                     }
-                    return ['error' => '添加日程失败','icon' => 2];
+
                 } elseif ($data['state'] == 1){
                     if($eventuserid == session('userId')){
                         $name = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
@@ -694,7 +707,7 @@ class MyEnterpriseController extends Controller
                     if($res){
                         return ['msg' => '完成日程成功','icon' => 1];
                     }
-                    return ['error' => '处理失败','icon' => 2];
+                    return ['error' => '处理失败FF00002','icon' => 2];
                 } elseif ($data['state'] == 2){
                     if($eventuserid == session('userId')){
                         $name = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
@@ -711,9 +724,9 @@ class MyEnterpriseController extends Controller
                     if($res){
                         return ['msg' => '删除日程成功','icon' => 1];
                     }
-                    return ['error' => '处理失败','icon' => 2];
+                    return ['error' => '处理失败FF00001','icon' => 2];
                 }
-                return ['error' => '处理失败','icon' => 2];
+                return ['error' => '添加日程失败您不是企业用户不能添加日程','icon' => 2];
 
             }
             return ['error' => '非本次办事参与人','icon' => 2];
@@ -884,7 +897,7 @@ class MyEnterpriseController extends Controller
         try{
             $counts=DB::table("t_e_eventtcomment")->where([ "eventid"=>$eventId,"expertid"=>$_POST['expertId']])->count();
             if($counts){
-                DB::table("t_e_eventtcomment")->where([ "consultid"=>$eventId,"expertid"=>$_POST['expertId']])->update([
+                DB::table("t_e_eventtcomment")->where([ "eventid"=>$eventId,"expertid"=>$_POST['expertId']])->update([
                     "score"=>$_POST['score'],
                     "updated_at"=>date("Y-m-d H:i:s",time()),
                 ]);
@@ -921,6 +934,12 @@ class MyEnterpriseController extends Controller
                 "comment"=>$_POST['content'],
                 "commenttime"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+
+            DB::table('t_e_eventverify')->insert([
+                'eventid' => $eventId,
+                'configid' => 8,
+                'verifytime' => date("Y-m-d H:i:s", time())
             ]);
         }catch(Exception $e){
             throw $e;
@@ -1321,6 +1340,7 @@ class MyEnterpriseController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function manage(){
+
         $userId=session('userId');
         $type=isset($_GET['domain'])?$_GET['domain']:false;
         switch ($type){
@@ -1359,16 +1379,16 @@ class MyEnterpriseController extends Controller
                 $data->state="匹配专家";
             }
             switch($data->domain1){
-                case '投融资':
+                case '找资金':
                     $data->icon = 'v-manage-link-icon';
                     break;
-                case '产品升级换代':
+                case '找技术':
                     $data->icon = 'v-manage-link-icon nature1';
                     break;
-                case '战略定位':
+                case '定战略':
                     $data->icon = 'v-manage-link-icon nature2';
                     break;
-                case '市场拓展':
+                case '找市场':
                     $data->icon = 'v-manage-link-icon nature3';
                     break;
                 default :
@@ -1385,6 +1405,7 @@ class MyEnterpriseController extends Controller
      * @return Redirect
      */
     public function manageVideo(){
+
         $userId=session('userId');
         $type=isset($_GET['type'])?$_GET['type']:"全部";
         if($type){
@@ -1429,16 +1450,16 @@ class MyEnterpriseController extends Controller
                 $data->state="匹配专家";
             }
             switch($data->domain1){
-                case '投融资':
+                case '找资金':
                     $data->icon = 'v-manage-link-icon';
                     break;
-                case '产品升级换代':
+                case '找技术':
                     $data->icon = 'v-manage-link-icon nature1';
                     break;
-                case '战略定位':
+                case '定战略':
                     $data->icon = 'v-manage-link-icon nature2';
                     break;
-                case '市场拓展':
+                case '找市场':
                     $data->icon = 'v-manage-link-icon nature3';
                     break;
                 default :

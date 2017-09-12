@@ -324,11 +324,21 @@ class ExpertUcenterController extends Controller
                 break;
             case 7:
                 $selExperts=DB::table("t_e_eventresponse")
-                    ->leftJoin("t_e_eventtcomment","t_e_eventresponse.expertid","=","t_e_eventtcomment.expertid" )
+                    ->leftJoin("t_e_eventtcomment","t_e_eventresponse.eventid","=","t_e_eventtcomment.eventid" )
                     ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
                     ->where("t_e_eventresponse.state",3)
                     ->where("t_e_eventresponse.eventid",$eventId)
                     ->get();
+                break;
+
+            case 8:
+                $selExperts=DB::table("t_e_eventresponse")
+                    ->leftJoin("t_e_eventtcomment","t_e_eventresponse.eventid","=","t_e_eventtcomment.eventid" )
+                    ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_e_eventresponse.state",3)
+                    ->where("t_e_eventresponse.eventid",$eventId)
+                    ->get();
+                $configId = 7;
                 break;
             case 6:
                 //当config为6正在办事的状态的时候
@@ -400,7 +410,7 @@ class ExpertUcenterController extends Controller
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
-        $view="new_uct_works".$configId;
+        $view="works".$configId;
         return view("expertUcenter.".$view,compact("datas","counts","selected","selExperts","eventId"));
     }
 }
