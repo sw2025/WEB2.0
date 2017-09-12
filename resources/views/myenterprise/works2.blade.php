@@ -8,12 +8,15 @@
                 <div class="card-step works-step">
                     <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
                     <span class="green-circle">2</span>办事审核<span class="card-step-cap">&gt;</span>
+
                     <span class="gray-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
+
                     <span class="gray-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
                     <span class="gray-circle">5</span>办事管理<span class="card-step-cap">&gt;</span>
                     <span class="gray-circle">6</span>完成
                 </div>
                 <div class="publish-need uct-works default-result">
+
                     @foreach($datas as $data)
                         <div class="expert-certy-state">
                             <i class="iconfont icon-chenggong"></i>
@@ -30,6 +33,7 @@
                         <div class="uct-works-exp">
 
                             <a href="javascript:;" class="special-btn  uct-works-btn  @if($data->state=='指定专家') active @endif">指定专家</a>
+
                             <a href="javascript:;" class="system-btn2 uct-works-btn @if($data->state=='系统分配') active @endif ">系统分配</a>
                         </div>
                     @endforeach

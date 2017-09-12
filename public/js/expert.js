@@ -185,6 +185,7 @@ function fnc_collect (supplyid,action,obj) {
                 $(obj).removeClass('red');
                 if($(obj).hasClass('done')){
                     $(obj).removeClass('done');
+                    $(obj).text("收藏");
                 }
             });
         } else if(data == 'success') {
@@ -209,10 +210,15 @@ $('.details-message .submit').on('click',function () {
     var needid = textarea.attr('id');
     var content = textarea.val();
     $(this).attr('disabled',"true");
-    replymessage({'needid':needid,'content':content},this);
+    replymessage({'needid':needid,'content':content,'parentid':0},this);
 });
 
 function replymessage (datas,obj) {
+    if(!datas.content.trim().length){
+        layer.msg('请输入留言内容');
+        $(obj).attr('disabled',false);
+        return false;
+    }
     $.post('/replyextmessage',datas,function (data) {
         if(data == 'success'){
             layer.msg('回复成功',{time:2000},function () {

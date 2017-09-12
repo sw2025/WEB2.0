@@ -128,7 +128,7 @@ class CenterController extends Controller
      */
     public  function  myinfo(Request $request){
         $userId = session("userId");
-        $datas = DB::table('t_m_systemmessage')->where(['receiveid' => $userId])->whereIn('state',[0,1])->paginate(2);
+        $datas = DB::table('t_m_systemmessage')->where(['receiveid' => $userId])->whereIn('state',[0,1])->orderBy('id','desc')->paginate(6);
         if($request->ajax()){
             return $datas;
         }
