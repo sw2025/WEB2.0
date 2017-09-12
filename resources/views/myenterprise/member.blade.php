@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                     <div class="datas-upload-rt">
-                                        <img src="@if(!empty($data)){{env('ImagePath').$data->lshowimage}}@else img/photo2.jpg @endif" class="photo1" id="photo2"/>
+                                        <img src="@if(!empty($data)){{env('ImagePath').$data->showimage}}@else img/photo2.jpg @endif" class="photo1" id="photo2"/>
                                         <div class="photo-upload">
                                             <div class="photo-btn-box fileinput-button">
                                                 <span class="photo-btn-tip">上传宣传照片</span>
