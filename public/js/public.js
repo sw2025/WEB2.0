@@ -111,8 +111,7 @@ $(function(){
         $('.tab-leftbtn,.tab-rightbtn').stop().fadeIn();
     },function(){
         $('.tab-leftbtn,.tab-rightbtn').stop().fadeOut();
-    });
-    $('.tab-rightbtn').click(function(e) {
+    });    $('.tab-rightbtn').click(function(e) {
         tabNum++;
         if(tabNum > 2){
             tabNum = 0;
@@ -149,6 +148,7 @@ $(function(){
     });
     // 详情收藏
     $('.collect-state').click(function(event) {
+
         if($(this).html().trim() == '已收藏'){
             //$(this).html('收藏');
             //$(this).removeClass('done');

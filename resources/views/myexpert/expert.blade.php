@@ -33,8 +33,7 @@
                 </div>
 
                 <div class="datas">
-                    <div class="datas-lt">
-                        <div class="datas-lt-enter">
+                    <div class="datas-lt">                        <div class="datas-lt-enter">
                             <div class="datas-sel zindex4">
                                 <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category"
                                                                           class="datas-sel-def">专家</a>
@@ -76,6 +75,7 @@
                                     @foreach($cate as $v)
                                         @if($v->level == 1)
                                             <li>
+
                                                 <a href="javascript:;" index="{{$v->domainname}}">{{$v->exdomainname}}</a>
                                                 <ul class="publ-sub-list">
                                                     @foreach($cate as $small)
@@ -179,8 +179,7 @@
             $(this).parent().siblings().children('ul').hide();
         });
         $('.datas-list li').click(function () {
-            var publishHtml = $(this).html();
-            $(this).parent().prev('.datas-sel-def').html(publishHtml);
+            var publishHtml = $(this).html();            $(this).parent().prev('.datas-sel-def').html(publishHtml);
             $(this).parent().hide();
         });
 
@@ -190,8 +189,7 @@
         });
 
         $('.publish-need-list li').hover(function () {
-            $(this).children('ul').stop().show();
-        }, function () {
+            $(this).children('ul').stop().show();        }, function () {
             $(this).children('ul').stop().hide();
         });
         $('.publish-need-list li a').click(function (e) {
@@ -226,8 +224,7 @@
                 }
 
             });
-        });
-    })
+        });    })
 
     $(function () {
         var token = $.cookie('token');
@@ -237,12 +234,10 @@
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
                     // console.log(file.name);
-                    $("#avatar1").attr('src', '{{env('ImagePath')}}/images/' + file.name).show();
-                    $('#photo1').attr('index', '/images/' + file.name);
+                    $("#avatar1").attr('src', '{{env('ImagePath')}}/images/' + file.name).show();                    $('#photo1').attr('index', '/images/' + file.name);
                 });
             }
-        });
-    });
+        });    });
 
     $(function () {
         var token = $.cookie('token');
@@ -265,12 +260,14 @@
             $('.submit-audit').attr('disabled', 'disabled');
             var category = $('#category').html();
             var name = $('.datas-sel-name').val();
+
             var industry = $('#industry').attr('index') ? $('#industry').attr('index') : '';
             var industrys = $("#industrys").html();
             var address = $('#address').html();
             var photo1 = $('#photo1').attr('index');
             var photo2 = $('#photo2').attr('index');
             var brief = $('#brief').val();
+
             console.log(name == '' || photo1 == '' || industry == '');
             if (name == '' || photo1 == '' || industry == '' || industrys == '' || address == '' || brief == '' || photo1 == '' || photo2 == '') {
                 layer.msg('请把信息填写完整');

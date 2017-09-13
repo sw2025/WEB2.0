@@ -26,7 +26,7 @@
                             <p style="color:red"><em>审核失败：{{$configids->remark}}</em> <br /> 请重新提交审核</p>
                                 @endif
                         </div>
-                        <div class="datas">
+                        <div class="datas datas-member-audit clearfix">
                             <div class="datas-lt">
                                 <div class="datas-lt-enter">
                                     <div class="datas-sel">
