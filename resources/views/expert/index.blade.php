@@ -18,7 +18,7 @@
 <div class="container list-filter">
     <div class="all-results filter-row clearfix"><span class="left-cap">全部结果：</span>
         @if(isset($role))<a href="javascript:;" class="all-results-expert all-results-opt">{{$role}}</a>@endif
-        @if(isset($supply))<a href="javascript:;" class="all-results-field all-results-opt">{{$supply[0].'/'.$supply[1]}}</a>@endif
+        @if(isset($supply))<a href="javascript:;" class="all-results-field all-results-opt" index="{{$supply[0].'/'.$supply[1]}}">{{$supply[0].'/'.$supply[1]}}</a>@endif
         @if(isset($address))<a href="javascript:;" class="all-results-location all-results-opt">{{$address}}</a>@endif
         @if(isset($consult))<a href="javascript:;" class="all-results-video all-results-opt">{{$consult}}</a>@endif
 
@@ -42,7 +42,7 @@
         @foreach($cate as $big)
             @if($big->level == 1)
                 <div class="serve-field-list">
-                    <a href="javascript:;" class="serve-field-list-deft @if(isset($supply) && $supply[0] == $big->exdomainname) active @endif">{{$big->exdomainname}}</a>
+                    <a href="javascript:;" class="serve-field-list-deft @if(isset($supply) && $supply[0] == $big->exdomainname) active @endif" index="{{$big->domainname}}">{{$big->exdomainname}}</a>
                     <ul class="serve-field-list-show" >
                         @foreach($cate as $small)
                             @if($small->level == 2 && $small->parentid == $big->domainid)
@@ -115,7 +115,7 @@
                         <div class="exp-list-brief">
                             <span class="exp-list-name">{{$v->expertname}}</span>
                             <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}@else 免费 @endif</em></span>
-                            <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$v->domain1}}</em></span>
+                            <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$domainselect[$v->domain1]}}</em></span>
                         </div>
                         <div class="exp-list-lab">
                             @foreach(explode(',',$v->domain2) as $do2)

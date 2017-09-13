@@ -33,8 +33,7 @@
                 </div>
 
                 <div class="datas">
-                    <div class="datas-lt">
-                        <div class="datas-lt-enter">
+                    <div class="datas-lt">                        <div class="datas-lt-enter">
                             <div class="datas-sel zindex4">
                                 <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category"
                                                                           class="datas-sel-def">专家</a>
@@ -71,13 +70,13 @@
                             </div>
                             <div class="publish-need-sel datas-newchange zindex2">
                                 <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry"
-                                                                              class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}
-                                    /{{$info->domain2}} @else 请选择 @endif</a>
+                                                                              class="publ-need-sel-def">@if(!empty($info)) {{$data->domain1}}-{{mb_substr(join('/',explode(',',$data->domain2)),0,15)}} @else 请选择 @endif</a>
                                 <ul class="publish-need-list">
                                     @foreach($cate as $v)
                                         @if($v->level == 1)
                                             <li>
-                                                <a href="javascript:;">{{$v->exdomainname}}</a>
+
+                                                <a href="javascript:;" index="{{$v->domainname}}">{{$v->exdomainname}}</a>
                                                 <ul class="publ-sub-list">
                                                     @foreach($cate as $small)
                                                         @if($small->parentid == $v->domainid && $small->level == 2)
@@ -180,8 +179,7 @@
             $(this).parent().siblings().children('ul').hide();
         });
         $('.datas-list li').click(function () {
-            var publishHtml = $(this).html();
-            $(this).parent().prev('.datas-sel-def').html(publishHtml);
+            var publishHtml = $(this).html();            $(this).parent().prev('.datas-sel-def').html(publishHtml);
             $(this).parent().hide();
         });
 
@@ -191,8 +189,7 @@
         });
 
         $('.publish-need-list li').hover(function () {
-            $(this).children('ul').stop().show();
-        }, function () {
+            $(this).children('ul').stop().show();        }, function () {
             $(this).children('ul').stop().hide();
         });
         $('.publish-need-list li a').click(function (e) {
@@ -210,20 +207,24 @@
             $(this).toggleClass('on');
             $(this).closest('.publish-need-list>li').siblings().find('li').removeClass('on');
             var y = $(this).parent('ul').prev('a').html();
+            var y2 = $(this).parent('ul').prev('a').attr('index');
             var x = y + '-';
+            var x2 = y2 + '-';
             $('.publ-sub-list li').each(function (index, el) {
                 if ($(el).hasClass('on')) {
                     // x = $('.on').html();
                     x += $(el).html() + '/';
+                    x2 += $(el).html() + '/';
                     $('.publ-need-sel-def').html(x);
+                    $('.publ-need-sel-def').attr('index',x2);
 
                 } else {
                     $('.publ-need-sel-def').html(x);
+                    $('.publ-need-sel-def').attr('index',x2);
                 }
 
             });
-        });
-    })
+        });    })
 
     $(function () {
         var token = $.cookie('token');
@@ -233,12 +234,10 @@
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
                     // console.log(file.name);
-                    $("#avatar1").attr('src', '{{env('ImagePath')}}/images/' + file.name).show();
-                    $('#photo1').attr('index', '/images/' + file.name);
+                    $("#avatar1").attr('src', '{{env('ImagePath')}}/images/' + file.name).show();                    $('#photo1').attr('index', '/images/' + file.name);
                 });
             }
-        });
-    });
+        });    });
 
     $(function () {
         var token = $.cookie('token');
@@ -261,14 +260,16 @@
             $('.submit-audit').attr('disabled', 'disabled');
             var category = $('#category').html();
             var name = $('.datas-sel-name').val();
-            var industry = $('#industry').html();
+
+            var industry = $('#industry').attr('index') ? $('#industry').attr('index') : '';
             var industrys = $("#industrys").html();
             var address = $('#address').html();
             var photo1 = $('#photo1').attr('index');
             var photo2 = $('#photo2').attr('index');
             var brief = $('#brief').val();
-            console.log(name == '' || photo1 == '' || industry == '请选择');
-            if (name == '' || photo1 == '' || industry == '请选择' || industrys == '' || brief == '') {
+
+            console.log(name == '' || photo1 == '' || industry == '');
+            if (name == '' || photo1 == '' || industry == '' || industrys == '' || address == '' || brief == '' || photo1 == '' || photo2 == '') {
                 layer.msg('请把信息填写完整');
                 $('.submit-audit').attr('disabled', false);
                 return false;
