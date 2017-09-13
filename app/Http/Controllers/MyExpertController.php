@@ -15,8 +15,6 @@ class MyExpertController extends Controller
      * @return mixed
      */
     public function  expert(){
-
-        //$result = DB::table('view_expertstatus')->where(['userid' => session('userId')])->orderBy('configid','desc')->first();
         $cate = DB::table('t_common_domaintype')->get();
         $result = DB::table('t_u_expert')
             ->leftjoin('t_u_expertverify',"t_u_expert.expertid","=","t_u_expertverify.expertid")
@@ -74,7 +72,6 @@ class MyExpertController extends Controller
      */
     public function expertData(Request $request)
     {
-
         //判断是否为ajax请求
         if($request->ajax()){
             //判断是否登陆
@@ -181,7 +178,7 @@ class MyExpertController extends Controller
                 ->whereIn('status.configid',[4,5])
                 ->whereIn('res.state',[0,1])
                 ->orderBy('res.id','desc')
-                ->paginate(1);
+                ->paginate(6);
 
             $waitcount = $eventobj
                 ->where(['res.expertid' => $expertid])
@@ -193,7 +190,7 @@ class MyExpertController extends Controller
                 ->where(['res.expertid' => $expertid])
                 ->whereIn('status.configid',[5,6,7,8])
                 ->orderBy('res.id','desc')
-                ->paginate(1);
+                ->paginate(6);
             //调用eventclass中的方法进行对象的处理
             $datas = \EventClass::handelObj($datas);
             $datas2 = \EventClass::handelObj($datas2);
@@ -328,14 +325,14 @@ class MyExpertController extends Controller
         $datas = $datas
             ->where(['res.expertid' => $expertid,'status.configid' => 4])
             ->orderBy('res.id','desc')
-            ->paginate(2);
+            ->paginate(6);
 
 
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
             ->whereIn('status.configid',[5,6,7])
             ->orderBy('res.id','desc')
-            ->paginate(2);
+            ->paginate(6);
         $datas = \ConsultClass::handelObj($datas);
         $datas2 = \ConsultClass::handelObj($datas2);
         if($request->ajax()){

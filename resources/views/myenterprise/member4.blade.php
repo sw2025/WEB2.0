@@ -18,7 +18,7 @@
                                     <em>了解会员权益</em>FOR MEMBERSHIP RIGHTS
                                 </span>
                         </div>
-                        <div class="datas datas-member-audit datas-vertical">
+                        <div class="datas datas-member-audit clearfix datas-vertical">
                             <div class="datas-lt">
                                 <div class="datas-lt-enter">
                                     <div class="datas-sel">
