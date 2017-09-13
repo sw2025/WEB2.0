@@ -129,6 +129,8 @@ Route::get('uct_myneed/needDetail/{needid}','CenterController@needDetail');
 Route::get('uct_myneed/supplyNeed/{needid?}','CenterController@supplyNeed');
 //审核需求
 Route::get('uct_myneed/examineNeed/{needid?}','CenterController@examineNeed');
+//企业缴费
+Route::post('member/pay/{needid}','MyEnterpriseController@memberPay');
 /***************************************个人中心我是专家路由(公共部分)****************************************************************/
 //基本资料
 Route::get('basic','ExpertUcenterController@index');

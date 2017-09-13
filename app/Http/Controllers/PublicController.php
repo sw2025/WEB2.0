@@ -239,7 +239,8 @@ class PublicController extends Controller
             foreach ($members as $member){
                 $endTime=$member->endtime;
             }
-            if(strtotime($currentTime)<strtotime($endTime)){
+            //if(strtotime($currentTime)<strtotime($endTime)){
+            if($currentTime<$endTime){
                 $result['code']="success";
             }else{
                 $result['code']="expried";
