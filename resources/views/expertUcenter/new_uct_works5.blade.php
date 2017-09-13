@@ -19,9 +19,8 @@
                     <div class="vid-man-top-lt vid-man-top-main">
                         <div class="vid-man-top-con">
                             <p class="vid-man-top-cat"><span class="light-color">分类：</span>{{$datas->domain1}} / {{$datas->domain2}}</p>
-                            <span class="mywork-det-tit"><em class="light-color">金额：</em>@if(!empty($info->fee)))￥{{$info->fee}} @else 免费 @endif</span>
                             <span class="light-color">描述：</span>
-                            <div class="vid-man-top-desc">{{mb_strcut($datas->brief,0,250,'utf-8')}}...</div>
+                            <div class="vid-man-top-desc">{{mb_strcut($datas->brief,0,350,'utf-8')}}</div>
                         </div>
                     </div>
                     <div class="vid-man-top-rt vid-man-top-main">

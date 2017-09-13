@@ -29,6 +29,8 @@ class ExpertController extends Controller
         if(session('userId')){
             $collectids = DB::table('t_u_collectexpert')->where(['userid' => session('userId'),'remark' => 1])->lists('expertid');
         }
+        $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
+        $domainselect2 = ['投融资' => '找资金','科研技术' => '找技术', '战略管理' => '定战略', '市场资源' => '找市场'];
         //判断是否为http请求
         if(!empty($get = $request->input())){
             //获取到get中的数据并处理
@@ -52,8 +54,11 @@ class ExpertController extends Controller
             } else {
                 $consultwhere = [];
             }
+
             if(!empty($supply)){
+                $supply[0] = $domainselect2[$supply[0]];
                 $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+                $supply[0] = $domainselect[$supply[0]];
             } else {
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
             }
@@ -71,11 +76,11 @@ class ExpertController extends Controller
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(12);
-            return view("expert.index",compact('cate','searchname','datas','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
+            return view("expert.index",compact('cate','searchname','datas','role','collectids','consult','domainselect','supply','address','ordertime','ordercollect','ordermessage'));
         }
         $datas = $datas->orderBy("ext.expertid",'desc')->paginate(12);
         $ordertime = 'desc';
-        return view("expert.index",compact('cate','datas','ordertime','collectids'));
+        return view("expert.index",compact('cate','datas','ordertime','collectids','domainselect'));
 
     }
 

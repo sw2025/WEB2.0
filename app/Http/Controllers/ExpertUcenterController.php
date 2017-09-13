@@ -354,14 +354,23 @@ class ExpertUcenterController extends Controller
                     ->leftJoin("view_eventstatus as status","status.eventid","=","t_e_event.eventid")
                     ->leftJoin('t_u_enterprise as ent','ent.userid','=','t_e_event.userid')
                     ->where("t_e_event.eventid",$eventId)
+                    ->select('t_e_event.*','ent.*','status.*','t_e_event.brief')
                     ->first();
                 //获取到办事的流程的信息
                 $configinfo = DB::table('t_e_eventprocessconfig as con')
-                    ->leftJoin('t_e_eventprocess as pro','con.pid','=','pro.pid')
-                    ->select('con.pid as ppid','con.*','pro.*')
                     ->where('con.domain',$datas->domain1)
                     ->orderBy('con.step')
                     ->get();
+                foreach ($configinfo as $v){
+                    $proinfo = DB::table('t_e_eventprocess')->where(['pid' => $v->pid,'eventid' => $eventId])->first();
+                    $v->ppid = $v->pid;
+                    $v->epid = !empty($proinfo->epid) ? $proinfo->epid : null;
+                    $v->eventid = !empty($proinfo->eventid) ? $proinfo->eventid : null;
+                    $v->startuserid = !empty($proinfo->startuserid) ? $proinfo->startuserid : null;
+                    $v->acceptuserid = !empty($proinfo->acceptuserid) ? $proinfo->acceptuserid : null;
+                    $v->documenturl = !empty($proinfo->documenturl) ? $proinfo->documenturl : null;
+                    $v->state = !empty($proinfo->state) ? $proinfo->state : null;
+                }
                 //对信息进行封装
                 $configinfo = \EnterpriseClass::processInsert($configinfo);
 

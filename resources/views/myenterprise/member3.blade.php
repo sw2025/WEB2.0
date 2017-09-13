@@ -61,18 +61,18 @@
                                 <b class="member-type-cap">支付费用</b>
                                 <strong class="member-fees">￥<span class="pay-money-num">0</span></strong>
                             </div>
-                            <div class="member-box-type member-payways clearfix">
+                            <div class="member-box-type member-payways clearfix" style="display: none;">
                                 <b class="member-type-cap">支付方式</b>
                                 <label class="member-type-lab focus" for="way1">
                                     <input id="way1" checked="checked" name="ways" type="radio" />
                                     <span class="define-rad"></span>
-                                    <img class="member-payways-img" src="img/weixin.png" />
+                                    <img class="member-payways-img" src="{{asset('img/weixin.png')}}" />
                                     <span class="payways-cap">微信支付</span>
                                 </label>
                                 <label class="member-type-lab" for="way2">
                                     <input id="way2" name="ways" type="radio" />
                                     <span class="define-rad"></span>
-                                    <img class="member-payways-img" src="img/zhifubao.png" />
+                                    <img class="member-payways-img" src="{{asset('img/zhifubao.png')}}" />
                                     <span class="payways-cap">支付宝支付</span>
                                 </label>
                             </div>
@@ -94,11 +94,15 @@
             if($(this).text().trim() == '普通会员'){
                 $focus.removeClass('focus');
                 $('#wuxianhzi').addClass('focus');
+                $('.pay-money-num').html(0);
+                $('.member-payways').css('display','none');
             } else if($(this).text().trim() == 'VIP会员') {
                 $('.member-times').eq(0).addClass('focus');
+                $('.pay-money-num').html( $('.member-times').eq(0).attr('cost'));
                 $('#wuxianhzi').removeClass('focus');
+                $('.member-payways').css('display','block');
             }
-            if($(this).data('type') == "1"){
+            /*if($(this).data('type') == "1"){
                 if($focus.data('type') == "3"){
                     $('.pay-money-num').html('1000');
                 }else if($focus.data('type') == "4"){
@@ -110,7 +114,7 @@
                 }else if($focus.data('type') == "4"){
                     $('.pay-money-num').html('6000');
                 }
-            }
+            }*/
         });
 
         $('.member-times').click(function(event) {
@@ -143,6 +147,40 @@
                     $('.pay-money-num').html('6000');
                 }
             }*/
+        });
+
+        $('.fees-btn').on('click',function () {
+            $(this).text('正在缴费');
+            $(this).attr('disabled',true);
+            var type = $('.member-type-differ .focus').text().trim();
+            var time = $('.member-times-limit .focus').text().trim();
+            var token = '{{$token}}';
+            var cost = $('.pay-money-num').text().trim();
+            if(type == '普通会员' && isNaN(parseInt(time))){
+                time = 99;
+                $.post('{{url('member/pay')}}'+'/{{$entid}}',{'token':token,'type':type,'time':time,'cost':cost},function (data) {
+                    if(data.icon == 2){
+                        $(this).text('缴费');
+                        $(this).attr('disabled',false);
+                        layer.msg(data.msg,{'time':2500,'icon':data.icon});
+                        return false;
+                    } else if (data.icon == 1){
+                        layer.msg(data.msg,{'time':1500,'icon':data.icon},function () {
+                            window.location = window.location.href;
+                        });
+                        return false;
+                    }
+                });
+            } else if (type == 'VIP会员' && !isNaN(parseInt(time))){
+                layer.msg('暂未开通VIP会员缴费');
+                $(this).text('缴费');
+                $(this).attr('disabled',false);
+            } else {
+                layer.alert('您选的会员类别有误',{'icon':2},function () {
+                    window.location = window.location.href;
+                });
+            }
+
         });
     })
 </script>

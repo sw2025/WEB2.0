@@ -34,7 +34,8 @@ class MyEnterpriseController extends Controller
         }
         //用户回复的数量
         $msgcount = count(DB::table('t_u_messagetoexpert')->where('userid',session('userId'))->groupBy('expertid')->lists('expertid'));
-
+        $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
+        $domainselect2 = ['投融资' => '找资金','科研技术' => '找技术', '战略管理' => '定战略', '市场资源' => '找市场'];
         //判断是否为http请求
         if(!empty($get = $request->input())){
             //获取到get中的数据并处理
@@ -59,7 +60,9 @@ class MyEnterpriseController extends Controller
                 $consultwhere = [];
             }
             if(!empty($supply)){
+                $supply[0] = $domainselect2[$supply[0]];
                 $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+                $supply[0] = $domainselect[$supply[0]];
             } else {
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
             }
@@ -91,11 +94,11 @@ class MyEnterpriseController extends Controller
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);
-            return view("myenterprise.newExResource",compact('cate','msgcount','searchname','datas','role','collectids','consult','action','supply','address','ordertime','ordercollect','ordermessage'));
+            return view("myenterprise.newExResource",compact('cate','msgcount','domainselect','searchname','datas','role','collectids','consult','action','supply','address','ordertime','ordercollect','ordermessage'));
         }
         $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
         $ordertime = 'desc';
-        return view("myenterprise.newExResource",compact('cate','datas','ordertime','collectids','msgcount'));
+        return view("myenterprise.newExResource",compact('cate','datas','domainselect','ordertime','collectids','msgcount'));
     }
 
     /**专家资源详情
@@ -250,7 +253,7 @@ class MyEnterpriseController extends Controller
     public  function member3($entid){
         $data = DB::table('t_u_enterprise')->where(['enterpriseid' => $entid,'userid' => session('userId')])->first();
         $member = DB::table('t_u_memberright')->get();
-        if(!$data){
+        if(!$data || empty(session('userId'))){
             return redirect('/');
         }
         $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first()->configid;
@@ -261,7 +264,9 @@ class MyEnterpriseController extends Controller
         } elseif ($configid == 2){
             return redirect('uct_member');
         }
-        return view("myenterprise.member3",compact('member'));
+        //进行加密验证
+        $token = Crypt::encrypt($entid.'|'.session('userId').'|'.time());
+        return view("myenterprise.member3",compact('member','token','entid'));
     }
     /**会员认证4
      * @return mixed
@@ -269,6 +274,64 @@ class MyEnterpriseController extends Controller
     public  function member4($entid){
         $data = DB::table('t_u_enterprise')->where(['enterpriseid' => $entid,'userid' => session('userId')])->first();
         return view("myenterprise.member4",compact('data'));
+    }
+
+    /**会员缴费
+     * @param $entid
+     */
+    public function memberPay($entid,Request $request)
+    {
+        if(!empty($entid)){
+            if($request->ajax()){
+                if(!empty(session('userId'))){
+                    $data = $request->only('token','type','time','cost');
+                    $enterpriseinfo = DB::table('t_u_enterprise')->where('enterpriseid',$entid)->first();
+                    if($enterpriseinfo->userid != session('userId')){
+                        return ['msg' => '非本人操作','icon' => 2];
+                    }
+                    $token = explode('|',Crypt::decrypt($data['token']));
+                    if($entid != $token[0] || session('userId') != $token[1]){
+                        return ['msg' => '非法操作FF00002','icon' => 2];
+                    }
+                    if($token[2]+7200 < time() || $token[2] > time()){
+                        return ['msg' => '该缴费已失效，请在两个小时内完成操作','icon' => 2];
+                    }
+                    $verify = DB::table('t_u_memberright')->where([
+                        'termtime' => trim($data['time']),
+                        'cost' => trim($data['cost']),
+                        'typename' => trim($data['type'])
+                    ])->first();
+                    if(empty($verify)){
+                        return ['msg' => '会员类型错误,请重试','icon' => 2];
+                    }
+                    DB::beginTransaction();
+                    try{
+                        DB::table('t_u_enterprisemember')->insert([
+                            'memberid' => $verify->memberid,
+                            'enterpriseid' => $entid,
+                            'starttime' => date('Y-m-d H:i:s',time()),
+                            'endtime' => date('Y',time()) + $data['time'] . '-' . date('m-d H:i:s')
+                        ]);
+                        DB::table('t_u_enterpriseverify')->insert([
+                            'enterpriseid' => $entid,
+                            'configid' => 4,
+                            'verifytime' => date('Y-m-d H:i:s',time())
+                        ]);
+
+                        DB::commit();
+                        return ['msg' => '缴费成功，企业认证成功','icon' => 1];
+                    }catch(Exception $e){
+                        DB::rollback();
+                        throw $e;
+                        return ['msg' => '缴费失败,请重试','icon' => 2];
+                    }
+
+                 }
+                return ['msg' => '请登录','icon' => 2];
+            }
+            return ['msg' => '非法操作FF00001','icon' => 2];
+        }
+        return ['msg' => '非法操作FF00000','icon' => 2];
     }
     /**办事服务
      * @return mixed
@@ -420,14 +483,23 @@ class MyEnterpriseController extends Controller
                     ->leftJoin("view_eventstatus as status","status.eventid","=","t_e_event.eventid")
                     ->leftJoin('t_u_enterprise as ent','ent.userid','=','t_e_event.userid')
                     ->where("t_e_event.eventid",$eventId)
+                    ->select('t_e_event.*','ent.*','status.*','t_e_event.brief')
                     ->first();
                 //获取到办事的流程的信息
                 $configinfo = DB::table('t_e_eventprocessconfig as con')
-                    ->leftJoin('t_e_eventprocess as pro','con.pid','=','pro.pid')
-                    ->select('con.pid as ppid','con.*','pro.*')
                     ->where('con.domain',$datas->domain1)
                     ->orderBy('con.step')
                     ->get();
+                foreach ($configinfo as $v){
+                    $proinfo = DB::table('t_e_eventprocess')->where(['pid' => $v->pid,'eventid' => $eventId])->first();
+                    $v->ppid = $v->pid;
+                    $v->epid = !empty($proinfo->epid) ? $proinfo->epid : null;
+                    $v->eventid = !empty($proinfo->eventid) ? $proinfo->eventid : null;
+                    $v->startuserid = !empty($proinfo->startuserid) ? $proinfo->startuserid : null;
+                    $v->acceptuserid = !empty($proinfo->acceptuserid) ? $proinfo->acceptuserid : null;
+                    $v->documenturl = !empty($proinfo->documenturl) ? $proinfo->documenturl : null;
+                    $v->state = !empty($proinfo->state) ? $proinfo->state : null;
+                }
                 //对信息进行封装
                 $configinfo = \EnterpriseClass::processInsert($configinfo);
 
@@ -827,6 +899,8 @@ class MyEnterpriseController extends Controller
         if(session('userId')){
             $collectids = DB::table('t_u_collectexpert')->where(['userid' => session('userId'),'remark' => 1])->lists('expertid');
         }
+        $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
+        $domainselect2 = ['投融资' => '找资金','科研技术' => '找技术', '战略管理' => '定战略', '市场资源' => '找市场'];
         //判断是否为http请求
         if(!empty($get = $request->input())){
             //获取到get中的数据并处理            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
@@ -846,7 +920,9 @@ class MyEnterpriseController extends Controller
                 $consultwhere = [];
             }
             if(!empty($supply)){
+                $supply[0] = $domainselect2[$supply[0]];
                 $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+                $supply[0] = $domainselect[$supply[0]];
             } else {
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
             }            //判断是否有搜索的关键字
@@ -862,12 +938,12 @@ class MyEnterpriseController extends Controller
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(2);
-            return view("myenterprise.reselect",compact('cate','searchname','datas','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
+            return view("myenterprise.reselect",compact('cate','searchname','datas','domainselect','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
         }
 
         $datas = $datas->orderBy("ext.expertid",'desc')->paginate(2);
         $ordertime = 'desc';
-        return view("myenterprise.reselect",compact('cate','datas','ordertime','collectids'));
+        return view("myenterprise.reselect",compact('cate','datas','ordertime','domainselect','collectids'));
     }
     /**专家反选
      * @return array
@@ -1161,6 +1237,8 @@ class MyEnterpriseController extends Controller
         if(session('userId')){
             $collectids = DB::table('t_u_collectexpert')->where(['userid' => session('userId'),'remark' => 1])->lists('expertid');
         }
+        $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
+        $domainselect2 = ['投融资' => '找资金','科研技术' => '找技术', '战略管理' => '定战略', '市场资源' => '找市场'];
         //判断是否为http请求
         if(!empty($get = $request->input())){
             //获取到get中的数据并处理
@@ -1184,7 +1262,9 @@ class MyEnterpriseController extends Controller
                 $consultwhere = [];
             }
             if(!empty($supply)){
+                $supply[0] = $domainselect2[$supply[0]];
                 $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+                $supply[0] = $domainselect[$supply[0]];
             } else {
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
             }
@@ -1201,11 +1281,11 @@ class MyEnterpriseController extends Controller
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(2);
-            return view("myenterprise.videoSelect",compact('cate','searchname','datas','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
+            return view("myenterprise.videoSelect",compact('cate','searchname','domainselect','datas','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
         }
         $datas = $datas->orderBy("ext.expertid",'desc')->paginate(2);
         $ordertime = 'desc';
-        return view("myenterprise.videoSelect",compact('cate','datas','ordertime','collectids'));
+        return view("myenterprise.videoSelect",compact('cate','datas','ordertime','domainselect','collectids'));
     }
     /**申请咨询 处理反选的专家
      * @param Request $request
