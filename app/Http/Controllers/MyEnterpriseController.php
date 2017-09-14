@@ -163,8 +163,6 @@ class MyEnterpriseController extends Controller
             $configids = DB::table('t_u_enterpriseverify')->where('enterpriseid',$enterpriseid)->orderBy('id','desc')->first();
             if($configids){
                 if($configids->configid == 3){
-                    return redirect('uct_member/member3/'.$enterpriseid);
-                } elseif ($configids->configid == 4){
                     return redirect('uct_member/member4/'.$enterpriseid);
                 } elseif ($configids->configid == 1){
                     return redirect('uct_member/member2/'.$enterpriseid);
@@ -1125,6 +1123,7 @@ class MyEnterpriseController extends Controller
                 $selExperts=DB::table("t_c_consultresponse")
                     ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
                     ->leftJoin("t_u_expertfee","t_u_expertfee.expertid","=","t_u_expert.expertid")
+                    ->select("t_u_expert.*","t_u_expertfee.fee","t_c_consultresponse.consultid","t_u_expertfee.state")
                     ->where("t_c_consultresponse.state",2)
                     ->where("consultid",$consultId)
                     ->get();
@@ -1142,8 +1141,7 @@ class MyEnterpriseController extends Controller
                     ->where("t_u_bill.consultid",$consultId)
                    ->where("t_u_bill.userid",$userId)
                     ->get();
-
-            break; 
+                break;
             case 7:
                 $selExperts=DB::table("t_c_consultresponse")
                     ->leftJoin("t_c_consultcomment","t_c_consultresponse.expertid","=","t_c_consultcomment.expertid" )
@@ -1330,9 +1328,10 @@ class MyEnterpriseController extends Controller
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
             $Ids=DB::table("T_C_CONSULTRESPONSE")
+                ->select('expertid')
                 ->where("consultid",$_POST['consultId'])
                 ->whereRaw('T_C_CONSULTRESPONSE.id in (select max(id) from T_C_CONSULTRESPONSE group by  T_C_CONSULTRESPONSE.expertid)')
-                ->select('expertid')
+                ->distinct()
                 ->get();
             foreach ($Ids as $ID){
                 if(in_array($ID->expertid,$expertIDS)){

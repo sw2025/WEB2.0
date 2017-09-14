@@ -161,7 +161,7 @@ class PublicController extends Controller
                         }
                     }else{
                         $counts=DB::table("t_e_event")
-                            ->leftJoin("view_eventstatus","t_e_event.expertid","=","view_eventstatus.expertid")
+                            ->leftJoin("view_eventstatus","t_e_event.eventid","=","view_eventstatus.eventid")
                             ->whereIn("configid",[6,7,8])
                             ->where("userid",session('userId'))
                             ->count();
@@ -231,18 +231,59 @@ class PublicController extends Controller
      */
     public function  IsMember(Request $request){
         $result=array();
-        $userId=$request->only("userId");
+        $userId=$_POST['userId'];
+        $type=$_POST['type'];
         $enterpriseId=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("enterpriseid");
-        $members=DB::table("t_u_enterprisemember")->where("enterpriseid",$enterpriseId)->get();
-        if($members){
+        $account=\UserClass::getMoney($userId);
+        $result['account']=$account;
+        $enterprise=DB::table("t_u_enterprise")
+            ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
+            ->where("t_u_enterpriseverify.configid",3)
+            ->get();
+        if(count($enterprise)==0){
+            $result['enterpriseid']=$enterpriseId;
+            $result['code']="enterprise";
+            return $result;
+        }
+        $members=DB::table("t_u_enterprisemember")
+            ->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")
+            ->where("enterpriseid",$enterpriseId)->orderBy("ID","desc")->take(1)->get();
+        if(count($members)){
             $currentTime=date('Y-m-d H:i:s');
             foreach ($members as $member){
                 $endTime=$member->endtime;
+                $startTime=$member->starttime;
+                $eventCount=$member->eventcount;
+                $consultCount=$member->consultcount;
             }
-            //if(strtotime($currentTime)<strtotime($endTime)){
             if($currentTime<$endTime){
-                $result['code']="success";
+                if($type=="work"){
+                    $counts=DB::table("t_e_event")
+                        ->leftJoin("view_eventstatus","t_e_event.eventid","=","view_eventstatus.eventid")
+                        ->whereIn("configid",[6,7,8])
+                        ->whereBetween("t_e_event.eventtime",[$startTime,$endTime])
+                        ->where("t_e_event.userid",session('userId'))
+                        ->count();
+                    if($counts>=$eventCount){
+                        $result['code']="finsh";
+                    }else{
+                        $result['code']="success";
+                    }
+                }else{
+                    $counts=DB::table("t_c_consult")
+                        ->leftJoin("view_consultstatus","t_c_consult.consultid","=","view_consultstatus.consultid")
+                        ->whereIn("configid",[6,7,8])
+                        ->whereBetween("t_e_event.eventtime",[$startTime,$endTime])
+                        ->where("t_c_consult.userid",session('userId'))
+                        ->count();
+                    if($counts>=$consultCount){
+                        $result['code']="finsh";
+                    }else{
+                        $result['code']="success";
+                    }
+                }
             }else{
+                $result['enterpriseId']=$enterpriseId;
                 $result['code']="expried";
             }
         }else{

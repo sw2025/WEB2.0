@@ -237,6 +237,35 @@ $(function(){
     $('.three-icon').on('click', '.icon-row', function() {
         $(this).addClass('active').siblings().removeClass('active');
     });
+    /****弹出层
+     付款方式与年份选择
+     ****/
+    $('.payoff-way .pay-opt').click(function(event) {
+        $(this).addClass('been').siblings().removeClass('been');
+        $(this).children('input').prop('checked', true);
+        $(this).siblings().children('input').prop('checked', false);
+    });
+    // 支付or开通
+    $('.single-opt').on('click', function() {
+        var $this = $(this);
+        var $aunt  = $this.closest('.single').siblings();
+        $this.siblings().removeClass('been');
+        $this.addClass('been');
+        $aunt.find('.single-opt').removeClass('been');
+        $this.closest('.single').children('.cub').hide();
+        $aunt.children('.cub').show();
+    });
+    // 点击会员权益
+    $('.open-right').on('click', function() {
+        layer.tips('会员权益内容会员权益内容会员权益内容会员权益内容会员权益内容会员权益内容会员权益内容。', '.open-right', {
+            tips: [2, '#3595CC'],
+            time: 6000
+        });
+    });
+    // 关闭
+    $('.pay-close').click(function(){
+        $('.pop-pay').hide()
+    })
 // 个人中心=======》我的需求和专家资源end
 // 
 })
@@ -249,4 +278,21 @@ function checkLength(which) {
         which.value = which.value.substring(0, maxChars);
         return false;
     }
+}
+function pop(code,account){
+    $("#money").text(account);
+    switch(code){
+        case "error":
+            $(".pay-tit").text("尚未开通会员,请开通");
+            $("#vip").text("开通");
+            break;
+        case "expried":
+            $(".pay-tit").text("会员过期,请续费");
+            $("#vip").text("续费");
+            break;
+        case "finish":
+            $(".open-member").hide();
+            break;
+    }
+    $('.pop-pay').show();
 }

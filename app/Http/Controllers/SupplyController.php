@@ -83,21 +83,22 @@ class SupplyController extends Controller
         }
         $datas = DB::table('t_n_need as need')
             ->leftJoin('view_userrole as view','view.userid', '=','need.userid')
+            ->leftJoin('view_needstatus','view_needstatus.needid','=','need.needid')
             ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
             ->leftJoin('t_u_user as user','user.userid' ,'=' ,'need.userid')
             ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
-            ->select('ent.brief as desc1','view.role','ext.brief as desc2','need.*','ent.enterprisename','ent.address','ext.expertname','user.phone','ent.showimage as entimg','ext.showimage as extimg');
+            ->select('view_needstatus.configid','ent.brief as desc1','view.role','ext.brief as desc2','need.*','ent.enterprisename','ent.address','ext.expertname','user.phone','ent.showimage as entimg','ext.showimage as extimg');
         $obj = clone $datas;
-        $datas = $datas->where('needid',$supplyId)->first();
+        $datas = $datas->where('need.needid',$supplyId)->first();
         //取出同类下推荐的供求
         $info = ['domain1' => $datas->domain1,'domain2' =>$datas->domain2,'needid' => $datas->needid];
-        $recommendNeed = $obj->where('needid','<>',$info['needid'])->orderBy('needtime','desc');
+        $recommendNeed = $obj->where('need.needid','<>',$info['needid'])->orderBy('needtime','desc');
         $obj2 = clone $recommendNeed;
         //取出相同二级类下面的供求
-        $recommendNeed = $recommendNeed->where(['need.domain2' => $info['domain2'],'need.domain1' => $info['domain1']])->take(5)->get();
+        $recommendNeed = $recommendNeed->where(['need.domain2' => $info['domain2'],'need.domain1' => $info['domain1']])->where("configid",3)->take(5)->get();
         //不足5条时 在一级类下面查找供求
         if(count($recommendNeed) < 5){
-            $commedomain1 = $obj2->where('need.domain1',$info['domain1'])->where('need.domain2','<>',$info['domain2'])->take(5-count($recommendNeed))->get();
+            $commedomain1 = $obj2->where('need.domain1',$info['domain1'])->where('need.domain2','<>',$info['domain2'])->where("configid",3)->take(5-count($recommendNeed))->get();
             $recommendNeed = array_merge($recommendNeed,$commedomain1);
         }
         //获得用户的收藏

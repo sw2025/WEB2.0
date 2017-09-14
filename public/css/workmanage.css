@@ -9,7 +9,7 @@
 .v-works-sel-list li:hover{background:#f8f8f8;}
 .v-manage-list-ul{clear:both;}
 .v-manage-list-ul li{padding:0 25px 50px;width:33.3333333%;float: left;box-sizing: border-box;}
-.v-manage-list-ul-link,.v-supply-tip{background:#fff;display: block;border-radius: 5px;box-shadow: 0 0 5px #ccc;position: relative;padding:14px 15px 25px;color:#666;}
+.v-manage-list-ul-link,.v-supply-tip{overflow: hidden;background:#fff;display: block;border-radius: 5px;box-shadow: 0 0 5px #ccc;position: relative;padding:14px 15px 25px;color:#666;}
 .v-manage-link-icon{display: block;width: 46px;height: 49px;background:url(../img/vicons.png) no-repeat 0 0;position: absolute;top: 20px;left:15px;}
 .nature1{background-position: 0 -49px;}
 .nature2{background-position: 0 -98px;}
