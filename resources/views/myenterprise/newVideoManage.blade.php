@@ -1,5 +1,132 @@
 @extends("layouts.ucenter1")
 @section("content")
+    <style>
+
+        @-webkit-keyframes waitPulse {
+            from { background-color: #bbb; -webkit-box-shadow: 0 0 9px #aaa; }
+            50% { background-color: #ccc; -webkit-box-shadow: 0 0 18px #ccc; }
+            to { background-color: #bbb; -webkit-box-shadow: 0 0 9px #aaa; }
+        }
+
+        @-webkit-keyframes followPulse {
+            from { background-color: #45b97c; -webkit-box-shadow: 0 0 9px #45b97c; }
+            50% { background-color: #60ad84; -webkit-box-shadow: 0 0 18px #333; }
+            to { background-color: #45b97c; -webkit-box-shadow: 0 0 9px #45b97c; }
+        }
+
+        @-webkit-keyframes faildPulse {
+            from { background-color: #bc330d; -webkit-box-shadow: 0 0 9px #ef4136; }
+            50% { background-color: #e33100; -webkit-box-shadow: 0 0 18px #e33100; }
+            to { background-color: #bc330d; -webkit-box-shadow: 0 0 9px #ef4136; }
+        }
+
+        @-webkit-keyframes responsePulse {
+            from { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #00a6ac; }
+            50% { background-color: #2daebf; -webkit-box-shadow: 0 0 18px #2daebf; }
+            to { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #00a6ac; }
+        }
+
+        @-webkit-keyframes putPulse {
+            from { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #78cdd1; }
+            50% { background-color: #2daebf; -webkit-box-shadow: 0 0 18px #2daebf; }
+            to { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #78cdd1; }
+        }
+
+
+        @-webkit-keyframes ingPulse {
+            from { background-color: #1d953f; -webkit-box-shadow: 0 0 9px #ccc; }
+            50% { background-color: #4eb33c; -webkit-box-shadow: 0 0 18px #333; }
+            to { background-color: #1d953f; -webkit-box-shadow: 0 0 9px #ccc; }
+        }
+
+
+        @-webkit-keyframes endPulse {
+            from { background-color: #ff5c00; -webkit-box-shadow: 0 0 9px #5e7c85; }
+            50% { background-color: #e2754b; -webkit-box-shadow: 0 0 18px #ff5c00; }
+            to { background-color: #ff5c00; -webkit-box-shadow: 0 0 9px #5e7c85; }
+        }
+
+        @-webkit-keyframes yichangPulse {
+            from { background-color: #fc9200; -webkit-box-shadow: 0 0 9px #f36c21; }
+            50% { background-color: #ffb515; -webkit-box-shadow: 0 0 18px #ffb515; }
+            to { background-color: #fc9200; -webkit-box-shadow: 0 0 9px #f36c21; }
+        }
+
+
+        .response {
+            border-width: 0;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            line-height: normal;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+            padding-top: 0.5em;
+            padding-right: 0.5em;
+            padding-bottom: 0.5em;
+            padding-left: 0.5em;
+            font-size: 1em;
+            background-color: #adc708;
+            border-color: #829606;
+            color: white;
+            border-radius: 5px;
+        }
+
+        #eventwait{
+            -webkit-animation-name: waitPulse;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+            border-style: solid;
+        }
+
+        #eventfollow{
+            -webkit-animation-name: followPulse;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+            border-style: solid;
+        }
+
+        #response {
+            -webkit-animation-name: responsePulse;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+            border-style: solid;
+        }
+
+        #eventput {
+            -webkit-animation-name: putPulse;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+            border-style: solid;
+        }
+
+        #eventing{
+            -webkit-animation-name: ingPulse;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+            border-style: solid;
+        }
+
+        #eventend{
+            -webkit-animation-name: endPulse;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+            border-style: solid;
+        }
+
+        #eventdont{
+            -webkit-animation-name: faildPulse;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+            border-style: solid;
+        }
+
+
+
+
+
+    </style>
 <div class="vmain-manage-list clearfix">
                 <div class="v-works-manage-list-top clearfix">
                     <div class="v-works-mlt-select">
@@ -16,7 +143,7 @@
 
                         @foreach($datas as $data)
                             <li>
-                        <a href="{{asset('uct_video/detail/'.$data->consultid)}}" class="v-manage-list-ul-link">
+                        <a href="{{asset('uct_video/detail/'.$data->consultid)}}" class="v-manage-list-ul-link" style="padding-bottom: 42px;">
                             <div class="v-manage-link-top">
                                 <span class="{{$data->icon}}"></span>
                                 <div class="v-manage-link-tit">
@@ -34,9 +161,9 @@
                                 <span class="vprogress vprog4 @if($data->configid >= 6) vping @endif"  title="咨询管理"></span>
                                 <span class="vprogress vprog5 @if($data->configid >= 7) vping @endif " title="完成"></span>
                             </div>
-                            <span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>{{$data->starttime}}</span>
-                            <span class="v-manage-link-time v-manage-link-time1"><i class="iconfont icon-shijian2"></i>{{$data->endtime}}</span>
-
+                            <span style="position: absolute;bottom: 3px;left: 10px;"><i class="iconfont icon-shijian2"></i>{{$data->starttime}}&nbsp;--</span>
+                            <span style="position: absolute;bottom: 3px;right: 10px;"><i class="iconfont icon-shijian2"></i>{{$data->endtime}}</span>
+                            <p class="response" id="{{$data->btnicon}}" style=" position: absolute;top: 15px;right: 15px;">{{$data->configname}}</p>
                      
                         </a>
                     </li>
