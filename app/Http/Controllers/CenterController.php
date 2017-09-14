@@ -514,8 +514,8 @@ class CenterController extends Controller
             } elseif ($data['role'] == '专家') {
                 $verifyent = DB::table('t_u_expert')->where('userid',session('userId'))->first();
                 if(!empty($verifyent->expertid)){
-                    $verentconfig = DB::table('t_u_expertverify')->where('expertid',$verifyent->expertid)->orderBy('id','desc')->first()->configid;
-                    if($verentconfig != 2){
+                    $verentconfig = DB::table('t_u_expertverify')->where('expertid',$verifyent->expertid)->orderBy('id','desc')->first();
+                    if(empty($verentconfig->configid) || $verentconfig->configid != 2){
                         return ['msg' => '您的专家身份未通过认证,暂不能发布','icon' => 2,'type' => 1];
                     }
                 } else {
