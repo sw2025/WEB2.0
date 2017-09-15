@@ -26,7 +26,8 @@ class MyEnterpriseController extends Controller
             ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
             ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
             ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
-            ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
+            ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount')
+            ->where('status.configid','2');
         //获得用户的收藏
         $collectids = [];
         if(session('userId')){
@@ -890,7 +891,7 @@ class MyEnterpriseController extends Controller
             ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
             ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
             ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
-            ->whereIn('status.configid',[2,4])
+            ->where('status.configid',2)
             ->where("ext.userid","<>",session('userId'))
             ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
         //获得用户的收藏
@@ -1229,7 +1230,7 @@ class MyEnterpriseController extends Controller
             ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
             ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
             ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
-            ->whereIn('status.configid',[2,4])
+            ->where('status.configid',2)
             ->where("ext.userid","<>",session('userId'))
             ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
         //获得用户的收藏
@@ -1450,7 +1451,7 @@ class MyEnterpriseController extends Controller
         $datas=$result->orderBy("t_e_event.created_at","desc")->paginate(6);
         $counts=$count->count();
         foreach ($datas as $data){
-            $data->created_at=date("Y-m-d",strtotime($data->created_at));
+            $data->created_at=date("Y年m月d日",strtotime($data->created_at));
             $totals=DB::table("t_e_eventresponse")->where("eventid",$data->eventid)->count();
             if($totals!=0){
                 $data->state="指定专家";
@@ -1476,7 +1477,37 @@ class MyEnterpriseController extends Controller
             }
             $configname = DB::table('t_e_eventverifyconfig')->where('configid',$data->configid)->first()->name;
             $data->configname = $configname;
+            switch($data->configid){
+                case 1:
+                    $data->btnicon = 'eventwait';
+                    break;
+                case 2:
+                    $data->btnicon = 'eventfollow';
+                    break;
+                case 3:
+                    $data->btnicon = 'eventdont';
+                    break;
+                case 4:
+                    $data->btnicon = 'eventput';
+                    break;
+                case 5:
+                    $data->btnicon = 'response';
+                    break;
+                case 6:
+                    $data->btnicon = 'eventing';
+                    break;
+                case 7:
+                    $data->btnicon = 'eventend';
+                    break;
+                case 8:
+                    $data->btnicon = 'eventend';
+                    break;
+                case 9:
+                    $data->btnicon = 'eventdont';
+                    break;
+            }
         }
+        //dd($datas);
         $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
         return view("myenterprise.newWorkManage",compact("datas","type","counts","domains"));
     }
@@ -1500,6 +1531,8 @@ class MyEnterpriseController extends Controller
         $counts=$count->count();
         foreach ($datas as $data){
             $data->created_at=date("Y-m-d",strtotime($data->created_at));
+            $data->starttime=date("m月d日 H:i:s",strtotime($data->starttime));
+            $data->endtime=date("m月d日 H:i:s",strtotime($data->endtime));
             $totals=DB::table("t_c_consultresponse")->where("consultid",$data->consultid)->count();
             if($totals!=0){
                 $data->state="指定专家";
@@ -1525,6 +1558,35 @@ class MyEnterpriseController extends Controller
             }
             $configname = DB::table('t_c_consultverifyconfig')->where('configid',$data->configid)->first()->name;
             $data->configname = $configname;
+            switch($data->configid){
+                case 1:
+                    $data->btnicon = 'eventwait';
+                    break;
+                case 2:
+                    $data->btnicon = 'eventfollow';
+                    break;
+                case 3:
+                    $data->btnicon = 'eventdont';
+                    break;
+                case 4:
+                    $data->btnicon = 'eventput';
+                    break;
+                case 5:
+                    $data->btnicon = 'response';
+                    break;
+                case 6:
+                    $data->btnicon = 'eventing';
+                    break;
+                case 7:
+                    $data->btnicon = 'eventend';
+                    break;
+                case 8:
+                    $data->btnicon = 'eventend';
+                    break;
+                case 9:
+                    $data->btnicon = 'eventdont';
+                    break;
+            }
         }
         $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
         return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2','domains'));

@@ -31,8 +31,8 @@
 
                                         </div>
                                         <div class="datas-sel">
-                                            <span class="datas-sel-cap">姓名</span>
-                                            <input class="datas-sel-name" readonly="readonly" type="text" value="{{$data->expertname}}" />
+                                            <span class="datas-sel-cap">名称</span>
+                                            <input class="datas-sel-name" readonly="readonly" type="text" value="{{$data->expertname}}" style="color:#666;"/>
                                         </div>
                                         <div class="datas-sel zindex2">
                                             <span class="datas-sel-cap">擅长行业</span><a href="javascript:;" class="datas-sel-def  verify-default" id="industry">{{$data->industry}}</a>
