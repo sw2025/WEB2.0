@@ -103,7 +103,7 @@
                    });
                     $.ajax({
                         url:"{{asset('returnMoney')}}",
-                        data:{"userId":$.cookie('userId'),"expertIds":expertIds,"type":"consult","consultId":consultId,},
+                        data:{"userId":$.cookie('userId'),"expertIds":expertIds,"type":"consult","markId":consultId,"totalCount":totalCount},
                         dateType:"json",
                         type:"POST",
                         success:function(res){
@@ -118,8 +118,8 @@
                                     });
                                 break;
                                 case "noMember":
-                                    layer.confirm('您还不是会员,去开通?', {
-                                        btn: ['开通','取消'], //按钮
+                                    layer.confirm('您还没认证企业,去认证?', {
+                                        btn: ['认证','取消'], //按钮
                                     }, function(){
                                         window.location.href="{{asset('uct_member')}}";
                                     }, function(){

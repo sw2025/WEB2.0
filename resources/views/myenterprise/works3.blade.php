@@ -27,6 +27,10 @@
                             <ul class="publish-need-list" style="display: none;">
                             </ul>
                         </div>
+                        <div class="datas-sel publish-need-sel mt20">
+                            <span class="datas-sel-cap padd12">所在行业</span>
+                            <a href="javascript:;" class="datas-sel-def verify-default" id="industrys">{{$data->industry}}</a>
+                        </div>
                         <textarea readonly="readonly" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述">{{$data->brief}}</textarea>
                         <div class="uct-works-exp">
                             <a href="javascript:;" class="special-btn uct-works-btn  @if($data->state=='指定专家') active @endif">指定专家</a>

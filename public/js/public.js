@@ -76,7 +76,7 @@ $(function(){
         $('.banner ul li').eq(imgKey).fadeIn();
     }
     var timer01 = null;
-    timer01 = setInterval(lunbo,3000);
+    timer01 = setInterval(lunbo,5000);
 
     $('.banner ol li').click(function(event) {
         var ind = $(this).index();
@@ -89,7 +89,7 @@ $(function(){
         clearInterval(timer01);
     }, function() {
         $('.leftBtn,.rightBtn').stop().fadeOut();
-        timer01 = setInterval(lunbo,3000);
+        timer01 = setInterval(lunbo,5000);
     });
     $('.rightBtn').click(function() {
         lunbo();
@@ -98,7 +98,7 @@ $(function(){
         $('.banner ul li').eq(imgKey).fadeOut();
         imgKey--;
         if(imgKey < 0){
-            imgKey = 3;
+            imgKey = 2;
         }
         $('.banner ol li').eq(imgKey).addClass('cur').siblings().removeClass('cur');
         $('.banner ul li').eq(imgKey).fadeIn();

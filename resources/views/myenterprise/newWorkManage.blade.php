@@ -251,34 +251,31 @@
         })
 
         $("#applyEvent1").on("click",function(){
-
             var userId=$.cookie('userId');
             $.ajax({
                 url:"{{asset('IsMember')}}",
-                data:{"userId":userId},
+                data:{"userId":userId,"type":"work"},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
-                    if(res['code']=="success"){
-
-                        window.location.href="{{asset('uct_works/applyWork')}}"
-
-                    }else if(res['code']=="error"){
-                        layer.confirm('您尚未开通会员', {
-                            btn: ['开通','取消'], //按钮
-                        }, function(){
-                            window.location.href='{{asset('uct_member')}}';
-                        }, function(){
-                            layer.close();
-                        });
-                    }else{
-                        layer.confirm('您的会员已过期,请续费', {
-                            btn: ['续费','取消'], //按钮
-                        }, function(){
-                            window.location.href='{{asset('uct_member/member4/2')}}';
-                        }, function(){
-                            layer.close();
-                        });
+                    var code=res['code'];
+                    var account=res['account']
+                    switch(code){
+                        case "success":
+                            window.location.href="{{asset('uct_works/applyWork')}}";
+                            break;
+                        case "enterprise":
+                            window.location.href="{{asset('uct_member')}}";
+                            break;
+                        case "error":
+                            pop(code,account);
+                            break;
+                        case "expried":
+                            pop(code,account);
+                            break;
+                        case "finish":
+                            pop(code,account)
+                            break;
                     }
                 }
             })

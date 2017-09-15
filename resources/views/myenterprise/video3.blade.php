@@ -28,6 +28,10 @@
 
                             </ul>
                         </div>
+                        <div class="datas-sel publish-need-sel mt20">
+                            <span class="datas-sel-cap padd12">所在行业</span>
+                            <a href="javascript:;" class="datas-sel-def verify-default" id="industrys">{{$data->verify}}</a>
+                        </div>
                         <textarea readonly="readonly" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入会议议题">{{$data->brief}}</textarea>
                         <div class="calendar">
                             <div class="calendar-start clearfix">
