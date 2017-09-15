@@ -830,18 +830,21 @@ class MyEnterpriseController extends Controller
      * @return array
      * @throws Exception
      */
-    public function saveEvent(){
+    public function saveEvent(Request $request){
         $userId=session("userId");
         $result=array();
-        $domain=explode("/",$_POST['domain']);
+        $data = $request->input();
+        $domain=explode("/",$data['domain']);
+
         DB::beginTransaction();
         try{
             $eventId=DB::table("t_e_event")->insertGetId([
                 "userid"=>$userId,
                 "domain1"=>$domain[0],
                 "domain2"=>$domain[1],
-                "brief"=>$_POST['describe'],
-                "isRandom"=>$_POST['isAppoint'],
+                "brief"=>$data['describe'],
+                "isRandom"=>$data['isAppoint'],
+                'industry' => $data['industry'],
                 "eventtime"=>date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
@@ -852,29 +855,24 @@ class MyEnterpriseController extends Controller
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
-            if($_POST['state']==0){
-                $expertIds=explode(",",$_POST['expertIds']);
-                foreach ($expertIds as $val){
-                    DB::table("t_e_eventresponse")->insert([
-                        "eventid"=>$eventId,
-                        "expertid"=>$val,
-                        "state"=>0,
-                        "created_at"=>date("Y-m-d H:i:s",time()),
-                        "updated_at"=>date("Y-m-d H:i:s",time()),
-                    ]);
-                }
-            }
+
             DB::commit();
+
+            $verify = PublicController::ValidationAudit('event',['eventid' => $eventId]);
+            if($verify['icon'] == 2){
+                return $verify;
+            } elseif ($verify['icon'] == 1){
+                $verify2 = PublicController::eventPutExpert('event',['eventid' => $eventId,'state' => $data['state'],'expertIds' => $data['expertIds']]);
+                return $verify2;
+            } else {
+                return ['msg' => '操作失败','icon' => 2];
+            }
+
+
         }catch(Exception $e){
             DB::rollback();
-            throw $e;
+            return ['msg' => '操作失败','icon' => 2];
         }
-        if(!isset($e)){
-            $result['code']="success";
-        }else{
-            $result['code']="error";
-        }
-        return $result;
     }
 
     /**筛选专家
@@ -936,11 +934,11 @@ class MyEnterpriseController extends Controller
             } else {
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
-            $datas = $obj->paginate(2);
+            $datas = $obj->paginate(4);
             return view("myenterprise.reselect",compact('cate','searchname','datas','domainselect','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
         }
 
-        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(2);
+        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
         $ordertime = 'desc';
         return view("myenterprise.reselect",compact('cate','datas','ordertime','domainselect','collectids'));
     }

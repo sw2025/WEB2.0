@@ -402,8 +402,8 @@ class CenterController extends Controller
             //判断是否登陆
             if(!empty(session('userId'))){
                 $data = $request->input();
-                $domain1 = explode('/',$data['domain'])[0];
-                $domain2 = explode('/',$data['domain'])[1];
+                $domain1 = trim(explode('/',$data['domain'])[0]);
+                $domain2 = trim(explode('/',$data['domain'])[1]);
                 if($data['role'] == '企业'){
                     $verifyent = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterpriseid;
                     if($verifyent){
@@ -449,7 +449,8 @@ class CenterController extends Controller
                                 'updated_at' => date('Y-m-d H:i:s',time())
                             ]);
                         DB::commit();
-                        return ['msg' => '修改需求成功,进入审核阶段','icon' => 1,'id' => $data['needid']];
+                        $res = PublicController::ValidationAudit('need',['needid' => $data['needid']]);
+                        return $res;
 
                     }catch(Exception $e)
                     {
@@ -479,7 +480,8 @@ class CenterController extends Controller
                         'updated_at' => date('Y-m-d H:i:s',time())
                     ]);
                     DB::commit();
-                    return ['msg' => '添加需求成功,进入审核阶段','icon' => 1,'id' => $needid];
+                    $res = PublicController::ValidationAudit('need',['needid' => $needid]);
+                    return $res;
 
                 }catch(Exception $e)
                 {
