@@ -22,7 +22,7 @@ class ExpertController extends Controller
             ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
             ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
             ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
-            ->whereIn('status.configid',[2,4])
+            ->where('status.configid',2)
             ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
         //获得用户的收藏
         $collectids = [];

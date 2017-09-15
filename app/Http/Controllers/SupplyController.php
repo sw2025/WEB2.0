@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SupplyController extends Controller
 {
@@ -69,7 +71,26 @@ class SupplyController extends Controller
     /**供求信息详情
      * @return mixed
      */
-    public  function detail($supplyId){
+    public  function detail($supplyId,Request $request){
+        /*Log::useFiles(storage_path().'/logs/'.date('Y-m-d').'_looks.log','info');
+        Log::info('**'.ip2long($request->getClientIp()).'||'.$supplyId.'||'.$request->path().'||'.date('Y-m-d H:i:s').'**');*/
+        //Log::info('looks',[ 'ip' => ip2long($request->getClientIp()), 'supplyid' => $supplyId, 'urlpath' => $request->path(), 'date' => date('Y-m-d H:i:s')]);
+        /*$str = file_get_contents(storage_path().'/logs/'.date('Y-m-d').'_looks.log');
+        $str = explode('**',$str);
+        foreach($str as $v){
+            $stemp = explode('||',$v);
+            if(count($stemp) == 4){
+                $arr[$stemp[1]][] = $stemp[0];
+                $arr[$stemp[1]] = array_unique($arr[$stemp[1]]);
+            }
+        }*/
+        if(!Cache::has('iplooks'.$supplyId) || Cache::get('iplooks'.$supplyId) != ip2long($request->getClientIp()).'|'.$supplyId){
+            $looksinsert = DB::table('t_n_need')->where('needid',$supplyId)->increment('looks');
+            if($looksinsert){
+                Cache::put('iplooks'.$supplyId, ip2long($request->getClientIp()).'|'.$supplyId, 120);
+            }
+        }
+
         //取出指定的供求信息
         $verify = DB::table('view_needstatus')->where('needid',$supplyId)->first()->configid;
         if($verify != 3){
