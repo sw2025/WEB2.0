@@ -3,8 +3,7 @@
 <script type="text/javascript" src="{{asset('js/laydate/laydate.js')}}"></script>
 <div class="main">
             <!-- 企业办事服务 / start -->
-            <h3 class="main-top">企业办事服务</h3>
-            <div class="ucenter-con">
+            <h3 class="main-top">企业办事服务</h3>            <div class="ucenter-con">
                 <div class="main-right">
                     <div class="card-step works-step">
                         <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
@@ -62,7 +61,7 @@
                         <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述"></textarea>
                         <div class="uct-works-exp">
                             <span>专家</span>
-                            <a href="javascript:;" class="system-btn active uct-works-btn" id="random">系统分配</a>
+                            <a href="javascript:;" class="system-btn uct-works-btn" id="random" style="padding:0 10px;">系统分配专家</a>
                             <a href="javascript:;" class="uct-works-btn" id="appoint">指定专家</a>
                         </div>
                         <div class="uct-works-expava">
@@ -75,13 +74,60 @@
                         <div class="uct-works-con">
                             <button class="test-btn submit-audit" type="button">提交审核</button>
                         </div>
-                    </div>
+                    </div
                 </div>
             </div>
         </div>
 
+<style>
+    .layer_notice {
+        float: left;
+        overflow: hidden;
+        background: #1e8e8e;
+        padding: 10px;
+    }
+    .layer_image {
+        float: left;
+        overflow: hidden;
+        background: #1e8e8e;
+        padding: 10px;
+    }
+    .layer_notice a {
+        color: #fff;
+    }
+
+    .layer_image a {
+        border: 2px solid #ccc;
+        float: left;
+        margin: 0 5px;
+    }
+    .layer_image img {
+        width: 120px;
+        height: 100px;
+    }
+    .layer_image span {
+        margin-left: 20%;
+        color:#fff;
+    }
+</style>
+<ul class="layer_notice" style="display: none;">
+    <li><a>近期，网监部门查敏感类信息比较严格，所以内容中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写办事内容。</a></li>
+    <li><a>感谢您的合作</a></li>
+    <li><a style="margin-left: 80%;">升维网</a></li>
+</ul>
+<ul class="layer_image" style="display: none;">
+    <li>
+    </li>
+</ul>
 <script type="text/javascript">
     $(function(){
+        layer.open({
+            type: 1,
+            shade: false,
+            title: '尊敬的用户您好', //不显示标题
+            content: $('.layer_notice'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+        });
+
         $('.datas-sel-def').click(function () {
             $(this).next('ul').stop().slideToggle();
             $(this).parent().siblings().children('ul').hide();
@@ -131,29 +177,124 @@
         });
 
         $('.uct-works-exp a').click(function(event) {
+            if($('#select1').text().trim() == '请选择' || $('#industrys').text().trim() == '请选择'){
+                layer.msg('请选择问题分类和问题行业');
+                return false;
+            }
             var date = new Date();
             date.setTime(date.getTime() + (120 * 60 * 1000));
             $(this).addClass('active').siblings().removeClass('active');
-            var text=$(this).text();
-            if(text=="系统分配"){
+            var text=$(this).text().trim();
+            if(text=="系统分配专家"){
+                layer.msg('系统为您检索专家中', {
+                    icon: 16
+                    ,shade: 0.01
+                });
                 $(".uct-works-expava").hide();
+                $(".submit-audit").attr('disabled',true);
+                $(".submit-audit").css('background-color','#ccc');
+                $.post('{{url('matchingexpert')}}',{'domain':$('#select1').text().trim(),'industrys':$('#industrys').text().trim()},function (data) {
+                    if(data.type == 4){
+                        layer.msg(data.msg,{'icon':2},function () {
+                            window.location.href="/"
+                        });
+                    } else if (data.type == 1){
+                        layer.alert(data.msg,{'title':'尊敬的用户您好'});
+                        $(".submit-audit").attr('disabled',false);
+                        $(".submit-audit").css('background-color','#ed0021');
+                    } else if (data.type == 2){
+                        layer.confirm(data.msg, {
+                            btn: ['自选专家','重新办事','继续操作'] //按钮
+                        }, function(index){
+                            if($.cookie('reselect')){
+                                var selected=$.cookie('reselect').split(",");
+                                if(selected.length==5){
+                                    $(".uct-works-expava").show();
+                                }else{
+                                    var domains=$(".publ-need-sel-def").text().trim();
+                                    var industry=$("#industrys").text().trim();
+                                    var describes=$(".uct-works-txt").val();
+                                    $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                                    $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                                    $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                                    window.location.href="{{asset('uct_works/reselect')}}"
+                                }
+                            }else{
+                                var domains=$(".publ-need-sel-def").text().trim();
+                                var industry=$("#industrys").text().trim();
+                                var describes=$(".uct-works-txt").val();
+                                $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                                window.location.href="{{asset('uct_works/reselect')}}"
+                            }
+                        }, function(){
+                            $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
+                            window.location.href="{{url('uct_works/applyWork')}}"
+                            return false;
+
+                        }, function(){                            $(".submit-audit").attr('disabled',false);
+                              $(".submit-audit").css('background-color','#ed0021');                            layer.close(index);
+
+                        });
+                    } else if (data.type == 3){
+                        layer.confirm(data.msg, {
+                            btn: ['自选专家','取消该办事'] //按钮
+                        }, function(){
+                            if($.cookie('reselect')){                                var selected=$.cookie('reselect').split(",");
+                                if(selected.length==5){
+                                    $(".uct-works-expava").show();
+                                }else{                                    var domains=$(".publ-need-sel-def").text().trim();
+                                    var industry=$("#industrys").text().trim();
+                                    var describes=$(".uct-works-txt").val();
+                                    $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                                    $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                                    $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                                    window.location.href="{{asset('uct_works/reselect')}}"                                    return false;
+                                }
+                            }else{
+                                var domains=$(".publ-need-sel-def").text().trim();
+                                var industry=$("#industrys").text().trim();
+                                var describes=$(".uct-works-txt").val();
+                                $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                                window.location.href="{{asset('uct_works/reselect')}}"
+                                return false;
+                            }
+                        }, function(){
+                            $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
+                            window.location.href="{{url('uct_works/applyWork')}}"
+                            return false;
+
+                        });
+                    }
+                });
             }else{
                 if($.cookie('reselect')){
                     var selected=$.cookie('reselect').split(",");
                     if(selected.length==5){
                         $(".uct-works-expava").show();
                     }else{
-                        var domains=$(".publ-need-sel-def").text();
-                        var industry=$("#industrys").text();
-                        var describes=$(".uct-works-txt").val();
+                        var domains=$(".publ-need-sel-def").text().trim();
+                        var industry=$("#industrys").text().trim();
+
+                      var describes=$(".uct-works-txt").val();
                         $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('uct_works/reselect')}}"
                     }
                 }else{
-                    var domains=$(".publ-need-sel-def").text();
-                    var industry=$("#industrys").text();
+                    var domains=$(".publ-need-sel-def").text().trim();
+                    var industry=$("#industrys").text().trim();
+
                     var describes=$(".uct-works-txt").val();
                     $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
@@ -165,8 +306,8 @@
     })
     $(".submit-audit").on("click",function(){
         var that=this;
-        var domain=$(".publ-need-sel-def").text();
-        var industry=$("#industrys").text();
+        var domain=$(".publ-need-sel-def").text().trim();
+        var industry=$("#industrys").text().trim();
         var describe=$(".uct-works-txt").val();
         var isAppoint=($.cookie("isAppoint"))?$.cookie("isAppoint"):1;
         var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
@@ -175,6 +316,15 @@
         }else{
             var state=0;
         }
+
+        if(industry=="请选择"){
+            layer.tips("擅长行业不能为空", '.datas-sel-def', {
+                tips: [2, '#00a7ed'],
+                time: 4000
+            });
+            return false
+        }
+
         if(domain=="请选择"){
             layer.tips("问题分类不能为空", '.publ-need-sel-def', {
                 tips: [2, '#00a7ed'],
@@ -189,8 +339,16 @@
             });
             return false;
         }
+
         if(!describe){
             layer.tips("问题描述不能为空", '.uct-works-txt', {
+                tips: [2, '#00a7ed'],
+                time: 4000
+            });
+            return false;
+        }
+        if(!$('.uct-works-exp a').hasClass('active')){
+            layer.tips("请选择系统匹配还是自选专家", '.uct-works-exp', {
                 tips: [2, '#00a7ed'],
                 time: 4000
             });
@@ -206,21 +364,32 @@
             success:function(res){
                 var date = new Date();
                 date.setTime(date.getTime() + (120 * 60 * 1000));
-                if(res['code']=="success"){
+                if(res['icon'] == 1){
                     $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
-                    window.location.href="{{asset('uct_works')}}";
+                    var str = '';
+                    var obj = res.expertsinfo;
+                    for(var i=0;i<obj.length;i++){
+                        str += '<a href={{url("expert/detail")}}/'+obj[i]['expertid']+' target="_blank"><img src="{{env('ImagePath')}}'+obj[i]['showimage']+'"><span>'+obj[i]['expertname']+'</span></a>';
+                    }
+                    $('.layer_image li').append(str);
+                    layer.open({
+                        type: 1,
+                        shade: false,
+                        title: res.msg, //不显示标题
+                        content: $('.layer_image'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    });
                 }else{
                     $(".publ-need-sel-def").text(domain);
                     $("#industrys").text(describe);
                     $(".uct-works-txt").val(describe);
-                    layer.confirm('申请失败,请重新申请', {
+                    layer.alert(res.msg+' 申请失败,请重新申请', {
                         btn: ['确定'] //按钮
+                    },function () {
+                        window.location.href=window.location.href;
                     });
-                    $(that).removeAttr('disabled');
-                    $(that).html('提交审核');
                 }
             }
         })
