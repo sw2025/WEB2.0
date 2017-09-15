@@ -181,7 +181,8 @@
             $(this).parent().siblings().children('ul').hide();
         });
         $('.datas-list li').click(function () {
-            var publishHtml = $(this).html();            $(this).parent().prev('.datas-sel-def').html(publishHtml);
+            var publishHtml = $(this).html();
+            $(this).parent().prev('.datas-sel-def').html(publishHtml);
             $(this).parent().hide();
         });
 

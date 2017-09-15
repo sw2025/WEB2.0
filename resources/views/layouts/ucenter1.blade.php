@@ -76,7 +76,7 @@
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
         <div class="v-aside">
-            <a href="{{asset('uct_member')}}" class="goto-renzh v-personal" title="去认证"><img  class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip" title="未认证"></i></a>
+            <a href="{{asset('uct_member')}}" class="goto-renzh v-personal" title="去认证"><img  class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip novip" title="未认证"></i></a>
             <a href="{{asset('uct_basic')}}" class="v-personal" title="个人中心">
                 <span class="v-nick"></span>
             </a>
@@ -167,10 +167,17 @@
 <div class="pop-pay">
     <div class="payoff">
         <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
+        <div class="pay-tit">咯咯咯咯咯咯咯咯咯咯嘎嘎嘎嘎嘎嘎嘎嘎嘎咕咕咕咕</div>
         <div class="single">
-            <div class="single-opt pay-opt been">
-                <input class="rad-inp" type="radio" id="single" name="charge">
-                <div class="opt-label"><span></span>单次缴费：￥500 / 次</div>
+            <div class="single-two">
+                <span class="single-opt pay-opt been">
+                    <input class="rad-inp" type="radio" id="single1" name="charge">
+                    <div class="opt-label"><span></span>单次缴费：￥500 / 次</div>
+                </span>
+                <span class="single-opt pay-opt">
+                    <input class="rad-inp" type="radio" id="single2" name="charge">
+                    <div class="opt-label"><span></span>可用余额：￥<em id="money">500</em> 元</div>
+                </span>
             </div>
             <div class="payoff-way">
                     <span class="pay-opt">
@@ -186,10 +193,12 @@
             <div class="cub"></div>
         </div>
         <div class="single open-member">
-            <div class="single-opt pay-opt">
-                <input class="rad-inp" type="radio" id="open" name="charge">
-                <div class="opt-label dib"><span></span>开通会员</div>
-                <span class="open-right">会员权益</span>
+            <div>
+                <div class="single-opt pay-opt">
+                    <input class="rad-inp" type="radio" id="open" name="charge">
+                    <div class="opt-label dibs"><span></span>开通会员</div>
+                    <span class="open-right">会员权益</span>
+                </div>
             </div>
             <div class="years payoff-way">
                     <span class="pay-opt">
@@ -211,7 +220,7 @@
                         <div class="opt-label"><span></span><img class="way-img" src="img/lzhifubao.png"><em class="way-cap">支付宝支付</em></div>
                     </span>
             </div>
-            <button type="button" class="pop-btn">开 通</button>
+            <button type="button" class="pop-btn" id="vip">开 通</button>
             <div class="cub" style="display:block"></div>
         </div>
     </div>
@@ -247,9 +256,17 @@
             $(".before-login").show();
             $(".after-login").hide();
         }
-        if($.cookie("enterAvatar") && $.cookie("phone")){
-            $(".v-avatar").attr('src',"{{env('ImagePath')}}"+$.cookie("enterAvatar"));
+        if($.cookie("enterAvatar") && $.cookie("phone") && $.cookie("remark")){
+            var enterAvatar=$.cookie("enterAvatar");
+            $(".v-avatar").attr('src',"{{env('ImagePath')}}"+enterAvatar);
             $(".v-nick").html($.cookie("phone"));
+            if($.cookie('remark')=="success"){
+                $(".havevip").show();
+                $(".novip").hide();
+            }else{
+                $(".havevip").hide();
+                $(".novip").show();
+            }
         }else{
             $.ajax({
                 url:"{{asset('getAvatar')}}",
@@ -259,10 +276,18 @@
                 success:function(res){
                     $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['enterAvatar']);
                     $(".v-nick").html(res['phone']);
+                    if($.cookie('remark')=="success"){
+                        $(".havevip").show();
+                        $(".novip").hide();
+                    }else{
+                        $(".havevip").hide();
+                        $(".novip").show();
+                    }
                     var date = new Date();
                     date.setTime(date.getTime() + (120 * 60 * 1000));
                     $.cookie("enterAvatar",res['enterAvatar'],{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("phone",res['phone'],{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("remark",res['remark'],{expires:date,path:'/',domain:'sw2025.com'});
                 }
             })
         }
@@ -278,6 +303,7 @@
                     $.cookie("name",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("enterAvatar",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("remark",'',{path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('/')}}"
                 }else{
                     window.location.href="{{asset('/')}}"

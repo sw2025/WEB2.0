@@ -75,7 +75,7 @@
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
         <div class="v-aside">
-            <a href="{{asset('uct_member')}}" class="goto-renzh v-personal" title="去认证"><img  class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip" title="未认证"></i></a>
+            <a href="{{asset('uct_member')}}" class="goto-renzh v-personal" title="去认证"><img  class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip novip" title="未认证"></i></a>
             <a href="{{asset('uct_basic')}}" class="v-personal" title="个人中心">
                 <span class="v-nick"></span>
             </a>
@@ -246,9 +246,17 @@
             $(".before-login").show();
             $(".after-login").hide();
         }
-        if($.cookie("enterAvatar") && $.cookie("phone")){
-            $(".v-avatar").attr('src',"{{env('ImagePath')}}"+$.cookie("enterAvatar"));
+        if($.cookie("enterAvatar") && $.cookie("phone") && $.cookie("remark")){
+            var enterAvatar=$.cookie("enterAvatar");
+            $(".v-avatar").attr('src',"{{env('ImagePath')}}"+enterAvatar);
             $(".v-nick").html($.cookie("phone"));
+            if($.cookie('remark')=="success"){
+                $(".havevip").show();
+                $(".novip").hide();
+            }else{
+                $(".havevip").hide();
+                $(".novip").show();
+            }
         }else{
             $.ajax({
                 url:"{{asset('getAvatar')}}",
@@ -258,10 +266,18 @@
                 success:function(res){
                     $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['enterAvatar']);
                     $(".v-nick").html(res['phone']);
+                    if($.cookie('remark')=="success"){
+                        $(".havevip").show();
+                        $(".novip").hide();
+                    }else{
+                        $(".havevip").hide();
+                        $(".novip").show();
+                    }
                     var date = new Date();
                     date.setTime(date.getTime() + (120 * 60 * 1000));
                     $.cookie("enterAvatar",res['enterAvatar'],{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("phone",res['phone'],{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("remark",res['remark'],{expires:date,path:'/',domain:'sw2025.com'});
                 }
             })
         }
@@ -277,6 +293,7 @@
                     $.cookie("name",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("enterAvatar",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("remark",'',{path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('/')}}"
                 }else{
                     window.location.href="{{asset('/')}}"

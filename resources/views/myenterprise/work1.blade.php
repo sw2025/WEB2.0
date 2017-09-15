@@ -21,7 +21,7 @@
                                     <em>办事申请</em>IS APPLYING
                                 </span>
                         </div>
-                        <div class="publish-need-sel">
+                        <div class="publish-need-sel zindex3">
                             <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def">请选择</a>
                             <ul class="publish-need-list" style="display: none;">
                                 @foreach($cate as $v)
@@ -38,6 +38,25 @@
                                         </li>
                                     @endif
                                 @endforeach
+                            </ul>
+                        </div>
+                        <div class="datas-sel mt20">
+                            <span class="datas-sel-cap padd12">所在行业</span>
+                            <a href="javascript:;" class="datas-sel-def" id="industrys">请选择</a>
+                            <ul class="datas-list">
+                                <li>IT|通信|电子|互联网</li>
+                                <li>金融业</li>
+                                <li>房地产|建筑业</li>
+                                <li>商业服务</li>
+                                <li>贸易|批发|零售|租赁业</li>
+                                <li>文体教育|工艺美术</li>
+                                <li>生产|加工|制造</li>
+                                <li>交通|运输|物流|仓储</li>
+                                <li>服务业</li>
+                                <li>文化|传媒|娱乐|体育</li>
+                                <li>能源|矿产|环保</li>
+                                <li>政府|非盈利机构</li>
+                                <li>农|林|牧|渔|其他</li>
                             </ul>
                         </div>
                         <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述"></textarea>
@@ -63,13 +82,24 @@
 
 <script type="text/javascript">
     $(function(){
+        $('.datas-sel-def').click(function () {
+            $(this).next('ul').stop().slideToggle();
+            $(this).parent().siblings().children('ul').hide();
+        });
+        $('.datas-list li').click(function () {
+            var publishHtml = $(this).html();
+            $(this).parent().prev('.datas-sel-def').html(publishHtml);
+            $(this).parent().hide();
+        });
         if($.cookie("domain")!="请选择"){
             $(".publ-need-sel-def").text($.cookie("domain"));
+        }
+        if($.cookie("industry")!="请选择"){
+            $("#industrys").text($.cookie("industry"));
         }
         if($.cookie("describe")){
             $(".uct-works-txt").val($.cookie("describe"));
         }
-        console.log($.cookie('domain'));
         if($.cookie("reselect")){
             $(".uct-works-expava").show();
             var expertChecked=$.cookie('reselect').split(",");
@@ -114,15 +144,19 @@
                         $(".uct-works-expava").show();
                     }else{
                         var domains=$(".publ-need-sel-def").text();
+                        var industry=$("#industrys").text();
                         var describes=$(".uct-works-txt").val();
                         $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('uct_works/reselect')}}"
                     }
                 }else{
                     var domains=$(".publ-need-sel-def").text();
+                    var industry=$("#industrys").text();
                     var describes=$(".uct-works-txt").val();
                     $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('uct_works/reselect')}}"
                 }
@@ -132,6 +166,7 @@
     $(".submit-audit").on("click",function(){
         var that=this;
         var domain=$(".publ-need-sel-def").text();
+        var industry=$("#industrys").text();
         var describe=$(".uct-works-txt").val();
         var isAppoint=($.cookie("isAppoint"))?$.cookie("isAppoint"):1;
         var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
@@ -142,6 +177,13 @@
         }
         if(domain=="请选择"){
             layer.tips("问题分类不能为空", '.publ-need-sel-def', {
+                tips: [2, '#00a7ed'],
+                time: 4000
+            });
+            return false;
+        }
+        if(industry=="请选择"){
+            layer.tips("擅长行业不能为空", '.datas-sel-def', {
                 tips: [2, '#00a7ed'],
                 time: 4000
             });
@@ -158,7 +200,7 @@
         $(this).html('正在提交');
         $.ajax({
             url:"{{asset('saveEvent')}}",
-            data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state},
+            data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state,"industry":industry},
             dateType:"json",
             type:"POST",
             success:function(res){
@@ -168,9 +210,11 @@
                     $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('uct_works')}}";
                 }else{
                     $(".publ-need-sel-def").text(domain);
+                    $("#industrys").text(describe);
                     $(".uct-works-txt").val(describe);
                     layer.confirm('申请失败,请重新申请', {
                         btn: ['确定'] //按钮
