@@ -127,7 +127,7 @@
 .v-info{box-sizing: border-box;border-left: 1px solid #ccc;height: 18px;line-height: 18px;margin-top: 2px;position: relative;}
 .v-info i{font-size: 12px;}
 .v-money i{font-size: 17px;}
-.v-new-info-tip{position: absolute;width: 6px;height: 6px;border-radius: 5px;background:#e90e0e;top: 0;right: 20px;}
+.v-new-info-tip{position: absolute;width: 6px;height: 6px;border-radius: 5px;background:#e90e0e;top: 0;right: 20px;display: none}
 .v-identity-sel{position: relative;}
 .v-identity-default{display: block;width: 124px;height: 32px;line-height: 32px;margin:0 auto;border-radius: 3px;background:#00a7ed;color:#fff;position: relative;}
 .v-identity-default:before{content:"\e60c";font-family: "iconfont";position: absolute;top: 0;right: 8px;font-size: 20px;}

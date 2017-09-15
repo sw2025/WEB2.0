@@ -238,8 +238,6 @@ class MyEnterpriseController extends Controller
         }
         $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first()->configid;
         if($configid == 3){
-            return redirect('uct_member/member3/'.$entid);
-        } elseif ($configid == 4){
             return redirect('uct_member/member4/'.$entid);
         } elseif ($configid == 2){
             return redirect('uct_member');
@@ -258,7 +256,7 @@ class MyEnterpriseController extends Controller
         $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first()->configid;
         if($configid == 1){
             return redirect('uct_member');
-        } elseif ($configid == 4){
+        } elseif ($configid ==3){
             return redirect('uct_member/member4/'.$entid);
         } elseif ($configid == 2){
             return redirect('uct_member');

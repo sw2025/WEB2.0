@@ -1,7 +1,6 @@
 @extends("layouts.ucenter1")
 @section("content")
     <style>
-
         @-webkit-keyframes waitPulse {
             from { background-color: #bbb; -webkit-box-shadow: 0 0 9px #aaa; }
             50% { background-color: #ccc; -webkit-box-shadow: 0 0 18px #ccc; }
@@ -121,11 +120,6 @@
             -webkit-animation-iteration-count: infinite;
             border-style: solid;
         }
-
-
-
-
-
     </style>
 <div class="vmain-manage-list clearfix">
                 <div class="v-works-manage-list-top clearfix">
@@ -228,7 +222,7 @@
                 var account=res['account']
                 switch(code){
                     case "success":
-                        window.location.href="{{asset('uct_works/applyWork')}}";
+                        window.location.href="{{asset('uct_video/applyVideo')}}";
                         break;
                     case "enterprise":
                         window.location.href="{{asset('uct_member')}}";
@@ -259,7 +253,7 @@
                 var account=res['account']
                 switch(code){
                     case "success":
-                        window.location.href="{{asset('uct_works/applyWork')}}";
+                        window.location.href="{{asset('uct_works/applyVideo')}}";
                         break;
                     case "enterprise":
                         window.location.href="{{asset('uct_member')}}";

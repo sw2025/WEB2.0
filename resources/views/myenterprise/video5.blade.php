@@ -7,11 +7,10 @@
             <div class="main-right">
                 <div class="card-step works-step">
                     <span class="green-circle">1</span>会议申请<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">2</span>会议审核<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">5</span>咨询管理<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">6</span>完成
+                    <span class="green-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
+                    <span class="green-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">4</span>咨询管理<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">5</span>完成
                 </div>
                 <input type="hidden" id="consult" name="consult" value="{{$consultId}}">
                 <div class="publish-need uct-works default-result">

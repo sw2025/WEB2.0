@@ -8,8 +8,7 @@
                     <div class="card-step">
                         <span class="green-circle">1</span>资料提交<span class="card-step-cap">&gt;</span>
                         <span class="green-circle">2</span>资料审核<span class="card-step-cap">&gt;</span>
-                        <span class="gray-circle">3</span>缴费<span class="card-step-cap">&gt;</span>
-                        <span class="gray-circle">4</span>认证成功
+                        < <span class="gray-circle">3</span>认证成功
                     </div>
                     <div class="expert-certy">
                         <div class="expert-certy-state">

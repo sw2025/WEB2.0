@@ -407,12 +407,13 @@ class PublicController extends Controller
         }
         return $res;
     }
-
+    /*
+     * 获取昵称
+     */
     public function getAvatar(){
         $res=array();
         $userId=$_POST['userId'];
-        $phone=DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");
-        switch($_POST['type']){
+        $phone=DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");        switch($_POST['type']){
             case "enterprise":
                 $result=DB::table("t_u_enterprise")
                         ->leftJoin("t_u_enterpriseverify","t_u_enterpriseverify.enterpriseid","=","t_u_enterprise.enterpriseid")
@@ -422,24 +423,23 @@ class PublicController extends Controller
                 if(count($result)){
                     $showimages=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("showimage");
                     $res['remark']="success";
-                }else{
-                    $showimages='/images/avatar.jpg';
+                }else{                    $showimages='/images/avatar.jpg';
                     $res['remark']="error";
                 }
                 $res['enterAvatar']=$showimages;
             break;
             case "expert":
-                $result=DB::table("t_u_erpert")
-                    ->leftJoin("t_u_erpertverify","t_u_erpertverify.expertid","=","t_u_erpert.expertid")
-                    ->where("t_u_erpertverify.configid",2)
-                    ->where("t_u_erpert.userid",$userId)
+                $result=DB::table("t_u_expert")
+                    ->leftJoin("t_u_expertverify","t_u_expertverify.expertid","=","t_u_expert.expertid")
+                    ->where("t_u_expertverify.configid",2)
+                    ->where("t_u_expert.userid",$userId)
                     ->get();
                 if(count($result)){
-                    $showimages=DB::table("t_u_erpert")->where("userid",$userId)->pluck("showimage");
-                    $res['remark']="success";
+                    $showimages=DB::table("t_u_expert")->where("userid",$userId)->pluck("showimage");
+                    $res['expertRemark']="success";
                 }else{
                     $showimages='/images/avatar.jpg';
-                    $res['remark']="error";
+                    $res['expertRemark']="error";
                 }
                 $res['expertAvatar']=$showimages;
             break;
@@ -448,7 +448,19 @@ class PublicController extends Controller
         return $res;
 
     }
-
+    public  function getMessage(){
+        $res=array();
+        $userId=$_POST['userId'];
+        $counts=DB::table("t_m_systemmessage")->where(['receiveid'=>$userId,'state'=>0])->count();
+        if($counts){
+            $res['code']="error";
+        }else{
+            $res['code']="success";
+        }
+        return $res;
+    }
+    
+   
     static private $postfilter = "\\b(and|or)\\b.{1,6}?(=|>|<|\\bin\\b|\\blike\\b)|\\/\\*.+?\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
     static private $illegalwords = ['傻逼','傻帽','bitch'];
     /**

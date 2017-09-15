@@ -250,7 +250,7 @@
             var enterAvatar=$.cookie("enterAvatar");
             $(".v-avatar").attr('src',"{{env('ImagePath')}}"+enterAvatar);
             $(".v-nick").html($.cookie("phone"));
-            if($.cookie('remark')=="success"){
+            if($.cookie("remark")=="success"){
                 $(".havevip").show();
                 $(".novip").hide();
             }else{
@@ -266,7 +266,7 @@
                 success:function(res){
                     $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['enterAvatar']);
                     $(".v-nick").html(res['phone']);
-                    if($.cookie('remark')=="success"){
+                    if(res['remark']=="success"){
                         $(".havevip").show();
                         $(".novip").hide();
                     }else{
@@ -281,6 +281,19 @@
                 }
             })
         }
+        $.ajax({
+            url:"{{url('getMessage')}}",
+            data:{userId:$.cookie('userId')},
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    $(".v-new-info-tip").hide()
+                }else{
+                    $(".v-new-info-tip").show()
+                }
+            }
+        })
     })
     $(".quit").on("click",function(){
         $.ajax({
