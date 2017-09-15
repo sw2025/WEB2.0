@@ -773,12 +773,12 @@ class CenterController extends Controller
     public  function getRecord(){
         $type=$_POST['type'];
         $startPage=isset($_POST['startPage'])?$_POST['startPage']:1;
-        $offset=($startPage-1)*2;
+        $offset=($startPage-1)*10;
         $userId=session("userId");
         $result=array();
         $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("type",$type)->count();
-        $counts=!empty(ceil($counts/2))?ceil($counts/2):0;
-        $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("type",$type)->skip($offset)->take(2)->get(2);
+        $counts=!empty(ceil($counts/10))?ceil($counts/10):0;
+        $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("type",$type)->skip($offset)->take(10)->get();
         foreach ($datas as $data){
             $data->created_at=date("Y-m-d",strtotime($data->created_at));
             if($data->type=="收入"){

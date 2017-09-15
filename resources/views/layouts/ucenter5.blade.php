@@ -70,6 +70,58 @@
         </div>
     </div>
 </div>
+<div class="pop-pay">
+    <div class="payoff">
+        <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
+        <div class="single">
+            <div class="single-opt pay-opt been">
+                <input class="rad-inp" type="radio" id="single" name="charge">
+                <div class="opt-label"><span></span>单次缴费：￥500 / 次</div>
+            </div>
+            <div class="payoff-way">
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="payway1" name="payways">
+                        <div class="opt-label"><span></span><img class="way-img" src="img/lweixin.png"><em class="way-cap">微信支付</em></div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="payway2" name="payways">
+                        <div class="opt-label"><span></span><img class="way-img" src="img/lzhifubao.png"><em class="way-cap">支付宝支付</em></div>
+                    </span>
+            </div>
+            <button type="button" class="pop-btn">缴 费</button>
+            <div class="cub"></div>
+        </div>
+        <div class="single open-member">
+            <div class="single-opt pay-opt">
+                <input class="rad-inp" type="radio" id="open" name="charge">
+                <div class="opt-label dib"><span></span>开通会员</div>
+                <span class="open-right">会员权益</span>
+            </div>
+            <div class="years payoff-way">
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="oneyear" name="payyear">
+                        <div class="opt-label"><span></span>一年&nbsp;&nbsp;￥1000</div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="twoyear" name="payyear">
+                        <div class="opt-label"><span></span>两年&nbsp;&nbsp;￥2000</div>
+                    </span>
+            </div>
+            <div class="payoff-way">
+                    <span class="pay-opt focus">
+                        <input class="rad-inp" type="radio" id="openway1" name="openway">
+                        <div class="opt-label"><span></span><img class="way-img" src="img/lweixin.png"><em class="way-cap">微信支付</em></div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="openway2" name="openway">
+                        <div class="opt-label"><span></span><img class="way-img" src="img/lzhifubao.png"><em class="way-cap">支付宝支付</em></div>
+                    </span>
+            </div>
+            <button type="button" class="pop-btn">开 通</button>
+            <div class="cub" style="display:block"></div>
+        </div>
+    </div>
+</div>
 <!-- 公共header / end -->
 <div class="ucenter  v-bg5">
     <div class="wrap clearfix">
@@ -161,6 +213,59 @@
             <p class="copyright">京ICP备 XXXXXXXXX<span></span>copyright &copy; XXXX 2017</p>
         </div>
         <!-- </div> -->
+    </div>
+</div>
+<div class="pop-pay">
+    <div class="payoff">
+        <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
+        <div class="pay-tit">咯咯咯咯咯咯咯咯咯咯嘎嘎嘎嘎嘎嘎嘎嘎嘎咕咕咕咕</div>
+        <div class="single">
+            <div class="single-opt pay-opt been">
+                <input class="rad-inp" type="radio" id="single" name="charge">
+                <div class="opt-label"><span></span>单次缴费：￥500 / 次</div>
+            </div>
+            <div class="payoff-way">
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="payway1" name="payways">
+                        <div class="opt-label"><span></span><img class="way-img" src="img/lweixin.png"><em class="way-cap">微信支付</em></div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="payway2" name="payways">
+                        <div class="opt-label"><span></span><img class="way-img" src="img/lzhifubao.png"><em class="way-cap">支付宝支付</em></div>
+                    </span>
+            </div>
+            <button type="button" class="pop-btn">缴 费</button>
+            <div class="cub"></div>
+        </div>
+        <div class="single open-member">
+            <div class="single-opt pay-opt">
+                <input class="rad-inp" type="radio" id="open" name="charge">
+                <div class="opt-label dibs"><span></span>开通会员</div>
+                <span class="open-right">会员权益</span>
+            </div>
+            <div class="years payoff-way">
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="oneyear" name="payyear">
+                        <div class="opt-label"><span></span>一年&nbsp;&nbsp;￥1000</div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="twoyear" name="payyear">
+                        <div class="opt-label"><span></span>两年&nbsp;&nbsp;￥2000</div>
+                    </span>
+            </div>
+            <div class="payoff-way">
+                    <span class="pay-opt focus">
+                        <input class="rad-inp" type="radio" id="openway1" name="openway">
+                        <div class="opt-label"><span></span><img class="way-img" src="img/lweixin.png"><em class="way-cap">微信支付</em></div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio" id="openway2" name="openway">
+                        <div class="opt-label"><span></span><img class="way-img" src="img/lzhifubao.png"><em class="way-cap">支付宝支付</em></div>
+                    </span>
+            </div>
+            <button type="button" class="pop-btn">开 通</button>
+            <div class="cub" style="display:block"></div>
+        </div>
     </div>
 </div>
 <!-- 公共footer / end -->

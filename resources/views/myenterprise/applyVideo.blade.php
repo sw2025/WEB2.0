@@ -72,10 +72,10 @@
                 $(".uct-works-txt").val($.cookie("describe"));
             }
             if($.cookie("dateStart")){
-                $("#dateStart").text($.cookie("dateStart"));
+                $("#start").text($.cookie("dateStart"));
             }
             if($.cookie("dateEnd")){
-                $("#dateEnd").text($.cookie("dateEnd"));
+                $("#end").text($.cookie("dateEnd"));
             }
             if($.cookie("reselect")){
                 $(".uct-works-expava").show();

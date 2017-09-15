@@ -50,8 +50,8 @@
                                        value="@if(!empty($result)){{$result->expertname }}@else @endif"/>
                             </div>
                             <div class="datas-sel zindex3">
-                                <span class="datas-sel-cap">擅长行业</span><a href="javascript:;" class="datas-sel-def"
-                                                                          id="industrys"></a>
+                                <span class="datas-sel-cap">擅长行业</span>
+                                <a href="javascript:;" class="datas-sel-def" id="industrys"></a>
                                 <ul class="datas-list">
                                     <li>IT|通信|电子|互联网</li>
                                     <li>金融业</li>
@@ -69,8 +69,10 @@
                                 </ul>
                             </div>
                             <div class="publish-need-sel datas-newchange zindex2">
-                                <span class="publ-need-sel-cap">擅长领域</span><a href="javascript:;" id="industry"
-                                                                              class="publ-need-sel-def">@if(!empty($info)) {{$data->domain1}}-{{mb_substr(join('/',explode(',',$data->domain2)),0,15)}} @else 请选择 @endif</a>
+                                <span class="publ-need-sel-cap">擅长领域</span>
+                                <a href="javascript:;" id="industry" class="publ-need-sel-def">
+                                    @if(!empty($info)) {{$data->domain1}}-{{mb_substr(join('/',explode(',',$data->domain2)),0,15)}} @else 请选择 @endif
+                                </a>
                                 <ul class="publish-need-list">
                                     @foreach($cate as $v)
                                         @if($v->level == 1)
@@ -234,7 +236,8 @@
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
                     // console.log(file.name);
-                    $("#avatar1").attr('src', '{{env('ImagePath')}}/images/' + file.name).show();                    $('#photo1').attr('index', '/images/' + file.name);
+                    $("#avatar1").attr('src', '{{env('ImagePath')}}/images/' + file.name).show();
+                    $('#photo1').attr('index', '/images/' + file.name);
                 });
             }
         });    });
@@ -253,21 +256,17 @@
             }
         });
     });
-
-
     $(function () {
         $('.submit-audit').click(function () {
             $('.submit-audit').attr('disabled', 'disabled');
             var category = $('#category').html();
             var name = $('.datas-sel-name').val();
-
             var industry = $('#industry').attr('index') ? $('#industry').attr('index') : '';
             var industrys = $("#industrys").html();
             var address = $('#address').html();
             var photo1 = $('#photo1').attr('index');
             var photo2 = $('#photo2').attr('index');
             var brief = $('#brief').val();
-
             console.log(name == '' || photo1 == '' || industry == '');
             if (name == '' || photo1 == '' || industry == '' || industrys == '' || address == '' || brief == '' || photo1 == '' || photo2 == '') {
                 layer.msg('请把信息填写完整');

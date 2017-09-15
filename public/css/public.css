@@ -156,3 +156,32 @@
 .v-page{padding:0 0 25px;}
 .v-page #Pagination .pagination a, .v-page #Pagination .pagination span{border: none;}
 /***********v2==>>侧边栏 end***********//***********v2==>>侧边栏 end***********/
+/*弹出层*/
+.pop-pay{background:#ccc;background:rgba(0,0,0,0.3);position:fixed;width:100%;height:100%;z-index: 999;top: 0;left: 0;display: none;}
+.payoff{width:540px;background:#fdfdfd;margin:10% auto 0;box-shadow: 0 0 12px #999;border-radius: 5px;position: relative;}
+.single{text-align: center;padding: 20px;position: relative;}
+.single-two{padding-bottom:20px;}
+.single-two .single-opt{margin:0 10px;}
+.open-member{border-top: 1px solid #eee;}
+.years{padding-bottom: 20px;}
+.payoff-way{text-align: left;}
+.years .pay-opt,.payoff-way .pay-opt{display: inline-block;width:240px;}
+.single-opt{margin-left: 0;margin-bottom: 20px;position: relative;z-index: 4;}
+.pay-opt{position: relative;color: #666;}
+.opt-label{cursor: pointer;display: inline-block;}
+.opt-label span{display: inline-block;width: 8px;height: 8px;border: 2px solid #dbdbdb;border-radius: 10px;background: #eaeaea;margin-right: 10px;vertical-align: -1px;}
+.single .rad-inp{width:100%;height:100%;cursor: pointer;}
+.been .opt-label span{border-color: #2fd887;}
+.recharge-inp-sum{width: 110px;height: 30px;padding-left: 10px;background: #eaeaea;margin-left: 10px;}
+.recharge-way{text-align: center;padding: 55px 0;}
+.way-img{display: inline-block;}
+.opt-label .way-cap{display: inline-block;vertical-align: middle;margin-left: 12px;}
+.pop-btn{display: inline-block;width: 154px;height: 34px;line-height: 34px;border: 1px solid #ccc;border-radius: 3px;text-align: center;margin: 15px 0 0;background: #00a7ed;color: #fff;}
+.open-right{margin-left: 25px;position: relative;color:#00a7ed;cursor: pointer;}
+.cub{position: absolute;top: 0;bottom:0;left:0;right: 0;width:100%;height:100%;background:#000;filter:alpha(opacity=8);background:rgba(0,0,0,0.08);z-index: 3;display: none;}
+.open-member .dibs{display: inline-block;}
+.pay-close{position: absolute;top: -4px;right: 0;z-index: 1000;cursor: pointer;}
+.pay-close i{font-size: 28px;}
+.pay-tit{padding:12px 20px;text-align: justify;line-height:24px;border-bottom:1px solid #eee;}
+/*个人中心印章*/
+.chuo{position: absolute;bottom: 30px;right: 1px;width: 72px;heihgt: 72px;background: url(../img/chuo.png) no-repeat;}

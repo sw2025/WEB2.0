@@ -128,7 +128,7 @@
                         <div class="supp-rec-top">
                             <img src="@if(empty($v->entimg)) {{env('ImagePath').$v->extimg}} @else {{env('ImagePath').$v->entimg}}  @endif" class="supp-rec-img" />
                             <div class="supp-rec-com">
-                                <span class="supp-rec-name">【{{$v->role}}】@if(!empty($v->expertname) && !empty($v->enterprisename)) {{$v->enterprisename.' / '.$v->expertname}} @else {{$v->expertname or $v->enterprisename}} @endif</span>
+                                <span class="supp-rec-name">【{{$v->needtype}}】@if(!empty($v->expertname)) {{$v->expertname}} @else {{$v->enterprisename}} @endif</span>
                                 <p class="supp-rec-category">需求分类：<span><em>{{$v->domain1}} / {{$v->domain2}}</em></span></p>
                             </div>
                         </div>
