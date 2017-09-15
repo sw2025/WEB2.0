@@ -3,8 +3,7 @@
 <script type="text/javascript" src="{{asset('js/laydate/laydate.js')}}"></script>
 <div class="main">
             <!-- 企业办事服务 / start -->
-            <h3 class="main-top">企业办事服务</h3>
-            <div class="ucenter-con">
+            <h3 class="main-top">企业办事服务</h3>            <div class="ucenter-con">
                 <div class="main-right">
                     <div class="card-step works-step">
                         <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
@@ -21,29 +20,8 @@
                                     <em>办事申请</em>IS APPLYING
                                 </span>
                         </div>
-
-                        <div class="datas-sel mt20" style="margin-top: 20px;z-index: 5">
-                            <span class="datas-sel-cap padd12">问题行业</span>
-                            <a href="javascript:;" class="datas-sel-def" id="industrys" >请选择</a>
-                            <ul class="datas-list">
-                                <li>IT|通信|电子|互联网</li>
-                                <li>金融业</li>
-                                <li>房地产|建筑业</li>
-                                <li>商业服务</li>
-                                <li>贸易|批发|零售|租赁业</li>
-                                <li>文体教育|工艺美术</li>
-                                <li>生产|加工|制造</li>
-                                <li>交通|运输|物流|仓储</li>
-                                <li>服务业</li>
-                                <li>文化|传媒|娱乐|体育</li>
-                                <li>能源|矿产|环保</li>
-                                <li>政府|非盈利机构</li>
-                                <li>农|林|牧|渔|其他</li>
-                            </ul>
-                        </div>
-
-                        <div class="publish-need-sel zindex3" style="margin-top: 2px;">
-                            <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
+                        <div class="publish-need-sel zindex3">
+                            <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def">请选择</a>
                             <ul class="publish-need-list" style="display: none;">
                                 @foreach($cate as $v)
                                     @if($v->level == 1)
@@ -61,8 +39,26 @@
                                 @endforeach
                             </ul>
                         </div>
-
-                        <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述" ></textarea>
+                        <div class="datas-sel mt20">
+                            <span class="datas-sel-cap padd12">所在行业</span>
+                            <a href="javascript:;" class="datas-sel-def" id="industrys">请选择</a>
+                            <ul class="datas-list">
+                                <li>IT|通信|电子|互联网</li>
+                                <li>金融业</li>
+                                <li>房地产|建筑业</li>
+                                <li>商业服务</li>
+                                <li>贸易|批发|零售|租赁业</li>
+                                <li>文体教育|工艺美术</li>
+                                <li>生产|加工|制造</li>
+                                <li>交通|运输|物流|仓储</li>
+                                <li>服务业</li>
+                                <li>文化|传媒|娱乐|体育</li>
+                                <li>能源|矿产|环保</li>
+                                <li>政府|非盈利机构</li>
+                                <li>农|林|牧|渔|其他</li>
+                            </ul>
+                        </div>
+                        <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述"></textarea>
                         <div class="uct-works-exp">
                             <span>专家</span>
                             <a href="javascript:;" class="system-btn uct-works-btn" id="random" style="padding:0 10px;">系统分配专家</a>
@@ -78,7 +74,7 @@
                         <div class="uct-works-con">
                             <button class="test-btn submit-audit" type="button">提交审核</button>
                         </div>
-                    </div>
+                    </div
                 </div>
             </div>
         </div>
@@ -125,13 +121,13 @@
 </ul>
 <script type="text/javascript">
     $(function(){
-
         layer.open({
             type: 1,
             shade: false,
             title: '尊敬的用户您好', //不显示标题
             content: $('.layer_notice'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
         });
+
         $('.datas-sel-def').click(function () {
             $(this).next('ul').stop().slideToggle();
             $(this).parent().siblings().children('ul').hide();
@@ -240,29 +236,24 @@
                             window.location.href="{{url('uct_works/applyWork')}}"
                             return false;
 
-                        }, function(){
-                            $(".submit-audit").attr('disabled',false);
-                            $(".submit-audit").css('background-color','#ed0021');
-                            layer.close(index);
+                        }, function(){                            $(".submit-audit").attr('disabled',false);
+                              $(".submit-audit").css('background-color','#ed0021');                            layer.close(index);
 
                         });
                     } else if (data.type == 3){
                         layer.confirm(data.msg, {
                             btn: ['自选专家','取消该办事'] //按钮
                         }, function(){
-                            if($.cookie('reselect')){
-                                var selected=$.cookie('reselect').split(",");
+                            if($.cookie('reselect')){                                var selected=$.cookie('reselect').split(",");
                                 if(selected.length==5){
                                     $(".uct-works-expava").show();
-                                }else{
-                                    var domains=$(".publ-need-sel-def").text().trim();
+                                }else{                                    var domains=$(".publ-need-sel-def").text().trim();
                                     var industry=$("#industrys").text().trim();
                                     var describes=$(".uct-works-txt").val();
                                     $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
-                                    window.location.href="{{asset('uct_works/reselect')}}"
-                                    return false;
+                                    window.location.href="{{asset('uct_works/reselect')}}"                                    return false;
                                 }
                             }else{
                                 var domains=$(".publ-need-sel-def").text().trim();
@@ -293,7 +284,8 @@
                     }else{
                         var domains=$(".publ-need-sel-def").text().trim();
                         var industry=$("#industrys").text().trim();
-                        var describes=$(".uct-works-txt").val();
+
+                      var describes=$(".uct-works-txt").val();
                         $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
@@ -302,6 +294,7 @@
                 }else{
                     var domains=$(".publ-need-sel-def").text().trim();
                     var industry=$("#industrys").text().trim();
+
                     var describes=$(".uct-works-txt").val();
                     $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
@@ -329,11 +322,18 @@
                 tips: [2, '#00a7ed'],
                 time: 4000
             });
-            return false;
+            return false
         }
 
         if(domain=="请选择"){
             layer.tips("问题分类不能为空", '.publ-need-sel-def', {
+                tips: [2, '#00a7ed'],
+                time: 4000
+            });
+            return false;
+        }
+        if(industry=="请选择"){
+            layer.tips("擅长行业不能为空", '.datas-sel-def', {
                 tips: [2, '#00a7ed'],
                 time: 4000
             });

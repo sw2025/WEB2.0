@@ -94,6 +94,7 @@ class PublicController extends Controller
         $userId=$_POST['userId'];
         $expertIds=$_POST['expertIds'];
         $type=$_POST['type'];
+        $markId=$_POST['markId'];
         $enterpriseId=DB::table("view_userrole")->where("userid",$userId)->pluck("enterpriseid");
         if($enterpriseId){
             $members=DB::table("t_u_enterprisemember")
@@ -123,31 +124,66 @@ class PublicController extends Controller
                                 foreach ($expertIds as $expertId){
                                     $selectedIds=explode("/",$expertId);
                                     $expertIDS[]=$selectedIds[0];
-                                    $userId=DB::table("view_userrole")->where("expertid",$selectedIds[0])->pluck("userid");
+                                    $userID=DB::table("view_userrole")->where("expertid",$selectedIds[0])->pluck("userid");
                                     $payno=$this->getPayNum("消费");
                                     DB::table("t_u_bill")->insert([
-                                        "userid"=>$userId,
+                                        "userid"=>$userID,
                                         "type"=>"收入",
                                         "channel"=>"消费",
                                         "money"=>$selectedIds[1],
                                         "payno"=>$payno,
                                         "billtime"=>date("Y-m-d H:i:s",time()),
                                         "brief"=>"通过别人视频咨询，获取报酬",
-                                        "consultid"=>$_POST['consultId'],
+                                        "consultid"=>$markId,
                                         "created_at"=>date("Y-m-d H:i:s",time()),
                                         "updated_at"=>date("Y-m-d H:i:s",time()),
                                     ]);
                                 }
-                                DB::table("t_c_consultresponse")->where("consultid",$_POST['consultId'])->whereIn("expertid",$expertIDS)->update([
-                                    "state"=>3,
-                                    "updated_at"=>date("Y-m-d H:i:s")
+                                $paynos=$this->getPayNum("消费");
+                                DB::table("t_u_bill")->insert([
+                                    "userid"=>$userId,
+                                    "type"=>"支出",
+                                    "channel"=>"消费",
+                                    "money"=>$_POST['totalCount'],
+                                    "payno"=>$paynos,
+                                    "billtime"=>date("Y-m-d H:i:s",time()),
+                                    "brief"=>"进行消费",
+                                    "consultid"=>$_POST['consultId'],
+                                    "created_at"=>date("Y-m-d H:i:s",time()),
+                                    "updated_at"=>date("Y-m-d H:i:s",time()),
                                 ]);
-                                DB::table("t_c_consultresponse")->where("consultid",$_POST['consultId'])->whereNotIn("expertid",$expertIDS)->update([
-                                    "state"=>4,
-                                    "updated_at"=>date("Y-m-d H:i:s")
-                                ]);
-                                DB::table("t_c_consultverify")->where("consultid",$_POST['consultId'])->update([
+                                $Ids=DB::table("T_C_CONSULTRESPONSE")
+                                    ->select('expertid')
+                                    ->where("consultid",$markId)
+                                    ->whereRaw('T_C_CONSULTRESPONSE.id in (select max(id) from T_C_CONSULTRESPONSE group by  T_C_CONSULTRESPONSE.expertid)')
+                                    ->distinct()
+                                    ->get();
+                                foreach ($Ids as $ID){
+                                    if(in_array($ID->expertid,$expertIDS)){
+                                        DB::table("T_C_CONSULTRESPONSE")->insert([
+                                            "consultid"=>$markId,
+                                            "state"=>3,
+                                            "expertid"=>$ID->expertid,
+                                            "responsetime"=>date("Y-m-d H:i:s",time()),
+                                            "created_at"=>date("Y-m-d H:i:s",time()),
+                                            "updated_at"=>date("Y-m-d H:i:s")
+                                        ]);
+                                    }else{
+                                        DB::table("T_C_CONSULTRESPONSE")->insert([
+                                            "consultid"=>$markId,
+                                            "state"=>5,
+                                            "expertid"=>$ID->expertid,
+                                            "responsetime"=>date("Y-m-d H:i:s",time()),
+                                            "created_at"=>date("Y-m-d H:i:s",time()),
+                                            "updated_at"=>date("Y-m-d H:i:s")
+                                        ]);
+                                    }
+                                }
+                                DB::table("t_c_consultverify")->insert([
+                                    "consultid"=>$markId,
                                     "configid"=>6,
+                                    "verifytime"=>date("Y-m-d H:i:s",time()),
+                                    "created_at"=>date("Y-m-d H:i:s",time()),
                                     "updated_at"=>date("Y-m-d H:i:s",time())
                                 ]);
                             }catch(Exception $e){
@@ -174,10 +210,10 @@ class PublicController extends Controller
                                 foreach ($expertIds as $expertId){
                                     $selectedIds=explode("/",$expertId);
                                     $expertIDS[]=$selectedIds[0];
-                                    $userId=DB::table("view_userrole")->where("expertid",$selectedIds[0])->pluck("userid");
+                                    $userID=DB::table("view_userrole")->where("expertid",$selectedIds[0])->pluck("userid");
                                     $payno=$this->getPayNum("消费");
                                     DB::table("t_u_bill")->insert([
-                                        "userid"=>$userId,
+                                        "userid"=>$userID,
                                         "type"=>"收入",
                                         "channel"=>"消费",
                                         "money"=>$selectedIds[1],
@@ -189,16 +225,51 @@ class PublicController extends Controller
                                         "updated_at"=>date("Y-m-d H:i:s",time()),
                                     ]);
                                 }
-                                DB::table("t_c_consultresponse")->where("consultid",$_POST['consultId'])->whereIn("expertid",$expertIDS)->update([
-                                    "state"=>3,
-                                    "updated_at"=>date("Y-m-d H:i:s")
+                                $paynos=$this->getPayNum("消费");
+                                DB::table("t_u_bill")->insert([
+                                    "userid"=>$userId,
+                                    "type"=>"支出",
+                                    "channel"=>"消费",
+                                    "money"=>$_POST['totalCount'],
+                                    "payno"=>$paynos,
+                                    "billtime"=>date("Y-m-d H:i:s",time()),
+                                    "brief"=>"进行消费",
+                                    "consultid"=>$_POST['consultId'],
+                                    "created_at"=>date("Y-m-d H:i:s",time()),
+                                    "updated_at"=>date("Y-m-d H:i:s",time()),
                                 ]);
-                                DB::table("t_c_consultresponse")->where("consultid",$_POST['consultId'])->whereNotIn("expertid",$expertIDS)->update([
-                                    "state"=>4,
-                                    "updated_at"=>date("Y-m-d H:i:s")
-                                ]);
-                                DB::table("t_c_consultverify")->where("consultid",$_POST['consultId'])->update([
+                                $Ids=DB::table("T_E_EVENTRESPONSE")
+                                    ->select('expertid')
+                                    ->where("eventid",$markId)
+                                    ->whereRaw('T_E_EVENTRESPONSE.id in (select max(id) from T_E_EVENTRESPONSE group by  T_E_EVENTRESPONSE.expertid)')
+                                    ->distinct()
+                                    ->get();
+                                foreach ($Ids as $ID){
+                                    if(in_array($ID->expertid,$expertIDS)){
+                                        DB::table("T_E_EVENTRESPONSE")->insert([
+                                            "eventid"=>$markId,
+                                            "state"=>3,
+                                            "expertid"=>$ID->expertid,
+                                            "responsetime"=>date("Y-m-d H:i:s",time()),
+                                            "created_at"=>date("Y-m-d H:i:s",time()),
+                                            "updated_at"=>date("Y-m-d H:i:s")
+                                        ]);
+                                    }else{
+                                        DB::table("T_E_EVENTRESPONSE")->insert([
+                                            "eventid"=>$markId,
+                                            "state"=>5,
+                                            "expertid"=>$ID->expertid,
+                                            "responsetime"=>date("Y-m-d H:i:s",time()),
+                                            "created_at"=>date("Y-m-d H:i:s",time()),
+                                            "updated_at"=>date("Y-m-d H:i:s")
+                                        ]);
+                                    }
+                                }
+                                DB::table("t_e_eventverify")->insert([
+                                    "eventid"=>$markId,
                                     "configid"=>6,
+                                    "verifytime"=>date("Y-m-d H:i:s",time()),
+                                    "created_at"=>date("Y-m-d H:i:s",time()),
                                     "updated_at"=>date("Y-m-d H:i:s",time())
                                 ]);
                             }catch(Exception $e){
@@ -220,7 +291,6 @@ class PublicController extends Controller
         }else{
             $result['code']="noEnterprise";
         }
-
         return $result;
 
     }
@@ -344,14 +414,34 @@ class PublicController extends Controller
         $phone=DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");
         switch($_POST['type']){
             case "enterprise":
-                $showimages=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("showimage");
-                $enterAvatar=($showimages)?$showimages:'/images/avatar.jpg';
-                $res['enterAvatar']=$enterAvatar;
+                $result=DB::table("t_u_enterprise")
+                        ->leftJoin("t_u_enterpriseverify","t_u_enterpriseverify.enterpriseid","=","t_u_enterprise.enterpriseid")
+                        ->where("t_u_enterpriseverify.configid",3)
+                        ->where("t_u_enterprise.userid",$userId)
+                        ->get();
+                if(count($result)){
+                    $showimages=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("showimage");
+                    $res['remark']="success";
+                }else{
+                    $showimages='/images/avatar.jpg';
+                    $res['remark']="error";
+                }
+                $res['enterAvatar']=$showimages;
             break;
             case "expert":
-                $showimages=DB::table("t_u_expert")->where("userid",$userId)->pluck("showimage");
-                $expertAvatar=($showimages)?$showimages:'/images/avatar.jpg';
-                $res['expertAvatar']=$expertAvatar;
+                $result=DB::table("t_u_erpert")
+                    ->leftJoin("t_u_erpertverify","t_u_erpertverify.expertid","=","t_u_erpert.expertid")
+                    ->where("t_u_erpertverify.configid",2)
+                    ->where("t_u_erpert.userid",$userId)
+                    ->get();
+                if(count($result)){
+                    $showimages=DB::table("t_u_erpert")->where("userid",$userId)->pluck("showimage");
+                    $res['remark']="success";
+                }else{
+                    $showimages='/images/avatar.jpg';
+                    $res['remark']="error";
+                }
+                $res['expertAvatar']=$showimages;
             break;
         }
         $res['phone']=substr_replace($phone,'****',3,4);

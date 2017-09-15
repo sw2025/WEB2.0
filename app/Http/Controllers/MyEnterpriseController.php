@@ -799,8 +799,7 @@ class MyEnterpriseController extends Controller
                         $operate = '企业'.$name.'删除此日程';
                     } else {
                         $name = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertname;
-                        $operate = '专家'.$name.'删除此日程';
-                    }
+                        $operate = '专家'.$name.'删除此日程';                    }
                     $res = DB::table('t_e_eventtask')->where('etid',$data['etid'])->update([
                         'state' => 2,
                         'deletetime' => date('Y-m-d H:i:s',time()),
@@ -810,8 +809,7 @@ class MyEnterpriseController extends Controller
                         return ['msg' => '删除日程成功','icon' => 1];
                     }
                     return ['error' => '处理失败FF00001','icon' => 2];
-                }
-                return ['error' => '添加日程失败您不是企业用户不能添加日程','icon' => 2];
+                }                return ['error' => '添加日程失败您不是企业用户不能添加日程','icon' => 2];
 
             }
             return ['error' => '非本次办事参与人','icon' => 2];
@@ -845,6 +843,7 @@ class MyEnterpriseController extends Controller
                 "brief"=>$data['describe'],
                 "isRandom"=>$data['isAppoint'],
                 'industry' => $data['industry'],
+
                 "eventtime"=>date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
@@ -1179,6 +1178,7 @@ class MyEnterpriseController extends Controller
                 "isRandom"=>$_POST['isAppoint'],
                 "starttime"=>$_POST['dateStart'],
                 "endtime"=>$_POST['dateEnd'],
+                'industry'=>$_POST['industry'],
                 "consulttime"=>date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
