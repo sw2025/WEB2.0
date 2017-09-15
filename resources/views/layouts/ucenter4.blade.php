@@ -247,10 +247,10 @@
             $(".before-login").show();
             $(".after-login").hide();
         }
-        if($.cookie("expertAvatar") && $.cookie("phone") && $.cookie("remark")){
+        if($.cookie("expertAvatar") && $.cookie("phone") && $.cookie("expertRemark")){
             $(".v-avatar").attr('src',"{{env('ImagePath')}}"+$.cookie("expertAvatar"));
             $(".v-nick").html($.cookie("phone"));
-            if($.cookie('remark')=="success"){
+            if($.cookie('expertRemark')=="success"){
                 $(".havevip").show();
                 $(".novip").hide();
             }else{
@@ -266,7 +266,7 @@
                 success:function(res){
                     $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['expertAvatar']);
                     $(".v-nick").html(res['phone']);
-                    if($.cookie('remark')=="success"){
+                    if(res['expertRemark']=="success"){
                         $(".havevip").show();
                         $(".novip").hide();
                     }else{
@@ -277,10 +277,23 @@
                     date.setTime(date.getTime() + (120 * 60 * 1000));
                     $.cookie("expertAvatar",res['expertAvatar'],{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("phone",res['phone'],{expires:date,path:'/',domain:'sw2025.com'});
-                    $.cookie("remark",res['remark'],{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("expertRemark",res['remark'],{expires:date,path:'/',domain:'sw2025.com'});
                 }
             })
         }
+        $.ajax({
+            url:"{{url('getMessage')}}",
+            data:{userId:$.cookie('userId')},
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    $(".v-new-info-tip").hide()
+                }else{
+                    $(".v-new-info-tip").show()
+                }
+            }
+        })
     })
     $(".quit").on("click",function(){
         $.ajax({
@@ -293,7 +306,7 @@
                     $.cookie("name",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("expertAvatar",'',{path:'/',domain:'sw2025.com'});
                     $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
-                    $.cookie("remark",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("expertRemark",'',{path:'/',domain:'sw2025.com'});
                     window.location.href="{{asset('/')}}"
                 }else{
                     window.location.href="{{asset('/')}}"

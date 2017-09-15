@@ -7,11 +7,10 @@
             <div class="main-right">
                 <div class="card-step works-step">
                     <span class="green-circle">1</span>会议申请<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">2</span>会议审核<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">5</span>会议管理<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">6</span>完成
+                    <span class="gray-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">4</span>会议管理<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">5</span>完成
                 </div>
                 <div class="publish-need uct-works default-result">
                     @foreach($datas as $data)
@@ -28,7 +27,7 @@
                         </div>
                         <div class="datas-sel publish-need-sel mt20">
                             <span class="datas-sel-cap padd12">所在行业</span>
-                            <a href="javascript:;" class="datas-sel-def verify-default" id="industrys">{{$data->verify}}</a>
+                            <a href="javascript:;" class="datas-sel-def verify-default" id="industrys">{{$data->industry}}</a>
                         </div>
                         <textarea readonly="readonly" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入会议议题">{{$data->brief}}</textarea>
                         <div class="calendar">

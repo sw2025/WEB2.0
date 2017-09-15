@@ -99,6 +99,8 @@ Route::post('uct_myneed/addNeed','CenterController@addNeed');
 Route::post('uct_myneed/solveNeed','CenterController@solveNeed');
 //验证发布需求身份
 Route::post('myneed/verifyputneed','CenterController@verifyPutNeed');
+//判断系统消息是否已读
+Route::post('getMessage','PublicController@getMessage');
 
 /***************************************个人中心我是企业路由(公共部分)****************************************************************/
 //基本资料

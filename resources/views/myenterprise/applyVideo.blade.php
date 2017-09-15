@@ -8,11 +8,10 @@
             <div class="main-right">
                 <div class="card-step works-step">
                     <span class="green-circle">1</span>会议申请<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">2</span>会议审核<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">5</span>会议管理<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">6</span>完成
+                    <span class="gray-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">4</span>会议管理<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">5</span>完成
                 </div>
                 <div class="publish-need uct-works">
                     <div class="expert-certy-state">
@@ -21,7 +20,7 @@
                                     <em>会议申请</em>IS APPLYING
                                 </span>
                     </div>
-                    <div class="publish-need-sel">
+                    <div class="publish-need-sel zindex4">
                         <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def">请选择</a>
                         <ul class="publish-need-list" style="display: none;">
                             @foreach($cate as $v)
@@ -70,7 +69,7 @@
                     </div>
                     <div class="uct-works-exp">
                         <span>专家</span>
-                        <a href="javascript:;" class="system-btn active uct-works-btn">系统分配</a>
+                        <a href="javascript:;" class="system-btn active uct-works-btn" id="random">系统分配</a>
                         <a href="javascript:;" class="uct-works-btn">指定专家</a>
                     </div>
                     <div class="uct-works-expava">
