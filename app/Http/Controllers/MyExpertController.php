@@ -401,10 +401,13 @@ class MyExpertController extends Controller
                 //获取到该用户对应的专家的id
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
 
-                $consultid = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'state' => 2])->orderBy('responsetime', 'desc')->first()->consultid;
-                $endtime=DB::table('t_c_consult')->where('consultid',$consultid)->first()->endtime;
-                $starttime=DB::table('t_c_consult')->where('consultid',$consultid)->first()->starttime;
-                if($endtime>$starttime){
+                $consultid = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'state' => 2])->orderBy('responsetime', 'desc')->first();
+                if(!empty($consultid->consultid)){
+                    $endtime=DB::table('t_c_consult')->where('consultid',$consultid)->first()->endtime;
+                    $starttime=DB::table('t_c_consult')->where('consultid',$consultid)->first()->starttime;
+                }
+
+                if(empty($consultid->consultid) || $endtime > $starttime){
                     DB::beginTransaction();
                     try{
                         //查询是否存在响应的情况

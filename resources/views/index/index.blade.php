@@ -31,7 +31,7 @@
                         {{--<p class="item-desc">解决企业遇到各类问题</p>--}}
                     </div>
                     <div class="item-con-hover">
-                        <p><br /><span href="">商业模式</span><br /><span href="">发展战略</span><br /><span href="">企业定位</span> </p>
+                        <p><br /><span style="font-size: 1.5em;">商业模式</span><br /><br /><br /><span style="font-size: 1.5em;">发展战略</span><br /><br /><br /><span style="font-size: 1.5em;">企业定位</span> </p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
@@ -41,7 +41,7 @@
                         <span class="item-tit">找资金</span>
                     </div>
                     <div class="item-con-hover">
-                        <p><br /><span href="">企业债</span><br /><span href="">资产证券化</span><br /><span href="">应收账款</span><br /><span href="">国外债券融资</span><br /><span href="">国外股权融合</span> <br /><span href="">租赁</span><br /><span href="">私募股权</span><br /><span href="">并购</span></p>
+                        <p><br /><span style="font-size: 1.5em;">企业债</span><br /><span style="font-size: 1.5em;">资产证券化</span><br /><span style="font-size: 1.5em;">应收账款</span><br /><span style="font-size: 1.5em;">国外债券融资</span><br /><span style="font-size: 1.5em;">国外股权融合</span> <br /><span style="font-size: 1.5em;">租赁</span><br /><span style="font-size: 1.5em;">私募股权</span><br /><span style="font-size: 1.5em;">并购</span></p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
@@ -51,7 +51,7 @@
                         <span class="item-tit">找技术</span>
                     </div>
                     <div class="item-con-hover">
-                        <p><br /><span href="">委托研发</span><br /><span href="">新技术</span><br /><span href="">生产自动化</span><br /><span href="">产能合作</span> </p>
+                        <p><br /><span style="font-size: 1.5em;">委托研发</span><br /><br /><span style="font-size: 1.5em;">新技术</span><br /><br /><span style="font-size: 1.5em;">生产自动化</span><br /><br /><span style="font-size: 1.5em;">产能合作</span> </p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
@@ -61,7 +61,7 @@
                         <span class="item-tit">找市场</span>
                     </div>
                     <div class="item-con-hover">
-                        <p><br /><span href="">开拓新市场</span><br /><span href="">发展代理</span><br /><span href="">兼职销售</span> </p>
+                        <p><br /><span style="font-size: 1.5em;">开拓新市场</span><br /><br /><br /><span style="font-size: 1.5em;">发展代理</span><br /><br /><br /><span style="font-size: 1.5em;">兼职销售</span> </p>
                     </div>
                 </a></li>
         </ul>
