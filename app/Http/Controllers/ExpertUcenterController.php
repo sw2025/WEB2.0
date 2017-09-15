@@ -262,7 +262,7 @@ class ExpertUcenterController extends Controller
                 $info = DB::table('t_n_need')->where('needid',$needid)->first();
                 $data = DB::table('t_n_needverify')->where('needid',$needid)->orderBy('id','desc')->first();
                 $info->error = $data->remark;
-                return view("ucenter.supplyNeed",compact('cate','info'));
+                return view("expertUcenter.supplyNeed",compact('cate','info'));
             } else {
                 return redirect('/');
             }

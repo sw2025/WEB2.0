@@ -40,8 +40,34 @@
             </div>
         </div>
     </div>
+    <style>
+        .layer_notice {
+            float: left;
+            overflow: hidden;
+            background: #5FB878;
+            padding: 10px;
+        }
+        .layer_notice a {
+            color: #fff;
+        }
+    </style>
+    <ul class="layer_notice" style="display: none;">
+        <li><a>近期，网监部门查敏感类信息比较严格，所以需求中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写需求。</a></li>
+        <li><a>感谢您的合作</a></li>
+        <li><a style="margin-left: 80%;">升维网</a></li>
+    </ul>
     <script type="text/javascript">
         $(function(){
+            layer.open({
+                type: 1,
+                shade: false,
+                title: '尊敬的用户您好', //不显示标题
+                content: $('.layer_notice'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                cancel: function(){
+                    layer.msg('感谢您的配合，请文明书写', {time: 1000, icon:6});
+                }
+            });
+
             $('.publ-need-sel-def').click(function() {
                 $(this).next('ul').stop().slideToggle();
             });
@@ -76,11 +102,17 @@
                 $.post('{{url('uct_myneed/addNeed')}}',{'role':'企业','content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
                     if (data.icon == 1){
                         layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
-                            window.location = '{{url('uct_myneed/examineNeed')}}'+'/'+data.id;
+                            window.location = '{{url('myneed')}}';
                         });
                     } else {
-                        $obj.attr('disabled',false);
-                        layer.msg(data.msg,{'time':2000,'icon':data.icon});
+                        //$obj.attr('disabled',false);
+                        layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
+                            if(typeof(data.needid)=="undefined"){
+                                window.location = window.location.href;
+                            } else {
+                                window.location = '{{url('uct_myneed/supplyNeed')}}'+'/'+data.needid;
+                            }
+                        });
                     }
                 });
             });
