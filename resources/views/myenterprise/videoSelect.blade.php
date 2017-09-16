@@ -144,8 +144,8 @@
     </div>
     <script type="text/javascript">
         $(function(){
-            if($.cookie("reselect")){
-                var expertChecked=$.cookie('reselect').split(",");
+            if($.cookie("videoreselect")){
+                var expertChecked=$.cookie('videoreselect').split(",");
                 for(var i=0; i<expertChecked.length; i++) {
                     var checked=expertChecked[i];
                     var end=checked.indexOf("/");
@@ -178,16 +178,16 @@
             var reselect;
             var date = new Date();
             date.setTime(date.getTime() + (120 * 60 * 1000));
-            if($.cookie("reselect")){
-                reselect=$.cookie('reselect').split(",");
+            if($.cookie("videoreselect")){
+                reselect=$.cookie('videoreselect').split(",");
             }else{
                 reselect=[];
-                $.cookie("reselect",reselect,{expires:date,path:'/',domain:'sw2025.com'});
+                $.cookie("videoreselect",reselect,{expires:date,path:'/',domain:'sw2025.com'});
             }
             if(reselect.length==5){
                 if($.inArray(value,reselect)>=0){
                     deleteArray(reselect,value);
-                    $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("videoreselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
                 }else{
                     layer.confirm('您已经指定5位专家', {
                         btn: ['确定'] //按钮
@@ -197,10 +197,10 @@
             }else{
                 if(!$(this).hasClass("xzchecked")){
                     reselect.push(value);
-                    $.cookie("reselect",reselect.join(','),{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("videoreselect",reselect.join(','),{expires:date,path:'/',domain:'sw2025.com'});
                 }else{
                     deleteArray(reselect,value);
-                    $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("videoreselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
                 }
             }
             $(this).toggleClass('xzchecked');
@@ -218,9 +218,9 @@
             var date = new Date();
             date.setTime(date.getTime() + (120 * 60 * 1000));
             if($(".myinfo-check-label").hasClass('ischecked')){
-                $.cookie("isAppoint",1,{expires:date,path:'/',domain:'sw2025.com'});
+                $.cookie("videoisAppoint",1,{expires:date,path:'/',domain:'sw2025.com'});
             }else{
-                $.cookie("isAppoint",0,{expires:date,path:'/',domain:'sw2025.com'});
+                $.cookie("videoisAppoint",0,{expires:date,path:'/',domain:'sw2025.com'});
             }
             window.location.href="{{asset('uct_video/applyVideo')}}";
         })
