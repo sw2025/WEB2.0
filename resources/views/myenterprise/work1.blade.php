@@ -20,7 +20,7 @@
                                 </span>
                         </div>
                         <div class="publish-need-sel zindex3">
-                            <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def">请选择</a>
+                            <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
                             <ul class="publish-need-list" style="display: none;">
                                 @foreach($cate as $v)
                                     @if($v->level == 1)
@@ -73,7 +73,7 @@
                         <div class="uct-works-con">
                             <button class="test-btn submit-audit" type="button">提交审核</button>
                         </div>
-                    </div
+                    </div>
                 </div>
             </div>
         </div>
@@ -235,8 +235,10 @@
                             window.location.href="{{url('uct_works/applyWork')}}"
                             return false;
 
-                        }, function(){                            $(".submit-audit").attr('disabled',false);
-                              $(".submit-audit").css('background-color','#ed0021');                            layer.close(index);
+                        }, function(){
+                            $(".submit-audit").attr('disabled',false);
+                              $(".submit-audit").css('background-color','#ed0021');
+                            layer.close(index);
 
                         });
                     } else if (data.type == 3){
@@ -246,13 +248,15 @@
                             if($.cookie('reselect')){                                var selected=$.cookie('reselect').split(",");
                                 if(selected.length==5){
                                     $(".uct-works-expava").show();
-                                }else{                                    var domains=$(".publ-need-sel-def").text().trim();
+                                }else{
+                                    var domains=$(".publ-need-sel-def").text().trim();
                                     var industry=$("#industrys").text().trim();
                                     var describes=$(".uct-works-txt").val();
                                     $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
-                                    window.location.href="{{asset('uct_works/reselect')}}"                                    return false;
+                                    window.location.href="{{asset('uct_works/reselect')}}"  ;
+                                    return false;
                                 }
                             }else{
                                 var domains=$(".publ-need-sel-def").text().trim();
@@ -306,7 +310,7 @@
     $(".submit-audit").on("click",function(){
         var that=this;
         var domain=$(".publ-need-sel-def").text().trim();
-        var industry=$("#industrys").text().trim();
+            var industry=$("#industrys").text().trim();
         var describe=$(".uct-works-txt").val();
         var isAppoint=($.cookie("isAppoint"))?$.cookie("isAppoint"):1;
         var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");

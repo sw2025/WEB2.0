@@ -308,9 +308,11 @@ class PublicController extends Controller
         $result['account']=$account;
         $enterprise=DB::table("t_u_enterprise")
             ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
-            ->where("t_u_enterpriseverify.configid",3)
-            ->get();
-        if(count($enterprise)==0){
+            ->where("t_u_enterprise.enterpriseid",$enterpriseId)
+            ->orderBy("t_u_enterpriseverify.id","desc")
+            ->take(1)
+            ->pluck('configid');
+        if($enterprise!=3){
             $result['enterpriseid']=$enterpriseId;
             $result['code']="enterprise";
             return $result;
@@ -413,14 +415,16 @@ class PublicController extends Controller
     public function getAvatar(){
         $res=array();
         $userId=$_POST['userId'];
-        $phone=DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");        switch($_POST['type']){
+        $phone=DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");
+        switch($_POST['type']){
             case "enterprise":
                 $result=DB::table("t_u_enterprise")
                         ->leftJoin("t_u_enterpriseverify","t_u_enterpriseverify.enterpriseid","=","t_u_enterprise.enterpriseid")
-                        ->where("t_u_enterpriseverify.configid",3)
+                        ->orderBy('t_u_enterpriseverify.id','desc')
                         ->where("t_u_enterprise.userid",$userId)
-                        ->get();
-                if(count($result)){
+                        ->take(1)
+                        ->pluck('configid');
+                if($result==3){
                     $showimages=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("showimage");
                     $res['remark']="success";
                 }else{                    $showimages='/images/avatar.jpg';
@@ -431,10 +435,11 @@ class PublicController extends Controller
             case "expert":
                 $result=DB::table("t_u_expert")
                     ->leftJoin("t_u_expertverify","t_u_expertverify.expertid","=","t_u_expert.expertid")
-                    ->where("t_u_expertverify.configid",2)
                     ->where("t_u_expert.userid",$userId)
-                    ->get();
-                if(count($result)){
+                    ->orderBy('t_u_expertverify.id','desc')
+                    ->take(1)
+                    ->pluck('configid');
+                if($result==2){
                     $showimages=DB::table("t_u_expert")->where("userid",$userId)->pluck("showimage");
                     $res['expertRemark']="success";
                 }else{

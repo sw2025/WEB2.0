@@ -264,7 +264,7 @@
         var start = {
             elem: '#start',
             format: 'YYYY/MM/DD hh:mm:ss',
-            min: '2016-01-01', //设定最小日期为当前日期
+            min: '{{date('Y-m-d H:i:s')}}', //设定最小日期为当前日期
             max: '2066-12-31 23:59:59', //最大日期
             istime: true,
             istoday: false,
@@ -276,7 +276,7 @@
         var end = {
             elem: '#end',
             format: 'YYYY/MM/DD hh:mm:ss',
-            min: '2016-01-01',
+            min: '{{date('Y-m-d H:i:s')}}',
             max: '2066-12-31 23:59:59',
             istime: true,
             istoday: false,
