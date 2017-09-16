@@ -1434,6 +1434,7 @@ class MyEnterpriseController extends Controller
             ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
             ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
             ->where("t_e_event.userid",$userId)
+            ->whereIn('t_e_eventverify.configid',[4,5,6,7,8])
             ->where($typeWhere);
         $count=clone $result;
         $datas=$result->orderBy("t_e_event.created_at","desc")->paginate(6);
@@ -1513,6 +1514,7 @@ class MyEnterpriseController extends Controller
             ->select("t_c_consult.consultid",'t_c_consultverify.configid',"t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief")
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
             ->where("t_c_consult.userid",$userId)
+            ->whereIn('t_c_consultverify.configid',[4,5,6,7,8])
             ->where($typeWhere);
         $count=clone $result;
         $datas=$result->orderBy("t_c_consult.created_at","desc")->paginate(6);

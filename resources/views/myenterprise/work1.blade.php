@@ -142,10 +142,10 @@
                 $(this).parent().prev('.datas-sel-def').html(publishHtml);
                 $(this).parent().hide();
             });
-            if($.cookie("domain")!="请选择" && $.cookie("domain").trim() != ''){
+            if($.cookie("domain")!="请选择" && $.cookie("domain") != ''){
                 $(".publ-need-sel-def").text($.cookie("domain"));
             }
-            if($.cookie("industry")!="请选择" && $.cookie("industry").trim() != ''){
+            if($.cookie("industry")!="请选择" && $.cookie("industry") != ''){
                 $("#industrys").text($.cookie("industry"));
             }
             if($.cookie("describe")){
