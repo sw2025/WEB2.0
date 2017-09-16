@@ -305,6 +305,7 @@
             if($.cookie('expertRemark')=="success"){
                 $(".havevip").show();
                 $(".novip").hide();
+                $(".goto-renzh").attr("title","已认证");
             }else{
                 $(".havevip").hide();
                 $(".novip").show();
@@ -321,6 +322,7 @@
                     if(res['expertRemark']=="success"){
                         $(".havevip").show();
                         $(".novip").hide();
+                        $(".goto-renzh").attr("title","已认证");
                     }else{
                         $(".havevip").hide();
                         $(".novip").show();

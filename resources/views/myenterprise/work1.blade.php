@@ -280,6 +280,7 @@
                                     $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                                     window.location.href="{{asset('uct_works/reselect')}}";
                                 }
+
                             },function(index){
                                 $(".submit-audit").attr('disabled',false);
                                 $(".submit-audit").css('background-color','#ed0021');
@@ -310,6 +311,7 @@
                                         window.location.href="{{asset('uct_works/reselect')}}"
                                         return false;
                                     }
+
                                 }else{
                                     var domains=$(".publ-need-sel-def").text().trim();
                                     var industry=$("#industrys").text().trim();
@@ -317,7 +319,9 @@
                                     $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
-                                    window.location.href="{{asset('uct_works/reselect')}}"
+
+                                    window.location.href="{{asset('uct_works/reselect')}}"  ;
+
                                     return false;
                                 }
                             }, function(){
@@ -369,7 +373,6 @@
             }else{
                 var state=0;
             }
-
             if(industry=="请选择"){
                 layer.tips("问题行业不能为空", '.datas-sel-def', {
                     tips: [2, '#00a7ed'],
