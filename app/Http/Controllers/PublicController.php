@@ -524,29 +524,29 @@ class PublicController extends Controller
                 break;
             case 'event':
                 $eventid = $data['eventid'];
-                $eventinfo = DB::table('t_e_event')->where('eventid',$eventid)->first();
-                if(empty($eventinfo) || empty($eventinfo->userid)){
+                $consultinfo = DB::table('t_e_event')->where('eventid',$eventid)->first();
+                if(empty($consultinfo) || empty($consultinfo->userid)){
                     $error =  ['msg' => '该办事不完整,已进入后台记录,请重新发起新的办事'];
                 }
 
-                if (preg_match("/".self::$postfilter."/is",$eventinfo->brief) == 1){
+                if (preg_match("/".self::$postfilter."/is",$consultinfo->brief) == 1){
                     $error =  ['msg' => '您提交的参数非法,系统已记录您的本次操作！','icon' => 2];
                 }
 
                 $blacklist="/".implode("|",self::$illegalwords)."/i";
-                if(preg_match($blacklist, $eventinfo->brief, $matches)){
+                if(preg_match($blacklist, $consultinfo->brief, $matches)){
                     $error =  ['msg' => '查找到非法敏感词汇[' . join(',',$matches) . '],已被系统记录,如有疑问请联系客服进行修改'];
                 }
 
-                if(mb_strlen($eventinfo->brief) < 30 || mb_strlen($eventinfo->brief) > 500){
+                if(mb_strlen($consultinfo->brief) < 30 || mb_strlen($consultinfo->brief) > 500){
                     $error =  ['msg' => '办事描述超出30-500字数限制'];
                 }
 
-                $veruftdomain = DB::table('t_common_domaintype')->where(['domainname' => $eventinfo->domain1])->first();
+                $veruftdomain = DB::table('t_common_domaintype')->where(['domainname' => $consultinfo->domain1])->first();
                 if(empty($veruftdomain)){
                     $error =  [ 'msg' => '领域选择错误，请按照正确的格式进行选择'];
                 } else {
-                    $veruftdomain2 = DB::table('t_common_domaintype')->where(['domainname' => $eventinfo->domain2,'parentid' => $veruftdomain->domainid])->first();
+                    $veruftdomain2 = DB::table('t_common_domaintype')->where(['domainname' => $consultinfo->domain2,'parentid' => $veruftdomain->domainid])->first();
                     if(empty($veruftdomain2)){
                         $error =  [ 'msg' => '领域选择错误，请按照正确的格式进行选择2'];
                     }
@@ -573,6 +573,66 @@ class PublicController extends Controller
                 } else {
                     return ['msg' => '发布需求失败','icon' => 2];
                 }
+            break;
+            case 'video':
+                $consultid = $data['consultid'];
+                $consultinfo = DB::table('t_c_consult')->where('consultid',$consultid)->first();
+                if(empty($consultinfo) || empty($consultinfo->userid)){
+                    $error =  ['msg' => '该视频咨询不完整,已进入后台记录,请重新发起新的视频咨询'];
+                }
+
+                if (preg_match("/".self::$postfilter."/is",$consultinfo->brief) == 1){
+                    $error =  ['msg' => '您提交的参数非法,系统已记录您的本次操作！','icon' => 2];
+                }
+
+                $blacklist="/".implode("|",self::$illegalwords)."/i";
+                if(preg_match($blacklist, $consultinfo->brief, $matches)){
+                    $error =  ['msg' => '查找到非法敏感词汇[' . join(',',$matches) . '],已被系统记录,如有疑问请联系客服进行修改'];
+                }
+
+                if(mb_strlen($consultinfo->brief) < 30 || mb_strlen($consultinfo->brief) > 500){
+                    $error =  ['msg' => '办事描述超出30-500字数限制'];
+                }
+
+                if(strtotime($consultinfo->starttime) < time() || strtotime($consultinfo->endtime) < time()){
+                    $error =  ['msg' => '视频咨询开始时间或结束时间不能在今天以前'];
+                }
+                if(strtotime($consultinfo->starttime) > strtotime($consultinfo->endtime)){
+                    $error =  ['msg' => '视频咨询开始时间结束时间错误'];
+                }
+
+                $veruftdomain = DB::table('t_common_domaintype')->where(['domainname' => $consultinfo->domain1])->first();
+                if(empty($veruftdomain)){
+                    $error =  [ 'msg' => '领域选择错误，请按照正确的格式进行选择'];
+                } else {
+                    $veruftdomain2 = DB::table('t_common_domaintype')->where(['domainname' => $consultinfo->domain2,'parentid' => $veruftdomain->domainid])->first();
+                    if(empty($veruftdomain2)){
+                        $error =  [ 'msg' => '领域选择错误，请按照正确的格式进行选择2'];
+                    }
+                }
+                if(empty($error)){
+                    $res = DB::table('t_c_consultverify')->insert([
+                        'consultid' => $consultid,
+                        'configid' => 2,
+                        'verifytime' => date('Y-m-d H:i:s')
+                    ]);
+                    $msg = ['msg' => '该办事已通过','icon' => 1];
+                } else {
+                    $res = DB::table('t_c_consultverify')->insert([
+                        'consultid' => $consultid,
+                        'configid' => 3,
+                        'remark' => $error['msg'],
+                        'verifytime' => date('Y-m-d H:i:s')
+                    ]);
+                    $msg = [ 'msg' => '该办事未通过,原因:'.$error['msg'], 'icon' => 2,'consultid' => $consultid];
+                }
+
+                if($res){
+                    return $msg;
+                } else {
+                    return ['msg' => '发布需求失败','icon' => 2];
+                }
+                break;
         }
     }
 
@@ -588,11 +648,11 @@ class PublicController extends Controller
             $expertcount = DB::table('t_u_expert')->where(['domain1' => $domain1,'industry' => $data['industrys']])->where('domain2','like','%'.$domain2.'%')->count();
             $expertcount2 = DB::table('t_u_expert')->where(['domain1' => $domain1,'industry' => $data['industrys']])->count();
             if($expertcount){
-                return ['msg' => '系统已为您检索到该行业和服务领域下有'.$expertcount.'名专家,且在'.$domain1.'和'.$data['industrys'].'行业下共有'.$expertcount2.'名专家','type' => 1];
+                return ['msg' => '<b style="font-size: 18px;">恭喜您,系统已为您检索到</b><br />在 【'.$data['industrys'].'】 行业和 【'.$data['domain'].'】 服务领域下有 <font color="red" size="5">'.$expertcount.'</font> 名专家<br />在【'.$domain1.'】 领域和 【'.$data['industrys'].'】 行业下共有 <font color="red" size="5">'.$expertcount2.'</font> 名专家','type' => 1];
             } elseif (!$expertcount && $expertcount2){
-                return ['msg' => '很抱歉系统在'.$data['domain'].'和'.$data['industrys'].'行业下并未找到专家,但是系统在'.$domain1.'和'.$data['industrys'].'行业下检索到'.$expertcount2.'名专家,您是否继续操作','type' => 2];;
+                return ['msg' => '<b style="font-size: 18px;">很抱歉</b><br />系统在 【'.$data['domain'].'】领域和 【'.$data['industrys'].'】行业下并未找到专家<br />但是系统在 【'.$domain1.'】领域 和 【'.$data['industrys'].'】 行业下检索到 <font color="red" size="5">'.$expertcount2.' </font>名专家,您是否继续操作','type' => 2];;
             } else {
-                return ['msg' => '很抱歉系统在您选的'.$data['domain'].'和'.$data['industrys'].'行业下并未找到专家,您可以自选专家或者联系客服进行处理,给您带来不便尽请谅解','type' => 3];
+                return ['msg' => '<b style="font-size: 18px;">很抱歉</b><br />系统在您选的 【'.$data['domain'].'】领域和 【'.$data['industrys'].'】行业下并未找到专家<br />您可以自选专家或者联系客服进行处理,给您带来不便尽请谅解','type' => 3];
             }
         }
         return ['msg' => '非法操作','type' => 4];
@@ -620,7 +680,7 @@ class PublicController extends Controller
                             ->get();
 
 
-                        if(empty($expert) && empty($expert)){
+                        if(empty($expert) && empty($expert2)){
                             DB::table('t_e_eventverify')->insert([
                                 'eventid' => $eventid,
                                 'configid' => 3,
@@ -630,6 +690,7 @@ class PublicController extends Controller
                                 "updated_at" => date("Y-m-d H:i:s",time())
                             ]);
                             DB::table('t_e_eventresponse')->where('eventid',$eventid)->delete();
+                            DB::commit();
                             return ['msg' => '系统匹配专家失败'.$eventid,'icon' => 2];
 
                         } elseif(!empty($expert)) {
@@ -680,7 +741,7 @@ class PublicController extends Controller
                     ]);
                     DB::commit();
                     $expertsinfo = DB::table('t_u_expert')->whereIn('expertid',$expids)->select('expertname','showimage','expertid')->get();
-                    $msg = ['msg' => '办事通过审核并推送到指定专家，以下是专家相关信息','icon' => 1,'expertsinfo' => $expertsinfo];
+                    $msg = ['msg' => '办事通过审核并推送到指定专家','icon' => 1,'expertsinfo' => $expertsinfo];
                 }catch(Exception $e){
                     DB::rollback();
                     throw $e;
@@ -700,7 +761,108 @@ class PublicController extends Controller
                 } else {
                     return $msg;
                 }
+            break;
 
+            case 'video':
+                $consultid = $data['consultid'];
+                $consultinfo = DB::table('t_c_consult')->where('consultid',$consultid)->first();
+                DB::beginTransaction();
+                try{
+                    if($data['state']){
+                        $expert = DB::table('t_u_expert')
+                            ->where(['domain1' => $consultinfo->domain1,'industry' => $consultinfo->industry])
+                            ->where('domain2','like','%'.$consultinfo->domain2.'%')
+                            ->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            ->get();
+
+                        $expert2 = DB::table('t_u_expert')
+                            ->where(['domain1' => $consultinfo->domain1,'industry' => $consultinfo->industry])
+                            ->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            ->get();
+
+
+                        if(empty($expert) && empty($expert2)){
+                            DB::table('t_c_consultverify')->insert([
+                                'consultid' => $consultid,
+                                'configid' => 3,
+                                'remark' => '系统匹配专家失败',
+                                'verifytime' => date("Y-m-d H:i:s",time()),
+                                "created_at" => date("Y-m-d H:i:s",time()),
+                                "updated_at" => date("Y-m-d H:i:s",time())
+                            ]);
+                            DB::table('t_c_consultresponse')->where('consultid',$consultid)->delete();
+                            DB::commit();
+                            return ['msg' => '系统匹配专家失败'.$consultid,'icon' => 2];
+
+                        } elseif(!empty($expert)) {
+                            foreach($expert as $v){
+                                DB::table('t_c_consultresponse')->insert([
+                                    'consultid' => $consultid,
+                                    'expertid' => $v->expertid,
+                                    "state"=> 1,
+                                    'responsetime' => date("Y-m-d H:i:s",time()),
+                                    "created_at" => date("Y-m-d H:i:s",time()),
+                                    "updated_at" => date("Y-m-d H:i:s",time())
+                                ]);
+                                $expids[] = $v->expertid;
+                            }
+                        } elseif (!empty($expert2)){
+                            foreach($expert2 as $v){
+                                DB::table('t_c_consultresponse')->insert([
+                                    'consultid' => $consultid,
+                                    'expertid' => $v->expertid,
+                                    "state"=> 1,
+                                    'responsetime' => date("Y-m-d H:i:s",time()),
+                                    "created_at" => date("Y-m-d H:i:s",time()),
+                                    "updated_at" => date("Y-m-d H:i:s",time())
+                                ]);
+                                $expids[] = $v->expertid;
+                            }
+                        }
+                    } else {
+                        $expertIds=explode(",",$data['expertIds']);
+                        foreach ($expertIds as $val){
+                            DB::table("t_c_consultresponse")->insert([
+                                "consultid" => $consultid,
+                                "expertid" => $val,
+                                "state"=> 0,
+                                'responsetime' => date("Y-m-d H:i:s",time()),
+                                "created_at" => date("Y-m-d H:i:s",time()),
+                                "updated_at" => date("Y-m-d H:i:s",time()),
+                            ]);
+                            $expids[] = $val;
+                        }
+                    }
+                    DB::table('t_c_consultverify')->insert([
+                        'consultid' => $consultid,
+                        'configid' => 4,
+                        'verifytime' => date("Y-m-d H:i:s",time()),
+                        "created_at" => date("Y-m-d H:i:s",time()),
+                        "updated_at" => date("Y-m-d H:i:s",time())
+                    ]);
+                    DB::commit();
+                    $expertsinfo = DB::table('t_u_expert')->whereIn('expertid',$expids)->select('expertname','showimage','expertid')->get();
+                    $msg = ['msg' => '办事通过审核并推送到指定专家','icon' => 1,'expertsinfo' => $expertsinfo];
+                }catch(Exception $e){
+                    DB::rollback();
+                    throw $e;
+                    $msg = ['msg' => '推送失败','icon' => 2];
+                }
+
+                if($msg['icon'] == 2){
+                    DB::table('t_c_consultverify')->insert([
+                        'consultid' => $consultid,
+                        'configid' => 3,
+                        'remark' => '系统匹配专家失败',
+                        'verifytime' => date("Y-m-d H:i:s",time()),
+                        "created_at" => date("Y-m-d H:i:s",time()),
+                        "updated_at" => date("Y-m-d H:i:s",time())
+                    ]);
+                    DB::table('t_c_consultresponse')->where('consultid',$consultid)->delete();
+                } else {
+                    return $msg;
+                }
+                break;
 
 
         }

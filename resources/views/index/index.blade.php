@@ -78,8 +78,8 @@
         <div class="row tab-resources">
             <div class="tabar clearfix" id="knowExpert">
                 <a href="javascript:;" class="tabar-opt">知名机构<div class="triangle-top"></div></a>
-                <a href="javascript:;" class="tabar-opt">知名专家<div class="triangle-top"></div></a>
-                <a href="javascript:;" class="tabar-opt">知名企业家<div class="triangle-top"></div></a>
+                <a href="javascript:;" class="tabar-opt">资深专家<div class="triangle-top"></div></a>
+                <a href="javascript:;" class="tabar-opt">实力企业家<div class="triangle-top"></div></a>
             </div>
             <div class="tab-con">
                 <ul class="tab-list clearfix" id="konwExpertList">

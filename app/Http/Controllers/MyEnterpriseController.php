@@ -194,12 +194,12 @@ class MyEnterpriseController extends Controller
                     $data['entid'] = $info->enterpriseid;
                 }
             }
-            $verifyname = DB::table('t_u_enterprise')->where('enterprisename',$data['enterprisename'])->first();
+            /*$verifyname = DB::table('t_u_enterprise')->where('enterprisename',$data['enterprisename'])->first();
             if($verifyname){
                 if(empty($info) || $info->enterprisename != $data['enterprisename']){
                     return ['msg' => '该企业已认证','icon' => 2];
                 }
-            }
+            }*/
             if(!empty($data['entid'])){
                 $res = $data['entid'];
                 unset($data['entid']);
@@ -1187,29 +1187,23 @@ class MyEnterpriseController extends Controller
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
-            if($_POST['state']==0){
-                $expertIds=explode(",",$_POST['expertIds']);
-                foreach ($expertIds as $val){
-                    DB::table("t_c_consultresponse")->insert([
-                        "consultid"=>$consultId,
-                        "expertid"=>$val,
-                        "state"=>0,
-                        "created_at"=>date("Y-m-d H:i:s",time()),
-                        "updated_at"=>date("Y-m-d H:i:s",time()),
-                    ]);
-                }
-            }
             DB::commit();
+
+            $verify = PublicController::ValidationAudit('video',['consultid' => $consultId]);
+            if($verify['icon'] == 2){
+                return $verify;
+            } elseif ($verify['icon'] == 1){
+                $verify2 = PublicController::eventPutExpert('video',['consultid' => $consultId,'state' => $_POST['state'],'expertIds' => $_POST['expertIds']]);
+                return $verify2;
+            } else {
+                return ['msg' => '操作失败','icon' => 2];
+            }
+
+
         }catch(Exception $e){
             DB::rollback();
-            throw $e;
+            return ['msg' => '操作失败','icon' => 2];
         }
-        if(!isset($e)){
-            $result['code']="success";
-        }else{
-            $result['code']="error";
-        }
-        return $result;
     }
 
     /**申请咨询 指定专家
