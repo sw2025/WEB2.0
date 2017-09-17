@@ -1,7 +1,7 @@
 @extends("layouts.master")
 @section("content")
 <!-- 登录 / start -->
-<div class="section login-bg">
+<div class="section login-bg" onkeydown="keyLogin();">
     <div class="container">
         <div class="user-box user-login-top">
             <h2 class="login-tit">用户登录</h2>
@@ -22,6 +22,12 @@
 </div>
 <!-- 登录 / end -->
 <script>
+    $(document).keyup(function(event){
+        if(event.keyCode ==13){
+            $(".login-btn").trigger("click");
+        }
+    });
+
   $(".login-btn").on("click",function(){
       var that=this;
       var reg1 = /^1[3578][0-9]{9}$/;//手机号
