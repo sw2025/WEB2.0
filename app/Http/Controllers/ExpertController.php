@@ -88,6 +88,16 @@ class ExpertController extends Controller
      * @return mixed
      */
     public  function detail($expertid){
+        $array = DB::table('t_u_expert as ext')
+            ->leftJoin('t_u_expertfee as fee','ext.expertid' ,'=' ,'fee.expertid')
+            ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
+            ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
+            ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
+            ->where('status.configid',2)
+            ->lists('ext.expertid');
+        if(!in_array("$expertid",$array)){
+            return redirect("/");
+        }
         //取出指定的供求信息
         $datas = DB::table('t_u_expert as ext')
             ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')

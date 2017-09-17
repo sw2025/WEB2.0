@@ -84,6 +84,19 @@ class SupplyController extends Controller
                 $arr[$stemp[1]] = array_unique($arr[$stemp[1]]);
             }
         }*/
+        $array = DB::table('t_n_need')
+            ->leftJoin('view_needstatus','view_needstatus.needid' ,'=' ,'t_n_need.needid')
+            ->where('view_needstatus.configid',3)
+            ->select('t_n_need.needid')
+            ->lists('needid');
+        /*$arr = [];
+        foreach($array as $v) {
+            $a = explode(',', $v->needid);
+            $arr = array_merge($arr, $a);
+        }*/
+        if(!in_array("$supplyId",$array)){
+            return redirect("/");
+        }
         if(!Cache::has('iplooks'.$supplyId) || Cache::get('iplooks'.$supplyId) != ip2long($request->getClientIp()).'|'.$supplyId){
             $looksinsert = DB::table('t_n_need')->where('needid',$supplyId)->increment('looks');
             if($looksinsert){
