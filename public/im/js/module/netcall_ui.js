@@ -144,6 +144,11 @@ fn.switchViewPosition = function () {
 fn.toggleFullScreen = function (e) {
     console.log(e)
     this.isFullScreen = e && !$(e.target).hasClass('active');
+    if($(e.target).hasClass('active')){
+        $(".header").show();
+    }else{
+        $(".header").hide();
+    }
     this.$netcallBox.toggleClass("fullscreen", this.isFullScreen);
 
     // p2p模式

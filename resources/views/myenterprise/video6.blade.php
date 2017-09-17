@@ -213,6 +213,10 @@
                     <div class="dialog-team-container radius5px hide" id="dialogTeamContainer"></div>
                     <!-- 技术方案弹框 -->
                     <div class="dialog-team-container radius5px hide" id="dialogCallMethod"></div>
+                    <div class="chat-room-btns">
+                        <button type="button" class="chat-room-btn unusual-btn">异常</button>
+                        <button type="button" class="chat-room-btn chat-room-btn1">完成</button>
+                    </div>
                 </div>
             </div>
     </div>
@@ -253,5 +257,39 @@
     <script src="{{asset('im/js/module/netcall_ui.js')}}"></script>
     <script src="{{asset('im/js/module/dialog_call_method.js')}}"></script>
     <script src="{{asset('im/js/main.js?v=2')}}"></script>
+    <script>
+        $(".unusual-btn").on('click',function(){
+            var consultId=$('#consult').val();
+            $.ajax({
+                url:"{{url('finishConsult')}}",
+                data:{"consultId":consultId,'type':'unusual'},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=='success'){
+                        window.location.reload();
+                    }else{
+                        alert('点击完成失败,请再次尝试')
+                    }
+                }
+            })
+        })
+        $(".chat-room-btn1").on('click',function(){
+            var consultId=$('#consult').val();
+            $.ajax({
+                url:"{{url('finishConsult')}}",
+                data:{"consultId":consultId,"type":'end'},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=='success'){
+                        window.location.reload();
+                    }else{
+                        alert('点击完成失败,请再次尝试')
+                    }
+                }
+            })
+        })
+    </script>
 @endsection
 
