@@ -1,5 +1,13 @@
 @extends("layouts.ucenter")
 @section("content")
+    <style>
+        .btnclass{
+            padding-right: 1px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            margin-left: 1px
+        }
+    </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
             <!-- 侧边栏公共部分/end -->
 
@@ -64,21 +72,33 @@
                                                         <input class="fileupload1" type="file" name="files" multiple="" index="{{$configinfo[$lastpid->step-1]->ppid}}" @if(!empty($_GET['step'])) disabled @endif/>
                                                     </form>
                                                 </span>
-                                                <span><a href="{{env('ImagePath').$configinfo[$lastpid->step-1]->documenturl}}" target="_blank" class="eventa1">{{$configinfo[$lastpid->step-1]->docname or ''}}</a><a href="@if(!empty($configinfo[$lastpid->step-1]->downurl)) /download?path={{$configinfo[$lastpid->step-1]->downurl}} " style="padding-right: 2px;border: 1px solid #aaa;border-radius: 5px;margin-left: 10px;@endif"   class="eventa2"  >@if(!empty($configinfo[$lastpid->step-1]->downurl))&nbsp;下载&nbsp;@endif</a></span>
-                                                @if(!empty($configinfo[$lastpid->step-1]->oldpath))
-                                                    <span>
-                                                        <span>&ensp;&ensp;&ensp;历史上传：</span>
+                                                <span>
+                                                    <a href="{{env('ImagePath').$configinfo[$lastpid->step-1]->documenturl}}" target="_blank" class="eventa1">{{$configinfo[$lastpid->step-1]->docname or ''}}</a>
+                                                    <a href="@if(!empty($configinfo[$lastpid->step-1]->downurl)) /download?path={{$configinfo[$lastpid->step-1]->downurl}} " index="{{$configinfo[$lastpid->step-1]->downurl}}" style="padding-right: 2px;border: 1px solid #aaa;border-radius: 5px;margin-left: 10px;@endif"   class="eventa2"  >@if(!empty($configinfo[$lastpid->step-1]->downurl))&nbsp;下载&nbsp;@endif</a>
+                                                </span>
+                                                <br />
+                                                <span class="lssc @if(!empty($configinfo[$lastpid->step-1]->oldpath)) haveclass @endif" >
+                                                     @if(!empty($configinfo[$lastpid->step-1]->oldpath))
+                                                        <span>历史上传：</span>
                                                         @foreach($configinfo[$lastpid->step-1]->oldpath as $kk => $vv)
-                                                            <a href="/download?path={{$vv[1]}}" title="{{$vv[2]}}修改">{{$vv[0]}}</a> |
+                                                            <span>
+                                                            <a href="/download?path={{$vv[1]}}" title="{{$vv[2]}}修改">{{$vv[0]}}</a>
+                                                            @if(!$configinfo[$lastpid->step-1]->starttype && $datas->userid == session('userId'))
+                                                            <a href="javascript:;" index="/deletedownload?path={{$vv[1]}}&&eid={{$eventId}}"  class="btnclass" >&nbsp;删除&nbsp;</a>
+                                                            @endif
+                                                                <span style="color:#000;font-size: 18px;font-weight: bold;margin:0 5px;">|</span>
+                                                                </span>
                                                         @endforeach
-                                                    </span>
-                                                @endif
+                                                    @endif
+                                                </span>
                                             </div>
-                                            <div class="handle-cap">点击上传基本资料<br />文件格式限制： word  excel  pdf</div>
+                                            <div class="handle-cap">点击上传基本资料<br />文件格式限制： word  excel  pdf ppt txt</div>
                                         </div>
                                         <div class="datum-manage">
-                                            <a href="javascript:;" class="datum-btn datum-confirm" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}" pid="{{$configinfo[$lastpid->step-1]->ppid}}">确认资料</a>
                                             <a href="javascript:;" class="datum-btn datum-change" index="{{$lastpid->epid or 0}}" eventid=" {{$eventId}}">修改意见</a>
+                                            @if($configinfo[$lastpid->step-1]->starttype && $datas->userid == session('userId'))
+                                                <a href="javascript:;" class="datum-btn datum-confirm" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}" pid="{{$configinfo[$lastpid->step-1]->ppid}}">确认资料</a>
+                                            @endif
                                         </div>
                                         <div class="v-manage-link-rate">
                                             @foreach($configinfo as $k => $v)
@@ -337,6 +357,7 @@
     @endif
 
     <script type="text/javascript">
+
         $(function(){
            /* $("#Pagination").pagination("15");*/
             // 点击历史意见
@@ -350,6 +371,7 @@
                 var page = $(this).attr('page');
                 var pageobj = $(this).parent().siblings('.history-opinion');
                 var contobj = pageobj.children('ul');
+
                 pageobj.children().children('#Pagination').pagination(page,{'callback':function (page_index, jq) {
                     var current = parseInt(page_index)+1;
                     $.get('{{url('uct_works/detail',$eventId)}}?page='+current,{'epid':epid},function (data) {
@@ -397,14 +419,36 @@
                                 layer.msg(data.error,{'icon':data.icon});
                             } else {
                                 layer.msg(data.msg,{'icon':1});
+                                var str = '<a href="'+spanobj.children('.eventa2').attr('href')+'">'+spanobj.children('.eventa1').html()+'</a>' +
+                                        '<a href="javascript:;" index="/deletedownload?path='+spanobj.children('.eventa2').attr('index')+'&&eid={{$eventId}}"  class="btnclass" >&nbsp;删除&nbsp;</a>';
+                                if($('.lssc').hasClass('haveclass') &&  spanobj.children('.eventa1').html().trim() != ''){
+                                    $('.lssc').append(str);
+                                } else if(!$('.lssc').hasClass('haveclass') && spanobj.children('.eventa1').html().trim() != '') {
+                                    $('.lssc').append('<span>&ensp;&ensp;&ensp;历史上传：</span>'+str);
+                                }
                                 spanobj.children('.eventa1').html(data.name);
                                 spanobj.children('.eventa1').attr('href','{{env('ImagePath')}}'+data.path);
                                 spanobj.children('.eventa2').html(' 下载 ');
                                 spanobj.children('.eventa2').css({'border':'1px solid #aaa','borderRadius':'5px','marginLeft':'10px','paddingRight':'2px'});
                                 spanobj.children('.eventa2').attr('href','/download?path='+data.downpath);
+
                                 $('.datum-confirm').attr('index',data.epid);
                                 $('.datum-change').attr('index',data.epid);
                                 thisobj.val('');
+
+                                $('.btnclass').on('click',function () {
+                                    var path = $(this).attr('index');
+                                    $.get(path,function (data) {
+                                        if(data.icon == 2){
+                                            layer.msg(data.msg,{'icon':2});
+                                        } else {
+                                            layer.msg(data.msg,{'icon':1},function(){
+                                                window.location = window.location.href;
+                                            });
+                                        }
+                                    });
+                                    return false;
+                                });
                             }
 
                         },
@@ -414,6 +458,20 @@
                     });
 
 
+            });
+
+            $('.btnclass').on('click',function () {
+                var path = $(this).attr('index');
+                $.get(path,function (data) {
+                    if(data.icon == 2){
+                        layer.msg(data.msg,{'icon':2});
+                    } else {
+                        layer.msg(data.msg,{'icon':1},function(){
+                            window.location = window.location.href;
+                        });
+                    }
+                });
+                return false;
             });
 
 

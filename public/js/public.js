@@ -1,5 +1,8 @@
 $(function(){
     // $('input, textarea').placeholder();
+    var xx = $('.v-manage-link-rate a').length - 1;
+    var wid = xx * 30 +10;
+    $('.v-manage-link-rate').width(wid)
     // 尺寸变更导航切换
     $('.navbar-toggle').on('click', function(event) {
         event.preventDefault();

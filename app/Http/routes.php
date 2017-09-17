@@ -79,6 +79,8 @@ Route::any('upload','PublicController@upload');
 Route::any('eventupload','PublicController@eventUpload');
 //办事上传资料
 Route::any('download','PublicController@download');
+//办事上传资料
+Route::any('deletedownload','PublicController@deleteDownload');
 //基本资料修改
 Route::post('changeBasics','CenterController@changeBasics');
 //添加银行卡处理

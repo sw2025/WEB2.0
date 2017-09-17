@@ -26,7 +26,7 @@
 .handle-cap{float: left;margin-left: 20px;margin-top: 120px;}
 .datum-manage{position: absolute;bottom: 70px;right: 0;}
 .datum-manage .datum-btn{display: block;width: 180px;height: 28px;line-height: 28px;background:#fa0;color:#fff;border-radius: 3px;margin-top: 15px;text-align: center;}
-.v-manage-link-rate{position: relative;margin:40px auto 0;height: 2px;width: 190px;background:#c8c8c8;}
+.v-manage-link-rate{position: relative;margin:40px auto 0;height: 2px;/*width: 190px;*/background:#c8c8c8;}
 .vprogress{display: block;position: absolute;top:-4px;width: 10px;height: 10px;background:#c8c8c8;border-radius: 10px;}
 .vprog2{left: 30px;}
 .vprog3{left: 60px;}

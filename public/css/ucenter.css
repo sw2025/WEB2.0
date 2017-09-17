@@ -338,7 +338,7 @@
 .mywork-det{text-align: center;padding: 35px 0;}
 .mywork-det-txt{border: 1px solid #ccc;border-radius: 3px;min-height: 195px;width: 330px;display: inline-block;padding:10px;text-align: left;max-height: 500px;}
 .mywork-det-tit{display: block;color:#333;}
-.mywork-det-desc-para{color:#333;text-align: justify;}
+.mywork-det-desc-para{color:#333;text-align: justify;word-break: break-all;}
 .respond-btn-box{padding-top: 16px;}
 .respond-btn{display: inline-block;width: 250px;height: 40px;line-height: 40px;text-align: center;color:#fff;border-radius: 3px;border: none;font-size: 16px;margin-top: 24px;}
 .unrespond{background:#00a7ed;}

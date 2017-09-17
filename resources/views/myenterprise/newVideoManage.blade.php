@@ -148,7 +148,7 @@
                             <p class="v-manage-link-desc">
                                 {{$data->brief}}
                             </p>
-                            <div class="v-manage-link-rate">
+                            <div class="v-manage-link-rate5">
                                 <span class="vprogress vprog1 @if($data->configid >= 1) vping @endif" title="咨询审核"></span>
                                 <span class="vprogress vprog2 @if($data->configid >=4) vping @endif" title="邀请专家"></span>
                                 <span class="vprogress vprog3 @if($data->configid >= 5) vping @endif" title="专家响应"></span>
