@@ -26,12 +26,19 @@
                             <span class="mywork-det-tit"><em class="light-color">所在行业：</em>{{$data->industry}}</span>
                             <div class="mywork-det-desc">
                                 <em class="light-color">描述：</em>
-                                <p class="mywork-det-desc-para">{{$data->brief}}</p>
+                                <p class="mywork-det-desc-para" style="overflow: hidden;">{{$data->brief}}</p>
                             </div>
                         </div>
                         <div class="uct-works-exp">
                             <a href="javascript:;" class="special-btn  uct-works-btn @if($data->state=='指定专家') active @endif">指定专家</a>
                             <a href="javascript:;" class="system-btn2 uct-works-btn @if($data->state=='系统分配') active @endif ">系统分配</a>
+                        </div>
+                        <div class="uct-works-exps" style="margin-top: -35px;">
+                            <ul class="uct-works-exps-list">
+                                @foreach($selExperts as $selExpert)
+                                    <li id="{{$selExpert->expertid}}" ><a href="{{url('expert/detail',$selExpert->expertid)}}" target="_blank"><img src="{{env('ImagePath').$selExpert->showimage}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;">{{$selExpert->expertname}}</a></li>
+                                @endforeach
+                            </ul>
                         </div>
                     @endforeach
                 </div>

@@ -34,7 +34,7 @@
                                 </a>
                             </div>
                             <div class="myinfo-row-details">
-                                <p class="myinfo-row-det-con">{{$v->content}}</p>
+                                <p class="myinfo-row-det-con">{!! $v->content !!}</p>
                                 @if(!$v->sendid)
                                 <p class="myinfo-come">From 系统消息</p>
                                 @endif
@@ -98,7 +98,9 @@
 
     function alsoread (arr,state) {
         $.post('{{url('uct_flagread')}}',{'data':arr,'state':state},function (data) {
-            layer.msg(data.msg,{'time':2000,'icon':data.icon});
+            layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
+                window.location = window.location.href;
+            });
         });
     }
 
@@ -107,8 +109,15 @@
     function pageselectCallback(page_index, jq){
         // 从表单获取每页的显示的列表项数目
         var current = parseInt(page_index)+1;
-
-        window.location = window.location.href+'?page='+current;
+        var url = window.location.href;
+        url = url.replace(/(\?|\&)?page=\d+/,'');
+        var isexist = url.indexOf("?");
+        if(isexist == -1){
+            url += '?page='+current;
+        } else {
+            url += '&page='+current;
+        }
+        window.location=url;
 
         //阻止单击事件
         return false;

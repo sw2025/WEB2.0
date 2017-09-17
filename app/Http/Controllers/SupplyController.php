@@ -207,12 +207,61 @@ class SupplyController extends Controller
         }
         if($request->ajax()){
             $data = $request->only('content', 'needid','parentid','use_userid');
+            $expertuserid = DB::table('t_n_need')->where('needid',$data['needid'])->first();
+            $userinfo = DB::table('t_u_user')->where('userid',session('userId'))->first();
+            if(empty($expertuserid) || empty($userinfo)){
+                return 'error';
+            }
             $data['userid'] = session('userId');
             $data['messagetime'] = date('Y-m-d H:i:s',time());
-            $res = DB::table('t_n_messagetoneed')->insert($data);
-            if($res){
-                return 'success';
-            } else {
+            try{
+                $res = DB::table('t_n_messagetoneed')->insert($data);
+                if($expertuserid->userid != session('userId') && !$data['parentid']){
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>';
+                    $msg = DB::table('t_m_systemmessage')->insert([
+                        'sendid' => 0,
+                        'receiveid' => $expertuserid->userid,
+                        'sendtime' => date('Y-m-d H:i:s',time()),
+                        'title' => '有用户给您发布的需求留言了',
+                        'content' => $content,
+                        'state' => 0
+                    ]);
+                }
+                if($expertuserid->userid != session('userId') && $data['parentid'] && !$data['use_userid']){
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>';
+                    $parid = DB::table('t_n_messagetoneed')->where('id',$data['parentid'])->first();
+                    if(empty($parid)){
+                        return 'error';
+                    }
+                    if($parid->userid != session('userId')){
+                        $msg = DB::table('t_m_systemmessage')->insert([
+                            'sendid' => 0,
+                            'receiveid' => $parid->userid,
+                            'sendtime' => date('Y-m-d H:i:s',time()),
+                            'title' => '有用户给您留言了',
+                            'content' => $content,
+                            'state' => 0
+                        ]);
+                    }
+                }
+                if($expertuserid->userid != session('userId') && $data['parentid'] && $data['use_userid']){
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>';
+                    if($data['use_userid'] != session('userId')){
+                        $msg = DB::table('t_m_systemmessage')->insert([
+                            'sendid' => 0,
+                            'receiveid' => $data['use_userid'],
+                            'sendtime' => date('Y-m-d H:i:s',time()),
+                            'title' => '有用户给您发布的需求留言了',
+                            'content' => $content,
+                            'state' => 0
+                        ]);
+                    }
+
+                }
+                DB::commit();
+                return ['success'];
+            }catch (Exception $e){
+                DB::rollback();
                 return 'error';
             }
         }

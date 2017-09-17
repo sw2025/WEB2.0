@@ -49,6 +49,47 @@ class PublicController extends Controller
         readfile($filepath);  //读取文件内容
     }
 
+    public function deleteDownload(Request $request)
+    {
+        $data = $request->input();
+        $filepath = Crypt::decrypt($data['path']);
+        $eventid = $data['eid'];
+        $eventuserid = DB::table('t_e_event')->where('eventid',$eventid)->first();
+        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+        $resuserid = DB::table('t_e_eventresponse')->where(['eventid' => $eventid,'state' => 3])->first();
+        if(empty($eventuserid) || empty($resuserid)){
+            return ['msg' => '非法操作','icon' => 2];
+        }
+
+        if($eventuserid->userid == session('userId')  ||  (!empty($expertid) && $expertid->expertid == $resuserid->expertid)){
+            $filepath = str_replace('\\','/',$filepath);
+            $filepath = iconv('utf-8','GB2312', $filepath);
+            $filearr = explode('/',$filepath);
+            $filename = array_pop($filearr);
+            $dir = '../../swUpload/'.str_replace('../../swUpload/','',trim(join('/',$filearr),'/')).'/';
+            if (is_dir($dir)) {
+                if ($dp = opendir($dir)) {
+                    while (($file=readdir($dp)) != false) {
+                        if ($file!='.' && $file!='..') {
+                            chmod($dir,0777);
+                            unlink($dir.$file);
+                        }
+                    }
+                    closedir($dp);
+                    rmdir($dir);
+                    return ['msg' => '删除成功','icon' => 1];
+                } else {
+                    return ['msg' => '无法打开该文件，删除失败','icon' => 2];
+                }
+                return ['msg' => '无法打开该文件，删除失败','icon' => 2];
+            }
+            return ['msg' => '该文件错误，删除失败','icon' => 2];
+        } else {
+            return ['msg' => '您不是办事专家或者企业','icon' => 2];
+        }
+
+    }
+
 
     /**匹配银行名字
      * @return array

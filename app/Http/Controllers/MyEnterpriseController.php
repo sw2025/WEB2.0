@@ -186,7 +186,7 @@ class MyEnterpriseController extends Controller
             $data['userid'] = session('userId');
             $data['updated_at'] = date('Y-m-d H:i:s',time());
             $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
-            if($info){
+            if(!empty($info)){
                 $verify = DB::table('t_u_enterpriseverify')->where('enterpriseid',$info->enterpriseid)->orderBy('id','desc')->first();
                 if(!empty($verify) && $verify->configid != 2){
                     return ['msg' => '提交失败，您已经认证过了','icon' => 2];
@@ -236,11 +236,11 @@ class MyEnterpriseController extends Controller
         if(!$data){
            return redirect('/');
         }
-        $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first()->configid;
-        if($configid == 3){
-            return redirect('uct_member/member4/'.$entid);
-        } elseif ($configid == 2){
+        $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first();
+        if(empty($configid->configid) || $configid->configid == 2){
             return redirect('uct_member');
+        }elseif ($configid->configid == 3){
+            return redirect('uct_member/member4/'.$entid);
         }
         return view("myenterprise.member2",compact('data'));
     }
@@ -253,12 +253,12 @@ class MyEnterpriseController extends Controller
         if(!$data || empty(session('userId'))){
             return redirect('/');
         }
-        $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first()->configid;
-        if($configid == 1){
+        $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first();
+        if(empty($configid->configid) || $configid->configid == 1){
             return redirect('uct_member');
-        } elseif ($configid ==3){
+        } elseif ($configid->configid ==3){
             return redirect('uct_member/member4/'.$entid);
-        } elseif ($configid == 2){
+        } elseif ($configid->configid == 2){
             return redirect('uct_member');
         }
         //进行加密验证
@@ -269,6 +269,12 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public  function member4($entid){
+        $configid = DB::table('t_u_enterpriseverify')->where('enterpriseid',$entid)->orderBy('id','desc')->first();
+        if(empty($configid->configid) || $configid->configid == 1){
+            return redirect('uct_member');
+        }elseif ($configid->configid == 2){
+            return redirect('uct_member');
+        }
         $data = DB::table('t_u_enterprise')->where(['enterpriseid' => $entid,'userid' => session('userId')])->first();
         return view("myenterprise.member4",compact('data'));
     }
@@ -420,26 +426,43 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public function workDetail($eventId,Request $request){
+        //获取到这个办事的发起人
+        $eventuserid = DB::table('t_e_event')->where('eventid',$eventId)->first();
+        if(empty($eventuserid) || $eventuserid->userid != session('userId')){
+            return redirect('/');
+        }
         $datas=DB::table("t_e_event")
                     ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
                     ->where("t_e_event.eventid",$eventId)
                     ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
                     ->get();
-        $counts=DB::table("t_e_eventresponse")->where("eventid",$eventId)->count();
+        $counts=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',1)->count();
+        $counts2=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',0)->count();
         foreach ($datas as $data){
            $configId=$data->configid;
             if($counts!=0){
                 $data->state="指定专家";
             }else{
+                $counts = $counts2;
                 $data->state="系统分配";
             }
         }
+
         if($request->ajax()){
+
             $data = $request->input();
             $res = DB::table('t_e_eventprocessremark')->where('epid',$data['epid'])->paginate(1);
             return $res;
         }
         switch($configId){
+            case 4:
+                $selExperts=DB::table("t_e_eventresponse")
+                    ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
+                    ->whereIn("t_e_eventresponse.state",[0,1])
+                    ->where("eventid",$eventId)
+                    ->get();
+                $selected=count($selExperts);
+                break;
             case 5:
                 $selExperts=DB::table("t_e_eventresponse")
                     ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
@@ -499,7 +522,6 @@ class MyEnterpriseController extends Controller
                 }
                 //对信息进行封装
                 $configinfo = \EnterpriseClass::processInsert($configinfo);
-
                 //获取到该办事的所有的过程id
                 $epids = DB::table('t_e_eventprocess')->where('eventid',$eventId)->lists('epid');
                 //获取到办事进行到的过程
@@ -610,9 +632,10 @@ class MyEnterpriseController extends Controller
             $starttype = DB::table('t_e_eventprocessconfig')->where('pid',$proid)->first()->starttype;
             $eventuserid = DB::table('t_e_event')->where('eventid',$data['eventid'])->first()->userid;
             $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
-            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+
             if($starttype){
-                if($expertid != $eventexpertid){
+                $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+                if(empty($expertid) || $expertid->expertid != $eventexpertid){
                     return ['error' => '该资料应由专家上传','icon' => 2];
                 }
             } else{
@@ -664,16 +687,16 @@ class MyEnterpriseController extends Controller
             //验证是否为指定身份提交
             $starttype = DB::table('t_e_eventprocessconfig')->where('pid',$data['pid'])->first()->starttype;
             $eventuserid = DB::table('t_e_event')->where('eventid',$data['eventid'])->first()->userid;
-            $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
-            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
-            if($starttype){
 
+            if($starttype){
                 if($eventuserid != session('userId')){
-                    return ['error' => '该资料应由企业确定','icon' => 2];
+                    return ['error' => '该资料应由该办事企业确定','icon' => 2];
                 }
             } else{
-                if($expertid != $eventexpertid){
-                    return ['error' => '该资料应由专家确定','icon' => 2];
+                $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
+                $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+                if(empty($expertid->expertid) ||$expertid->expertid != $eventexpertid){
+                    return ['error' => '该资料应由该办事专家确定','icon' => 2];
                 }
             }
             $res = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->update(['state' => 2]);
@@ -703,17 +726,17 @@ class MyEnterpriseController extends Controller
             //获取到这个办事被选择的专家的expertid
             $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $eventid,'state' => 3])->first()->expertid;
             //获取到当前登录用户的专家的id
-            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first();
             //若这个用户是专家  若不是 则只需判定办事的发起人是不是这个当前的登录者
-            if(!empty($expertid)){
+            if(!empty($expertid->expertid)){
                 //若被选择的专家id不是登录用户专家id 且 办事发起人不是当前用户
-                if($eventexpertid != $expertid && $eventuserid != session('userId')){
+                if($eventexpertid != $expertid->expertid && $eventuserid != session('userId')){
                     return ['error' => '您不是办事企业或者受邀专家','icon' => 2];
                 }
                 //判定发起人是谁
                 if($eventuserid == session('userId')){
                     $data['adduser'] = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
-                } elseif ($eventexpertid == $expertid){
+                } elseif ($eventexpertid == $expertid->expertid){
                     $data['adduser'] = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertname;
                 }
             } else {
@@ -760,8 +783,8 @@ class MyEnterpriseController extends Controller
             //获取到这个办事被选择的专家的expertid
             $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first()->expertid;
             //获取到当前登录用户的专家的id
-            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
-            if($eventuserid == session('userId') || $expertid == $eventexpertid){
+            $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+            if($eventuserid == session('userId') || (!empty($expertid->expertid) && $expertid->expertid == $eventexpertid)){
                 if(!$data['state'] && $eventuserid == session('userId') ){
                     $etid = DB::table('t_e_eventtask')->insertGetId([
                         'epid' => $data['epid'],
