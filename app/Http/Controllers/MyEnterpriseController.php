@@ -1365,6 +1365,58 @@ class MyEnterpriseController extends Controller
         }
         return $result;
     }
+
+    public  function finishConsult(){
+        $consutId=$_POST['consultId'];
+        $type=$_POST['type'];
+        if($type=='end'){
+            $configId=7;
+            $state=4;
+            $remark='';
+        }else{
+            $configId=7;
+            $state=4;
+            $remark='视频异常终止';
+        }
+        $res=array();
+        DB::beginTransaction();
+        try{
+            DB::table('t_c_consultverify')->insert([
+                'consultid'=>$consutId,
+                'configid'=>$configId,
+                'verifytime'=>date('Y-m-d H:i:s',time()),
+                'remark'=>$remark,
+                'created_at'=>date('Y-m-d H:i:s',time()),
+                'updated_at'=>date('Y-m-d H:i:s',time()),
+            ]);
+            $expertIds=DB::table('t_c_consultresponse')
+                ->where(['consultid'=>$consutId,'state'=>3])
+                ->select('expertid')
+                ->distinct()
+                ->get();
+            foreach($expertIds as $value){
+                DB::table('t_c_consultresponse')->insert([
+                    'consultid'=>$consutId,
+                    'expertid'=>$value->expertid,
+                    'responsetime'=>date('Y-m-d H:i:s'),
+                    'state'=>$state,
+                    'created_at'=>date('Y-m-d H:i:s',time()),
+                    'updated_at'=>date('Y-m-d H:i:s',time()),
+
+                ]);
+            }
+            DB::commit();
+        }catch (Exception $e){
+            DB::rollback();
+            throw $e;
+        }
+        if(!isset($e)){
+            $res['code']='success';
+        }else{
+            $res['code']='error';
+        }
+        return $res;
+    }
     /**视频星级评分
      * @return array
      */
@@ -1385,7 +1437,9 @@ class MyEnterpriseController extends Controller
                     "comment"=>"",
                     "commenttime"=>date("Y-m-d H:i:s",time()),
                     "created_at"=>date("Y-m-d H:i:s",time()),
-                    "updated_at"=>date("Y-m-d H:i:s",time()),                ]);            }
+                    "updated_at"=>date("Y-m-d H:i:s",time()),
+                ]);
+            }
         }catch(Exception $e){
             throw $e;
         }

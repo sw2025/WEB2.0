@@ -1548,7 +1548,7 @@ fn.playRing = function (name, count, done) {
         D: "avchat_peer_reject",
         E: "avchat_ring"
     };
-    var url = "audio/" + nameMap[name] + ".mp3";
+    var url = "../../im/audio/" + nameMap[name] + ".mp3";
     function doPlay(url, playDone) {
         var audio = document.createElement("audio");
         audio.autoplay = true;
