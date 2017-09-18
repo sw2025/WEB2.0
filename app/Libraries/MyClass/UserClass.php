@@ -103,7 +103,7 @@
         public static function forgetVerify($phone, $pwd)
         {
             $result = array();
-            $counts = User::where("phone", $phone)->get()->toArray();
+            $counts = \App\User::where("phone", $phone)->get()->toArray();
             if (count($counts) != 0) {
                 $res = DB::table("T_U_USER")->where("phone", $phone)->update([
                     "password" => md5($pwd),
