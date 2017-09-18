@@ -149,7 +149,7 @@ class PublicController extends Controller
                     $eventCount=$member->eventcount;
                     $consultCount=$member->consultcount;
                 }
-                if($currentTime<$endTime){
+                if(date('Y-m-d H:i:s')<$member->endtime){
                     if($type=="consult"){
                         $counts=DB::table("t_c_consult")
                             ->leftJoin("view_consultstatus","t_c_consult.consultid","=","view_consultstatus.consultid")
@@ -717,12 +717,16 @@ class PublicController extends Controller
                         $expert = DB::table('t_u_expert')
                             ->where(['domain1' => $eventinfo->domain1,'industry' => $eventinfo->industry])
                             ->where('domain2','like','%'.$eventinfo->domain2.'%')
-                            ->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            //->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            ->whereRaw('1=1  group by rand()')
+                            ->limit(5)
                             ->get();
 
                         $expert2 = DB::table('t_u_expert')
                             ->where(['domain1' => $eventinfo->domain1,'industry' => $eventinfo->industry])
-                            ->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            //->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            ->whereRaw('1=1  group by rand()')
+                            ->limit(5)
                             ->get();
 
 
@@ -812,21 +816,34 @@ class PublicController extends Controller
             case 'video':
                 $consultid = $data['consultid'];
                 $consultinfo = DB::table('t_c_consult')->where('consultid',$consultid)->first();
+                $expids = [];
                 DB::beginTransaction();
                 try{
                     if($data['state']){
-                        $expert = DB::table('t_u_expert')
+                        /*$expert = DB::table('t_u_expert')
                             ->where(['domain1' => $consultinfo->domain1,'industry' => $consultinfo->industry])
-                            ->where('domain2','like','%'.$consultinfo->domain2.'%')
-                            ->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            //->where('domain2','like','%'.$consultinfo->domain2.'%')
+                            //->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            ->whereRaw('domain2 like %'.$consultinfo->domain2.'%  group by rand()')
+                            ->limit(5)
                             ->get();
 
                         $expert2 = DB::table('t_u_expert')
                             ->where(['domain1' => $consultinfo->domain1,'industry' => $consultinfo->industry])
-                            ->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            //->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
+                            ->whereRaw('1=1  group by rand()')
+                            ->limit(5)
+                            ->get();*/
+                        $expert = DB::table('t_u_expert')
+                            ->where(['domain1' => $consultinfo->domain1,'industry' => $consultinfo->industry])
+                            ->whereRaw('domain2 like "%'.$consultinfo->domain2.'%"')
                             ->get();
 
-
+                        $expert2 = DB::table('t_u_expert')
+                            ->where(['domain1' => $consultinfo->domain1,'industry' => $consultinfo->industry])
+                            ->get();
+                        shuffle($expert);
+                        shuffle($expert2);
                         if(empty($expert) && empty($expert2)){
                             DB::table('t_c_consultverify')->insert([
                                 'consultid' => $consultid,
@@ -841,29 +858,58 @@ class PublicController extends Controller
                             return ['msg' => '系统匹配专家失败'.$consultid,'icon' => 2];
 
                         } elseif(!empty($expert)) {
+
                             foreach($expert as $v){
-                                DB::table('t_c_consultresponse')->insert([
-                                    'consultid' => $consultid,
-                                    'expertid' => $v->expertid,
-                                    "state"=> 1,
-                                    'responsetime' => date("Y-m-d H:i:s",time()),
-                                    "created_at" => date("Y-m-d H:i:s",time()),
-                                    "updated_at" => date("Y-m-d H:i:s",time())
-                                ]);
-                                $expids[] = $v->expertid;
+                                $pushexpert = DB::table('view_expertresponsetime')
+                                    ->where('expertid',$v->expertid)
+                                    ->whereRaw('(starttime between  "'.$consultinfo->starttime.'" and "'.$consultinfo->endtime.'" or endtime between "'.$consultinfo->starttime .'" and "'.$consultinfo->endtime .'") and state != 5')
+                                    ->first();
+                                if(empty($pushexpert) && count($expids) < 5){
+                                    DB::table('t_c_consultresponse')->insert([
+                                        'consultid' => $consultid,
+                                        'expertid' => $v->expertid,
+                                        "state"=> 1,
+                                        'responsetime' => date("Y-m-d H:i:s",time()),
+                                        "created_at" => date("Y-m-d H:i:s",time()),
+                                        "updated_at" => date("Y-m-d H:i:s",time())
+                                    ]);
+                                    $expids[] = $v->expertid;
+                                }
+                                if(count($expids) >= 5){
+                                    break;
+                                }
+
                             }
+                            if(!count($expids)){
+                                return ['msg' => '很抱歉系统未在您指定的时间段内找到合适的专家请重新更改下咨询时间谢谢','icon' => 2];
+                            }
+
                         } elseif (!empty($expert2)){
                             foreach($expert2 as $v){
-                                DB::table('t_c_consultresponse')->insert([
-                                    'consultid' => $consultid,
-                                    'expertid' => $v->expertid,
-                                    "state"=> 1,
-                                    'responsetime' => date("Y-m-d H:i:s",time()),
-                                    "created_at" => date("Y-m-d H:i:s",time()),
-                                    "updated_at" => date("Y-m-d H:i:s",time())
-                                ]);
-                                $expids[] = $v->expertid;
+                                $pushexpert = DB::table('view_expertresponsetime')
+                                    ->where('expertid',$v->expertid)
+                                    ->whereRaw('(starttime between  "'.$consultinfo->starttime.'" and "'.$consultinfo->endtime.'" or endtime between "'.$consultinfo->starttime .'" and "'.$consultinfo->endtime .'") and state != 5')
+                                    ->first();
+                                if(empty($pushexpert) && count($expids) < 5){
+                                    DB::table('t_c_consultresponse')->insert([
+                                        'consultid' => $consultid,
+                                        'expertid' => $v->expertid,
+                                        "state"=> 1,
+                                        'responsetime' => date("Y-m-d H:i:s",time()),
+                                        "created_at" => date("Y-m-d H:i:s",time()),
+                                        "updated_at" => date("Y-m-d H:i:s",time())
+                                    ]);
+                                    $expids[] = $v->expertid;
+                                }
+                                if(count($expids) >= 5){
+                                    break;
+                                }
+
                             }
+                            if(!count($expids)){
+                                return ['msg' => '很抱歉系统未在您指定的时间段内找到合适的专家请重新更改下咨询时间谢谢','icon' => 2];
+                            }
+
                         }
                     } else {
                         $expertIds=explode(",",$data['expertIds']);
@@ -888,7 +934,7 @@ class PublicController extends Controller
                     ]);
                     DB::commit();
                     $expertsinfo = DB::table('t_u_expert')->whereIn('expertid',$expids)->select('expertname','showimage','expertid')->get();
-                    $msg = ['msg' => '办事通过审核并推送到指定专家','icon' => 1,'expertsinfo' => $expertsinfo];
+                    $msg = ['msg' => '恭喜您,视频咨询通过审核并推送到指定专家','icon' => 1,'expertsinfo' => $expertsinfo];
                 }catch(Exception $e){
                     DB::rollback();
                     throw $e;
