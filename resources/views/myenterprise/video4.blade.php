@@ -19,7 +19,7 @@
                                     <em>邀请专家</em>INVITED EXPERT
                                 </span>
                     </div>
-                    <div class="system-invite light-color">已经邀请<span class="invite-count">{{$counts}}</span></div>
+                    <div class="system-invite light-color">已经邀请<span class="invite-count">{{$counts}}人</span></div>
                     @foreach($datas as $data)
                         <div class="mywork-det-txt uct-works-known">
                             <span class="mywork-det-tit"><em class="light-color">分类：</em>{{$data->domain1.'/'.$data->domain2}}</span>
@@ -31,7 +31,19 @@
                                 <p class="mywork-det-desc-para">{{$data->brief}}</p>
                             </div>
                         </div>
+                        <div class="uct-works-exp">
+                            <a href="javascript:;" class="special-btn  uct-works-btn @if($data->state=='指定专家') active @endif">指定专家</a>
+                            <a href="javascript:;" class="system-btn2 uct-works-btn @if($data->state=='系统分配') active @endif ">系统分配专家</a>
+                        </div>
                     @endforeach
+
+                    <div class="uct-works-exps" style="margin-top: -35px;">
+                        <ul class="uct-works-exps-list">
+                            @foreach($selExperts as $selExpert)
+                                <li id="{{$selExpert->expertid}}" ><a href="{{url('expert/detail',$selExpert->expertid)}}" target="_blank"><img src="{{env('ImagePath').$selExpert->showimage}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;">{{$selExpert->expertname}}</a></li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

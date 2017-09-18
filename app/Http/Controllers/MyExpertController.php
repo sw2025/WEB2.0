@@ -288,6 +288,11 @@ class MyExpertController extends Controller
      * @return mixed
      */
     public function myask(Request $request){
+        $pushexpert = DB::table('view_expertresponsetime')
+            ->where('expertid',38)
+            ->whereRaw('(starttime between  '.'"2017-09-30 18:16:08"'.' and '.'"2017-10-10 14:16:08"'.' or endtime between '.'"2017-09-30 14:19:08"' .' and '.'"2017-10-10 14:16:08"' .') and state != 5')
+            ->get();
+        dd($pushexpert);
         //获取到登陆用户的专家的id
         $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
         if(empty($expert)){
@@ -310,7 +315,8 @@ class MyExpertController extends Controller
             ->leftJoin('t_c_consult as consult','consult.consultid','=','res.consultid')
             ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
             ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
-            ->whereRaw('res.id in (select max(id) from t_c_consultresponse group by consultid)')
+            //->whereRaw('res.id in (select max(id) from t_c_consultresponse group by consultid)')
+            ->whereRaw('res.id in (select max(`t_c_consultresponse`.`id`) from `t_c_consultresponse` group by `t_c_consultresponse`.`consultid`,expertid)')
             ->select('res.*','consult.domain1','consult.domain2','consult.brief','status.configid','consult.consulttime','consult.starttime','consult.endtime','ent.enterprisename as name');
         $obj = clone $datas;
         $ajaxobj = clone $datas;
@@ -326,8 +332,6 @@ class MyExpertController extends Controller
             ->where(['res.expertid' => $expertid,'status.configid' => 4])
             ->orderBy('res.id','desc')
             ->paginate(6);
-
-
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
             ->whereIn('status.configid',[5,6,7])
@@ -388,6 +392,15 @@ class MyExpertController extends Controller
                     ->get();
                 return view("myexpert.askDetail06",compact('selExperts','comperes','datas',"consultId"));
                 break;
+            case 7:
+                $selExperts=DB::table("t_c_consultresponse")
+                    ->leftJoin("t_c_consultcomment","t_c_consultresponse.expertid","=","t_c_consultcomment.expertid" )
+                    ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_c_consultresponse.state",3)
+                    ->where("t_c_consultresponse.consultid",$consultId)
+                    ->get();
+                return view("myexpert.video7",compact('selExperts','comperes','datas',"consultId"));
+                break;
 
         }
 
@@ -405,7 +418,7 @@ class MyExpertController extends Controller
                 //获取到该用户对应的专家的id
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
 
-                $consultid = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'state' => 2])->orderBy('responsetime', 'desc')->first();
+                $consultid = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'state' => 2])->orderBy('id', 'desc')->first();
                 if(!empty($consultid->consultid)){
                     $endtime=DB::table('t_c_consult')->where('consultid',$consultid->consultid)->first()->endtime;
                     $starttime=DB::table('t_c_consult')->where('consultid',$data['consultid'])->first()->starttime;
