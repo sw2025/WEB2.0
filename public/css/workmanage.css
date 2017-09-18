@@ -17,7 +17,7 @@
 .v-manage-link-tit{margin-left: 56px;color:#000;margin-top: 3px;display: block;}
 .v-manage-link-sentit{font-size: 18px;}
 .v-manage-link-juntit{display: block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin-top: 3px;}
-.v-manage-link-desc{text-align: justify;margin: 24px 0 50px;overflow: hidden;line-height: 24px;height: 168px;}
+.v-manage-link-desc{text-align: justify;margin: 24px 0 50px;overflow: hidden;line-height: 24px;height: 168px;word-break: break-all;}
 .v-manage-link-rate,.v-manage-link-rate5{position: relative;margin:0 auto;height: 2px;background:#c8c8c8;}
 .v-manage-link-rate{width: 100px;}
 .v-manage-link-rate5{width: 130px;}

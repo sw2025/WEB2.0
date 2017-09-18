@@ -198,9 +198,6 @@
                 var text=$(this).text().trim();
                 var date = new Date();
                 date.setTime(date.getTime() + (120 * 60 * 1000));
-
-
-
                 if(text=="系统分配专家"){
                     layer.msg('系统为您检索专家中', {
                         icon: 16
