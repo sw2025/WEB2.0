@@ -1125,19 +1125,30 @@ class MyEnterpriseController extends Controller
             ->where("t_c_consult.consultid",$consultId)
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
             ->get();
-        $counts=DB::table("t_c_consultresponse")->where("consultid",$consultId)->count();
+
+        $counts=DB::table("t_c_consultresponse")->where("consultid",$consultId)->where('state',1)->count();
+        $counts2=DB::table("t_c_consultresponse")->where("consultid",$consultId)->where('state',0)->count();
         foreach ($datas as $data){
             $configId=$data->configid;
-            if($counts!=0){
+            if(!$counts){
                 $data->state="指定专家";
             }else{
+                $counts = $counts2;
                 $data->state="系统分配";
             }
-            $data->starttime=date("Y-m-d H:i",strtotime($data->starttime));
-            $data->endtime=date("Y-m-d H:i",strtotime($data->endtime));
-
+            $data->starttime=date("Y年m月d日 H:i:s",strtotime($data->starttime));
+            $data->endtime=date("Y年m月d日 H:i:s",strtotime($data->endtime));
         }
+
         switch($configId){
+            case 4:
+                $selExperts=DB::table("t_c_consultresponse")
+                    ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
+                    ->whereIn("t_c_consultresponse.state",[0,1])
+                    ->where("consultid",$consultId)
+                    ->get();
+                $selected=count($selExperts);
+                break;
             case 5:
                 $selExperts=DB::table("t_c_consultresponse")
                     ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
