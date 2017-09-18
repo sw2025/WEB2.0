@@ -13,11 +13,16 @@ $.ajax({
             //setCookie('uid',res['accid'].toLocaleLowerCase());
             var date = new Date();
             date.setTime(date.getTime() + (120 * 60 * 1000));
-            $.cookie("uid",res['accid'].toLocaleLowerCase(),{expires:date,path:'/',domain:'sw2025.com'});
+           /* $.cookie("uid",res['accid'].toLocaleLowerCase(),{expires:date,path:'/',domain:'sw2025.com'});
             //自己的appkey就不用加密了
             // setCookie('sdktoken',pwd);
             //setCookie('sdktoken',res['imtoken']);
-            $.cookie("sdktoken",res['imtoken'].toLocaleLowerCase(),{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("sdktoken",res['imtoken'].toLocaleLowerCase(),{expires:date,path:'/',domain:'sw2025.com'});*/
+            $.cookie("uid",res['accid'],{expires:date,path:'/',domain:'sw2025.com'});
+            //自己的appkey就不用加密了
+            // setCookie('sdktoken',pwd);
+            //setCookie('sdktoken',res['imtoken']);
+            $.cookie("sdktoken",res['imtoken'],{expires:date,path:'/',domain:'sw2025.com'});
         }else{
             window.location.href="/login";
         }
