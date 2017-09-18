@@ -1292,10 +1292,10 @@ class MyEnterpriseController extends Controller
             } else {
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
-            $datas = $obj->paginate(2);
+            $datas = $obj->paginate(4);
             return view("myenterprise.videoSelect",compact('cate','searchname','domainselect','datas','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
         }
-        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(2);
+        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
         $ordertime = 'desc';
         return view("myenterprise.videoSelect",compact('cate','datas','ordertime','domainselect','collectids'));
     }

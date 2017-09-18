@@ -1,7 +1,7 @@
 @extends("layouts.master")
 @section("content")
 <!-- 登录 / start -->
-<div class="section login-bg" onkeydown="keyLogin();">
+<div class="section login-bg" onkeydown="autosubmit()">
     <div class="container">
         <div class="user-box user-login-top">
             <h2 class="login-tit">用户登录</h2>
@@ -22,13 +22,12 @@
 </div>
 <!-- 登录 / end -->
 <script>
-    $(document).keyup(function(event){
-        if(event.keyCode ==13){
+    function autosubmit(){//事件触发函数
+        if(event.keyCode==13){
             $(".login-btn").trigger("click");
         }
-    });
-
-  $(".login-btn").on("click",function(){
+    }
+    $(".login-btn").on("click",function(){
       var that=this;
       var reg1 = /^1[3578][0-9]{9}$/;//手机号
       var reg2 = /^[a-zA-Z0-9]{6,18}$/;//密码

@@ -237,7 +237,7 @@
                                             $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                             $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
                                             $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
-                                            window.location.href="{{asset('uct_video/videoSelect')}}"
+                                            window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                         }
                                     }else{
                                         /*var domains=$(".publ-need-sel-def").text().trim();
@@ -248,7 +248,7 @@
                                         $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
-                                        window.location.href="{{asset('uct_video/videoSelect')}}";
+                                        window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                     }
                                 },btn2: function(index, layero){
                                     $(".submit-audit").attr('disabled',false);
@@ -259,7 +259,7 @@
                                     $.cookie("videodomain","",{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("videodescribe","",{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});
-                                    window.location.href="{{url('uct_video/applyVideo')}}";
+                                    window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                 }
                             });
 
@@ -280,7 +280,7 @@
                                         $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
-                                        window.location.href="{{asset('uct_video/videoSelect')}}"
+                                        window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                     }
                                 }else{
                                     /*var domains=$(".publ-need-sel-def").text().trim();
@@ -291,7 +291,7 @@
                                     $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
-                                    window.location.href="{{asset('uct_video/videoSelect')}}";
+                                    window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                 }
                             }, function(){
                                 $.cookie("videoreselect","",{expires:date,path:'/',domain:'sw2025.com'});
@@ -300,7 +300,7 @@
                                 $.cookie("videodateStart","",{expires:date,path:'/',domain:'sw2025.com'});
                                 $.cookie("videodateEnd","",{expires:date,path:'/',domain:'sw2025.com'});
                                 $.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});
-                                window.location.href="{{url('uct_video/applyVideo')}}"
+                                window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                 return false;
 
                             });
@@ -320,7 +320,7 @@
                             $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                             $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
                             $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
-                            window.location.href="{{asset('uct_video/videoSelect')}}"
+                            window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                         }
                     }else{
                         /*var domains=$(".publ-need-sel-def").text().trim();
@@ -331,7 +331,7 @@
                         $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
-                        window.location.href="{{asset('uct_video/videoSelect')}}";
+                        window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                     }
                 }
 

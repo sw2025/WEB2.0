@@ -184,7 +184,7 @@
 .pay-close i{font-size: 28px;}
 .pay-tit{padding:12px 20px;text-align: justify;line-height:24px;border-bottom:1px solid #eee;}
 /*个人中心印章*/
-.chuo{position: absolute;bottom: 30px;right: 1px;width: 72px;heihgt: 72px;background: url(../img/chuo.png) no-repeat;}
+.chuo{position: absolute;bottom: 30px;right: 1px;width: 72px;height: 72px;background: url(../img/chuo.png) no-repeat;}
 /*企业认证行业*/
 .datas-sel .padd12{padding:0 20px 0 12px;width:auto;}
 .mt20{margin-top:20px;}

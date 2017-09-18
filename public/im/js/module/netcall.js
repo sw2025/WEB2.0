@@ -51,8 +51,8 @@ function NetcallBridge(yx) {
     this.netcallDurationTimer = null;
     // 音视频流配置
     this.sessionConfig = {
-        videoQuality: Netcall.CHAT_VIDEO_QUALITY_480P,
-        videoFrameRate: Netcall.CHAT_VIDEO_FRAME_RATE_NORMAL,
+        videoQuality: Netcall.CHAT_VIDEO_QUALITY_720P,
+        videoFrameRate: Netcall.CHAT_VIDEO_FRAME_RATE_25,
         videoBitrate: 0,
         recordVideo: false,
         recordAudio: false,
