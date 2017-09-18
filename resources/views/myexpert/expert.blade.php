@@ -135,7 +135,7 @@
                         </div>
                         <div class="datas-upload-box clearfix">
                             <div class="datas-upload-lt">
-                                <img src="@if(!empty($result)){{env('ImagePath').$result->licenceimage}}@else img/photo1.jpg @endif"
+                                <img src="@if(!empty($result) && $result->licenceimage){{env('ImagePath').$result->licenceimage}}@else img/photo1.jpg @endif"
                                      class="photo1" id="avatar1"/>
                                 <div class="photo-upload">
                                     <div class="photo-btn-box fileinput-button">
@@ -148,7 +148,7 @@
                                 </div>
                             </div>
                             <div class="datas-upload-rt">
-                                <img src="@if(!empty($result)){{env('ImagePath').$result->showimage}}@else img/photo2.jpg @endif"
+                                <img src="@if(!empty($result) && $result->showimage){{env('ImagePath').$result->showimage}}@else img/photo2.jpg @endif"
                                      id="avatar2" class="photo1"/>
                                 <div class="photo-upload">
                                     <div class="photo-btn-box fileinput-button">

@@ -46,10 +46,10 @@ class IndexController extends Controller
             case "知名机构":
                 $expertType="机构";
             break;
-            case "知名专家":
+            case "资深专家":
                 $expertType="专家";
                 break;
-            case "知名企业家":
+            case "实力企业家":
                 $expertType="企业家";
                 break;
         }

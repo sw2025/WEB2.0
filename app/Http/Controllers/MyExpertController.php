@@ -366,9 +366,13 @@ class MyExpertController extends Controller
             ->where(['consult.consultid'=>$consultId,'res.expertid'=>$expertid])
             ->first();
         switch ($consultStatus){
+            case 4:
+                $token = Crypt::encrypt(session('userId'));
+                return view("myexpert.askDetail",compact('datas','token'));
+                break;
             case 5:
-                $token = Crypt::encrypt($consultId.session('userId'));
-                return view("myexpert.askDetail05",compact('datas','token'));
+                $token = Crypt::encrypt(session('userId'));
+                return view("myexpert.askDetail",compact('datas','token'));
                 break;
             case 6:
                 $selExperts=DB::table("t_c_consult")
@@ -403,11 +407,11 @@ class MyExpertController extends Controller
 
                 $consultid = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'state' => 2])->orderBy('responsetime', 'desc')->first();
                 if(!empty($consultid->consultid)){
-                    $endtime=DB::table('t_c_consult')->where('consultid',$consultid)->first()->endtime;
-                    $starttime=DB::table('t_c_consult')->where('consultid',$consultid)->first()->starttime;
+                    $endtime=DB::table('t_c_consult')->where('consultid',$consultid->consultid)->first()->endtime;
+                    $starttime=DB::table('t_c_consult')->where('consultid',$data['consultid'])->first()->starttime;
                 }
 
-                if(empty($consultid->consultid) || $endtime > $starttime){
+                if(empty($consultid->consultid) || strtotime($starttime) > strtotime($endtime)){
                     DB::beginTransaction();
                     try{
                         //查询是否存在响应的情况
@@ -441,10 +445,11 @@ class MyExpertController extends Controller
                         return ['msg' => '处理失败','icon' => 2];
                     }
                 }
-                return ['msg' => '正在响应','icon' => 2];
+                return ['msg' => '你在这个时间段已经有其他的咨询了,请合理安排时间','icon' => 2];
             }
+            return ['msg' => '非法操作FF000002','icon' => 2];
         }
-        return ['msg' => '非法操作','icon' => 2];
+        return ['msg' => '非法操作FF000001','icon' => 2];
     }
     /**进入视频会议
      * @return mixed

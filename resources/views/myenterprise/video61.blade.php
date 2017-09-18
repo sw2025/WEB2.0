@@ -260,6 +260,7 @@
                         <input multiple="multiple" type="file" name="file" id="uploadFile" class="hide"/>
                     </form>
                 </div>
+
             </div>
         </div>
         <div class="right-panel hide radius5px devices-container" id="devices">		<!-- 设备管理面板 -->
@@ -353,6 +354,7 @@
         </div>
     </div>
 </div>
+
 <div class="footer tc">
     <span>&copy;1997 - 2016 网易公司版权所有</span>
 </div>

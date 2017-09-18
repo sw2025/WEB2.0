@@ -79,6 +79,8 @@ Route::any('upload','PublicController@upload');
 Route::any('eventupload','PublicController@eventUpload');
 //办事上传资料
 Route::any('download','PublicController@download');
+//办事上传资料
+Route::any('deletedownload','PublicController@deleteDownload');
 //基本资料修改
 Route::post('changeBasics','CenterController@changeBasics');
 //添加银行卡处理
@@ -219,6 +221,8 @@ Route::post('saveVideo','MyEnterpriseController@saveVideo');
 Route::get('uct_video/videoSelect','MyEnterpriseController@videoSelect');
 //视频咨询处理响应的专家
 Route::post('handleSelect','MyEnterpriseController@handleSelect');
+//咨询结束
+Route::post('finishConsult','MyEnterpriseController@finishConsult');
 //咨询完成，给专家星级评论
 Route::post('toVideoExpertMsg','MyEnterpriseController@toVideoExpertMsg');
 //咨询完成，给专家评论

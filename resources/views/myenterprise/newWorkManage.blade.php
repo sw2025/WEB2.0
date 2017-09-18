@@ -21,14 +21,14 @@
         }
 
         @-webkit-keyframes responsePulse {
-            from { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #00a6ac; }
+            from { background-color: #00a6ac; -webkit-box-shadow: 0 0 9px #00a6ac; }
             50% { background-color: #2daebf; -webkit-box-shadow: 0 0 18px #2daebf; }
-            to { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #00a6ac; }
+            to { background-color: #00a6ac; -webkit-box-shadow: 0 0 9px #00a6ac; }
         }
 
         @-webkit-keyframes putPulse {
             from { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #78cdd1; }
-            50% { background-color: #2daebf; -webkit-box-shadow: 0 0 18px #2daebf; }
+            50% { background-color: #1c6d77; -webkit-box-shadow: 0 0 18px #2daebf; }
             to { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #78cdd1; }
         }
 
@@ -156,7 +156,7 @@
                         {{$v->brief}}
                     </p>
 
-                    <div class="v-manage-link-rate">
+                    <div class="v-manage-link-rate5">
                         <span class="vprogress vprog1 @if($v->configid >= 1) vping @endif" title="办事审核"></span>
                         <span class="vprogress vprog2 @if($v->configid >= 4) vping @endif" title="邀请专家"></span>
                         <span class="vprogress vprog3 @if($v->configid >= 5) vping @endif" title="专家响应"></span>

@@ -1,5 +1,8 @@
 $(function(){
     // $('input, textarea').placeholder();
+    var xx = $('.v-manage-link-rate a').length - 1;
+    var wid = xx * 30 +10;
+    $('.v-manage-link-rate').width(wid)
     // 尺寸变更导航切换
     $('.navbar-toggle').on('click', function(event) {
         event.preventDefault();
@@ -76,7 +79,7 @@ $(function(){
         $('.banner ul li').eq(imgKey).fadeIn();
     }
     var timer01 = null;
-    timer01 = setInterval(lunbo,5000);
+    timer01 = setInterval(lunbo,4000);
 
     $('.banner ol li').click(function(event) {
         var ind = $(this).index();
@@ -89,7 +92,7 @@ $(function(){
         clearInterval(timer01);
     }, function() {
         $('.leftBtn,.rightBtn').stop().fadeOut();
-        timer01 = setInterval(lunbo,5000);
+        timer01 = setInterval(lunbo,4000);
     });
     $('.rightBtn').click(function() {
         lunbo();

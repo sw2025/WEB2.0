@@ -1,4 +1,4 @@
-@extends("layouts.ucenter")
+@extends("layouts.ucenter4")
 @section("content")
     <div class="main">
         <!-- 我的视频咨询 / start -->
@@ -20,7 +20,7 @@
                     <div class="respond-btn-box">
                         <!-- 状态按钮根据实际状态只展示一个 -->
                         @if($datas->configid == 4)
-                            <button type="button" class="unrespond respond-btn" onclick="responseevent({{$datas->consultid}})">响应</button>
+                            <button type="button" class="unrespond respond-btn" onclick="responseconsult({{$datas->consultid}})">响应</button>
                         @elseif($datas->configid == 5)
                             <button type="button" class="responded respond-btn">已响应</button>
                         @else

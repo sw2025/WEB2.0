@@ -144,6 +144,11 @@ fn.switchViewPosition = function () {
 fn.toggleFullScreen = function (e) {
     console.log(e)
     this.isFullScreen = e && !$(e.target).hasClass('active');
+    if($(e.target).hasClass('active')){
+        $(".header").show();
+    }else{
+        $(".header").hide();
+    }
     this.$netcallBox.toggleClass("fullscreen", this.isFullScreen);
 
     // p2p模式
@@ -445,8 +450,8 @@ fn.onClickNetcallLink = function (type) {
     // team多人场景: 人数少于2人的多人视频
     var tn = that.yx.crtSessionAccount;
     that.yx.getTeamMembers(tn, function () {
-        if (that.yx.cache.getTeamMembers(tn).members.length < 2) {
-            that.showTip('无法发起，人数少于2人', 2000);
+        if (that.yx.cache.getTeamMembers(tn).members.length < 1) {
+            that.showTip('无法发起，人数少于1人', 2000);
             return;
         }
         that.displayCallMethodUI(deviceCheck.bind(that))

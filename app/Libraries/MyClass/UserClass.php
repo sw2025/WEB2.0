@@ -79,7 +79,13 @@
                 }
                 if (!isset($e)) {
                     self::getAccId($userid,$phone);
+                    $counts = \App\User::where('userid',$userid)->get()->toArray();
                     $result['code'] = "success";
+                    session(["userId" =>$userid ]);
+                    $result['userId'] = $userid;
+                    $result['name'] = !empty($counts[0]['nickname'])?$counts[0]['nickname']:substr_replace($phone,'****',3,4);
+                    $roles=DB::table("view_userrole")->where('userid',$userid)->pluck("role");
+                    $result['role']=$roles;
                 } else {
                     $result['code'] = "phone";
                     $result['msg'] = "注册失败,请重新注册";

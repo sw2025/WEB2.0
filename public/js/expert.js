@@ -192,10 +192,25 @@ function fnc_collect (supplyid,action,obj) {
             if(action == 'collect'){
                 var number = $(obj).text() == ' ' ? 0:$(obj).text();
                 $(obj).children('span').text(parseInt(number)+1);
+                if($(obj).hasClass('collect-state')){
+                    $(obj).html('已收藏');
+                    $(obj).addClass('done');
+                } else {
+                    $(obj).attr("title","已收藏");
+                    $(obj).addClass('red');
+                }
                 layer.msg('收藏成功');
             } else {
                 var number = $(obj).text() == 1 ? ' ' : parseInt($(obj).text())-1;
                 $(obj).children('span').text(number);
+                if($(obj).hasClass('collect')){
+                    $(obj).attr("title","收藏");
+                    $(obj).removeClass('red');
+                } else {
+                    $(obj).html('收藏');
+                    $(obj).removeClass('done');
+                }
+
                 layer.msg('取消收藏成功');
             }
         } else {

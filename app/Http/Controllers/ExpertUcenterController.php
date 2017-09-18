@@ -85,7 +85,7 @@ class ExpertUcenterController extends Controller
      */
     public  function  myinfo(Request $request){
         $userId = session("userId");
-        $datas = DB::table('t_m_systemmessage')->where(['receiveid' => $userId])->whereIn('state',[0,1])->paginate(2);
+        $datas = DB::table('t_m_systemmessage')->where(['receiveid' => $userId])->whereIn('state',[0,1])->orderBy('id','desc')->paginate(6);
         if($request->ajax()){
             return $datas;
         }
@@ -294,17 +294,25 @@ class ExpertUcenterController extends Controller
      * @return mixed
      */
     public function workDetail($eventId,Request $request){
+        $eventexpertid = DB::table('t_e_eventresponse')->where(['eventid' => $eventId,'state' => 3])->first();
+        //获取到当前登录用户的专家的id
+        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+        if(empty($eventexpertid) || empty($expertid) || $expertid->expertid != $eventexpertid->expertid){
+            return redirect('/');
+        }
         $datas=DB::table("t_e_event")
             ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
             ->where("t_e_event.eventid",$eventId)
             ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
             ->get();
         $counts=DB::table("t_e_eventresponse")->where("eventid",$eventId)->count();
+        $counts2=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',0)->count();
         foreach ($datas as $data){
             $configId=$data->configid;
             if($counts!=0){
                 $data->state="指定专家";
             }else{
+                $counts = $counts2;
                 $data->state="系统分配";
             }
         }

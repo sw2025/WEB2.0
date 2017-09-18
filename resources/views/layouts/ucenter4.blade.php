@@ -48,7 +48,7 @@
                 <div class="search-sear">
                     <form name="">
                         <div class="select-box">
-                            <div class="select-showbox"><span></span><i class="iconfont icon-xiangxiajiantou"></i></div>
+                            <div class="select-showbox"><span id="select-type"></span><i class="iconfont icon-xiangxiajiantou"></i></div>
                             <ul class="select-option">
                                 <li>搜专家</li>
                                 <li>搜需求</li>
@@ -253,6 +253,7 @@
             if($.cookie('expertRemark')=="success"){
                 $(".havevip").show();
                 $(".novip").hide();
+                $(".goto-renzh").attr("title","已认证");
             }else{
                 $(".havevip").hide();
                 $(".novip").show();
@@ -269,6 +270,7 @@
                     if(res['expertRemark']=="success"){
                         $(".havevip").show();
                         $(".novip").hide();
+                        $(".goto-renzh").attr("title","已认证");
                     }else{
                         $(".havevip").hide();
                         $(".novip").show();
