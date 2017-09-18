@@ -75,7 +75,7 @@ class LoginController extends Controller
     public  function  forgetHandle(){
         $phone=$_POST['phone'];
         $code=$_POST['code'];
-        $passWord=$_POST['pwd'];
+        $passWord=$_POST['passWord'];
         $str=array();
         if(Cache::has($phone)){
             $smsCode=Cache::get($phone);

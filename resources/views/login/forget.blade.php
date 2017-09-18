@@ -11,7 +11,7 @@
             </p>
             <p class="user-test clearfix">
                     <span class="user-test-enter"><label><i class="iconfont icon-duanxinyanzhengma"></i></label>
-                    <input type="text" placeholder="短信验证码" class="user-test-inp" /></span>
+                    <input type="text" placeholder="短信验证码" class="user-test-inp" required/></span>
                     <input type="button" class="get-test" id="getCode" value="获得验证码" />
             </p>
             <p class="user-pwd">
@@ -82,7 +82,7 @@
         var that=this;
         var phone=$(".user-tel-inp").val();
         var code=$(".user-test-inp").val();
-        var passWord=$(".user-test-inp").val();
+        var passWord=$(".user-pwd-inp").val();
         $(this).attr('disabled',true);
         $(this).html('正在设置');
         $.ajax({
