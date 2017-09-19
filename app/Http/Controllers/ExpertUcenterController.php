@@ -364,6 +364,24 @@ class ExpertUcenterController extends Controller
                     ->where("t_e_event.eventid",$eventId)
                     ->select('t_e_event.*','ent.*','status.*','t_e_event.brief')
                     ->first();
+                //验证是否喂新手
+                $verifyfirstevent = DB::table('t_e_eventresponse')
+                    ->leftJoin('view_eventstatus as ver','ver.eventid','=','t_e_eventresponse.eventid')
+                    ->where('t_e_eventresponse.expertid',$expertid->expertid)
+                    ->where('ver.configid','>','6')
+                    ->where('t_e_eventresponse.state','>','2')
+                    ->first();
+                $verifyfirstevent2 = DB::table('t_e_eventprocess as ver')
+                    ->leftJoin('t_e_event','ver.eventid','=','t_e_event.eventid')
+                    ->leftJoin('t_e_eventresponse as res','res.eventid','=','t_e_event.eventid')
+                    ->where('res.state','>','2')
+                    ->where('res.expertid',$expertid->expertid)
+                    ->select('ver.epid')
+                    ->first();
+                $isfirstevent = 0;
+                if(empty($verifyfirstevent) && empty($verifyfirstevent2)){
+                    $isfirstevent = 1;
+                }
                 //获取到办事的流程的信息
                 $configinfo = DB::table('t_e_eventprocessconfig as con')
                     ->where('con.domain',$datas->domain1)
@@ -427,7 +445,7 @@ class ExpertUcenterController extends Controller
                         $remark[$v] = [$data1,$data2];
                     }
                 }
-                return view("expertUcenter.new_uct_works5",compact('task',"datas","eventId",'info','configinfo','lastpid','remark','stmpstate'));
+                return view("expertUcenter.new_uct_works5",compact('isfirstevent','task',"datas","eventId",'info','configinfo','lastpid','remark','stmpstate'));
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";

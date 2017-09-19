@@ -862,7 +862,7 @@ class PublicController extends Controller
                             foreach($expert as $v){
                                 $pushexpert = DB::table('view_expertresponsetime')
                                     ->where('expertid',$v->expertid)
-                                    ->whereRaw('(starttime between  "'.$consultinfo->starttime.'" and "'.$consultinfo->endtime.'" or endtime between "'.$consultinfo->starttime .'" and "'.$consultinfo->endtime .'") and state != 5')
+                                    ->whereRaw('(starttime between  "'.$consultinfo->starttime.'" and "'.$consultinfo->endtime.'" or endtime between "'.$consultinfo->starttime .'" and "'.$consultinfo->endtime .'") and (state = 2 or state = 3)')
                                     ->first();
                                 if(empty($pushexpert) && count($expids) < 5){
                                     DB::table('t_c_consultresponse')->insert([

@@ -32,6 +32,35 @@
                         $v->icon = 'v-manage-link-icon';
                         break;
                 }
+                switch($v->configid){
+                    case 1:
+                        $v->btnicon = 'eventwait';
+                        break;
+                    case 2:
+                        $v->btnicon = 'eventfollow';
+                        break;
+                    case 3:
+                        $v->btnicon = 'eventdont';
+                        break;
+                    case 4:
+                        $v->btnicon = 'eventput';
+                        break;
+                    case 5:
+                        $v->btnicon = 'response';
+                        break;
+                    case 6:
+                        $v->btnicon = 'eventing';
+                        break;
+                    case 7:
+                        $v->btnicon = 'eventend';
+                        break;
+                    case 8:
+                        $v->btnicon = 'eventend';
+                        break;
+                    case 9:
+                        $v->btnicon = 'eventdont';
+                        break;
+                }
             }
             return $data;
         }

@@ -170,6 +170,7 @@
                     $.cookie("userId",res['userId'],{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("name",res['name'],{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("role",res['role'],{expires:date,path:'/',domain:'sw2025.com'});
+                    $.cookie("firstreg",res['userId'],{path:'/',domain:'sw2025.com'});
                     if(res['role']=="专家"){
                         window.location.href="{{asset('uct_mywork')}}";
                     }else{

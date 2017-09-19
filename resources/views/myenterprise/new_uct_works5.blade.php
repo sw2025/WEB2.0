@@ -9,6 +9,77 @@
         }
     </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
+
+         @if($stmpstate->step == 1 && !$isfirstevent)
+            <script>
+                var cookie = $.cookie('isnewpeople') ? '':0;
+                if (cookie == '' || cookie == NaN || cookie == undefined){
+                    layer.confirm('经系统检测您是首次进行办事,是否进行引导介绍操作？', {
+                        btn: ['介绍功能','不再显示'] //按钮
+                    }, function(index){
+                        layer.close(index);
+                        layer.tips('<font size=5>1.</font> 点击下方图标是文件上传,根据上方的步骤提示上传相关的资料', '.handle-up', {
+                            tipsMore: true,
+                            time:80000,
+                            tips: [1, '#666'],
+                            anim: 4,
+                            closeBtn:2
+                        });
+                        layer.tips('<font size=5>2(1).</font>上传完资料后可以在这里进行留言告诉专家资料上传完毕或者询问专家意见', '.datum-change', {
+                            area: ['320px', '55px'],
+                            tipsMore: true,
+                            time:80000,
+                            tips: [3, '#666'] ,
+                            anim: 4,
+                            closeBtn:2
+                        });
+                        layer.tips('<font size=5>2(2).</font>一般来说第一步是由专家确认资料所以这边按钮没有显示出来，专家确认后就到了下一步办事', '.datum-change', {
+                            area: ['320px', '55px'],
+                            tipsMore: true,
+                            time:80000,
+                            tips: [4, '#666'] ,
+                            anim: 4,
+                            closeBtn:2
+                        });
+                        layer.tips('<font size=5>3.</font>专家和您的提交的意见反馈点击这个按钮就会在下方显示出来', '.datum-history', {
+                            area: ['320px', '55px'],
+                            tipsMore: true,
+                            time:80000,
+                            tips: [3, '#666'],
+                            anim: 4,
+                            closeBtn:2
+                        });
+                        layer.tips('<font size=5>4.</font>如果您有很多相关的向专家咨询的问题请点击这里可以与专家进行视频沟通，同时也可以实时的进行文字即时通讯', '.video-comu', {
+                            area: ['320px', '70px'],
+                            tipsMore: true,
+                            time:80000,
+                            anim: 4,
+                            tips: [1, '#666'],
+                            closeBtn:2
+                        });
+                        layer.tips('<font size=5>5.</font>如果您中途对办事有特殊情况可以中止办事系统会根据您的操作步骤决定退款费用', '#stop', {
+                            tipsMore: true,
+                            time:80000,
+                            anim: 4,
+                            tips: [4, '#666'],
+                            closeBtn:2
+                        });
+                        layer.tips('<font size=5>6.</font>这里显示的是办事的进度情况鼠标移动到每个点上有简要介绍，点击相应的按钮会跳转到原来相对应的进度以便于查看.', '.vprog1', {
+                            area: ['520px', '65px'],
+                            tipsMore: true,
+                            time:80000,
+                            anim: 4,
+                            tips: [3, '#666'],
+                            closeBtn:2
+                        });
+
+                    }, function(){
+                        $.cookie('isnewpeople','123');
+                    });
+                }
+
+            </script>
+        @endif
             <!-- 侧边栏公共部分/end -->
 
                 <!-- 企业办事服务 / start -->
@@ -28,7 +99,9 @@
                                     <div class="vid-man-top-con">
                                         <p class="vid-man-top-cat"><span class="light-color">分类：</span>{{$datas->domain1}} / {{$datas->domain2}}</p>
                                         <span class="light-color">描述：</span>
-                                        <div class="vid-man-top-desc">{{mb_strcut($datas->brief,0,350,'utf-8')}}</div>
+                                        <div class="vid-man-top-desc">{{mb_strcut($datas->brief,0,350,'utf-8')}}...</div>
+                                        <p class="hidenbrief" style="display:none;">{{$datas->brief}}</p>
+                                        <p style="float: right;"><a href="javascript:;" class="showmore">查看更多</a></p>
                                     </div>
                                 </div>
                                 <div class="vid-man-top-rt vid-man-top-main">
@@ -140,7 +213,7 @@
                                 @else
                                     <div class="works-manage">
                                         <div class="works-last works-manage-step">
-                                            <h2 class="handle-affair-tit">{{$configinfo[$lastpid->step-1]->ppid}}.{{$configinfo[$lastpid->step-1]->processname}}</h2>
+                                            <h2 class="handle-affair-tit">{{$lastpid->step}}.{{$configinfo[$lastpid->step-1]->processname}}</h2>
                                             <p class="handle-affair-desc">{{$configinfo[$lastpid->step-1]->processdescription}}</p>
                                             <a href="javascript:;" class="datum-btn datum-add" style="display:block" epid="{{$configinfo[$lastpid->step-1]->epid}}"  pid="{{$configinfo[$lastpid->step-1]->ppid}}"> <i class="iconfont icon-bianji"></i>新增日程</a>
                                             <input type="hidden" id="startuserid" name="startuserid" value='@if($configinfo[$lastpid->step-1]->starttype) {{$info->userid}} @else {{$datas->userid}} @endif '>
@@ -578,6 +651,26 @@
             });
 
         })
+        var content = $('.hidenbrief').html();
+        $('.showmore').on('click',function () {
+            layer.open({
+                type: 1,
+                title: '办事详情页',
+                skin: 'layui-layer-rim', //加上边框
+                area: ['950px', '350px'], //宽高
+                maxmin: true, //开启最大化最小化按钮
+                content: '<div style="padding:20px;line-height: 29px;">'+content+'</div>',
+            });
+           /* layer.open({
+                type: 2,
+                title: '很多时候，我们想最大化看，比如像这个页面。',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['893px', '600px'],
+                content: '//fly.layui.com/'
+            });*/
+        });
 
 
     </script>

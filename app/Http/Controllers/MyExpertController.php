@@ -288,11 +288,7 @@ class MyExpertController extends Controller
      * @return mixed
      */
     public function myask(Request $request){
-        $pushexpert = DB::table('view_expertresponsetime')
-            ->where('expertid',38)
-            ->whereRaw('(starttime between  '.'"2017-09-30 18:16:08"'.' and '.'"2017-10-10 14:16:08"'.' or endtime between '.'"2017-09-30 14:19:08"' .' and '.'"2017-10-10 14:16:08"' .') and state != 5')
-            ->get();
-        dd($pushexpert);
+
         //获取到登陆用户的专家的id
         $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
         if(empty($expert)){
@@ -334,7 +330,7 @@ class MyExpertController extends Controller
             ->paginate(6);
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
-            ->whereIn('status.configid',[5,6,7])
+            ->whereIn('status.configid',[5,6,7,8])
             ->orderBy('res.id','desc')
             ->paginate(6);
         $datas = \ConsultClass::handelObj($datas);
@@ -393,6 +389,15 @@ class MyExpertController extends Controller
                 return view("myexpert.askDetail06",compact('selExperts','comperes','datas',"consultId"));
                 break;
             case 7:
+                $selExperts=DB::table("t_c_consultresponse")
+                    ->leftJoin("t_c_consultcomment","t_c_consultresponse.expertid","=","t_c_consultcomment.expertid" )
+                    ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_c_consultresponse.state",3)
+                    ->where("t_c_consultresponse.consultid",$consultId)
+                    ->get();
+                return view("myexpert.video7",compact('selExperts','comperes','datas',"consultId"));
+                break;
+            case 8:
                 $selExperts=DB::table("t_c_consultresponse")
                     ->leftJoin("t_c_consultcomment","t_c_consultresponse.expertid","=","t_c_consultcomment.expertid" )
                     ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
