@@ -237,7 +237,7 @@ function fnc_collect (supplyid,action,obj) {
             });
         } else if(data == 'success') {
             if(action == 'collect'){
-                var number = $(obj).text() == ' ' ? 0:$(obj).text();
+                var number = $(obj).text().trim() == '' ? 0:$(obj).text();
                 $(obj).children('span').text(parseInt(number)+1);
                 if($(obj).hasClass('collect-state')){
                     $(obj).html('已收藏');
@@ -247,6 +247,7 @@ function fnc_collect (supplyid,action,obj) {
                     $(obj).addClass('red');
                 }
                 layer.msg('收藏成功');
+                $(obj).attr('disabled',false);
             } else {
                 var number = $(obj).text() == 1 ? ' ' : parseInt($(obj).text())-1;
                 $(obj).children('span').text(number);
@@ -258,6 +259,7 @@ function fnc_collect (supplyid,action,obj) {
                     $(obj).removeClass('done');
                 }
                 layer.msg('取消收藏成功');
+                $(obj).attr('disabled',false);
             }
         } else {
             $(obj).removeClass('red');

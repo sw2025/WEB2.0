@@ -57,6 +57,7 @@ class MyEnterpriseController extends Controller
                 $datas = $datas->where('fee.fee','<>','null');
             } elseif(!empty($consult) && $consult == '免费'){
                 $consultwhere = ['fee.state' => 0];
+                $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
             } else {
                 $consultwhere = [];
             }
@@ -440,7 +441,7 @@ class MyEnterpriseController extends Controller
         $counts2=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',0)->count();
         foreach ($datas as $data){
            $configId=$data->configid;
-            if($counts!=0){
+            if($counts){
                 $data->state="指定专家";
             }else{
                 $counts = $counts2;
@@ -505,6 +506,21 @@ class MyEnterpriseController extends Controller
                     ->where("t_e_event.eventid",$eventId)
                     ->select('t_e_event.*','ent.*','status.*','t_e_event.brief')
                     ->first();
+                //验证是否喂新手
+                $verifyfirstevent = DB::table('t_e_event')
+                    ->leftJoin('t_e_eventverify as ver','ver.eventid','=','t_e_event.eventid')
+                    ->where('t_e_event.userid',session('userId'))
+                    ->where('ver.configid','>','6')
+                    ->first();
+                $verifyfirstevent2 = DB::table('t_e_eventprocess as ver')
+                    ->leftJoin('t_e_event','ver.eventid','=','t_e_event.eventid')
+                    ->where('t_e_event.userid',session('userId'))
+                    ->select('ver.epid')
+                    ->first();
+                $isfirstevent = 0;
+                if(empty($verifyfirstevent) && empty($verifyfirstevent2)){
+                    $isfirstevent = 1;
+                }
                 //获取到办事的流程的信息
                 $configinfo = DB::table('t_e_eventprocessconfig as con')
                     ->where('con.domain',$datas->domain1)
@@ -564,7 +580,7 @@ class MyEnterpriseController extends Controller
                         $remark[$v] = [$data1,$data2];
                     }
                 }
-                return view("myenterprise.new_uct_works5",compact('task',"datas","eventId",'info','configinfo','lastpid','remark','stmpstate'));
+                return view("myenterprise.new_uct_works5",compact('isfirstevent','task',"datas","eventId",'info','configinfo','lastpid','remark','stmpstate'));
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
@@ -930,9 +946,13 @@ class MyEnterpriseController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
-            $addresswhere = !empty($address)?array("ext.address"=>$address):array();            if(!empty($consult) && $consult == '收费'){                $consultwhere = ['fee.state' => 1];                $datas = $datas->where('fee.fee','<>','null');
+            $addresswhere = !empty($address)?array("ext.address"=>$address):array();
+            if(!empty($consult) && $consult == '收费'){
+                $consultwhere = ['fee.state' => 1];
+                $datas = $datas->where('fee.fee','<>','null');
             } elseif(!empty($consult) && $consult == '免费'){
                 $consultwhere = ['fee.state' => 0];
+                $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
             } else {
                 $consultwhere = [];
             }
@@ -1281,6 +1301,7 @@ class MyEnterpriseController extends Controller
                 $datas = $datas->where('fee.fee','<>','null');
             } elseif(!empty($consult) && $consult == '免费'){
                 $consultwhere = ['fee.state' => 0];
+                $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
             } else {
                 $consultwhere = [];
             }
@@ -1496,6 +1517,11 @@ class MyEnterpriseController extends Controller
                 "comment"=>$_POST['content'],
                 "commenttime"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+            DB::table('t_c_consultverify')->insert([
+                'consultid' => $consultId,
+                'configid' => 8,
+                'verifytime' => date('Y-m-d H:i:s')
             ]);
         }catch(Exception $e){
             throw $e;
