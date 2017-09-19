@@ -336,6 +336,20 @@
             window.location.href="{{asset('uct_basic')}}"
         }
     })
+    if($.cookie('firstreg') != '' && $.cookie('firstreg') != 'null' && $.cookie('firstreg') != NaN && $.cookie('firstreg') != undefined && $.cookie('firstreg') != null){
+        layer.tips('点击这里开始认证哦', '.v-personal', {
+            tipsMore: true,
+            time:80000,
+            tips: [4, 'rgb(37, 146, 232)'] ,
+            anim: 4,
+            closeBtn:2,
+            cancel: function(index, layero){
+                $.cookie("firstreg",null,{path:'/',domain:'sw2025.com'});
+            }
+        });
+    }
+
+
 </script>
 </body>
 </html>

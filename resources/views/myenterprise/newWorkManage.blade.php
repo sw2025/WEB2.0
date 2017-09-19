@@ -168,6 +168,7 @@
                     @if($v->configid==7)
                         <span class="chuo"></span>
                     @endif
+
                 </a>
             </li>
           @endforeach

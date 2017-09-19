@@ -7,6 +7,9 @@
                 <div class="main-right">
                     <div class="basic-source-changetel">
                         <span class="change-tel-tit">更换密码</span>
+                        <p class="change-tel-pwd oldPassWord">
+                            <label><i class="iconfont icon-suo"></i></label><input type="password" name="oldPassWord" id="oldPassWord" placeholder="请输入原密码" class="" />
+                        </p>
                         <p class="change-tel-pwd passWord">
                             <label><i class="iconfont icon-suo"></i></label><input type="password" name="passWord" id="passWord" placeholder="请输入新密码" class="" />
                         </p>
@@ -24,45 +27,69 @@
         var reg2 = /^[a-zA-Z0-9]{6,18}$/;//密码
         var passWord=$("#passWord").val();
         var replayWord=$("#replayWord").val();
-        if(!(reg2.test(passWord))){
-            layer.tips("密码只能是6-18位的数字或者字母", '.passWord', {
+        var oldPassWord = $("#oldPassWord").val();
+        if(!(reg2.test(oldPassWord))){
+            layer.tips("密码只能是6-18位的数字或者字母", '.oldPassWord', {
                 tips: [2, '#00a7ed'],
                 time: 4000
             });
             return false;
         }
-        if(!(reg2.test(replayWord))){
-            layer.tips("密码只能是6-18位的数字或者字母", '.replayWord', {
-                tips: [2, '#00a7ed'],
-                time: 4000
-            });
-            return false;
-        }
-        if(passWord!=replayWord){
-            layer.tips("两次输入密码不一致，重新输入", '.replayWord', {
-                tips: [2, '#00a7ed'],
-                time: 4000
-            });
-            return false;
-        }
+
         $.ajax({
-            url:"{{asset('updatePwd')}}",
-            data:{"passWord":passWord,"userId":userId},
+            url:"{{asset('inspectPwd')}}",
+            data:{"oldPassWord":oldPassWord,"userId":userId},
             dateType:"json",
             "type":"POST",
             success:function(res){
                 if(res['code']=="success"){
-                    var date = new Date();
-                    date.setTime(date.getTime() + (120 * 60 * 1000));
-                    $.cookie("userId",'',{expires:date,path:'/',domain:'sw2025.com'});
-                    $.cookie("name",'',{expires:date,path:'/',domain:'sw2025.com'});
-                    layer.msg("密码修改成功")
+                    if(!(reg2.test(passWord))){
+                        layer.tips("密码只能是6-18位的数字或者字母", '.passWord', {
+                            tips: [2, '#00a7ed'],
+                            time: 4000
+                        });
+                        return false;
+                    }
+                    if(!(reg2.test(replayWord))){
+                        layer.tips("密码只能是6-18位的数字或者字母", '.replayWord', {
+                            tips: [2, '#00a7ed'],
+                            time: 4000
+                        });
+                        return false;
+                    }
+                    if(passWord!=replayWord){
+                        layer.tips("两次输入密码不一致，重新输入", '.replayWord', {
+                            tips: [2, '#00a7ed'],
+                            time: 4000
+                        });
+                        return false;
+                    }
+                    $.ajax({
+                        url:"{{asset('updatePwd')}}",
+                        data:{"passWord":passWord,"userId":userId},
+                        dateType:"json",
+                        "type":"POST",
+                        success:function(res){
+                            var date = new Date();
+                            date.setTime(date.getTime() + (120 * 60 * 1000));
+                            if(res['code']=="success"){
+                                $.cookie("userId",'',{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("name",'',{expires:date,path:'/',domain:'sw2025.com'});
+                                layer.msg("密码修改成功")
+                            }else{
+                                layer.msg("密码修改失败")
+                            }
+                        }
+                    })
                 }else{
-                    layer.msg("密码修改失败")
+                    layer.tips("原密码不正确", '.oldPassWord', {
+                        tips: [2, '#00a7ed'],
+                        time: 4000
+                    });
+                    return false;
                 }
             }
         })
-
     })
 </script>
 @endsection

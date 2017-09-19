@@ -51,7 +51,7 @@
                             </div>
                             <div class="datas-sel zindex3">
                                 <span class="datas-sel-cap">擅长行业</span>
-                                <a href="javascript:;" class="datas-sel-def" id="industrys"></a>
+                                <a href="javascript:;" class="datas-sel-def" id="industrys">请选择</a>
                                 <ul class="datas-list">
                                     <li>IT|通信|电子|互联网</li>
                                     <li>金融业</li>
@@ -93,9 +93,8 @@
                             </div>
                             <div class="datas-sel zindex1">
                                 <span class="datas-sel-cap">地区</span><a href="javascript:;" id="address"
-                                                                        class="datas-sel-def">全国</a>
+                                                                        class="datas-sel-def">北京</a>
                                 <ul class="datas-list zone-list">
-                                    <li>全国</li>
                                     <li>北京</li>
                                     <li>上海</li>
                                     <li>天津</li>
@@ -268,6 +267,13 @@
             var photo1 = $('#photo1').attr('index');
             var photo2 = $('#photo2').attr('index');
             var brief = $('#brief').val();
+            if(brief.length>30 && brief.length<500){
+            }else{
+                $('.submit-audit').attr('disabled', false);
+                $(this).html('提交认证');
+                layer.msg('专家简介字数不符',{'icon':5});
+                return false;
+            }
             console.log(name == '' || photo1 == '' || industry == '');
             if (name == '' || photo1 == '' || industry == '' || industrys == '' || address == '' || brief == '' || photo1 == '' || photo2 == '') {
                 layer.msg('请把信息填写完整');

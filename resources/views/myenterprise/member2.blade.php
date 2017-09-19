@@ -2,7 +2,7 @@
 @section("content")
         <div class="main">
             <!-- 会员认证2 / start -->
-            <h3 class="main-top">会员认证</h3>
+            <h3 class="main-top">企业认证</h3>
             <div class="ucenter-con">
                 <div class="main-right">
                     <div class="card-step">

@@ -51,6 +51,7 @@ class ExpertController extends Controller
                 $datas = $datas->where('fee.fee','<>','null');
             } elseif(!empty($consult) && $consult == '免费'){
                 $consultwhere = ['fee.state' => 0];
+                $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
             } else {
                 $consultwhere = [];
             }

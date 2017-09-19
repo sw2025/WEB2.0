@@ -74,6 +74,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('changeNewPhone', 'CenterController@changeNewPhone');
 //更换密码处理
     Route::post('updatePwd', 'CenterController@updatePwd');
+//检查原密码
+    Route::post('inspectPwd', 'CenterController@inspectPwd');
 //公共上传图片
     Route::any('upload', 'PublicController@upload');
 //办事上传资料

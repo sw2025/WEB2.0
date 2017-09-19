@@ -41,6 +41,18 @@ class CenterController extends Controller
     public  function changePwd(){
         return view("ucenter.changePwd");
     }
+    /**检查原密码
+     * @return mixed
+     */
+    public function inspectPwd(Request $request){
+        $res=array();
+        $userId=$_POST['userId'];
+        $passWord=$_POST['passWord'];
+        $result=DB::table("t_u_user")
+            ->where("userid",$userId)
+            ->first();
+    }
+
 
     /**修改密码处理
      * @param Request $request
@@ -200,10 +212,11 @@ class CenterController extends Controller
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("needtype"=>$role):array();
             $supplywhere = !empty($supply)?array("need.domain1"=>$supply[0],'need.domain2' => $supply[1]):array();
-            $addresswhere = !empty($address)?array("ent.address"=>$address):array();
 
-            $obj = $datas->where($rolewhere)->where($supplywhere)->where($addresswhere);
-
+            $obj = $datas->where($rolewhere)->where($supplywhere);
+            if(!empty($address)){
+                $obj = $obj->whereRaw('ext.address ="'.$address.'" or ent.address = "'.$address.'"');
+            }
             if(!empty($action)){
                 switch($action){
                     case 'collect':

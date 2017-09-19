@@ -25,36 +25,54 @@
 
 <!-- 公共footer / end -->
 <script type="text/javascript">
-    $(function(){
-        // 获取验证码
-        var wait=60;
-        function time(o) {
-            if (wait == 0) {
-                o.removeAttribute("disabled");
-                o.value="获得验证码";
-                wait = 60;
-            } else {
-                o.setAttribute("disabled", true);
-                o.value= wait + "秒";
-                wait--;
-                setTimeout(function() {
-                            time(o)
-                        },
-                        1000)
-            }
+
+    // 获取验证码
+    var wait=60;
+    function time(o) {
+        if (wait == 0) {
+            o.removeAttribute("disabled");
+            o.value="获得验证码";
+            wait = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.value= wait + "秒";
+            wait--;
+            setTimeout(function() {
+                    time(o)
+                },
+                1000)
         }
+    }
+
+    $(function(){
         document.getElementById("getCode").onclick=function(){
-            var passWord=$("#passWord").val();
+            var oldPassWord=$("#passWord").val();
             var userId=$.cookie("userId");
-            if(!passWord){
+            if(!oldPassWord){
                 layer.tips('密码不能为空!', '.change-tel-pwd', {
                     tips: [2, '#00a7ed'],
                     time: 4000
                 });
                 return false;
             }
-            time(this);
-            verifyCode(userId);
+
+            $.ajax({
+                url:"{{asset('inspectPwd')}}",
+                data:{"userId":userId,"oldPassWord":oldPassWord},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success") {
+                        verifyCode(userId);
+                    }else{
+                        layer.tips('原密码不正确', '.change-tel-pwd', {
+                            tips: [2, '#00a7ed'],
+                            time: 4000
+                        });
+                        return false;
+                    }
+                }
+            })
         }
     })
     var verifyCode=function(userId){
@@ -64,7 +82,9 @@
             dateType:"json",
             type:"POST",
             success:function(res){
-                if(res['code']=="code"){
+                if(res['code']=="code") {
+                    time(this);
+                }else{
                     layer.tips(res['msg'], '.change-tel-get', {
                         tips: [2, '#00a7ed'],
                         time: 4000
