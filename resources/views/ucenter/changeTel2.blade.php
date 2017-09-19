@@ -46,7 +46,7 @@
             var reg1 = /^1[3578][0-9]{9}$/;//手机号
             var userId=$.cookie("userId");
             if(!(reg1.test(phone))){
-                layer.tips('手机号不能为空或输入错误', '.change-tel-tel', {
+                layer.tips('手机号不能为空或输入错误', '.', {
                     tips: [2, '#00a7ed'],
                     time: 4000
                 });
@@ -58,14 +58,15 @@
 
     })
     var verifyPhone=function(userId){
+        var newPhone=$("#phone").val();
         $.ajax({
             url:"{{asset('getcodes')}}",
-            data:{"userId":userId,"action":"change2"},
+            data:{"userId":userId,"action":"change2","newPhone":newPhone},
             dateType:"json",
             type:"POST",
             success:function(res){
-                if(res['code']=="code"){
-                    layer.tips(res['msg'], '.change-tel-get', {
+                if(res['code']=="phone"){
+                    layer.tips(res['msg'], '.change-tel-tel', {
                         tips: [2, '#00a7ed'],
                         time: 4000
                     });
