@@ -41,6 +41,18 @@ class CenterController extends Controller
     public  function changePwd(){
         return view("ucenter.changePwd");
     }
+    /**检查原密码
+     * @return mixed
+     */
+    public function inspectPwd(Request $request){
+        $res=array();
+        $userId=$_POST['userId'];
+        $passWord=$_POST['passWord'];
+        $result=DB::table("t_u_user")
+            ->where("userid",$userId)
+            ->first();
+    }
+
 
     /**修改密码处理
      * @param Request $request
