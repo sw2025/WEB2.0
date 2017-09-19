@@ -1246,6 +1246,17 @@ class MyEnterpriseController extends Controller
      */
     public  function videoSelect(Request $request){
         $cate = DB::table('t_common_domaintype')->get();
+        $workIngExperts=array();
+        $workExperts=DB::table('view_expertresponsetime')
+                        ->select('expertid')
+                        ->whereRaw('(starttime between  "'.$_GET['start'].'" and "'.$_GET['end'].'" or endtime between "'.$_GET['start'] .'" and "'.$_GET['end'] .'" or starttime < "'.$_GET['start'].'" and endtime > "'.$_GET['end'].'") and state in (2,3)')
+                        ->distinct()
+                        ->get();
+        foreach ($workExperts as $workExpert){
+            if(!in_array($workExpert->expertid,$workIngExperts)){
+                $workIngExperts[]=$workExpert->expertid;
+            }
+        }
         $datas = DB::table('t_u_expert as ext')
             ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
             ->leftJoin('t_u_expertfee as fee','ext.expertid' ,'=' ,'fee.expertid')
@@ -1254,6 +1265,7 @@ class MyEnterpriseController extends Controller
             ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
             ->where('status.configid',2)
             ->where("ext.userid","<>",session('userId'))
+            ->whereNotIn("ext.expertid",$workIngExperts)
             ->select('ext.*','user.phone','fee.fee','fee.state','coll.count as collcount','mess.count as messcount');
         //获得用户的收藏
         $collectids = [];
@@ -1399,7 +1411,9 @@ class MyEnterpriseController extends Controller
         }
         return $result;
     }
-
+    /*
+     * 视频完成
+     */
     public  function finishConsult(){
         $consutId=$_POST['consultId'];
         $type=$_POST['type'];
@@ -1408,8 +1422,8 @@ class MyEnterpriseController extends Controller
             $state=4;
             $remark='';
         }else{
-            $configId=7;
-            $state=4;
+            $configId=8;
+            $state=5;
             $remark='视频异常终止';
         }
         $res=array();

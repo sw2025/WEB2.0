@@ -41,7 +41,7 @@ class Authenticate
                 return redirect()->guest('auth/login');
             }
         }*/
-
+       
         if(!session('userId')){
             return redirect('login');
         }

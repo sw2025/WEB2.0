@@ -256,11 +256,11 @@
             <div class="payoff-way">
                     <span class="pay-opt focus">
                         <input class="rad-inp" type="radio" id="openway1" name="openway">
-                        <div class="opt-label"><span></span><img class="way-img" src="img/lweixin.png"><em class="way-cap">微信支付</em></div>
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lweixin.png')}}"><em class="way-cap">微信支付</em></div>
                     </span>
                     <span class="pay-opt">
                         <input class="rad-inp" type="radio" id="openway2" name="openway">
-                        <div class="opt-label"><span></span><img class="way-img" src="img/lzhifubao.png"><em class="way-cap">支付宝支付</em></div>
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lzhifubao.png')}}"><em class="way-cap">支付宝支付</em></div>
                     </span>
             </div>
             <button type="button" class="pop-btn">开 通</button>
@@ -290,7 +290,7 @@
             var string=str.substring(num1+1);
         }
         $("#"+string).addClass('active');
-        if($.cookie('name')){
+        if($.cookie('userId')){
             var name=$.cookie("name");
             $(".before-login").hide();
             $(".after-login").show();

@@ -159,7 +159,9 @@
                             <span style="position: absolute;bottom: 3px;left: 10px;"><i class="iconfont icon-shijian2"></i>{{$data->starttime}}&nbsp;--</span>
                             <span style="position: absolute;bottom: 3px;right: 10px;"><i class="iconfont icon-shijian2"></i>{{$data->endtime}}</span>
                             <p class="response" id="{{$data->btnicon}}" style=" position: absolute;top: 15px;right: 15px;">{{$data->configname}}</p>
-                     
+                            @if($data->configid==7)
+                                <span class="chuo"></span>
+                            @endif
                         </a>
                     </li>
                         @endforeach

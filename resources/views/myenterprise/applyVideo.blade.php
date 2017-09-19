@@ -21,7 +21,7 @@
                                 </span>
                     </div>
                     <div class="datas-sel mt20" style="margin-top: 20px;z-index: 5">
-                        <span class="datas-sel-cap padd12" >擅长行业</span>
+                        <span class="datas-sel-cap padd12" >问题行业</span>
                         <a href="javascript:;" class="datas-sel-def" id="industrys">请选择</a>
                         <ul class="datas-list">
                             <li>IT|通信|电子|互联网</li>

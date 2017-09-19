@@ -163,7 +163,9 @@ $(function(){
         ordertime=(ordertime)?ordertime:null;
         ordercollect=(ordercollect)?ordercollect:null;
         ordermessage=(ordermessage)?ordermessage:null;
-        window.location.href="?searchname="+searchName+"&role="+role+"&supply="+supply+"&consult="+consult+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
+        var start=($.cookie('videodateStart'))?$.cookie('videodateStart'):null;
+        var end=($.cookie('videodateEnd'))?$.cookie('videodateEnd'):null;
+        window.location.href="?searchname="+searchName+"&role="+role+"&supply="+supply+"&consult="+consult+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage+"&start="+start+"&end="+end;
     }
 })
 

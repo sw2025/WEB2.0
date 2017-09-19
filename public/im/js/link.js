@@ -9,7 +9,7 @@ var SDKBridge = function (ctr, data) {
   var userUID = $.cookie('uid')
   that = this;
   if (!sdktoken) {
-    window.location.href = './index.html';
+    window.location.href = '/';
     return;
   }
   //缓存需要获取的用户信息账号
@@ -102,7 +102,7 @@ var SDKBridge = function (ctr, data) {
           alert(error.message);
           delCookie('uid');
           delCookie('sdktoken');
-          window.location.href = './index.html';
+          window.location.href = '/';
           break;
         // 被踢, 请提示错误后跳转到登录页面
         case 'kicked':
@@ -118,7 +118,7 @@ var SDKBridge = function (ctr, data) {
           alert("你的帐号于" + dateFormat(+new Date(), "HH:mm") + "被" + (map[str] || "其他端") + "踢出下线，请确定帐号信息安全!");
           delCookie('uid');
           delCookie('sdktoken');
-          window.location.href = './index.html';
+          window.location.href = '/';
           break;
         default:
           break;

@@ -151,7 +151,7 @@
             var string=str.substring(num1+1);
         }
         $("#"+string).addClass('current');
-        if($.cookie('name')){
+        if($.cookie('userId')){
             var name=$.cookie("name");
             $(".before-login").hide();
             $(".after-login").show();
