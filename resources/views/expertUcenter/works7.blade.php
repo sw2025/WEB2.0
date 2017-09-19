@@ -19,7 +19,7 @@
                     <div class="expert-certy-state">
                         <i class="iconfont icon-chenggong"></i>
                                 <span class="expert-certy-blue">
-                                    <em>@if(!empty($selExperts[0]->comment)) 已完成 @else 请等待企业给您的完整评价 @endif</em>COMPLETE
+                                    <em>@if(!empty($selExperts[0]->comment)) 该办事已完成 @else 请等待企业给您的完整评价 @endif</em>COMPLETE
                                 </span>
                     </div>
 
@@ -34,11 +34,11 @@
                             <br />
                             <br />
                             <br />
-                                @if(!empty($selExpert->comment))
+                               {{-- @if(!empty($selExpert->comment))
                                     <div class="rate-box" style="display: block">
                                         企业给您的评价 : <textarea class="rate-inp" style="width:270px;height: 80px;line-height: 20px">{{$selExpert->comment}}</textarea>
                                     </div>
-                                @endif
+                                @endif--}}
 
 
                          </div>

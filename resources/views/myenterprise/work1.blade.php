@@ -330,6 +330,13 @@
             var describe=$(".uct-works-txt").val();
             var isAppoint=($.cookie("isAppoint"))?$.cookie("isAppoint"):1;
             var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
+            if(describe.length>30 && describe.length<500){
+            }else{
+                $(this).attr('disabled',false);
+                $(this).html('提交认证');
+                layer.msg('企业简介字数不符',{'icon':5});
+                return false;
+            }
             if($("#random").hasClass('active')){
                 var state=1;
             }else{

@@ -1,6 +1,8 @@
 @extends("layouts.ucenter")
 @section("content")
 <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
+@if($stmpstate->step == 1 && $isfirstevent)
+        layer.alert('你是新手');
                 <!-- 企业办事服务 / start -->
                 <div class="ucenter-con">
                     <div class="main-right v-step-box">

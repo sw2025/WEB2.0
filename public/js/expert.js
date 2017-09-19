@@ -171,7 +171,6 @@ $(function(){
 
 
 function fnc_collect (supplyid,action,obj) {
-
     $.post('/dealextcollect',{'supplyid':supplyid,'action':action},function (data) {
         if(data == 'nologin'){
             layer.confirm('您还未登陆是否去登录？', {
@@ -190,7 +189,7 @@ function fnc_collect (supplyid,action,obj) {
             });
         } else if(data == 'success') {
             if(action == 'collect'){
-                var number = $(obj).text() == ' ' ? 0:$(obj).text();
+                var number = $(obj).text().trim() == '' ? 0:$(obj).text();
                 $(obj).children('span').text(parseInt(number)+1);
                 if($(obj).hasClass('collect-state')){
                     $(obj).html('已收藏');
@@ -199,6 +198,7 @@ function fnc_collect (supplyid,action,obj) {
                     $(obj).attr("title","已收藏");
                     $(obj).addClass('red');
                 }
+                $(obj).attr('disabled',false);
                 layer.msg('收藏成功');
             } else {
                 var number = $(obj).text() == 1 ? ' ' : parseInt($(obj).text())-1;
@@ -210,12 +210,14 @@ function fnc_collect (supplyid,action,obj) {
                     $(obj).html('收藏');
                     $(obj).removeClass('done');
                 }
-
+                $(obj).attr('disabled',false);
                 layer.msg('取消收藏成功');
             }
         } else {
             $(obj).removeClass('red');
-            layer.msg('处理失败');
+            layer.msg('处理失败,请正确操作',{'time':2000},function () {
+                window.location = window.location.href;
+            });
         }
     });
 }

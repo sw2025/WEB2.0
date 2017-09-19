@@ -12,6 +12,7 @@
                             <img src="{{env('ImagePath').$datas->showimage}}" class="myexpert-img" />
                             <div class="myexpert-rt">
                                 <span class="myexp-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
+                                <span class="myexp-best">擅长行业：<em>{{$datas->industry}}</em></span>
                                 <span class="myexp-best">擅长领域：<em>{{$datas->domain1}}</em></span>
                                 <div class="myexpert-lab">
                                     @foreach(explode(',',$datas->domain2) as $do2)
