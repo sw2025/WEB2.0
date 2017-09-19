@@ -115,7 +115,7 @@
         }else{
             $("#index").addClass("active");
         }
-        if($.cookie('name')){
+        if($.cookie('userId')){
             var name=$.cookie("name");
             $(".before-login").hide();
             $(".after-login").show();

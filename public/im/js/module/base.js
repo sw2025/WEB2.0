@@ -333,7 +333,7 @@ YX.fn.logoutEvt = function () {
 YX.fn.doLogout = function () {
     delCookie('uid')
     delCookie('sdktoken')
-    window.location.href = './index.html'
+    window.location.href = '/'
 }
 
 YX.fn.showLogoutDialog = function () {

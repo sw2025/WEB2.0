@@ -25,7 +25,7 @@
         <ul class="clearfix">
             <li class="item col-md-3"><a href="javascript:;">
                     <div class="item-con dif-hexagon1">
-                        <span class="hexagon"><i class="iconfont icon-zhuanjia"></i></span>
+                        <span class="hexagon"></span>
                         <h2 class="number">01</h2>
                         <span class="item-tit">定战略</span>
                         {{--<p class="item-desc">解决企业遇到各类问题</p>--}}
@@ -36,7 +36,7 @@
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
                     <div class="item-con dif-hexagon2">
-                        <span class="hexagon"><i class="iconfont icon-fangbianvideo"></i></span>
+                        <span class="hexagon"></span>
                         <h2 class="number">02</h2>
                         <span class="item-tit">找资金</span>
                     </div>
@@ -46,7 +46,7 @@
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
                     <div class="item-con dif-hexagon3">
-                        <span class="hexagon"><i class="iconfont icon-ziyuanku1"></i></span>
+                        <span class="hexagon"></span>
                         <h2 class="number">03</h2>
                         <span class="item-tit">找技术</span>
                     </div>
@@ -56,7 +56,7 @@
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
                     <div class="item-con dif-hexagon4">
-                        <span class="hexagon"><i class="iconfont icon-need"></i></span>
+                        <span class="hexagon"></span>
                         <h2 class="number">04</h2>
                         <span class="item-tit">找市场</span>
                     </div>

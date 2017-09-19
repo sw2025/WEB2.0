@@ -255,44 +255,7 @@
                                     //按钮【按钮三】的回调
                                 }
                             });
-                            /*layer.confirm(data.msg, {
-                                btn: ['自选专家','继续操作','重新办事']
-                            }, function(index,layero){
-                                if($.cookie('reselect')){
-                                    var selected=$.cookie('reselect').split(",");
-                                    if(selected.length==5){
-                                        $(".uct-works-expava").show();
-                                    }else{
-                                        var domains=$(".publ-need-sel-def").text().trim();
-                                        var industry=$("#industrys").text().trim();
-                                        var describes=$(".uct-works-txt").val();
-                                        $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
-                                        window.location.href="{{asset('uct_works/reselect')}}"
-                                    }
-                                }else{
-                                    var domains=$(".publ-need-sel-def").text().trim();
-                                    var industry=$("#industrys").text().trim();
-                                    var describes=$(".uct-works-txt").val();
-                                    $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
-                                    $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});
-                                    $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
-                                    window.location.href="{{asset('uct_works/reselect')}}";
-                                }
 
-                            },function(index){
-                                $(".submit-audit").attr('disabled',false);
-                                $(".submit-audit").css('background-color','#ed0021');
-                                layer.close(index);
-
-                            },function(index){
-                                $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
-                                $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
-                                $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
-                                $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
-                                window.location.href="{{url('uct_works/applyWork')}}";
-                            });*/
                         } else if (data.type == 3){
                             layer.confirm(data.msg, {
                                 btn: ['自选专家','取消该办事'] //按钮
@@ -311,7 +274,6 @@
                                         window.location.href="{{asset('uct_works/reselect')}}"
                                         return false;
                                     }
-
                                 }else{
                                     var domains=$(".publ-need-sel-def").text().trim();
                                     var industry=$("#industrys").text().trim();

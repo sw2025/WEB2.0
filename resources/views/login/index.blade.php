@@ -28,11 +28,11 @@
         }
     }
     $(".login-btn").on("click",function(){
-      var that=this;
-      var reg1 = /^1[3578][0-9]{9}$/;//手机号
-      var reg2 = /^[a-zA-Z0-9]{6,18}$/;//密码
-      var phone=$(".user-tel-inp").val();
-      var passWord=$(".user-pwd-inp").val();
+        var that=this;
+        var reg1 = /^1[3578][0-9]{9}$/;//手机号
+        var reg2 = /^[a-zA-Z0-9]{6,18}$/;//密码
+        var phone=$(".user-tel-inp").val();
+        var passWord=$(".user-pwd-inp").val();
       if(!(reg1.test(phone))){
           layer.tips('手机号不能为空或输入错误', '.user-tel', {
               tips: [2, '#00a7ed'],
