@@ -7,7 +7,7 @@
     <script src="{{asset('./FileUpload/js/jquery.fileupload-validate.js')}}"></script>
 <div class="main">
             <!-- 会员认证1 / start -->
-            <h3 class="main-top">会员认证</h3>
+            <h3 class="main-top">企业认证</h3>
             <div class="ucenter-con">
                 <div class="main-right">
                     <div class="card-step">
@@ -63,9 +63,8 @@
                                         </ul>
                                     </div>
                                     <div class="datas-sel zindex2">
-                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def" id="address">{{$data->address or '全国'}}</a>
+                                        <span class="datas-sel-cap">地区</span><a href="javascript:;" class="datas-sel-def" id="address">{{$data->address or '北京'}}</a>
                                         <ul class="datas-list zone-list">
-                                            <li>全国</li>
                                             <li>北京</li>
                                             <li>上海</li>
                                             <li>天津</li>
@@ -128,7 +127,7 @@
                             </div>
                             <div class="datas-rt">
 
-                                <textarea onkeyup="checkLength(this);" placeholder="请输入企业简介（30-500字）" cols="30" rows="10" id="content">@if(!empty($data)){{$data->brief}}@endif</textarea>
+                                <textarea onkeyup="checkLength(this);"  placeholder="请输入企业简介（30-500字）" cols="30" rows="10" id="content">@if(!empty($data)){{$data->brief}}@endif</textarea>
 
                             </div>
                         </div>
@@ -184,6 +183,13 @@
             var img1 = $('.fileupload1').attr('index');
             var img2 = $('.fileupload2').attr('index');
             var id = '{{$data->enterpriseid or null}}';
+            if(content.length>30 && content.length<500){
+            }else{
+                $('#submit').attr('disabled',false);
+                $(this).html('提交认证');
+                layer.msg('企业简介字数不符',{'icon':5});
+                return false;
+            }
             if(entname == '' || size == '不限' ||  industry == '不限' || address == '全国' || content == '' || img1 == '' || img2 == ''){
                 layer.msg('请填写完整的资料',{'icon':0});
                 $('#submit').attr('disabled',false);

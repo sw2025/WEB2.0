@@ -21,6 +21,7 @@
                         <span class="exp-details-time">入驻时间：<em>{{$datas->created_at}}</em></span>
                         <span class="exp-details-categary">分<b class="wem2"></b>类：<em>{{$datas->category}}</em></span>
                         <span class="exp-details-video">视频咨询：<em>@if($datas->state && $datas->fee)￥{{$datas->fee}}@else 免费 @endif</em></span>
+                        <span class="exp-details-best">擅长行业：<em>{{$datas->industry}}</em></span>
                         <span class="exp-details-best">擅长领域：<em>{{$datas->domain1}}</em></span>
                         <div class="exp-details-lab">
                             @foreach(explode(',',$datas->domain2) as $do2)
@@ -130,6 +131,7 @@
                             </span>
                         <div class="exp-rec-right">
                             <span class="exp-rec-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}@else 免费 @endif</em></span>
+                            <span class="exp-rec-best"><i class="iconfont icon-shanchang"></i>擅长行业：<em>{{$v->industry}}</em></span>
                             <span class="exp-rec-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$v->domain1}}</em></span>
                             <div class="exp-rec-lab">
                                 @foreach(explode(',',$v->domain2) as $v2)
