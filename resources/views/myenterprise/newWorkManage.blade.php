@@ -165,7 +165,7 @@
                     </div>
                     <span style="position: absolute;bottom: 3px;right: 15px;"><i class="iconfont icon-shijian2"></i>{{$v->created_at}}</span>
                     <p class="response" id="{{$v->btnicon}}" style=" position: absolute;top: 15px;right: 15px;">{{$v->configname}}</p>
-                    @if($v->configid==7)
+                    @if($v->configid==7 || $v->configid==8)
                         <span class="chuo"></span>
                     @endif
 

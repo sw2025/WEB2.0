@@ -1145,7 +1145,6 @@ class MyEnterpriseController extends Controller
             ->where("t_c_consult.consultid",$consultId)
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
             ->get();
-
         $counts=DB::table("t_c_consultresponse")->where("consultid",$consultId)->where('state',1)->count();
         $counts2=DB::table("t_c_consultresponse")->where("consultid",$consultId)->where('state',0)->count();
         foreach ($datas as $data){
