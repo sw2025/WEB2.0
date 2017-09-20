@@ -47,10 +47,19 @@ class CenterController extends Controller
     public function inspectPwd(Request $request){
         $res=array();
         $userId=$_POST['userId'];
-        $passWord=$_POST['passWord'];
+        $passWord=$_POST['oldPassWord'];
+        //dd($passWord);
         $result=DB::table("t_u_user")
             ->where("userid",$userId)
+            ->where("passWord",md5($passWord))
             ->first();
+        if($result){
+            $res['code']="success";
+            return $res;
+        }else{
+            $res['code']="error";
+            return $res;
+        }
     }
 
 
@@ -552,8 +561,12 @@ class CenterController extends Controller
     public function  getcodes(){
         $res=array();
         $userId=$_POST['userId'];
-        $phone = DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");
         $action =$_POST['action'];
+        if($action=='change2'){
+            $phone=$_POST['newPhone'];
+        }else{
+            $phone = DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");
+        }
         switch ($action){
             case "registr":
                 $user = User::where('phone', $phone)->first();
@@ -593,6 +606,7 @@ class CenterController extends Controller
 
         // 发送验证码短信
         $res = $this->_sendSms($phone, $randNum, $action);
+
         return $res;
     }
 
@@ -631,14 +645,14 @@ class CenterController extends Controller
         $code=$_POST['code'];
         $str=array();
         $phone=DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");
-        if(Cache::has($phone)){
-            $smsCode=Cache::get($phone);
+        if(Cache::has($newPhone)){
+            $smsCode=Cache::get($newPhone);
             if($smsCode!=$code){
                 $str['code']="code";
                 $str['msg']="验证码输入错误!";
                 return $str;
             }else{
-               $str=$this->verifyPhones($newPhone,$userId,$request);
+                $str=$this->verifyPhones($newPhone,$userId,$request);
                 return $str;
             }
         }else{
