@@ -421,16 +421,15 @@ class MyExpertController extends Controller
             $data = $request->input();
             //对token进行验证
             if(session('userId') == Crypt::decrypt($data['token'])){
+                $startTime=DB::table('t_c_consult')->where('consultid',$data['consultid'])->pluck('starttime');
+                $endTime=DB::table('t_c_consult')->where('consultid',$data['consultid'])->pluck('endtime');
                 //获取到该用户对应的专家的id
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
-
-                $consultid = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'state' => 2])->orderBy('id', 'desc')->first();
-                if(!empty($consultid->consultid)){
-                    $endtime=DB::table('t_c_consult')->where('consultid',$consultid->consultid)->first()->endtime;
-                    $starttime=DB::table('t_c_consult')->where('consultid',$data['consultid'])->first()->starttime;
-                }
-
-                if(empty($consultid->consultid) || strtotime($starttime) > strtotime($endtime)){
+                $workIngConsults=DB::table('view_expertresponsetime')
+                    ->where("view_expertresponsetime.expertid",$expertid)
+                    ->whereRaw('(starttime between  "'.$startTime.'" and "'.$endTime.'" or endtime between "'.$startTime .'" and "'.$endTime .'" or starttime < "'.$startTime.'" and endtime > "'.$endTime.'") and state in (2,3)')
+                    ->count();
+                if(!$workIngConsults){
                     DB::beginTransaction();
                     try{
                         //查询是否存在响应的情况
