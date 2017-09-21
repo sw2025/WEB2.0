@@ -195,7 +195,7 @@
 /*审核*/
 .datas-audit,.datas-member-audit{padding-bottom: 50px;}
 .datas-audit .datas-sel,.datas-member-audit .datas-sel,.datas-member-audit .datas-rt textarea{background:#f8f8f8;}
-.datas-audit .datas-rt textarea{height:400px;background:#f8f8f8;}
+.datas-audit .datas-rt textarea{height:350px;background:#f8f8f8;}
 .datas-audit .datas-lt{vertical-align: middle;}
 .success-state i,.success-state em{color:#ed0021;}
 /***********专家认证 end***********/
@@ -532,7 +532,7 @@
 #facebox{background:#fff;}
 .chat-room-me-desc img,.chat-room-other-desc img{display: inline-block;}
 
-.htxt1 textarea{height:505px;}
+.htxt1 textarea{height:393px;}
 .new-txt{display: block;margin:20px auto 0;}
 .datas-member-audit{width: 662px;margin: 0 auto;overflow: hidden;}
 .datas-member-audit .datas-lt{display: block;float: left;}

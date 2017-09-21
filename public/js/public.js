@@ -46,6 +46,10 @@ $(function(){
         event.stopPropagation();
         $(this).hide();
         $('.search-sear').show();
+        var liHtml = '搜专家';
+        $('.select-showbox span').html(liHtml);
+        $('.select-option').hide();
+        $('.search-text').attr('placeholder', liHtml);
     });
     // 搜索框下拉展示
     $('.select-showbox').on('click', function(event) {

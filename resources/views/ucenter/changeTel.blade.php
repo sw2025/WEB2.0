@@ -10,13 +10,13 @@
                         <p class="change-tel-pwd">
                             <label><i class="iconfont icon-suo"></i></label><input type="password" placeholder="请输入密码" class=""  id="passWord" />
                         </p>
-                        <p class="change-tel-test clearfix">
+                        {{--<p class="change-tel-test clearfix">
                                 <span class="change-tel-enter">
                                     <label><i class="iconfont icon-duanxinyanzhengma"></i></label>
                                     <input type="text" placeholder="请输入验证码" id="code" />
                                 </span>
                             <input type="button" class="change-tel-get" id="getCode" value="获得验证码" />
-                        </p>
+                        </p>--}}
                         <button type="button" class="basic-btn" id="basic-btn">下一步</button>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
 <!-- 公共footer / end -->
 <script type="text/javascript">
 
-    // 获取验证码
+  /*  // 获取验证码
     var wait=60;
     function time(o) {
         if (wait == 0) {
@@ -42,10 +42,9 @@
                 },
                 1000)
         }
-    }
-
+    }*/
     $(function(){
-        document.getElementById("getCode").onclick=function(){
+        document.getElementById("basic-btn").onclick=function(){
             var obj = this;
             var oldPassWord=$("#passWord").val();
             var userId=$.cookie("userId");
@@ -64,7 +63,7 @@
                 type:"POST",
                 success:function(res){
                     if(res['code']=="success") {
-                        verifyCode(userId,obj);
+                        window.location.href="{{asset('uct_basic/changeTel2')}}"
                     }else{
                         layer.tips('原密码不正确', '.change-tel-pwd', {
                             tips: [2, '#00a7ed'],
@@ -75,65 +74,6 @@
                 }
             })
         }
-    })
-    var verifyCode=function(userId,obj){
-        $.ajax({
-            url:"{{asset('getcodes')}}",
-            data:{"userId":userId,"action":"change1"},
-            dateType:"json",
-            type:"POST",
-            success:function(res){
-                if(res['code']=="success") {
-                    time(obj);
-                    layer.tips(res['msg'], '.change-tel-get', {
-                        tips: [2, '#00a7ed'],
-                        time: 4000
-                    });
-                }else{
-                    layer.tips(res['msg'], '.change-tel-get', {
-                        tips: [2, '#00a7ed'],
-                        time: 4000
-                    });
-                    return false;
-                }
-            }
-        })
-    }
-    $("#basic-btn").on("click",function(){
-        var code=$("#code").val();
-        var passWord=$("#passWord").val();
-        var userId=$.cookie("userId");
-        if(!passWord){
-            layer.tips('密码不能为空!', '.change-tel-pwd', {
-                tips: [2, '#00a7ed'],
-                time: 4000
-            });
-            return false;
-        }
-        if(!code){
-            layer.tips('验证码不能为空', '.change-tel-get', {
-                tips: [2, '#00a7ed'],
-                time: 4000
-            });
-            return false;
-        }
-        $.ajax({
-            url:"{{asset('returnCode')}}",
-            data:{"code":code,"userId":userId},
-            dateType:"json",
-            type:"POST",
-            success:function(res){
-                if(res['code']=="code"){
-                    layer.tips(res['msg'], '.change-tel-get', {
-                        tips: [2, '#00a7ed'],
-                        time: 4000
-                    });
-                    return false;
-                }else{
-                    window.location.href="{{asset('uct_basic/changeTel2')}}"
-                }
-            }
-        })
-    })
+    });
 </script>
 @endsection
