@@ -998,16 +998,20 @@ class PublicController extends Controller
                 $newstate = DB::table('t_e_eventprocess')->where('eventid',$data['eventid'])->orderBy('pid','desc')->first();
                 if(empty($state) && empty($eventinfo)){
                     return ['msg' => '非法操作(寻找不到该办事)','icon' => 2];
-                } elseif (empty($state) && !empty($eventinfo) && empty($data['state'])){
+                } /*elseif (empty($state) && !empty($eventinfo) && empty($data['state'])){
                     return ['msg' => 'nostate','icon' => 3];
                 } elseif (!empty($state) && !empty($eventinfo) && empty($data['state'])){
                     if ($state->state == 2){
                         return ['msg' => '对方确认了资料,是否查看','icon' => 1];
                     }
+                }*/
+                if(!empty($newstate)){
+                    if($newstate->state == 2 && $data['state'] !== $newstate->state && $newstate->epid == $data['epid']){
+                        return ['msg' => '对方确认了资料,是否查看','icon' => 1];
+                    }
+                    return ['msg' => 'nostate2','icon' => 3];
                 }
-                if($newstate->state == 2 && $data['state'] != $newstate->state && $newstate->epid != $data['epid']){
-                    return ['msg' => '对方确认了资料,是否查看','icon' => 1];
-                }
+
                 return ['msg' => 'nostate','icon' => 3];
             }
             return ['msg' => '请登录','icon' => 2];
@@ -1028,13 +1032,21 @@ class PublicController extends Controller
                 $newstate = DB::table('t_e_eventprocess')->where('eventid',$data['eventid'])->orderBy('pid','desc')->first();
                 if(empty($state) && empty($eventinfo)){
                     return ['msg' => '非法操作(寻找不到该办事)','icon' => 2];
-                } elseif (!empty($newstate) && !empty($eventinfo) && !isset($data['state'])){
+                }/* elseif (!empty($newstate) && !empty($eventinfo) && !isset($data['state'])){
                     if($newstate->state == 0 || $newstate->state == 1){
                         return ['msg' => '对方上传了新的文件,是否查看1','icon' => 1];
                     }
-                }
-                if(($newstate->state == 0 || $newstate->state == 1) && $data['state'] != $newstate->state && $newstate->epid != $data['epid']){
-                    return ['msg' => '对方上传了新的文件,是否查看2','icon' => 1];
+                }*/
+                if(!empty($newstate)){
+
+                    $state1 = trim($data['state']) !== '' ? intval($data['state']) : '';
+                    $state2 = intval($newstate->state);
+                    if(($newstate->state == 0 || $newstate->state == 1) && $state1 !== $state2 && $newstate->epid != $data['epid']){
+                        return ['msg' => '对方上传了新的文件,是否查看','icon' => 1];
+                    } elseif(($newstate->state == 0 || $newstate->state == 1) && $state1 !== $state2 && $newstate->epid == $data['epid']){
+                        return ['msg' => '对方修改上传了新的文件,是否查看','icon' => 1];
+                    }
+                    return ['msg' => 'noupload1','icon' => 3];
                 }
                 return ['msg' => 'noupload2','icon' => 3];
             }

@@ -88,39 +88,27 @@
                     $.cookie('isnewpeople','123');
                 });
             }
+
+
+        </script>
+        @endif
+
+        <script>
             var eventid = {{$eventId}};
             var epid = '{{$lastpid->epid or null}}';
             var state = '{{$configinfo[$lastpid->step-1]->state}}';
+            @if($lastpid->step != 4)
             @if($configinfo[$lastpid->step-1]->starttype && $info->userid == session('userId'))
 
-                geteventnewstate = function () {
-                    $.post('{{url('ifeventtrue')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
-                        if(data.icon == 3){}else if(data.icon == 2){
-                            layer.msg(data.msg,{'time':1000},function () {
-                                window.location = '/';
-                            });
-                        } else if(data.icon == 1){
-                            layer.alert(data.msg,function () {
-                                clearInterval(tinterval)//清除定时器
-                                window.location = window.location.href;
-                            });
-                        } else {
-                            console.log(data);
-                        }
-                    });
-                }
-                var tinterval=setInterval(geteventnewstate,1000)//fun1是你的函数
-            @else
-
-            geteventnewstate2 = function () {
-                $.post('{{url('ifeventupload')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
+                    geteventnewstate = function () {
+                $.post('{{url('ifeventtrue')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
                     if(data.icon == 3){}else if(data.icon == 2){
-                        layer.msg(data.msg,{'time':1000},function () {
+                        layer.msg(data.msg,{'time':2000},function () {
                             window.location = '/';
                         });
                     } else if(data.icon == 1){
+                        clearInterval(tinterval);
                         layer.alert(data.msg,function () {
-                            clearInterval(tinterval2)//清除定时器
                             window.location = window.location.href;
                         });
                     } else {
@@ -128,12 +116,30 @@
                     }
                 });
             }
-            var tinterval2=setInterval(geteventnewstate2,1000);
+            var tinterval=setInterval(geteventnewstate,2000);
+            @else
+
+                    geteventnewstate2 = function () {
+                $.post('{{url('ifeventupload')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
+                    if(data.icon == 3){}else if(data.icon == 2){
+                        layer.msg(data.msg,{'time':1000},function () {
+                            window.location = '/';
+                        });
+                    } else if(data.icon == 1){
+                        clearInterval(tinterval2);
+                        layer.alert(data.msg,function () {
+                            window.location = window.location.href;
+                        });
+                    } else {
+                        console.log(data);
+                    }
+                });
+            }
+            var tinterval2=setInterval(geteventnewstate2,2000);
 
             @endif
-
+            @endif
         </script>
-        @endif
     <!-- 企业办事服务 / start -->
     <div class="ucenter-con">
         <div class="main-right v-step-box">
@@ -560,7 +566,10 @@
                         if(data.icon == 2){
                             layer.msg(data.error,{'icon':data.icon});
                         } else {
-                            layer.msg(data.msg,{'icon':1});
+                            layer.msg(data.msg,{'icon':1},function ()　{
+                                window.location = window.location.href;
+                                return false;
+                            });
                             var str = '<a href="'+spanobj.children('.eventa2').attr('href')+'">'+spanobj.children('.eventa1').html()+'</a>' +
                                     '<a href="javascript:;" index="/deletedownload?path='+spanobj.children('.eventa2').attr('index')+'&&eid={{$eventId}}"  class="btnclass" >&nbsp;删除&nbsp;</a>';
                             if($('.lssc').hasClass('haveclass') &&  spanobj.children('.eventa1').html().trim() != ''){
