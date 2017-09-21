@@ -7,6 +7,17 @@
             border-radius: 5px;
             margin-left: 10px
         }
+
+        #template{
+            line-height:25px;
+            margin-top:3px;
+        }
+        #template p{
+            font-weight:bold;
+        }
+        #template span{
+            padding-left:20px;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
     <!-- 侧边栏公共部分/end -->
@@ -25,7 +36,7 @@
                         anim: 4,
                         closeBtn:2
                     });
-                    layer.tips('<font size=5>2(1).</font>上传完资料后可以在这里进行留言告诉专家资料上传完毕或者询问专家意见', '.datum-change', {
+                    layer.tips('<font size=5>2(1).</font>上传完资料后可以在这里进行留言告诉专家资料上传完毕或者告知自己的意见', '.datum-change', {
                         area: ['320px', '55px'],
                         tipsMore: true,
                         time:80000,
@@ -33,15 +44,15 @@
                         anim: 4,
                         closeBtn:2
                     });
-                    layer.tips('<font size=5>2(2).</font>一般来说第一步是由专家确认资料所以这边按钮没有显示出来，专家确认后就到了下一步办事', '.datum-change', {
+                    layer.tips('<font size=5>2(2).</font>专家在下载完用户提交的材料后,确认后点击该按钮确认资料进入下一步办事', '.datum-confirm', {
                         area: ['320px', '55px'],
                         tipsMore: true,
                         time:80000,
-                        tips: [4, '#666'] ,
+                        tips: [1, '#666'] ,
                         anim: 4,
                         closeBtn:2
                     });
-                    layer.tips('<font size=5>3.</font>专家和您的提交的意见反馈点击这个按钮就会在下方显示出来', '.datum-history', {
+                    layer.tips('<font size=5>3.</font>企业和您的提交的意见反馈点击这个按钮就会在下方显示出来', '.datum-history', {
                         area: ['320px', '55px'],
                         tipsMore: true,
                         time:80000,
@@ -49,7 +60,7 @@
                         anim: 4,
                         closeBtn:2
                     });
-                    layer.tips('<font size=5>4.</font>如果您有很多相关的向专家咨询的问题请点击这里可以与专家进行视频沟通，同时也可以实时的进行文字即时通讯', '.video-comu', {
+                    layer.tips('<font size=5>4.</font>如果您有很多相关的向企业咨询的资料请点击这里可以与企业进行视频沟通，同时也可以实时的进行文字即时通讯', '.video-comu', {
                         area: ['320px', '70px'],
                         tipsMore: true,
                         time:80000,
@@ -57,11 +68,11 @@
                         tips: [1, '#666'],
                         closeBtn:2
                     });
-                    layer.tips('<font size=5>5.</font>如果您中途对办事有特殊情况可以中止办事系统会根据您的操作步骤决定退款费用', '#stop', {
+                    layer.tips('<font size=5>5.</font>如果您有特殊情况无法完成办事在与企业沟通后点击这里退出办事', '#stop', {
                         tipsMore: true,
                         time:80000,
                         anim: 4,
-                        tips: [4, '#666'],
+                        tips: [2, '#666'],
                         closeBtn:2
                     });
                     layer.tips('<font size=5>6.</font>这里显示的是办事的进度情况鼠标移动到每个点上有简要介绍，点击相应的按钮会跳转到原来相对应的进度以便于查看.', '.vprog1', {
@@ -77,6 +88,49 @@
                     $.cookie('isnewpeople','123');
                 });
             }
+            var eventid = {{$eventId}};
+            var epid = '{{$lastpid->epid or null}}';
+            var state = '{{$configinfo[$lastpid->step-1]->state}}';
+            @if($configinfo[$lastpid->step-1]->starttype && $info->userid == session('userId'))
+
+                geteventnewstate = function () {
+                    $.post('{{url('ifeventtrue')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
+                        if(data.icon == 3){}else if(data.icon == 2){
+                            layer.msg(data.msg,{'time':1000},function () {
+                                window.location = '/';
+                            });
+                        } else if(data.icon == 1){
+                            layer.alert(data.msg,function () {
+                                clearInterval(tinterval)//清除定时器
+                                window.location = window.location.href;
+                            });
+                        } else {
+                            console.log(data);
+                        }
+                    });
+                }
+                var tinterval=setInterval(geteventnewstate,1000)//fun1是你的函数
+            @else
+
+            geteventnewstate2 = function () {
+                $.post('{{url('ifeventupload')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
+                    if(data.icon == 3){}else if(data.icon == 2){
+                        layer.msg(data.msg,{'time':1000},function () {
+                            window.location = '/';
+                        });
+                    } else if(data.icon == 1){
+                        layer.alert(data.msg,function () {
+                            clearInterval(tinterval2)//清除定时器
+                            window.location = window.location.href;
+                        });
+                    } else {
+                        console.log(data);
+                    }
+                });
+            }
+            var tinterval2=setInterval(geteventnewstate2,1000);
+
+            @endif
 
         </script>
         @endif
@@ -129,6 +183,8 @@
                             <div class="w-f-top">
                                 <h2 class="handle-affair-tit">{{$lastpid->step}}.{{$configinfo[$lastpid->step-1]->processname}}</h2>
                                 <p class="handle-affair-desc">{{$configinfo[$lastpid->step-1]->processdescription}}</p>
+                                <p style="margin-top: 10px;font-size: 16px;font-weight: bold;">提交材料包括：<p>
+                                    {!! $configinfo[$lastpid->step-1]->Template !!}
                                 <a href="javascript:;" class="datum-btn datum-history" index="{{$lastpid->epid or null}}" page="@if(!empty($lastpid->epid) && !empty($remark[$lastpid->epid])) {{$remark[$lastpid->epid][0]->lastpage()}} @endif"><i class="iconfont icon-yijianfankui"></i>查看历史意见<span class="history-counts">@if(!empty($lastpid->epid)){{$remark[$lastpid->epid][1] or 0}} @else 0 @endif</span></a>
                             </div>
                             <div class="upload-box">
@@ -167,8 +223,9 @@
                                 <div class="datum-manage">
                                     <a href="javascript:;" class="datum-btn datum-change" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}">修改意见</a>
                                     @if(!$configinfo[$lastpid->step-1]->starttype && $info->userid == session('userId'))
-                                        <a href="javascript:;" class="datum-btn datum-confirm" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}" pid="{{$configinfo[$lastpid->step-1]->ppid}}">确认资料</a>
+                                        <a href="javascript:;" class="datum-btn datum-confirm" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}" pid="{{$configinfo[$lastpid->step-1]->ppid}}">专家确认上传资料</a>
                                     @endif
+                                    <a href="javascript:;" class="datum-btn" id="stop" style="width: 60px;background: #f10;">终止合作</a>
                                 </div>
                                 <div class="v-manage-link-rate">
                                     @foreach($configinfo as $k => $v)
@@ -243,11 +300,11 @@
             </div>
             @if($lastpid->step == count($configinfo))
                 <div class="works-f-s">
-                    <button class="stop red-finish" id="finish" type="button">完成</button>
-                    <button class="stop" id="stop" type="button">终止合作</button>
+                    {{--<button class="stop red-finish" id="finish" type="button">完成该办事</button>--}}
+                    {{--<button class="stop" id="stop" type="button">终止合作</button>--}}
                 </div>
             @else
-                <button class="stop" id="stop" type="button">终止合作</button>
+               {{-- <button class="stop" id="stop" type="button">终止合作</button>--}}
             @endif
 
         </div>

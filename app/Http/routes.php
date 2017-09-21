@@ -273,6 +273,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::any('uct_standard', 'MyExpertController@standard');
     /***********************************视频路由*******************************************/
 });
+//定是请求是否有薪的办事状态
+Route::post('ifeventtrue','PublicController@getEventNewState');
+//定是请求是否有薪的资料上传
+Route::post('ifeventupload','PublicController@getEventNewUpload');
 //创建群组
 Route::get('creatGroup','PublicController@createGroups');
 //获取accid和token

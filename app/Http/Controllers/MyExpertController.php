@@ -189,6 +189,7 @@ class MyExpertController extends Controller
             $datas2 = $obj
                 ->where(['res.expertid' => $expertid])
                 ->whereIn('status.configid',[5,6,7,8])
+                ->where('res.state','<>',5)
                 ->orderBy('res.id','desc')
                 ->paginate(6);
             //调用eventclass中的方法进行对象的处理
@@ -250,6 +251,11 @@ class MyExpertController extends Controller
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
                 DB::beginTransaction();
                 try{
+                    //查询这个办事是否已经响应过了
+                    $verify3 = DB::table('view_eventstatus')->where(['eventid' => $data['eventid']])->where('configid','>','5')->first();
+                    if(!empty($verify3)){
+                        return ['msg' => '对不起该办事企业已经确定其他专家，请您刷新页面'];
+                    }
                     //查询是否存在响应的情况
                     $verify = DB::table('t_e_eventresponse')->where(['expertid' => $expertid,'eventid' => $data['eventid'],'state' => 2])->first();
                     if(!$verify){
@@ -322,16 +328,19 @@ class MyExpertController extends Controller
         $countobj4 = clone $datas;
         $count= $countobj4
            ->where(['res.expertid' => $expertid,'status.configid' => 4])
+            ->whereIn('res.state',[0,1])
            ->orderBy('res.id','desc')
            ->count();
 
         $datas = $datas
             ->where(['res.expertid' => $expertid,'status.configid' => 4])
+            ->whereIn('res.state',[0,1])
             ->orderBy('res.id','desc')
             ->paginate(6);
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
             ->whereIn('status.configid',[5,6,7,8])
+            ->where('res.state','<>',5)
             ->orderBy('res.id','desc')
             ->paginate(6);
         $datas = \ConsultClass::handelObj($datas);

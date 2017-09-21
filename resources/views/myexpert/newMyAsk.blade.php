@@ -167,7 +167,7 @@
                                 <p class="v-manage-link-desc">
                                     {{$v->brief}}
                                 </p>
-                                <span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>2017-01-01</span>
+                                <span class="v-manage-link-time2" style="position: absolute;font-size: 12px;bottom: 9px;right: 44px;"><i class="iconfont icon-shijian2" ></i>{{$v->consulttime}}</span>
                                 @if($v->configid == 7 || $v->configid == 8)
                                 <span class="chuo"></span>
                                     @endif
@@ -211,7 +211,7 @@
         }
 
         function senddatato (params){
-            var location = '{{url('/uct_mywask')}}?page='+params.page;
+            var location = '{{url('/uct_myask')}}?page='+params.page;
             $.get(location,{'action':params.action},function (data) {
                 if(params.action > 1){
                     params.action = 1;

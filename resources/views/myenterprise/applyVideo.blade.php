@@ -20,7 +20,7 @@
                                     <em>会议申请</em>IS APPLYING
                                 </span>
                     </div>
-                    <div class="datas-sel mt20" style="margin-top: 20px;z-index: 5">
+                    {{--<div class="datas-sel mt20" style="margin-top: 20px;z-index: 5">
                         <span class="datas-sel-cap padd12" >问题行业</span>
                         <a href="javascript:;" class="datas-sel-def" id="industrys">请选择</a>
                         <ul class="datas-list">
@@ -38,8 +38,8 @@
                             <li>政府|非盈利机构</li>
                             <li>农|林|牧|渔|其他</li>
                         </ul>
-                    </div>
-                    <div class="publish-need-sel zindex4" style="margin-top: 2px;">
+                    </div>--}}
+                    <div class="publish-need-sel zindex4" style="margin-top: 20px;">
                         <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
                         <ul class="publish-need-list" style="display: none;">
                             @foreach($cate as $v)
@@ -142,9 +142,9 @@
             if($.cookie("videodomain") != "请选择" && $.cookie("videodomain") != ""){
                 $(".publ-need-sel-def").text($.cookie("videodomain"));
             }
-            if($.cookie("videoindustry") != "请选择" && $.cookie("videoindustry") != ""){
+          /*  if($.cookie("videoindustry") != "请选择" && $.cookie("videoindustry") != ""){
                 $("#industrys").text($.cookie("videoindustry"));
-            }
+            }*/
             if($.cookie("videodescribe")){
                 $(".uct-works-txt").val($.cookie("videodescribe"));
             }
@@ -185,14 +185,14 @@
             });
 
             $('.uct-works-exp a').click(function(event) {
-                if($('#select1').text().trim() == '请选择' || $('#industrys').text().trim() == '请选择'){
-                    layer.msg('请选择问题分类和问题行业');
+                if($('#select1').text().trim() == '请选择'/* || $('#industrys').text().trim() == '请选择'*/){
+                    layer.msg('请选择问题分类');
                     return false;
                 }
                 $(this).addClass('active').siblings().removeClass('active');
                 var domain=$(".publ-need-sel-def").text();
                 var describe=$(".uct-works-txt").val();
-                var industry=$("#industrys").text();
+                /*var industry=$("#industrys").text();*/
                 var dateStart=$('#start').text();
                 var dateEnd=$("#end").text();
                 var text=$(this).text().trim();
@@ -206,7 +206,7 @@
                     $(".uct-works-expava").hide();
                     $(".submit-audit").attr('disabled',true);
                     $(".submit-audit").css('background-color','#ccc');
-                    $.post('{{url('matchingexpert')}}',{'domain':$('#select1').text().trim(),'industrys':$('#industrys').text().trim()},function (data) {
+                    $.post('{{url('matchingexpert')}}',{'domain':$('#select1').text().trim()},function (data) {
                         if(data.type == 4){
                             layer.msg(data.msg,{'icon':2},function () {
                                 window.location.href="/"
@@ -236,7 +236,7 @@
                                             $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                                             $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                             $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                            $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                                            /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                             window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                         }
                                     }else{
@@ -247,7 +247,7 @@
                                         $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                                        /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                         window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                     }
                                 },btn2: function(index, layero){
@@ -279,7 +279,7 @@
                                         $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                                        /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                         window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                     }
                                 }else{
@@ -290,7 +290,7 @@
                                     $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                    $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                                    /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                     window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                 }
                             }, function(){
@@ -299,8 +299,8 @@
                                 $.cookie("videodescribe","",{expires:date,path:'/',domain:'sw2025.com'});
                                 $.cookie("videodateStart","",{expires:date,path:'/',domain:'sw2025.com'});
                                 $.cookie("videodateEnd","",{expires:date,path:'/',domain:'sw2025.com'});
-                                $.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});
-                                window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
+                                /*$.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});*/
+                                window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd;
                                 return false;
 
                             });
@@ -319,7 +319,7 @@
                             $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                             $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                             $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                            /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                             window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                         }
                     }else{
@@ -330,7 +330,7 @@
                         $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});
+                        /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                         window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                     }
                 }
@@ -341,7 +341,7 @@
             var that=this;
             var domain=$(".publ-need-sel-def").text().trim();
             var describe=$(".uct-works-txt").val();
-            var industry=$("#industrys").text().trim();
+            /*var industry=$("#industrys").text().trim();*/
             var dateStart=$('#start').text().trim();
             var dateEnd=$("#end").text().trim();
             var isAppoint=($.cookie("videoisAppoint"))?$.cookie("videoisAppoint"):1;
@@ -358,13 +358,13 @@
             }else{
                 var state=0;
             }
-            if(industry=="请选择"){
+            /*if(industry=="请选择"){
                 layer.tips("问题行业不能为空", '.datas-sel-def', {
                     tips: [2, '#00a7ed'],
                     time: 4000
                 });
                 return false;
-            }
+            }*/
             if(domain=="请选择"){
                 layer.tips("问题分类不能为空", '.publ-need-sel-def', {
                     tips: [2, '#00a7ed'],
@@ -405,7 +405,7 @@
             $(this).html('正在提交');
             $.ajax({
                 url:"{{asset('saveVideo')}}",
-                data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state,"dateStart":dateStart,"dateEnd":dateEnd,"industry":industry},
+                data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state,"dateStart":dateStart,"dateEnd":dateEnd},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
@@ -417,7 +417,7 @@
                         $.cookie("videodescribe","",{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videodateStart","",{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videodateEnd","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});
+                        /*$.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});*/
                         if(state == 0){
                             layer.msg(res.msg,{'icon':6},function () {
                                 window.location = '{{url('uct_video')}}';
@@ -446,7 +446,7 @@
                         $(".uct-works-txt").val(describe);
                         $("#start").text(dateStart);
                         $("#end").text(dateEnd);
-                        $("#industrys").text(industry);
+                        /*$("#industrys").text(industry);*/
                         layer.confirm(res.msg+'申请失败,请重新申请', {
                             btn: ['确定'] //按钮
                         });

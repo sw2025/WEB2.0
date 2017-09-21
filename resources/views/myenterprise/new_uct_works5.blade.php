@@ -7,6 +7,17 @@
             border-radius: 5px;
             margin-left: 1px
         }
+
+        #template{
+            line-height:25px;
+            margin-top:3px;
+        }
+        #template p{
+            font-weight:bold;
+        }
+        #template span{
+            padding-left:20px;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
 
@@ -61,7 +72,7 @@
                             tipsMore: true,
                             time:80000,
                             anim: 4,
-                            tips: [4, '#666'],
+                            tips: [1, '#666'],
                             closeBtn:2
                         });
                         layer.tips('<font size=5>6.</font>这里显示的是办事的进度情况鼠标移动到每个点上有简要介绍，点击相应的按钮会跳转到原来相对应的进度以便于查看.', '.vprog1', {
@@ -77,6 +88,51 @@
                         $.cookie('isnewpeople','123');
                     });
                 }
+
+                var eventid = {{$eventId}};
+                var epid = '{{$lastpid->epid or null}}';
+                var state = '{{$configinfo[$lastpid->step-1]->state}}';
+
+                @if(!$configinfo[$lastpid->step-1]->starttype && $datas->userid == session('userId'))
+
+                    geteventnewstate = function () {
+                        $.post('{{url('ifeventtrue')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
+                            if(data.icon == 3){}else if(data.icon == 2){
+                                layer.msg(data.msg,{'time':1000},function () {
+                                    window.location = '/';
+                                });
+                            } else if(data.icon == 1){
+                                layer.alert(data.msg,function () {
+                                    clearInterval(t)//清除定时器
+                                    window.location = window.location.href;
+                                });
+                            } else {
+                                console.log(data);
+                            }
+                        });
+                    }
+                    var tinterval=setInterval(geteventnewstate,1000)//fun1是你的函数
+                @else
+
+                    geteventnewstate2 = function () {
+                        $.post('{{url('ifeventupload')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
+                            if(data.icon == 3){}else if(data.icon == 2){
+                                layer.msg(data.msg,{'time':1000},function () {
+                                    window.location = '/';
+                                });
+                            } else if(data.icon == 1){
+                                layer.alert(data.msg,function () {
+                                    clearInterval(t)//清除定时器
+                                    window.location = window.location.href;
+                                });
+                            } else {
+                                console.log(data);
+                            }
+                        });
+                    }
+                    var tinterval2=setInterval(geteventnewstate2,1000);
+
+                @endif
 
             </script>
         @endif
@@ -129,8 +185,10 @@
                                 @if($lastpid->step != count($configinfo))
                                 <div class="works-first execute works-manage-step">
                                     <div class="w-f-top">
-                                        <h2 class="handle-affair-tit">{{$lastpid->step}}.{{$configinfo[$lastpid->step-1]->processname}}</h2>
+                                        <h2 class="handle-affair-tit" style="font-size: 20px;">{{$lastpid->step}}.{{$configinfo[$lastpid->step-1]->processname}}</h2>
                                         <p class="handle-affair-desc">{{$configinfo[$lastpid->step-1]->processdescription}}</p>
+                                        <p style="margin-top: 10px;font-size: 16px;font-weight: bold;">提交材料包括：<p>
+                                        {!! $configinfo[$lastpid->step-1]->Template !!}
                                         <a href="javascript:;" class="datum-btn datum-history" index="{{$lastpid->epid or null}}" page="@if(!empty($lastpid->epid) && !empty($remark[$lastpid->epid])) {{$remark[$lastpid->epid][0]->lastpage()}} @endif"><i class="iconfont icon-yijianfankui"></i>查看历史意见<span class="history-counts">@if(!empty($lastpid->epid)){{$remark[$lastpid->epid][1] or 0}} @else 0 @endif</span></a>
                                     </div>
                                     <div class="upload-box">
@@ -170,8 +228,9 @@
                                         <div class="datum-manage">
                                             <a href="javascript:;" class="datum-btn datum-change" index="{{$lastpid->epid or 0}}" eventid=" {{$eventId}}">修改意见</a>
                                             @if($configinfo[$lastpid->step-1]->starttype && $datas->userid == session('userId'))
-                                                <a href="javascript:;" class="datum-btn datum-confirm" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}" pid="{{$configinfo[$lastpid->step-1]->ppid}}">确认资料</a>
+                                                <a href="javascript:;" class="datum-btn datum-confirm" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}" pid="{{$configinfo[$lastpid->step-1]->ppid}}">企业确认上传资料</a>
                                             @endif
+                                            <a href="javascript:;" class="datum-btn" id="stop" style="width: 60px;background: #f10;">终止合作</a>
                                         </div>
                                         <div class="v-manage-link-rate">
                                             @foreach($configinfo as $k => $v)

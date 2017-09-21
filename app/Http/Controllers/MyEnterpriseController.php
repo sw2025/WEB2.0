@@ -879,8 +879,6 @@ class MyEnterpriseController extends Controller
                 "domain2"=>$domain[1],
                 "brief"=>$data['describe'],
                 "isRandom"=>$data['isAppoint'],
-                'industry' => $data['industry'],
-
                 "eventtime"=>date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
@@ -989,14 +987,32 @@ class MyEnterpriseController extends Controller
         $result=array();
         $expertIds=$_POST['expertIds'];
         try{
-            foreach ($expertIds as $expertId){
-                DB::table("t_e_eventresponse")->insert([
-                    'eventid' => $_POST['eventId'],
-                    'expertid' => $expertId,
-                    "state"=>3,
-                    "updated_at"=>date("Y-m-d H:i:s")
-                ]);
+            $Ids=DB::table("t_e_eventresponse")
+                ->select('expertid')
+                ->where("eventid",$_POST['eventId'])
+                ->whereRaw('t_e_eventresponse.id in (select max(id) from t_e_eventresponse group by eventid,expertid)')
+                ->distinct()
+                ->get();
+            foreach($Ids as $v){
+                if(in_array($v->expertid,$expertIds)){
+                    DB::table("t_e_eventresponse")->insert([
+                        'eventid' => $_POST['eventId'],
+                        'expertid' =>$v->expertid,
+                        'responsetime' => date("Y-m-d H:i:s"),
+                        "state"=>3,
+                        "updated_at"=>date("Y-m-d H:i:s")
+                    ]);
+                } else {
+                    DB::table("t_e_eventresponse")->insert([
+                        'eventid' => $_POST['eventId'],
+                        'expertid' =>$v->expertid,
+                        "state"=>5,
+                        'responsetime' => date("Y-m-d H:i:s"),
+                        "updated_at"=>date("Y-m-d H:i:s")
+                    ]);
+                }
             }
+
             DB::table("t_e_eventverify")->insert([
                 'eventid' => $_POST['eventId'],
                 "configid"=>6,
@@ -1229,7 +1245,6 @@ class MyEnterpriseController extends Controller
                 "isRandom"=>$_POST['isAppoint'],
                 "starttime"=>$_POST['dateStart'],
                 "endtime"=>$_POST['dateEnd'],
-                'industry'=>$_POST['industry'],
                 "consulttime"=>date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
