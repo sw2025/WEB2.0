@@ -481,7 +481,17 @@ class MyExpertController extends Controller
      */
     public function standard(Request $request){
 
-        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+        $result = DB::table('t_u_expert')
+            ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
+            ->where('userid',session('userId'))
+            ->whereIn('configid',[1,2,3])
+            ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
+            ->first();
+        if($result){
+            $expertid=$result->expertid;
+        }else{
+            return redirect('/uct_expert');
+        }
         $fees=DB::table('t_u_expertfee')->where('expertid',$expertid)->orderBy('expertid', 'desc')->first();
         if($fees){
             $fee=$fees->fee;
@@ -490,7 +500,6 @@ class MyExpertController extends Controller
         }
         if($request->ajax()){
             $data = $request->input();
-            //dd($expertid);
             $count= DB::table('t_u_expertfee')->where('expertid',$expertid)->count();
             if($data['fee']==0){
                 $state=0;
@@ -514,9 +523,6 @@ class MyExpertController extends Controller
                 ]);
 
             }
-
-
-            //dd($result);
 
             if(!$result){
                 return ['msg' => '添加失败','icon' => 2];

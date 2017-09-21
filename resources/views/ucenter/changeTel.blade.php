@@ -46,6 +46,7 @@
 
     $(function(){
         document.getElementById("getCode").onclick=function(){
+            var obj = this;
             var oldPassWord=$("#passWord").val();
             var userId=$.cookie("userId");
             if(!oldPassWord){
@@ -63,7 +64,7 @@
                 type:"POST",
                 success:function(res){
                     if(res['code']=="success") {
-                        verifyCode(userId);
+                        verifyCode(userId,obj);
                     }else{
                         layer.tips('原密码不正确', '.change-tel-pwd', {
                             tips: [2, '#00a7ed'],
@@ -75,15 +76,19 @@
             })
         }
     })
-    var verifyCode=function(userId){
+    var verifyCode=function(userId,obj){
         $.ajax({
             url:"{{asset('getcodes')}}",
             data:{"userId":userId,"action":"change1"},
             dateType:"json",
             type:"POST",
             success:function(res){
-                if(res['code']=="code") {
-                    time(this);
+                if(res['code']=="success") {
+                    time(obj);
+                    layer.tips(res['msg'], '.change-tel-get', {
+                        tips: [2, '#00a7ed'],
+                        time: 4000
+                    });
                 }else{
                     layer.tips(res['msg'], '.change-tel-get', {
                         tips: [2, '#00a7ed'],

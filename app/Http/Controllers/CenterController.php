@@ -32,7 +32,14 @@ class CenterController extends Controller
      * @return mixed
      */
     public function  changeTel2(){
-        return view("ucenter.changeTel2");
+        $userId=session("userId");
+        $result = DB::table('t_u_user')->where('userid',$userId)->first();
+        $phone=$result->phone;
+        if(Cache::get($phone)){
+            return view("ucenter.changeTel2");
+        }else{
+            return redirect('/uct_basic/changeTel');
+        }
     }
 
     /**修改密码
@@ -640,6 +647,7 @@ class CenterController extends Controller
      * @return array
      */
     public function changeNewPhone(Request $request){
+
         $userId=$_POST['userId'];
         $newPhone=$_POST['phone'];
         $code=$_POST['code'];
