@@ -23,25 +23,27 @@
             </div>
         </div>
 <script type="text/javascript">
-    $(function(){
-        // 获取验证码
-        var wait=60;
-        function time(o) {
-            if (wait == 0) {
-                o.removeAttribute("disabled");
-                o.value="获得验证码";
-                wait = 60;
-            } else {
-                o.setAttribute("disabled", true);
-                o.value= wait + "秒";
-                wait--;
-                setTimeout(function() {
-                            time(o)
-                        },
-                        1000)
-            }
+    // 获取验证码
+    var wait=60;
+    function time(o) {
+        if (wait == 0) {
+            o.removeAttribute("disabled");
+            o.value="获得验证码";
+            wait = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.value= wait + "秒";
+            wait--;
+            setTimeout(function() {
+                    time(o)
+                },
+                1000)
         }
+    }
+
+    $(function(){
         document.getElementById("getCode").onclick=function(){
+            var obj = this;
             var phone=$("#phone").val();
             var reg1 = /^1[3578][0-9]{9}$/;//手机号
             var userId=$.cookie("userId");
@@ -52,12 +54,14 @@
                 });
                 return false;
             };
+/*
             time(this);
-            verifyPhone(userId)
+*/
+            verifyPhone(userId,obj)
         }
 
     })
-    var verifyPhone=function(userId){
+    var verifyPhone=function(userId,obj){
         var newPhone=$("#phone").val();
         $.ajax({
             url:"{{asset('getcodes')}}",
@@ -65,8 +69,14 @@
             dateType:"json",
             type:"POST",
             success:function(res){
-                if(res['code']=="phone"){
-                    layer.tips(res['msg'], '.change-tel-tel', {
+                if(res['code']=="success"){
+                    time(obj);
+                    layer.tips(res['msg'], '.change-tel-get', {
+                        tips: [2, '#00a7ed'],
+                        time: 4000
+                    });
+                }else {
+                    layer.tips(res['msg'], '.change-tel-get', {
                         tips: [2, '#00a7ed'],
                         time: 4000
                     });
