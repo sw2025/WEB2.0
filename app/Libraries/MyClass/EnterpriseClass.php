@@ -12,6 +12,7 @@
                 if(!empty($v->documenturl)){
                     //对文档的路径进行加密
                     $v->downurl = \Illuminate\Support\Facades\Crypt::encrypt($v->documenturl);
+                    /*$v->truedocumenturl = '../../swUpload'.$v->documenturl;*/
                     $v->truedocumenturl = '../../swUpload'.$v->documenturl;
                     //获取到文档路径的上二级文件夹路径
                     $pathname = dirname(dirname($v->truedocumenturl));
