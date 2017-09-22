@@ -34,7 +34,6 @@ class PublicController extends Controller
         $filepath = Crypt::decrypt($_GET['path']);
         $filepath = str_replace('\\','/',$filepath);
         $filepath = iconv('utf-8','GB2312', $filepath);
-
        /* header("Content-type: text/html;charset=utf-8");
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
@@ -641,7 +640,7 @@ class PublicController extends Controller
                 }
 
                 if(mb_strlen($consultinfo->brief) < 30 || mb_strlen($consultinfo->brief) > 500){
-                    $error =  ['msg' => '办事描述超出30-500字数限制'];
+                    $error =  ['msg' => '咨询描述超出30-500字数限制'];
                 }
 
                 if(strtotime($consultinfo->starttime) < time() || strtotime($consultinfo->endtime) < time()){
@@ -666,7 +665,7 @@ class PublicController extends Controller
                         'configid' => 2,
                         'verifytime' => date('Y-m-d H:i:s')
                     ]);
-                    $msg = ['msg' => '该办事已通过','icon' => 1];
+                    $msg = ['msg' => '该视频咨询已通过','icon' => 1];
                 } else {
                     $res = DB::table('t_c_consultverify')->insert([
                         'consultid' => $consultid,
@@ -674,13 +673,12 @@ class PublicController extends Controller
                         'remark' => $error['msg'],
                         'verifytime' => date('Y-m-d H:i:s')
                     ]);
-                    $msg = [ 'msg' => '该办事未通过,原因:'.$error['msg'], 'icon' => 2,'consultid' => $consultid];
+                    $msg = [ 'msg' => '该视频咨询未通过,原因:'.$error['msg'], 'icon' => 2,'consultid' => $consultid];
                 }
-
                 if($res){
                     return $msg;
                 } else {
-                    return ['msg' => '发布需求失败','icon' => 2];
+                    return ['msg' => '发布视频咨询失败','icon' => 2];
                 }
                 break;
         }
@@ -692,17 +690,24 @@ class PublicController extends Controller
      */
     public function matchingExpert (Request $request) {
         if($request->ajax()){
-            $data = $request->only('domain','industrys');
+            $data = $request->only('domain');
             $domain1 = explode('/',$data['domain'])[0];
             $domain2 = explode('/',$data['domain'])[1];
-            $expertcount = DB::table('t_u_expert')->where(['domain1' => $domain1,'industry' => $data['industrys']])->where('domain2','like','%'.$domain2.'%')->count();
-            $expertcount2 = DB::table('t_u_expert')->where(['domain1' => $domain1,'industry' => $data['industrys']])->count();
+            $expertcount = DB::table('t_u_expert')
+                ->leftJoin('view_expertstatus as state','state.expertid','=','t_u_expert.expertid')
+                ->where('state.configid', 2)
+                ->where(['domain1' => $domain1])
+                ->where('domain2','like','%'.$domain2.'%')->count();
+            $expertcount2 = DB::table('t_u_expert')
+                ->leftJoin('view_expertstatus as state','state.expertid','=','t_u_expert.expertid')
+                ->where('state.configid', 2)
+                ->where(['domain1' => $domain1])->count();
             if($expertcount){
-                return ['msg' => '<b style="font-size: 18px;">恭喜您,系统已为您检索到</b><br />在 【'.$data['industrys'].'】 行业和 【'.$data['domain'].'】 服务领域下有 <font color="red" size="5">'.$expertcount.'</font> 名专家<br />在【'.$domain1.'】 领域和 【'.$data['industrys'].'】 行业下共有 <font color="red" size="5">'.$expertcount2.'</font> 名专家','type' => 1];
+                return ['msg' => '<b style="font-size: 18px;">恭喜您,系统已为您检索到</b><br />【'.$data['domain'].'】 服务领域下有 <font color="red" size="5">'.$expertcount.'</font> 名专家<br />在【'.$domain1.'】 领域下共有 <font color="red" size="5">'.$expertcount2.'</font> 名专家','type' => 1];
             } elseif (!$expertcount && $expertcount2){
-                return ['msg' => '<b style="font-size: 18px;">很抱歉</b><br />系统在 【'.$data['domain'].'】领域和 【'.$data['industrys'].'】行业下并未找到专家<br />但是系统在 【'.$domain1.'】领域 和 【'.$data['industrys'].'】 行业下检索到 <font color="red" size="5">'.$expertcount2.' </font>名专家,您是否继续操作','type' => 2];;
+                return ['msg' => '<b style="font-size: 18px;">很抱歉</b><br />系统在 【'.$data['domain'].'】领域下并未找到专家<br />但是系统在 【'.$domain1.'】领域下检索到 <font color="red" size="5">'.$expertcount2.' </font>名专家,您是否继续操作','type' => 2];;
             } else {
-                return ['msg' => '<b style="font-size: 18px;">很抱歉</b><br />系统在您选的 【'.$data['domain'].'】领域和 【'.$data['industrys'].'】行业下并未找到专家<br />您可以自选专家或者联系客服进行处理,给您带来不便尽请谅解','type' => 3];
+                return ['msg' => '<b style="font-size: 18px;">很抱歉</b><br />系统在您选的 【'.$data['domain'].'】领域下并未找到专家<br />您可以自选专家或者联系客服进行处理,给您带来不便尽请谅解','type' => 3];
             }
         }
         return ['msg' => '非法操作','type' => 4];
@@ -719,7 +724,9 @@ class PublicController extends Controller
                 try{
                     if($data['state']){
                         $expert = DB::table('t_u_expert')
-                            ->where(['domain1' => $eventinfo->domain1,'industry' => $eventinfo->industry])
+                            ->leftJoin('view_expertstatus as state','state.expertid','=','t_u_expert.expertid')
+                            ->where('state.configid', 2)
+                            ->where(['domain1' => $eventinfo->domain1])
                             ->where('domain2','like','%'.$eventinfo->domain2.'%')
                             //->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
                             ->whereRaw('1=1  group by rand()')
@@ -727,7 +734,9 @@ class PublicController extends Controller
                             ->get();
 
                         $expert2 = DB::table('t_u_expert')
-                            ->where(['domain1' => $eventinfo->domain1,'industry' => $eventinfo->industry])
+                            ->leftJoin('view_expertstatus as state','state.expertid','=','t_u_expert.expertid')
+                            ->where('state.configid', 2)
+                            ->where(['domain1' => $eventinfo->domain1])
                             //->whereRaw(" expertid >= (select floor(RAND() * ((select max(expertid) from t_u_expert)-(select min(expertid) from `t_u_expert`)) + (select min(expertid) from t_u_expert))) limit 5")
                             ->whereRaw('1=1  group by rand()')
                             ->limit(5)
@@ -821,6 +830,7 @@ class PublicController extends Controller
                 $consultid = $data['consultid'];
                 $consultinfo = DB::table('t_c_consult')->where('consultid',$consultid)->first();
                 $expids = [];
+
                 DB::beginTransaction();
                 try{
                     if($data['state']){
@@ -839,16 +849,23 @@ class PublicController extends Controller
                             ->limit(5)
                             ->get();*/
                         $expert = DB::table('t_u_expert')
-                            ->where(['domain1' => $consultinfo->domain1,'industry' => $consultinfo->industry])
+                            ->leftJoin('view_expertstatus as state','state.expertid','=','t_u_expert.expertid')
+                            ->where(['domain1' => $consultinfo->domain1,'state.configid' => 2])
                             ->whereRaw('domain2 like "%'.$consultinfo->domain2.'%"')
                             ->get();
 
                         $expert2 = DB::table('t_u_expert')
-                            ->where(['domain1' => $consultinfo->domain1,'industry' => $consultinfo->industry])
+                            ->leftJoin('view_expertstatus as state','state.expertid','=','t_u_expert.expertid')
+                            ->where('state.configid', 2)
+                            ->where(['domain1' => $consultinfo->domain1])
                             ->get();
+
                         shuffle($expert);
                         shuffle($expert2);
+
                         if(empty($expert) && empty($expert2)){
+
+                            DB::commit();
                             DB::table('t_c_consultverify')->insert([
                                 'consultid' => $consultid,
                                 'configid' => 3,
@@ -858,7 +875,7 @@ class PublicController extends Controller
                                 "updated_at" => date("Y-m-d H:i:s",time())
                             ]);
                             DB::table('t_c_consultresponse')->where('consultid',$consultid)->delete();
-                            DB::commit();
+
                             return ['msg' => '系统匹配专家失败'.$consultid,'icon' => 2];
 
                         } elseif(!empty($expert)) {
@@ -888,13 +905,13 @@ class PublicController extends Controller
                                 return ['msg' => '很抱歉系统未在您指定的时间段内找到合适的专家请重新更改下咨询时间谢谢','icon' => 2];
                             }
 
+
                         } elseif (!empty($expert2)){
                             foreach($expert2 as $v){
                                 $pushexpert = DB::table('view_expertresponsetime')
                                     ->where('expertid',$v->expertid)
-                                    ->whereRaw('(starttime between  "'.$consultinfo->starttime.'" and "'.$consultinfo->endtime.'" or endtime between "'.$consultinfo->starttime .'" and "'.$consultinfo->endtime .'") and state != 5')
+                                    ->whereRaw('(starttime between  "'.$consultinfo->starttime.'" and "'.$consultinfo->endtime.'" or endtime between "'.$consultinfo->starttime .'" and "'.$consultinfo->endtime .'") and (state = 2 or state = 3)')
                                     ->first();
-                                dd($pushexpert);
                                 if(empty($pushexpert) && count($expids) < 5){
                                     DB::table('t_c_consultresponse')->insert([
                                         'consultid' => $consultid,
@@ -915,8 +932,10 @@ class PublicController extends Controller
                                 return ['msg' => '很抱歉系统未在您指定的时间段内找到合适的专家请重新更改下咨询时间谢谢','icon' => 2];
                             }
 
+
                         }
                     } else {
+
                         $expertIds=explode(",",$data['expertIds']);
                         foreach ($expertIds as $val){
                             DB::table("t_c_consultresponse")->insert([
@@ -930,6 +949,7 @@ class PublicController extends Controller
                             $expids[] = $val;
                         }
                     }
+
                     DB::table('t_c_consultverify')->insert([
                         'consultid' => $consultid,
                         'configid' => 4,
@@ -938,12 +958,14 @@ class PublicController extends Controller
                         "updated_at" => date("Y-m-d H:i:s",time())
                     ]);
                     DB::commit();
+
                     $expertsinfo = DB::table('t_u_expert')->whereIn('expertid',$expids)->select('expertname','showimage','expertid')->get();
                     $msg = ['msg' => '恭喜您,视频咨询通过审核并推送到指定专家','icon' => 1,'expertsinfo' => $expertsinfo];
+
                 }catch(Exception $e){
                     DB::rollback();
+                    return  ['msg' => '推送失败','icon' => 2];
                     throw $e;
-                    $msg = ['msg' => '推送失败','icon' => 2];
                 }
 
                 if($msg['icon'] == 2){
@@ -956,6 +978,7 @@ class PublicController extends Controller
                         "updated_at" => date("Y-m-d H:i:s",time())
                     ]);
                     DB::table('t_c_consultresponse')->where('consultid',$consultid)->delete();
+                    return $msg;
                 } else {
                     return $msg;
                 }
@@ -965,21 +988,76 @@ class PublicController extends Controller
         }
     }
 
-    /*public  function createTeam(){
-        $eventId=$_POST['eventId'];
-        $expertIds=array();
-        $expertId=DB::table("t_e_eventresponse")->where(["eventid"=>$eventId,"state"=>3])->get();
-        foreach ($expertId as $value){
-            if(!in_array($value->expertid,$expertIds)){
-                $expertIds[]=$value->expertid;
-            }
-        }
-        $res=\UserClass::createEventGroups($expertIds,$eventId);
-        if($res){
-            return "success";
-        }else{
-            return "false";
-        }
 
-    }*/
+    /**
+     * 定时获取办事的状态
+     */
+    public function getEventNewState(Request $request)
+    {
+        if($request->ajax()){
+            if(!empty(session('userId'))){
+                $data = $request->only('eventid','epid','state');
+                $eventinfo = DB::table('t_e_event')->where('eventid',$data['eventid'])->first();
+                $state = DB::table('t_e_eventprocess')->where(['eventid' => $data['eventid'],'epid' => $data['eventid']])->first();
+                $newstate = DB::table('t_e_eventprocess')->where('eventid',$data['eventid'])->orderBy('pid','desc')->first();
+                if(empty($state) && empty($eventinfo)){
+                    return ['msg' => '非法操作(寻找不到该办事)','icon' => 2];
+                } /*elseif (empty($state) && !empty($eventinfo) && empty($data['state'])){
+                    return ['msg' => 'nostate','icon' => 3];
+                } elseif (!empty($state) && !empty($eventinfo) && empty($data['state'])){
+                    if ($state->state == 2){
+                        return ['msg' => '对方确认了资料,是否查看','icon' => 1];
+                    }
+                }*/
+                if(!empty($newstate)){
+                    if($newstate->state == 2 && $data['state'] !== $newstate->state && $newstate->epid == $data['epid']){
+                        return ['msg' => '对方确认了资料,是否查看','icon' => 1];
+                    }
+                    return ['msg' => 'nostate2','icon' => 3];
+                }
+
+                return ['msg' => 'nostate','icon' => 3];
+            }
+            return ['msg' => '请登录','icon' => 2];
+        }
+        return ['msg' => '非法操作','icon' => 2];
+    }
+
+    /**
+     * 获得是否有办事上传
+     */
+    public function getEventNewUpload(Request $request)
+    {
+        if($request->ajax()){
+            if(!empty(session('userId'))){
+                $data = $request->only('eventid','epid','state');
+                $eventinfo = DB::table('t_e_event')->where('eventid',$data['eventid'])->first();
+                $state = DB::table('t_e_eventprocess')->where(['eventid' => $data['eventid'],'epid' => $data['eventid']])->first();
+                $newstate = DB::table('t_e_eventprocess')->where('eventid',$data['eventid'])->orderBy('pid','desc')->first();
+                if(empty($state) && empty($eventinfo)){
+                    return ['msg' => '非法操作(寻找不到该办事)','icon' => 2];
+                }/* elseif (!empty($newstate) && !empty($eventinfo) && !isset($data['state'])){
+                    if($newstate->state == 0 || $newstate->state == 1){
+                        return ['msg' => '对方上传了新的文件,是否查看1','icon' => 1];
+                    }
+                }*/
+                if(!empty($newstate)){
+
+                    $state1 = trim($data['state']) !== '' ? intval($data['state']) : '';
+                    $state2 = intval($newstate->state);
+                    if(($newstate->state == 0 || $newstate->state == 1) && $state1 !== $state2 && $newstate->epid != $data['epid']){
+                        return ['msg' => '对方上传了新的文件,是否查看','icon' => 1];
+                    } elseif(($newstate->state == 0 || $newstate->state == 1) && $state1 !== $state2 && $newstate->epid == $data['epid']){
+                        return ['msg' => '对方修改上传了新的文件,是否查看','icon' => 1];
+                    }
+                    return ['msg' => 'noupload1','icon' => 3];
+                }
+                return ['msg' => 'noupload2','icon' => 3];
+            }
+            return ['msg' => '请登录','icon' => 2];
+        }
+        return ['msg' => '非法操作','icon' => 2];
+    }
+    
+
 }

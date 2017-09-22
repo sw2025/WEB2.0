@@ -96,7 +96,6 @@ class MyExpertController extends Controller
                                 "brief" => $data['brief'],
                                 "domain1" => $domain1,
                                 "domain2" => $domain2,
-                                "industry"=>$data['industrys'],
                                 "created_at" => date("Y-m-d H:i:s", time()),
                                 "updated_at" => date("Y-m-d H:i:s", time())
                             ]);
@@ -112,7 +111,6 @@ class MyExpertController extends Controller
                                 "brief" => $data['brief'],
                                 "domain1" => $domain1,
                                 "domain2" => $domain2,
-                                "industry"=>$data['industrys'],
                                 "created_at" => date("Y-m-d H:i:s", time()),
                                 "updated_at" => date("Y-m-d H:i:s", time())
                             ]);
@@ -189,6 +187,7 @@ class MyExpertController extends Controller
             $datas2 = $obj
                 ->where(['res.expertid' => $expertid])
                 ->whereIn('status.configid',[5,6,7,8])
+                ->where('res.state','<>',5)
                 ->orderBy('res.id','desc')
                 ->paginate(6);
             //调用eventclass中的方法进行对象的处理
@@ -230,7 +229,7 @@ class MyExpertController extends Controller
             return redirect('/');
         } elseif ($datas->configid == 6 || $datas->configid == 8 || $datas->configid == 7){
            // dd(234);
-            return redirect('mywork/workDetail/'.$eventid);
+            return redirect('uct_mywork/workDetails/'.$eventid);
         }
         $token = Crypt::encrypt(session('userId'));
         return view("myexpert.workDetail",compact('datas','token'));
@@ -250,6 +249,11 @@ class MyExpertController extends Controller
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
                 DB::beginTransaction();
                 try{
+                    //查询这个办事是否已经响应过了
+                    $verify3 = DB::table('view_eventstatus')->where(['eventid' => $data['eventid']])->where('configid','>','5')->first();
+                    if(!empty($verify3)){
+                        return ['msg' => '对不起该办事企业已经确定其他专家，请您刷新页面'];
+                    }
                     //查询是否存在响应的情况
                     $verify = DB::table('t_e_eventresponse')->where(['expertid' => $expertid,'eventid' => $data['eventid'],'state' => 2])->first();
                     if(!$verify){
@@ -331,16 +335,19 @@ class MyExpertController extends Controller
         $countobj4 = clone $datas;
         $count= $countobj4
            ->where(['res.expertid' => $expertid,'status.configid' => 4])
+            ->whereIn('res.state',[0,1])
            ->orderBy('res.id','desc')
            ->count();
 
         $datas = $datas
             ->where(['res.expertid' => $expertid,'status.configid' => 4])
+            ->whereIn('res.state',[0,1])
             ->orderBy('res.id','desc')
             ->paginate(6);
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
             ->whereIn('status.configid',[5,6,7,8])
+            ->where('res.state','<>',5)
             ->orderBy('res.id','desc')
             ->paginate(6);
         $datas = \ConsultClass::handelObj($datas);
@@ -499,7 +506,17 @@ class MyExpertController extends Controller
      */
     public function standard(Request $request){
 
-        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+        $result = DB::table('t_u_expert')
+            ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
+            ->where('userid',session('userId'))
+            ->whereIn('configid',[1,2,3])
+            ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
+            ->first();
+        if($result){
+            $expertid=$result->expertid;
+        }else{
+            return redirect('/uct_expert');
+        }
         $fees=DB::table('t_u_expertfee')->where('expertid',$expertid)->orderBy('expertid', 'desc')->first();
         if($fees){
             $fee=$fees->fee;
@@ -508,7 +525,6 @@ class MyExpertController extends Controller
         }
         if($request->ajax()){
             $data = $request->input();
-            //dd($expertid);
             $count= DB::table('t_u_expertfee')->where('expertid',$expertid)->count();
             if($data['fee']==0){
                 $state=0;
@@ -532,9 +548,6 @@ class MyExpertController extends Controller
                 ]);
 
             }
-
-
-            //dd($result);
 
             if(!$result){
                 return ['msg' => '添加失败','icon' => 2];

@@ -533,8 +533,8 @@ class MyEnterpriseController extends Controller
                     $v->eventid = !empty($proinfo->eventid) ? $proinfo->eventid : null;
                     $v->startuserid = !empty($proinfo->startuserid) ? $proinfo->startuserid : null;
                     $v->acceptuserid = !empty($proinfo->acceptuserid) ? $proinfo->acceptuserid : null;
-                    $v->documenturl = !empty($proinfo->documenturl) ? $proinfo->documenturl : null;
-                    $v->state = !empty($proinfo->state) ? $proinfo->state : null;
+                    $v->documenturl = !empty($proinfo->documenturl) ? '../../swUpload'.$proinfo->documenturl : null;
+                    $v->state = !empty($proinfo->state) || (!empty($proinfo) && $proinfo->state === 0)  ? $proinfo->state : null;
                 }
                 //对信息进行封装
                 $configinfo = \EnterpriseClass::processInsert($configinfo);
@@ -879,8 +879,6 @@ class MyEnterpriseController extends Controller
                 "domain2"=>$domain[1],
                 "brief"=>$data['describe'],
                 "isRandom"=>$data['isAppoint'],
-                'industry' => $data['industry'],
-
                 "eventtime"=>date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
@@ -943,8 +941,7 @@ class MyEnterpriseController extends Controller
             $consult=(isset($get['consult']) && $get['consult'] != "null") ? $get['consult'] : null;
             $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
             $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
-            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
-            //设置where条件生成where数组
+            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;            //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
             $addresswhere = !empty($address)?array("ext.address"=>$address):array();
             if(!empty($consult) && $consult == '收费'){
@@ -954,8 +951,8 @@ class MyEnterpriseController extends Controller
                 $consultwhere = ['fee.state' => 0];
                 $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
             } else {
-                $consultwhere = [];
-            }
+              $consultwhere = [];
+           }
             if(!empty($supply)){
                 $supply[0] = $domainselect2[$supply[0]];
                 $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
@@ -964,8 +961,7 @@ class MyEnterpriseController extends Controller
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
             }            //判断是否有搜索的关键字
             if(!empty($searchname)){
-                $obj = $obj->where("ext.expertname","like","%".$searchname."%");
-            }
+                $obj = $obj->where("ext.expertname","like","%".$searchname."%");            }
             //对三种排序进行判断
             if(!empty($ordertime)){
                 $obj = $obj->orderBy('ext.expertid',$ordertime);
@@ -978,7 +974,7 @@ class MyEnterpriseController extends Controller
             return view("myenterprise.reselect",compact('cate','searchname','datas','domainselect','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
         }
 
-        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
+          $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
         $ordertime = 'desc';
         return view("myenterprise.reselect",compact('cate','datas','ordertime','domainselect','collectids'));
     }
@@ -989,14 +985,9 @@ class MyEnterpriseController extends Controller
         $result=array();
         $expertIds=$_POST['expertIds'];
         try{
+
             foreach ($expertIds as $expertId){
-                DB::table("t_e_eventresponse")->insert([
-                    'eventid' => $_POST['eventId'],
-                    'expertid' => $expertId,
-                    "state"=>3,
-                    "updated_at"=>date("Y-m-d H:i:s")
-                ]);
-                $phone=DB::table('t_u_expert')
+                               $phone=DB::table('t_u_expert')
                     ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
                     ->where('expertid',$expertId)
                     ->pluck('phone');
@@ -1005,7 +996,34 @@ class MyEnterpriseController extends Controller
                     ->where('eventid',$_POST['eventId'])
                     ->pluck('enterprisename');
                 $this->_sendSms($phone,'办事选择','reselect',$name);
+
+            $Ids=DB::table("t_e_eventresponse")
+                ->select('expertid')
+                ->where("eventid",$_POST['eventId'])
+                ->whereRaw('t_e_eventresponse.id in (select max(id) from t_e_eventresponse group by eventid,expertid)')
+                ->distinct()
+                ->get();
+            foreach($Ids as $v){
+                if(in_array($v->expertid,$expertIds)){
+                    DB::table("t_e_eventresponse")->insert([
+                        'eventid' => $_POST['eventId'],
+                        'expertid' =>$v->expertid,
+                        'responsetime' => date("Y-m-d H:i:s"),
+                        "state"=>3,
+                        "updated_at"=>date("Y-m-d H:i:s")
+                    ]);
+                } else {
+                    DB::table("t_e_eventresponse")->insert([
+                        'eventid' => $_POST['eventId'],
+                        'expertid' =>$v->expertid,
+                        "state"=>5,
+                        'responsetime' => date("Y-m-d H:i:s"),
+                        "updated_at"=>date("Y-m-d H:i:s")
+                    ]);
+                }
+
             }
+
             DB::table("t_e_eventverify")->insert([
                 'eventid' => $_POST['eventId'],
                 "configid"=>6,
@@ -1239,7 +1257,6 @@ class MyEnterpriseController extends Controller
                 "isRandom"=>$_POST['isAppoint'],
                 "starttime"=>$_POST['dateStart'],
                 "endtime"=>$_POST['dateEnd'],
-                'industry'=>$_POST['industry'],
                 "consulttime"=>date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),

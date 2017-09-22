@@ -170,7 +170,7 @@ Route::post('replyextmessage','ExpertController@replyMessage');
 //审核需求
     Route::get('myneed/examineNeed/{needid?}', 'ExpertUcenterController@examineNeed');
 //我的办事详情
-    Route::get('mywork/workDetail/{eventid}', 'ExpertUcenterController@workDetail');
+    Route::get('uct_mywork/workDetails/{eventid}', 'ExpertUcenterController@workDetail');
 
     /************************************我是企业*********************************************************/
 //专家资源
@@ -276,7 +276,13 @@ Route::get('uct_mywork/myEventVideo/{eventid}', 'MyExpertController@myEventVideo
 //收费标准
     Route::any('uct_standard', 'MyExpertController@standard');
     /***********************************视频路由*******************************************/
-/*});*/
+
+});
+//定是请求是否有薪的办事状态
+Route::post('ifeventtrue','PublicController@getEventNewState');
+//定是请求是否有薪的资料上传
+Route::post('ifeventupload','PublicController@getEventNewUpload');
+
 //创建群组
 Route::get('creatGroup','PublicController@createGroups');
 //获取accid和token

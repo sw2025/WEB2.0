@@ -1,6 +1,7 @@
 @extends("layouts.ucenter4")
 @section("content")
     <style>
+
         @-webkit-keyframes waitPulse {
             from { background-color: #bbb; -webkit-box-shadow: 0 0 9px #aaa; }
             50% { background-color: #ccc; -webkit-box-shadow: 0 0 18px #ccc; }

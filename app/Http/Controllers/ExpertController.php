@@ -105,11 +105,13 @@ class ExpertController extends Controller
             ->leftJoin('t_u_expertfee as fee','ext.expertid' ,'=' ,'fee.expertid')
             ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
             ->leftJoin('view_expertmesscount as mess','ext.expertid' ,'=' ,'mess.expertid')
+            ->leftJoin('view_expertstatus as state','state.expertid','=','ext.expertid')
+            ->where(['state.configid' => 2])
             ->select('ext.*','user.phone','fee.fee','fee.state');
         $obj = clone $datas;
         $datas = $datas->where('ext.expertid',$expertid)->first();
         //取出同类下推荐的供求
-        $info = ['domain1' => $datas->domain1,'domain2' =>$datas->domain2,'expertid' => $datas->expertid];
+        $info = ['domain1' => $datas->domain1,'domain2' => $datas->domain2,'expertid' => $datas->expertid];
         $recommendNeed = $obj->where('ext.expertid','<>',$info['expertid'])->orderBy('expertid','desc');
         $obj2 = clone $recommendNeed;
         //取出相同二级类下面的供求
@@ -239,7 +241,7 @@ class ExpertController extends Controller
             try{
                 $res = DB::table('t_u_messagetoexpert')->insert($data);
                 if($expertuserid->userid != session('userId') && !$data['parentid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('expert/detail',$data['expertid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('expert/detail',$data['expertid']).'#reply" target=_blank>点此查看</a>';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br />' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
                     $msg = DB::table('t_m_systemmessage')->insert([
                         'sendid' => 0,
                         'receiveid' => $expertuserid->userid,
@@ -250,7 +252,7 @@ class ExpertController extends Controller
                     ]);
                 }
                 if($expertuserid->userid != session('userId') && $data['parentid'] && !$data['use_userid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('expert/detail',$data['expertid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('expert/detail',$data['expertid']).'#reply" target=_blank>点此查看</a>';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br />' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
                     $parid = DB::table('t_u_messagetoexpert')->where('id',$data['parentid'])->first();
                     if(empty($parid)){
                         return 'error';

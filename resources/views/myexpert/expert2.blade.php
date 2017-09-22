@@ -35,9 +35,9 @@
                                             <span class="datas-sel-cap">名称</span>
                                             <input class="datas-sel-name" readonly="readonly" type="text" value="{{$data->expertname}}" style="color:#666;"/>
                                         </div>
-                                        <div class="datas-sel zindex3">
+                                        {{--<div class="datas-sel zindex3">
                                             <span class="datas-sel-cap">擅长行业</span><a href="javascript:;" class="datas-sel-def verify-default" id="industry">{{$data->industry}}</a>
-                                        </div>
+                                        </div>--}}
                                         <div class="datas-sel zindex2">
                                             <span class="datas-sel-cap">擅长领域</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->domain1}}-{{mb_substr(join('/',explode(',',$data->domain2)),0,15)}}</a>
                                         </div>

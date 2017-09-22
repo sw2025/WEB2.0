@@ -10,6 +10,7 @@
                 </div>
                 <div class="mywork-det">
                     <span class="myask-detail-need"><em class="light-color myask-detail-cap">需求分类：</em>{{$datas->domain1.' / '.$datas->domain2}}</span>
+                    <span class="myask-detail-need" style="margin-top:10px;"><em class="light-color myask-detail-cap">所在行业：</em>{{$datas->industry}}</span>
                     <span class="myask-detail-time"><em class="light-color">时间：</em>{{$datas->consulttime}}</span>
                     <div class="mywork-det-txt">
                         <div class="mywork-det-desc">

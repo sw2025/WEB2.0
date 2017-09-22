@@ -31,7 +31,7 @@
                         {{--<p class="item-desc">解决企业遇到各类问题</p>--}}
                     </div>
                     <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">商业模式</span><br /><br /><br /><span style="font-size: 1.5em;">发展战略</span><br /><br /><br /><span style="font-size: 1.5em;">企业定位</span> </p>
+                        <p><br /><span style="font-size: 1.5em;">战略定位</span><br /><br /><span style="font-size: 1.5em;">战略执行</span><br /><br /><span style="font-size: 1.5em;">商业模式</span><br /><br /><span style="font-size: 1.5em;">项目评价</span> </p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
@@ -41,27 +41,27 @@
                         <span class="item-tit">找资金</span>
                     </div>
                     <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">企业债</span><br /><span style="font-size: 1.5em;">资产证券化</span><br /><span style="font-size: 1.5em;">应收账款</span><br /><span style="font-size: 1.5em;">国外债券融资</span><br /><span style="font-size: 1.5em;">国外股权融合</span> <br /><span style="font-size: 1.5em;">租赁</span><br /><span style="font-size: 1.5em;">私募股权</span><br /><span style="font-size: 1.5em;">并购</span></p>
+                        <p><br/><span style="font-size: 1.0em;">融资综合方案</span><br /><span style="font-size: 1.0em;">项目融资</span><br /><span style="font-size: 1.0em;">政府性质贷款</span><br /><span style="font-size: 1.0em;">企业债</span><br /><span style="font-size: 1.0em;">资产证券化</span><br /><span style="font-size: 1.0em;">境外融资</span><br /><span style="font-size: 1.0em;">租赁与信托</span><br /><span style="font-size: 1.0em;">保理</span><br /><span style="font-size: 1.0em;">天使投资</span><br /><span style="font-size: 1.0em;">风险投资</span><br /></p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
                     <div class="item-con dif-hexagon3">
                         <span class="hexagon"></span>
                         <h2 class="number">03</h2>
-                        <span class="item-tit">找技术</span>
+                        <span class="item-tit">促合作</span>
                     </div>
                     <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">委托研发</span><br /><br /><span style="font-size: 1.5em;">新技术</span><br /><br /><span style="font-size: 1.5em;">生产自动化</span><br /><br /><span style="font-size: 1.5em;">产能合作</span> </p>
+                        <p><br /><span style="font-size: 1.5em;">寻求渠道与代理</span><br /><br /><br /><span style="font-size: 1.5em;">营销推广</span><br /><br /><br /><span style="font-size: 1.5em;">品牌建设</span><br /><br /></p>
                     </div>
                 </a></li>
             <li class="item col-md-3"><a href="javascript:;">
                     <div class="item-con dif-hexagon4">
                         <span class="hexagon"></span>
                         <h2 class="number">04</h2>
-                        <span class="item-tit">找市场</span>
+                        <span class="item-tit">找技术</span>
                     </div>
                     <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">开拓新市场</span><br /><br /><br /><span style="font-size: 1.5em;">发展代理</span><br /><br /><br /><span style="font-size: 1.5em;">兼职销售</span> </p>
+                        <p><br /><span style="font-size: 1.1em;">人工智能</span><br /><span style="font-size: 1.1em;">大数据</span><br /><span style="font-size: 1.1em;">物联网</span> <br /><span style="font-size: 1.1em;">生产自动化</span> <br /><span style="font-size: 1.1em;">智能制造</span><br /><span style="font-size: 1.1em;">生物技术</span><br /><span style="font-size: 1.1em;">节能环保</span> <br /><span style="font-size: 1.1em;">新材料</span> </p>
                     </div>
                 </a></li>
         </ul>
@@ -79,7 +79,7 @@
             <div class="tabar clearfix" id="knowExpert">
                 <a href="javascript:;" class="tabar-opt">知名机构<div class="triangle-top"></div></a>
                 <a href="javascript:;" class="tabar-opt">资深专家<div class="triangle-top"></div></a>
-                <a href="javascript:;" class="tabar-opt">实力企业家<div class="triangle-top"></div></a>
+                <a href="javascript:;" class="tabar-opt">成功企业家<div class="triangle-top"></div></a>
             </div>
             <div class="tab-con">
                 <ul class="tab-list clearfix" id="konwExpertList">
@@ -101,7 +101,7 @@
         <div class="row supply-categary clearfix">
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">找资金<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">资金需求<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($invests as $invest)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$invest->needid)}}"><span class="dem-li-tit">{{$invest->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$invest->created_at}}</span></a></li>
@@ -111,7 +111,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">定战略<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">战略与管理<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($works as $work)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$work->needid)}}"><span class="dem-li-tit">{{$work->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$work->created_at}}</span></a></li>
@@ -131,7 +131,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">找市场<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">寻合作<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($markets as $market)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$market->needid)}}"><span class="dem-li-tit">{{$market->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$market->created_at}}</span></a></li>
