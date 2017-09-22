@@ -32,6 +32,7 @@ class PublicController extends Controller
     public function download ()
     {
         $filepath = Crypt::decrypt($_GET['path']);
+        $filepath = '../../swUpload/'.str_replace('../../swUpload/','',trim($filepath,'/'));
         $filepath = str_replace('\\','/',$filepath);
         $filepath = iconv('utf-8','GB2312', $filepath);
        /* header("Content-type: text/html;charset=utf-8");
