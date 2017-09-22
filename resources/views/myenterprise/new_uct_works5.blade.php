@@ -23,7 +23,7 @@
 
          @if($stmpstate->step == 1 && !$isfirstevent)
             <script>
-                var cookie = $.cookie('isnewpeople') ? '':0;
+                var cookie = $.cookie('isnewpeople') ? $.cookie('isnewpeople'):0;
                 if (cookie == '' || cookie == NaN || cookie == undefined){
                     layer.confirm('经系统检测您是首次进行办事,是否进行引导介绍操作？', {
                         btn: ['介绍功能','不再显示'] //按钮
@@ -95,7 +95,7 @@
             var eventid = {{$eventId}};
             var epid = '{{$lastpid->epid or null}}';
             var state = '{{$configinfo[$lastpid->step-1]->state}}';
-        @if($lastpid->step != 4)
+        @if($lastpid->step != 4 && empty($_GET['step']))
             @if(!$configinfo[$lastpid->step-1]->starttype && $datas->userid == session('userId'))
 
                     geteventnewstate = function () {

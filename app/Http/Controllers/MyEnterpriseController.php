@@ -533,7 +533,7 @@ class MyEnterpriseController extends Controller
                     $v->eventid = !empty($proinfo->eventid) ? $proinfo->eventid : null;
                     $v->startuserid = !empty($proinfo->startuserid) ? $proinfo->startuserid : null;
                     $v->acceptuserid = !empty($proinfo->acceptuserid) ? $proinfo->acceptuserid : null;
-                    $v->documenturl = !empty($proinfo->documenturl) ? $proinfo->documenturl : null;
+                    $v->documenturl = !empty($proinfo->documenturl) ? '../../swUpload'.$proinfo->documenturl : null;
                     $v->state = !empty($proinfo->state) || (!empty($proinfo) && $proinfo->state === 0)  ? $proinfo->state : null;
                 }
                 //对信息进行封装

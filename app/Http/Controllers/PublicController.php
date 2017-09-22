@@ -34,7 +34,6 @@ class PublicController extends Controller
         $filepath = Crypt::decrypt($_GET['path']);
         $filepath = str_replace('\\','/',$filepath);
         $filepath = iconv('utf-8','GB2312', $filepath);
-
        /* header("Content-type: text/html;charset=utf-8");
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');

@@ -170,7 +170,7 @@ Route::group(['middleware' => ['auth']], function () {
 //审核需求
     Route::get('myneed/examineNeed/{needid?}', 'ExpertUcenterController@examineNeed');
 //我的办事详情
-    Route::get('mywork/workDetail/{eventid}', 'ExpertUcenterController@workDetail');
+    Route::get('uct_mywork/workDetails/{eventid}', 'ExpertUcenterController@workDetail');
 
     /************************************我是企业*********************************************************/
 //专家资源

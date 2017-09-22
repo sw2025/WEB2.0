@@ -231,7 +231,7 @@ class MyExpertController extends Controller
             return redirect('/');
         } elseif ($datas->configid == 6 || $datas->configid == 8 || $datas->configid == 7){
            // dd(234);
-            return redirect('mywork/workDetail/'.$eventid);
+            return redirect('uct_mywork/workDetails/'.$eventid);
         }
         $token = Crypt::encrypt(session('userId'));
         return view("myexpert.workDetail",compact('datas','token'));
