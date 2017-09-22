@@ -986,17 +986,17 @@ class MyEnterpriseController extends Controller
         $expertIds=$_POST['expertIds'];
         try{
 
-            foreach ($expertIds as $expertId){
-                               $phone=DB::table('t_u_expert')
-                    ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
-                    ->where('expertid',$expertId)
+            foreach ($expertIds as $expertId) {
+                $phone = DB::table('t_u_expert')
+                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                    ->where('expertid', $expertId)
                     ->pluck('phone');
-                $name=DB::table('t_e_event')
-                    ->leftJoin('t_u_enterprise','t_e_event.userid','=','t_u_enterprise.userid')
-                    ->where('eventid',$_POST['eventId'])
+                $name = DB::table('t_e_event')
+                    ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
+                    ->where('eventid', $_POST['eventId'])
                     ->pluck('enterprisename');
-                $this->_sendSms($phone,'办事选择','reselect',$name);
-
+                $this->_sendSms($phone, '办事选择', 'reselect', $name);
+            }
             $Ids=DB::table("t_e_eventresponse")
                 ->select('expertid')
                 ->where("eventid",$_POST['eventId'])
@@ -1021,9 +1021,7 @@ class MyEnterpriseController extends Controller
                         "updated_at"=>date("Y-m-d H:i:s")
                     ]);
                 }
-
             }
-
             DB::table("t_e_eventverify")->insert([
                 'eventid' => $_POST['eventId'],
                 "configid"=>6,
