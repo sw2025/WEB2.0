@@ -247,6 +247,11 @@
             var string=str.substring(num1+1);
         }
         $("#"+string).addClass('active');
+        //alert($.cookie('userId'));
+        if(typeof($.cookie('userId'))=="undefined"){
+            window.location.href="{{url('login')}}";
+            return false;
+        }
         if($.cookie('userId')){
             var name=$.cookie("name");
             $(".before-login").hide();

@@ -442,7 +442,11 @@ class PublicController extends Controller
      */
     public  function getTeamId(){
         $res=array();
-        $teamId=DB::table("t_s_im")->where(["consultid"=>$_POST['consultId']])->pluck("tid");
+        if(!$_POST['eventId']){
+            $teamId=DB::table("t_s_im")->where(["consultid"=>$_POST['consultId']])->pluck("tid");
+        }else{
+            $teamId=DB::table("t_s_im")->where(["eventid"=>$_POST['eventId']])->pluck("tid");
+        }
         if($teamId){
             $res['code']="success";
             $res['tid']=$teamId;
@@ -984,6 +988,7 @@ class PublicController extends Controller
         }
     }
 
+
     /**
      * 定时获取办事的状态
      */
@@ -1054,4 +1059,5 @@ class PublicController extends Controller
         return ['msg' => '非法操作','icon' => 2];
     }
     
+
 }

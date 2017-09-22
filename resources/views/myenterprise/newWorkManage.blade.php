@@ -234,9 +234,17 @@
                     var account=res['account']
                     switch(code){
                         case "success":
+                            $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
                             window.location.href="{{asset('uct_works/applyWork')}}";
                         break;
                         case "enterprise":
+                            $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
                             window.location.href="{{asset('uct_member')}}";
                             break;
                         case "error":
@@ -269,6 +277,17 @@
                             window.location.href="{{asset('uct_works/applyWork')}}";
                             break;
                         case "enterprise":
+                            layer.confirm('您还未进行企业认证？', {
+                                btn: ['去认证','暂不需要'], //按钮
+                            }, function(){
+                                $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
+                                window.location.href="{{asset('uct_member')}}";
+                            }, function(){
+                                layer.close();
+                            });
                             window.location.href="{{asset('uct_member')}}";
                             break;
                         case "error":

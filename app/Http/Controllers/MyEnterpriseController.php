@@ -941,8 +941,7 @@ class MyEnterpriseController extends Controller
             $consult=(isset($get['consult']) && $get['consult'] != "null") ? $get['consult'] : null;
             $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
             $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
-            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
-            //设置where条件生成where数组
+            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;            //设置where条件生成where数组
             $rolewhere = !empty($role)?array("category"=>$role):array();
             $addresswhere = !empty($address)?array("ext.address"=>$address):array();
             if(!empty($consult) && $consult == '收费'){
@@ -952,8 +951,8 @@ class MyEnterpriseController extends Controller
                 $consultwhere = ['fee.state' => 0];
                 $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
             } else {
-                $consultwhere = [];
-            }
+              $consultwhere = [];
+           }
             if(!empty($supply)){
                 $supply[0] = $domainselect2[$supply[0]];
                 $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
@@ -962,8 +961,7 @@ class MyEnterpriseController extends Controller
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
             }            //判断是否有搜索的关键字
             if(!empty($searchname)){
-                $obj = $obj->where("ext.expertname","like","%".$searchname."%");
-            }
+                $obj = $obj->where("ext.expertname","like","%".$searchname."%");            }
             //对三种排序进行判断
             if(!empty($ordertime)){
                 $obj = $obj->orderBy('ext.expertid',$ordertime);
@@ -976,7 +974,7 @@ class MyEnterpriseController extends Controller
             return view("myenterprise.reselect",compact('cate','searchname','datas','domainselect','role','collectids','consult','supply','address','ordertime','ordercollect','ordermessage'));
         }
 
-        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
+          $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
         $ordertime = 'desc';
         return view("myenterprise.reselect",compact('cate','datas','ordertime','domainselect','collectids'));
     }
@@ -987,6 +985,18 @@ class MyEnterpriseController extends Controller
         $result=array();
         $expertIds=$_POST['expertIds'];
         try{
+
+            foreach ($expertIds as $expertId){
+                               $phone=DB::table('t_u_expert')
+                    ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                    ->where('expertid',$expertId)
+                    ->pluck('phone');
+                $name=DB::table('t_e_event')
+                    ->leftJoin('t_u_enterprise','t_e_event.userid','=','t_u_enterprise.userid')
+                    ->where('eventid',$_POST['eventId'])
+                    ->pluck('enterprisename');
+                $this->_sendSms($phone,'办事选择','reselect',$name);
+
             $Ids=DB::table("t_e_eventresponse")
                 ->select('expertid')
                 ->where("eventid",$_POST['eventId'])
@@ -1011,6 +1021,7 @@ class MyEnterpriseController extends Controller
                         "updated_at"=>date("Y-m-d H:i:s")
                     ]);
                 }
+
             }
 
             DB::table("t_e_eventverify")->insert([
@@ -1023,6 +1034,7 @@ class MyEnterpriseController extends Controller
             throw $e;
         }
         if(!isset($e)){
+            \UserClass::createEventGroups($expertIds,$_POST['eventId']);
             $result['code']="success";
         }else{
             $result['code']="error";
@@ -1384,7 +1396,6 @@ class MyEnterpriseController extends Controller
                     "created_at"=>date("Y-m-d H:i:s",time()),
                     "updated_at"=>date("Y-m-d H:i:s",time()),
                 ]);
-                
             }
             $paynos=$this->getPayNum("消费");
             DB::table("t_u_bill")->insert([
@@ -1415,6 +1426,16 @@ class MyEnterpriseController extends Controller
                         "created_at"=>date("Y-m-d H:i:s",time()),
                         "updated_at"=>date("Y-m-d H:i:s")
                     ]);
+                    $phone=DB::table('t_u_expert')
+                        ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                        ->where('expertid',$ID->expertid)
+                        ->pluck('phone');
+                    $name=DB::table('t_c_consult')
+                        ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
+                        ->where('consultid',$_POST['consultId'])
+                        ->pluck('enterprisename');
+                    $this->_sendSms($phone,'视频咨询','reselect',$name);
+
                 }else{
                     DB::table("T_C_CONSULTRESPONSE")->insert([
                         "consultid"=>$_POST['consultId'],
@@ -1723,5 +1744,15 @@ class MyEnterpriseController extends Controller
         $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
         return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2','domains'));
     }
+
+    /**办事管理视频
+     * @param $eventId
+     * @return mixed
+     */
+    public function eventVideo($eventId){
+        return view('myenterprise.enevtVideo',compact('eventId'));
+    }
+
+   
 
 }

@@ -257,13 +257,22 @@ class MyExpertController extends Controller
                     //查询是否存在响应的情况
                     $verify = DB::table('t_e_eventresponse')->where(['expertid' => $expertid,'eventid' => $data['eventid'],'state' => 2])->first();
                     if(!$verify){
-                        DB::table('t_e_eventresponse')->insert([
+                       $res= DB::table('t_e_eventresponse')->insert([
                             'expertid' => $expertid,
                             'eventid' => $data['eventid'],
                             'state' => 2,
                             'responsetime' => date('Y-m-d H-:i:s',time()),
                             'updated_at' => date('Y-m-d H-:i:s',time())
-                        ]);
+                       ]);
+                        if($res){
+                            $name=DB::table("t_u_expert")->where("expertid",$expertid)->pluck('expertname');
+                            $phone=DB::table('t_e_event')
+                                ->leftJoin('t_u_user','t_e_event.userid','=','t_e_event.userid')
+                                ->where('eventid',$data['eventid'])
+                                ->pluck('phone');
+                            $time=DB::table('t_e_event')->where('eventid',$data['eventid'])->pluck('created_at');
+                            $this->_sendSms($phone,'办事请求','answer',$name,$time);
+                        }
                     }else {
                         return ['msg' => '您已经响应过此办事','icon' => 2];
                     }
@@ -442,13 +451,22 @@ class MyExpertController extends Controller
                         //查询是否存在响应的情况
                         $verify = DB::table('t_c_consultresponse')->where(['expertid' => $expertid,'consultid' => $data['consultid'],'state' => 2])->first();
                         if(!$verify){
-                            DB::table('t_c_consultresponse')->insert([
+                            $res=DB::table('t_c_consultresponse')->insert([
                                 'expertid' => $expertid,
                                 'consultid' => $data['consultid'],
                                 'state' => 2,
                                 'responsetime' => date('Y-m-d H-:i:s',time()),
                                 'updated_at' => date('Y-m-d H-:i:s',time())
                             ]);
+                            if($res){
+                                $name=DB::table("t_u_expert")->where("expertid",$expertid)->pluck('expertname');
+                                $phone=DB::table('t_c_consult')
+                                    ->leftJoin('t_u_user','t_c_consult.userid','=','t_u_user.userid')
+                                    ->where('consultid',$data['consultid'])
+                                    ->pluck('phone');
+                                $time=DB::table('t_c_consult')->where('consultid',$data['consultid'])->pluck('created_at');
+                                $this->_sendSms($phone,'视频咨询','answer',$name,$time);
+                            }
                         }else {
                             return ['msg' => '您已经响应过此咨询事件','icon' => 2];
                         }
@@ -539,6 +557,14 @@ class MyExpertController extends Controller
             }
         }
         return view("myexpert.standard",compact('fee'));
+    }
+
+    /**我的办事视频
+     * @param $eventId
+     * @return mixed
+     */
+    public function myEventVideo($eventId){
+        return view('myenterprise.myEeventVideo',compact('eventId'));
     }
 
 

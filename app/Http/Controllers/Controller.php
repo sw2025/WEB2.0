@@ -103,7 +103,7 @@ abstract class Controller extends BaseController{
         return $payNo;
     }
 
-    public  function  _sendSms($mobile,$message,$action){
+    public  function  _sendSms($mobile,$message,$action,$name='',$time=''){
         ini_set("display_errors", "on");
         require(base_path().'/vendor/alidayus/api_sdk/vendor/autoload.php');
         //require_once dirname(__DIR__) . '/api_sdk/vendor/autoload.php';
@@ -133,12 +133,21 @@ abstract class Controller extends BaseController{
             $request->setTemplateCode("SMS_84725296");//设置模板
         }elseif($action=='change1'){
             $request->setTemplateCode("SMS_84725295");//设置模板
+        }elseif($action=='answer'){
+            $request->setTemplateCode("SMS_97795045");//设置模板
+        }elseif($action=='reselects'){
+            $request->setTemplateCode("SMS_98165010");//设置模板
         }else{
             $request->setTemplateCode("SMS_84725295");//设置模板
         }
-
         //选填-假如模板中存在变量需要替换则为必填(JSON格式),友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
-        $request->setTemplateParam("{\"code\":\"{$message}\"}");
+       if($action=='answer'){
+           $request->setTemplateParam("{\"expert\":\"{$name}\",\"time\":\"{$time}\",\"action\":\"{$message}\"}");
+       }elseif($action=='reselects'){
+           $request->setTemplateParam("{\"name\":\"{$name}\",\"action\":\"{$message}\"}");
+       }else{
+           $request->setTemplateParam("{\"code\":\"{$message}\"}");
+       }
         //选填-发送短信流水号
         $request->setOutId("1234");
         //发起访问请求
