@@ -443,7 +443,11 @@ class PublicController extends Controller
      */
     public  function getTeamId(){
         $res=array();
-        $teamId=DB::table("t_s_im")->where(["consultid"=>$_POST['consultId']])->pluck("tid");
+        if(!$_POST['eventId']){
+            $teamId=DB::table("t_s_im")->where(["consultid"=>$_POST['consultId']])->pluck("tid");
+        }else{
+            $teamId=DB::table("t_s_im")->where(["eventid"=>$_POST['eventId']])->pluck("tid");
+        }
         if($teamId){
             $res['code']="success";
             $res['tid']=$teamId;
@@ -960,6 +964,22 @@ class PublicController extends Controller
 
         }
     }
-    
-    
+
+    /*public  function createTeam(){
+        $eventId=$_POST['eventId'];
+        $expertIds=array();
+        $expertId=DB::table("t_e_eventresponse")->where(["eventid"=>$eventId,"state"=>3])->get();
+        foreach ($expertId as $value){
+            if(!in_array($value->expertid,$expertIds)){
+                $expertIds[]=$value->expertid;
+            }
+        }
+        $res=\UserClass::createEventGroups($expertIds,$eventId);
+        if($res){
+            return "success";
+        }else{
+            return "false";
+        }
+
+    }*/
 }

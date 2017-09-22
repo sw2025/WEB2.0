@@ -35,9 +35,12 @@ var userUID = readCookie("uid")
  */
 var yunXin = new YX(userUID)
 var consultId=$("#consult").val();
+var eventId=$("#eventVideo").val();
+consultId=(typeof(consultId)!='undefined')?consultId:"";
+eventId=(typeof(eventId)!='undefined')?eventId:"";
 $.ajax({
     url:"/getTeamId",
-    data:{"consultId":consultId},
+    data:{"consultId":consultId,"eventId":eventId},
     dataType:"json",
     type:"POST",
     success:function(res){

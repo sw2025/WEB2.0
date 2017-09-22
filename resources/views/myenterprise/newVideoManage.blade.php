@@ -224,9 +224,22 @@
                 var account=res['account']
                 switch(code){
                     case "success":
+                        $.cookie("videodomain",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("videodescribe",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("videodateStart",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("videodateEnd",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("videoindustry",'',{epath:'/',domain:'sw2025.com'});
+                        $.cookie("videoreselect","",{path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('uct_video/applyVideo')}}";
                         break;
                     case "enterprise":
+                        layer.confirm('您还未进行企业认证？', {
+                            btn: ['去认证','暂不需要'], //按钮
+                        }, function(){
+                            window.location.href="{{asset('uct_member')}}";
+                        }, function(){
+                            layer.close();
+                        });
                         window.location.href="{{asset('uct_member')}}";
                         break;
                     case "error":
@@ -255,10 +268,22 @@
                 var account=res['account']
                 switch(code){
                     case "success":
+                        $.cookie("videodomain",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("videodescribe",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("videodateStart",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("videodateEnd",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("videoindustry",'',{epath:'/',domain:'sw2025.com'});
+                        $.cookie("videoreselect","",{path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('uct_works/applyVideo')}}";
                         break;
                     case "enterprise":
-                        window.location.href="{{asset('uct_member')}}";
+                        layer.confirm('您还未进行企业认证？', {
+                            btn: ['去认证','暂不需要'], //按钮
+                        }, function(){
+                            window.location.href="{{asset('uct_member')}}";
+                        }, function(){
+                            layer.close();
+                        });
                         break;
                     case "error":
                         pop(code,account);

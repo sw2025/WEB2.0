@@ -996,6 +996,15 @@ class MyEnterpriseController extends Controller
                     "state"=>3,
                     "updated_at"=>date("Y-m-d H:i:s")
                 ]);
+                $phone=DB::table('t_u_expert')
+                    ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                    ->where('expertid',$expertId)
+                    ->pluck('phone');
+                $name=DB::table('t_e_event')
+                    ->leftJoin('t_u_enterprise','t_e_event.userid','=','t_u_enterprise.userid')
+                    ->where('eventid',$_POST['eventId'])
+                    ->pluck('enterprisename');
+                $this->_sendSms($phone,'办事选择','reselect',$name);
             }
             DB::table("t_e_eventverify")->insert([
                 'eventid' => $_POST['eventId'],
@@ -1007,6 +1016,7 @@ class MyEnterpriseController extends Controller
             throw $e;
         }
         if(!isset($e)){
+            \UserClass::createEventGroups($expertIds,$_POST['eventId']);
             $result['code']="success";
         }else{
             $result['code']="error";
@@ -1369,7 +1379,6 @@ class MyEnterpriseController extends Controller
                     "created_at"=>date("Y-m-d H:i:s",time()),
                     "updated_at"=>date("Y-m-d H:i:s",time()),
                 ]);
-                
             }
             $paynos=$this->getPayNum("消费");
             DB::table("t_u_bill")->insert([
@@ -1400,6 +1409,16 @@ class MyEnterpriseController extends Controller
                         "created_at"=>date("Y-m-d H:i:s",time()),
                         "updated_at"=>date("Y-m-d H:i:s")
                     ]);
+                    $phone=DB::table('t_u_expert')
+                        ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                        ->where('expertid',$ID->expertid)
+                        ->pluck('phone');
+                    $name=DB::table('t_c_consult')
+                        ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
+                        ->where('consultid',$_POST['consultId'])
+                        ->pluck('enterprisename');
+                    $this->_sendSms($phone,'视频咨询','reselect',$name);
+
                 }else{
                     DB::table("T_C_CONSULTRESPONSE")->insert([
                         "consultid"=>$_POST['consultId'],
@@ -1708,5 +1727,15 @@ class MyEnterpriseController extends Controller
         $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
         return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2','domains'));
     }
+
+    /**办事管理视频
+     * @param $eventId
+     * @return mixed
+     */
+    public function eventVideo($eventId){
+        return view('myenterprise.enevtVideo',compact('eventId'));
+    }
+
+   
 
 }

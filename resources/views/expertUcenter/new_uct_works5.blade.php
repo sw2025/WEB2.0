@@ -118,7 +118,7 @@
                             </div>
                             <div class="camera-comunicate">
                                 <span class="camera"><img src="{{asset('img/camera.png')}}" /></span>
-                                <a href="javascript:;" class="video-comu">视频沟通</a>
+                                <a href="{{url('uct_mywork/myEventVideo/'.$datas->eventid)}}" class="video-comu">视频沟通</a>
                             </div>
                         </div>
                     </div>

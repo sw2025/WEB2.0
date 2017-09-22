@@ -93,6 +93,7 @@
                             <span class="green-circle">5</span>办事管理<span class="card-step-cap">&gt;</span>
                             <span class="gray-circle">6</span>完成
                         </div>
+                        <input type="hidden" id="eventId" value="{{$datas->eventid}}" >
                         <div class="uct-video-manage">
                             <div class="video-manage-top">
                                 <div class="vid-man-top-lt vid-man-top-main">
@@ -120,7 +121,7 @@
                                         </div>
                                         <div class="camera-comunicate">
                                             <span class="camera"><img src="{{asset('img/camera.png')}}" /></span>
-                                            <a href="javascript:;" class="video-comu">视频沟通</a>
+                                            <a href="{{url('uct_works/eventVideo/'.$datas->eventid)}}" class="video-comu">视频沟通</a>
                                         </div>
                                     </div>
                                 </div>
@@ -672,7 +673,7 @@
             });*/
         });
 
-
     </script>
     <!-- 修改意见/end -->
+
 @endsection

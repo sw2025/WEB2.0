@@ -65,7 +65,7 @@ Route::post('dealextcollect','ExpertController@dealCollect');
 Route::post('replyextmessage','ExpertController@replyMessage');
 
 /**************************************个人中心公共的路由***********************************************/
-Route::group(['middleware' => ['auth']], function () {
+/*Route::group(['middleware' => ['auth']], function () {*/
 //修改手机号获取验证码
     Route::post('getcodes', 'CenterController@getcodes');
 //修改手机号获取验证码
@@ -208,6 +208,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('uct_works/reselect', 'MyEnterpriseController@reselect');
 //申请办事服务,反选专家处理
     Route::post('selectExpert', 'MyEnterpriseController@selectExpert');
+//办事视频咨询
+    Route::get('uct_works/eventVideo/{eventId}','MyEnterpriseController@eventVideo');
 //办事完成，给专家星级评论
     Route::post('toExpertMsg', 'MyEnterpriseController@toExpertMsg');
 //办事完成，给专家评论
@@ -257,6 +259,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('uct_expertData', 'MyExpertController@expertData');
 //我的办事
     Route::get('uct_mywork', 'MyExpertController@mywork');
+//我的办事视频
+Route::get('uct_mywork/myEventVideo/{eventid}', 'MyExpertController@myEventVideo');
 //我的办事详情
     Route::get('uct_mywork/workDetail/{eventid}', 'MyExpertController@workDetail');
 //响应办事
@@ -272,7 +276,7 @@ Route::group(['middleware' => ['auth']], function () {
 //收费标准
     Route::any('uct_standard', 'MyExpertController@standard');
     /***********************************视频路由*******************************************/
-});
+/*});*/
 //创建群组
 Route::get('creatGroup','PublicController@createGroups');
 //获取accid和token
