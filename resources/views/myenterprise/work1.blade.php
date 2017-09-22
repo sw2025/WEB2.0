@@ -21,27 +21,6 @@
                                     <em>办事申请</em>IS APPLYING
                                 </span>
                     </div>
-
-                    {{--<div class="datas-sel mt20" style="margin-top: 20px;z-index: 5">
-                        <span class="datas-sel-cap padd12">问题行业</span>
-                        <a href="javascript:;" class="datas-sel-def" id="industrys" >请选择</a>
-                        <ul class="datas-list">
-                            <li>IT|通信|电子|互联网</li>
-                            <li>金融业</li>
-                            <li>房地产|建筑业</li>
-                            <li>商业服务</li>
-                            <li>贸易|批发|零售|租赁业</li>
-                            <li>文体教育|工艺美术</li>
-                            <li>生产|加工|制造</li>
-                            <li>交通|运输|物流|仓储</li>
-                            <li>服务业</li>
-                            <li>文化|传媒|娱乐|体育</li>
-                            <li>能源|矿产|环保</li>
-                            <li>政府|非盈利机构</li>
-                            <li>农|林|牧|渔|其他</li>
-                        </ul>
-                    </div>--}}
-
                     <div class="publish-need-sel zindex3" style="margin-top: 20px;">
                         <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
                         <ul class="publish-need-list" style="display: none;">
