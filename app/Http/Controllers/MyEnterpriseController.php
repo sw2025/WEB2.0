@@ -986,7 +986,7 @@ class MyEnterpriseController extends Controller
         $expertIds=$_POST['expertIds'];
         try{
 
-            foreach ($expertIds as $expertId) {
+           foreach ($expertIds as $expertId) {
                 $phone = DB::table('t_u_expert')
                     ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
                     ->where('expertid', $expertId)

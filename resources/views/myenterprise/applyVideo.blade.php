@@ -229,25 +229,17 @@
                                         if(selected.length==5){
                                             $(".uct-works-expava").show();
                                         }else{
-                                            /*var domains=$(".publ-need-sel-def").text().trim();
-                                            var industry=$("#industrys").text().trim();
-                                            var describes=$(".uct-works-txt").val();*/
                                             $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
                                             $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                                             $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                             $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                            /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                             window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                         }
                                     }else{
-                                        /*var domains=$(".publ-need-sel-def").text().trim();
-                                        var industry=$("#industrys").text().trim();
-                                        var describes=$(".uct-works-txt").val();*/
                                         $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                        /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                         window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                     }
                                 },btn2: function(index, layero){
@@ -272,25 +264,17 @@
                                     if(selected.length==5){
                                         $(".uct-works-expava").show();
                                     }else{
-                                        /*var domains=$(".publ-need-sel-def").text().trim();
-                                         var industry=$("#industrys").text().trim();
-                                         var describes=$(".uct-works-txt").val();*/
                                         $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                         $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                        /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                         window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                     }
                                 }else{
-                                    /*var domains=$(".publ-need-sel-def").text().trim();
-                                     var industry=$("#industrys").text().trim();
-                                     var describes=$(".uct-works-txt").val();*/
                                     $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                    /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                     window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                                 }
                             }, function(){
@@ -312,9 +296,6 @@
                         if(selected.length==5){
                             $(".uct-works-expava").show();
                         }else{
-                            /*var domains=$(".publ-need-sel-def").text().trim();
-                             var industry=$("#industrys").text().trim();
-                             var describes=$(".uct-works-txt").val();*/
                             $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
                             $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                             $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
@@ -323,9 +304,6 @@
                             window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
                         }
                     }else{
-                        /*var domains=$(".publ-need-sel-def").text().trim();
-                         var industry=$("#industrys").text().trim();
-                         var describes=$(".uct-works-txt").val();*/
                         $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
@@ -446,7 +424,6 @@
                         $(".uct-works-txt").val(describe);
                         $("#start").text(dateStart);
                         $("#end").text(dateEnd);
-                        /*$("#industrys").text(industry);*/
                         layer.confirm(res.msg+'申请失败,请重新申请', {
                             btn: ['确定'] //按钮
                         });
@@ -464,9 +441,9 @@
         //日期范围限制
         var start = {
             elem: '#start',
-            format: 'YYYY/MM/DD hh:mm:ss',
-            min: '{{date('Y-m-d H:i:s')}}', //设定最小日期为当前日期
-            max: '2066-12-31 23:59:59', //最大日期
+            format: 'YYYY/MM/DD hh:mm',
+            min: '{{date('Y-m-d H:i')}}', //设定最小日期为当前日期
+            max: '2066-12-31 23:59', //最大日期
             istime: true,
             istoday: false,
             choose: function(datas){
@@ -476,9 +453,9 @@
         };
         var end = {
             elem: '#end',
-            format: 'YYYY/MM/DD hh:mm:ss',
-            min: '{{date('Y-m-d H:i:s')}}',
-            max: '2066-12-31 23:59:59',
+            format: 'YYYY/MM/DD hh:mm',
+            min: '{{date('Y-m-d H:i')}}',
+            max: '2066-12-31 23:59',
             istime: true,
             istoday: false,
             choose: function(datas){

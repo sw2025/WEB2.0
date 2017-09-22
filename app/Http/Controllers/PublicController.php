@@ -354,9 +354,9 @@ class PublicController extends Controller
             ->take(1)
             ->pluck('configid');
         if($enterprise!=3){
-            $result['enterpriseid']=$enterpriseId;
             $result['code']="enterprise";
-            return $result;
+        }else{
+            $result['code']='success';
         }
         $members=DB::table("t_u_enterprisemember")
             ->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")
@@ -402,8 +402,32 @@ class PublicController extends Controller
         }else{
             $result['code']="error";
         }
+        $result['enterpriseid']=$enterpriseId;
         return $result;
 
+    }
+
+    /**判断是否认证企业
+     * @return array
+     * @throws \Exception
+     */
+    public  function IsEnterprise(){
+        $result=array();
+        $userId=$_POST['userId'];
+        $enterpriseId=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("enterpriseid");
+        $enterprise=DB::table("t_u_enterprise")
+            ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
+            ->where("t_u_enterprise.enterpriseid",$enterpriseId)
+            ->orderBy("t_u_enterpriseverify.id","desc")
+            ->take(1)
+            ->pluck('configid');
+        if($enterprise!=3){
+            $result['code']="enterprise";
+        }else{
+            $result['code']='success';
+        }
+        $result['enterpriseid']=$enterpriseId;
+        return $result;
     }
 
     /**首页服务介绍

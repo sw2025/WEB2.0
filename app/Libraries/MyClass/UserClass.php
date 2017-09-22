@@ -214,6 +214,7 @@
          * @param $consultId
          */
         public  static function createEventGroups($expertIDS,$eventId){
+
             $accids=array();
             $userIds=DB::table("t_u_expert")->select("userid")->whereIn("expertid",$expertIDS)->get();
             foreach ($userIds as $userId){
@@ -236,11 +237,6 @@
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
-            if($res){
-                return true;
-            }else{
-                return false;
-            }
         }
     }
 ?>

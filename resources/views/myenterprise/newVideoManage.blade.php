@@ -215,8 +215,8 @@
     $("#applyVideo").on("click",function(){
         var userId=$.cookie('userId');
         $.ajax({
-            url:"{{asset('IsMember')}}",
-            data:{"userId":userId,"type":"work"},
+            url:"{{asset('IsEnterprise')}}",
+            data:{"userId":userId},
             dateType:"json",
             type:"POST",
             success:function(res){
@@ -240,16 +240,6 @@
                         }, function(){
                             layer.close();
                         });
-                        window.location.href="{{asset('uct_member')}}";
-                        break;
-                    case "error":
-                        pop(code,account);
-                        break;
-                    case "expried":
-                        pop(code,account);
-                        break;
-                    case "finish":
-                        pop(code,account)
                         break;
                 }
             }
@@ -259,8 +249,8 @@
     $("#applyVideo1").on("click",function(){
         var userId=$.cookie('userId');
         $.ajax({
-            url:"{{asset('IsMember')}}",
-            data:{"userId":userId,"type":"work"},
+            url:"{{asset('IsEnterprise')}}",
+            data:{"userId":userId},
             dateType:"json",
             type:"POST",
             success:function(res){
@@ -284,15 +274,6 @@
                         }, function(){
                             layer.close();
                         });
-                        break;
-                    case "error":
-                        pop(code,account);
-                        break;
-                    case "expried":
-                        pop(code,account);
-                        break;
-                    case "finish":
-                        pop(code,account)
                         break;
                 }
             }
