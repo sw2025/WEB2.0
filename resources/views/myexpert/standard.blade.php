@@ -11,7 +11,7 @@
                             @if($fee==0)
                             <span class="recharge-opt others">
                                 <input class="rad-inp" checked="true" type="radio" id="rad4" name="money">
-                                <label for="rad4" class="recharge-radio"><span></span>收费</label><input type="text" placeholder="请输入金额" readonly="" id="money" class="recharge-inp-sum">&nbsp;&nbsp;/5分钟
+                                <label for="rad4" class="recharge-radio"><span></span>收费</label><input type="text" placeholder="请输入金额" readonly="" id="money" class="recharge-inp-sum">&nbsp;&nbsp;元/5分钟
                             </span>
                             <span class="recharge-opt focus">
                                 <input class="rad-inp" type="radio" id="rad1" name="money">
@@ -20,7 +20,7 @@
                             @else
                                 <span class="recharge-opt focus others">
                                 <input class="rad-inp" checked="true" type="radio" id="rad4" name="money">
-                                <label for="rad4" class="recharge-radio"><span></span>收费</label><input type="text" value="{{$fee}}" placeholder="请输入金额" readonly="" id="money" class="recharge-inp-sum">&nbsp;&nbsp;元/次
+                                <label for="rad4" class="recharge-radio"><span></span>收费</label><input type="text" value="{{$fee}}" placeholder="请输入金额" readonly="" id="money" class="recharge-inp-sum">&nbsp;&nbsp;元/5分钟
                             </span>
                                 <span class="recharge-opt ">
                                 <input class="rad-inp" type="radio" id="rad1" name="money">
@@ -34,7 +34,6 @@
                             <div class="recharge-btn-box">
                                 <button class="test-btn recharge-submit" id="submit" type="button">保存</button>
                             </div>
-
                     </div>
                 </div>
             </div>

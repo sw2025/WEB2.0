@@ -267,7 +267,7 @@ class MyExpertController extends Controller
                         if($res){
                             $name=DB::table("t_u_expert")->where("expertid",$expertid)->pluck('expertname');
                             $phone=DB::table('t_e_event')
-                                ->leftJoin('t_u_user','t_e_event.userid','=','t_e_event.userid')
+                                ->leftJoin('t_u_user','t_e_event.userid','=','t_u_user.userid')
                                 ->where('eventid',$data['eventid'])
                                 ->pluck('phone');
                             $time=DB::table('t_e_event')->where('eventid',$data['eventid'])->pluck('created_at');

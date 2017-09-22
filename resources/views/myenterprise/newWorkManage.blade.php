@@ -232,8 +232,6 @@
                 success:function(res){
                     var code=res['code'];
                     var account=res['account']
-                    var date = new Date();
-                    date.setTime(date.getTime() + (120 * 60 * 1000));
                     switch(code){
                         case "success":
                             $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
@@ -243,7 +241,13 @@
                             window.location.href="{{asset('uct_works/applyWork')}}";
                         break;
                         case "enterprise":
-                            window.location.href="{{asset('uct_member')}}";
+                            layer.confirm('您还未进行企业认证？', {
+                                btn: ['去认证','暂不需要'], //按钮
+                            }, function(){
+                                window.location.href="{{asset('uct_member')}}";
+                            }, function(){
+                                layer.close();
+                            });
                             break;
                         case "error":
                             pop(code,account);
@@ -270,8 +274,6 @@
                 success:function(res){
                     var code=res['code'];
                     var account=res['account']
-                    var date = new Date();
-                    date.setTime(date.getTime() + (120 * 60 * 1000));
                     switch(code){
                         case "success":
                             $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
@@ -288,7 +290,6 @@
                             }, function(){
                                 layer.close();
                             });
-                            window.location.href="{{asset('uct_member')}}";
                             break;
                         case "error":
                             pop(code,account);
