@@ -30,9 +30,16 @@ class ExpertUcenterController extends Controller
     /**修改手机号2
      * @return mixed
      */
-    public function  changeTel2(){
-        return view("expertUcenter.changeTel2");
+    public function  changeTel2(Request $request){
+        if(session('phoneCode')){
+            $request->session()->forget('phoneCode');
+            return view("expertUcenter.changeTel2");
+        }else{
+            return redirect('/basic/changeTel');
+        }
+
     }
+
     /**修改密码
      * @return mixed
      */

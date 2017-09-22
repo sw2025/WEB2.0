@@ -23,48 +23,59 @@
             </div>
         </div>
 <script type="text/javascript">
-    $(function(){
-        // 获取验证码
-        var wait=60;
-        function time(o) {
-            if (wait == 0) {
-                o.removeAttribute("disabled");
-                o.value="获得验证码";
-                wait = 60;
-            } else {
-                o.setAttribute("disabled", true);
-                o.value= wait + "秒";
-                wait--;
-                setTimeout(function() {
-                            time(o)
-                        },
-                        1000)
-            }
+    // 获取验证码
+    var wait=60;
+    function time(o) {
+        if (wait == 0) {
+            o.removeAttribute("disabled");
+            o.value="获得验证码";
+            wait = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.value= wait + "秒";
+            wait--;
+            setTimeout(function() {
+                    time(o)
+                },
+                1000)
         }
+    }
+
+    $(function(){
         document.getElementById("getCode").onclick=function(){
+            var obj = this;
             var phone=$("#phone").val();
             var reg1 = /^1[3578][0-9]{9}$/;//手机号
             var userId=$.cookie("userId");
             if(!(reg1.test(phone))){
-                layer.tips('手机号不能为空或输入错误', '.change-tel-tel', {
+                layer.tips('手机号不能为空或输入错误', '.', {
                     tips: [2, '#00a7ed'],
                     time: 4000
                 });
                 return false;
             };
-            time(this);
-            verifyPhone(userId)
+            /*
+             time(this);
+             */
+            verifyPhone(userId,obj)
         }
 
     })
-    var verifyPhone=function(userId){
+    var verifyPhone=function(userId,obj){
+        var newPhone=$("#phone").val();
         $.ajax({
             url:"{{asset('getcodes')}}",
-            data:{"userId":userId,"action":"change2"},
+            data:{"userId":userId,"action":"change2","newPhone":newPhone},
             dateType:"json",
             type:"POST",
             success:function(res){
-                if(res['code']=="code"){
+                if(res['code']=="success"){
+                    time(obj);
+                    layer.tips(res['msg'], '.change-tel-get', {
+                        tips: [2, '#00a7ed'],
+                        time: 4000
+                    });
+                }else {
                     layer.tips(res['msg'], '.change-tel-get', {
                         tips: [2, '#00a7ed'],
                         time: 4000
@@ -100,22 +111,22 @@
             type:"POST",
             success:function(res){
                 if(res['code']=="phone"){
-                   layer.tips(res['msg'], '.change-tel-tel', {
-                       tips: [2, '#00a7ed'],
-                       time: 4000
-                   });
-                   return false;
-               }else if(res['code']=="code"){
-                   layer.tips(res['msg'], '.change-tel-get', {
-                       tips: [2, '#00a7ed'],
-                       time: 4000
-                   });
-                   return false;
-               }else{
-                   $.cookie("userId",'',{expires:7,path:'/',domain:'web_sheng.com'});
-                   $.cookie("name",'',{expires:7,path:'/',domain:'web_sheng.com'});
-                   window.location.href="{{asset('login')}}"
-               }
+                    layer.tips(res['msg'], '.change-tel-tel', {
+                        tips: [2, '#00a7ed'],
+                        time: 4000
+                    });
+                    return false;
+                }else if(res['code']=="code"){
+                    layer.tips(res['msg'], '.change-tel-get', {
+                        tips: [2, '#00a7ed'],
+                        time: 4000
+                    });
+                    return false;
+                }else{
+                    $.cookie("userId",'',{expires:7,path:'/',domain:'web_sheng.com'});
+                    $.cookie("name",'',{expires:7,path:'/',domain:'web_sheng.com'});
+                    window.location.href="{{asset('login')}}"
+                }
             }
         })
     })

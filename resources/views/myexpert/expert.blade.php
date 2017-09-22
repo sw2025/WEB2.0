@@ -49,25 +49,6 @@
                                 <input class="datas-sel-name" type="text" placeholder=""
                                        value="@if(!empty($result)){{$result->expertname }}@else @endif"/>
                             </div>
-                            <div class="datas-sel zindex3">
-                                <span class="datas-sel-cap">擅长行业</span>
-                                <a href="javascript:;" class="datas-sel-def" id="industrys">请选择</a>
-                                <ul class="datas-list">
-                                    <li>IT|通信|电子|互联网</li>
-                                    <li>金融业</li>
-                                    <li>房地产|建筑业</li>
-                                    <li>商业服务</li>
-                                    <li>贸易|批发|零售|租赁业</li>
-                                    <li>文体教育|工艺美术</li>
-                                    <li>生产|加工|制造</li>
-                                    <li>交通|运输|物流|仓储</li>
-                                    <li>服务业</li>
-                                    <li>文化|传媒|娱乐|体育</li>
-                                    <li>能源|矿产|环保</li>
-                                    <li>政府|非盈利机构</li>
-                                    <li>农|林|牧|渔|其他</li>
-                                </ul>
-                            </div>
                             <div class="publish-need-sel datas-newchange zindex2">
                                 <span class="publ-need-sel-cap">擅长领域</span>
                                 <a href="javascript:;" id="industry" class="publ-need-sel-def">
@@ -262,24 +243,24 @@
             var category = $('#category').html();
             var name = $('.datas-sel-name').val();
             var industry = $('#industry').attr('index') ? $('#industry').attr('index') : '';
-            var industrys = $("#industrys").html();
+            //var industrys = $("#industrys").html();
             var address = $('#address').html();
             var photo1 = $('#photo1').attr('index');
             var photo2 = $('#photo2').attr('index');
             var brief = $('#brief').val();
-            if(brief.length>30 && brief.length<500){
-            }else{
-                $('.submit-audit').attr('disabled', false);
-                $(this).html('提交认证');
-                layer.msg('专家简介字数不符',{'icon':5});
-                return false;
-            }
-            console.log(name == '' || photo1 == '' || industry == '');
-            if (name == '' || photo1 == '' || industry == '' || industrys == '' || address == '' || brief == '' || photo1 == '' || photo2 == '') {
+
+            if (name == '' || photo1 == '' || industry == '' || address == '' || brief == '') {
                 layer.msg('请把信息填写完整');
                 $('.submit-audit').attr('disabled', false);
                 return false;
             } else {
+                if(brief.length>30 && brief.length<500){
+                }else{
+                    $('.submit-audit').attr('disabled', false);
+                    $(this).html('提交认证');
+                    layer.msg('专家简介字数不符',{'icon':5});
+                    return false;
+                }
                 $.ajax({
                     url: "{{asset('/uct_expertData')}}",
                     data: {
@@ -289,8 +270,7 @@
                         "address": address,
                         "photo1": photo1,
                         "photo2": photo2,
-                        "brief": brief,
-                        "industrys": industrys
+                        "brief": brief
                     },
                     dataType: "json",
                     type: "POST",
