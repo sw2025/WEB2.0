@@ -155,10 +155,10 @@
         </div>
         <div class="col-md-6 contacts">
             <p class="footer-title">联系升维</p>
-            <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：400-898-8557</p>
-            <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>Mail：北京市海淀区中关村大街</p>
-            <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市海淀区中关村大街15-15号创业公社 · 中关村</p>
-            <p class="copyright">京ICP备 XXXXXXXXX<span></span>copyright &copy; XXXX 2017</p>
+            <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：010-64430881</p>
+            <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>E-Mail：shengwei2025@163.com</p>
+            <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市朝阳区安贞里街道浙江大厦1601</p>
+            <p class="copyright">京ICP备17053834号<span></span>copyright &copy; 2017 sw2025.com</p>
         </div>
         <!-- </div> -->
     </div>
