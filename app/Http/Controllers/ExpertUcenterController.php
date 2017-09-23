@@ -459,4 +459,26 @@ class ExpertUcenterController extends Controller
         $view="works".$configId;
         return view("expertUcenter.".$view,compact("datas","counts","selected","selExperts","eventId"));
     }
+
+    /**判断用户是否绑定银行卡
+     * @return array
+     */
+    public  function expertHaveCard(){
+        $res=array();
+        $userId=session('userId');
+        $counts=DB::table('t_u_bank')->where('userid',$userId)->count();
+        if($counts){
+            $states=DB::table('t_u_bank')->where('userid',$userId)->pluck('state');
+            if($states==1 ){
+                $res['code']='0';
+            }elseif($states==0){
+                $res['code']='1';
+            }else{
+                $res['code']='2';
+            }
+        }else{
+            $res['code']='0';
+        }
+        return $res;
+    }
 }

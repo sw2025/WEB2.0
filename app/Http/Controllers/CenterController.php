@@ -844,12 +844,20 @@ class CenterController extends Controller
     public  function haveCard(){
         $res=array();
         $userId=session('userId');
-        $states=DB::table('t_u_bank')->where('userid',$userId)->pluck('state');
-        if($states!=0){
-           $res['code']='error';
+        $counts=DB::table('t_u_bank')->where('userid',$userId)->count();
+        if($counts){
+            $states=DB::table('t_u_bank')->where('userid',$userId)->pluck('state');
+            if($states==1 ){
+                $res['code']='0';
+            }elseif($states==0){
+                $res['code']='1';
+            }else{
+                $res['code']='2';
+            }
         }else{
-            $res['code']='success';
+            $res['code']='0';
         }
+
         return $res;
     }
 }

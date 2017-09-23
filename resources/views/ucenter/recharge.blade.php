@@ -123,7 +123,7 @@
            dateType:"json",
             type:"POST",
             success:function(res){
-                if(res['code']!="success"){
+                if(res['code']==0){
                     layer.confirm('您尚未绑定银行卡？', {
                         btn: ['去绑定','暂不需要'], //按钮
                     }, function(){
@@ -131,8 +131,10 @@
                     }, function(){
                         layer.close();
                     });
+                }else if(res['code']==2){
+                    layer.confirm('您银行卡尚未绑定成功!');
                 }else{
-                    window.location.href="{{url('uct_recharge/cash')}}"
+                    window.location.href="{{url('uct_recharge/cash')}}";
                 }
             }
 

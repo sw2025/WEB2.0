@@ -31,11 +31,7 @@
                     layer.confirm('可用金额不足，无法提现', {
                         btn: ['确定'] //按钮
                     });
-                    $(".cash-btn").hide();
-                }else{
-                    $enterValPre=$leftNum;
-                    $('.avai-money-sum').html(surplusMoney)
-                    $(".cash-btn").show();
+
                 }
             }else{
                 $('.avai-money-sum').html($enterValPre)
