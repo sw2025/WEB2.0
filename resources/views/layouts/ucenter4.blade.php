@@ -251,42 +251,31 @@
             $(".before-login").show();
             $(".after-login").hide();
         }
-        if($.cookie("expertAvatar") && $.cookie("phone") && $.cookie("expertRemark")){
-            $(".v-avatar").attr('src',"{{env('ImagePath')}}"+$.cookie("expertAvatar"));
-            $(".v-nick").html($.cookie("phone"));
-            if($.cookie('expertRemark')=="success"){
-                $(".havevip").show();
-                $(".novip").hide();
-                $(".goto-renzh").attr("title","已认证");
-            }else{
-                $(".havevip").hide();
-                $(".novip").show();
-            }
-        }else{
-            $.ajax({
-                url:"{{asset('getAvatar')}}",
-                data:{userId:$.cookie('userId'),type:"expert"},
-                dateType:"json",
-                type:"POST",
-                success:function(res){
-                    $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['expertAvatar']);
-                    $(".v-nick").html(res['phone']);
-                    if(res['expertRemark']=="success"){
-                        $(".havevip").show();
-                        $(".novip").hide();
-                        $(".goto-renzh").attr("title","已认证");
-                    }else{
-                        $(".havevip").hide();
-                        $(".novip").show();
-                    }
-                    var date = new Date();
-                    date.setTime(date.getTime() + (120 * 60 * 1000));
-                    $.cookie("expertAvatar",res['expertAvatar'],{expires:date,path:'/',domain:'sw2025.com'});
-                    $.cookie("phone",res['phone'],{expires:date,path:'/',domain:'sw2025.com'});
-                    $.cookie("expertRemark",res['remark'],{expires:date,path:'/',domain:'sw2025.com'});
+
+        $.ajax({
+            url:"{{asset('getAvatar')}}",
+            data:{userId:$.cookie('userId'),type:"expert"},
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['expertAvatar']);
+                $(".v-nick").html(res['phone']);
+                if(res['expertRemark']=="success"){
+                    $(".havevip").show();
+                    $(".novip").hide();
+                    $(".goto-renzh").attr("title","已认证");
+                }else{
+                    $(".havevip").hide();
+                    $(".novip").show();
                 }
-            })
-        }
+                var date = new Date();
+                date.setTime(date.getTime() + (120 * 60 * 1000));
+                $.cookie("expertAvatar",res['expertAvatar'],{expires:date,path:'/',domain:'sw2025.com'});
+                $.cookie("phone",res['phone'],{expires:date,path:'/',domain:'sw2025.com'});
+                $.cookie("expertRemark",res['remark'],{expires:date,path:'/',domain:'sw2025.com'});
+            }
+        })
+
         $.ajax({
             url:"{{url('getMessage')}}",
             data:{userId:$.cookie('userId')},

@@ -100,8 +100,9 @@ class CenterController extends Controller
         $pays=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"支出"])->sum("money");
         $expends=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"在途"])->sum("money");
         $balance=$incomes-$pays-$expends;
-        $bankcard=DB::table("t_u_bank")->where(["userid"=>$userId,"state"=>0])->pluck("bankcard");
-        return view("ucenter.recharge",compact("incomes","pays","expends","balance","bankcard"));
+        $bankcard=DB::table("t_u_bank")->where("userid",$userId)->pluck("bankcard");
+        $state=DB::table("t_u_bank")->where("userid",$userId)->pluck("state");
+        return view("ucenter.recharge",compact("incomes","pays","expends","balance","bankcard","state"));
     }
 
     /**充值
@@ -759,7 +760,7 @@ class CenterController extends Controller
                 "account"=>$_POST['account'],
                 "bankcard"=>$_POST['bankCard'],
                 "bankfullname"=>$_POST['bankFullName'],
-                "state"=>0,
+                "state"=>2,
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
         }else{
@@ -769,7 +770,7 @@ class CenterController extends Controller
                 "account"=>$_POST['account'],
                 "bankcard"=>$_POST['bankCard'],
                 "bankfullname"=>$_POST['bankFullName'],
-                "state"=>0,
+                "state"=>2,
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
@@ -796,6 +797,10 @@ class CenterController extends Controller
         $data=$request->all();
         $money=DB::table("t_u_bank")->where("userId",$data['userId'])->pluck("money");
         if($money==$data['money']){
+            DB::table('t_u_bank')->where('userId',$data['userId'])->update([
+                "state"=>0,
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
             $res['code']="success";
         }else{
             $res['code']="error";
@@ -834,5 +839,17 @@ class CenterController extends Controller
         }
         return $result;
 
+    }
+
+    public  function haveCard(){
+        $res=array();
+        $userId=session('userId');
+        $states=DB::table('t_u_bank')->where('userid',$userId)->pluck('state');
+        if($states!=0){
+           $res['code']='error';
+        }else{
+            $res['code']='success';
+        }
+        return $res;
     }
 }
