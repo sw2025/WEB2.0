@@ -48,10 +48,8 @@ class ExpertController extends Controller
             $addresswhere = !empty($address)?array("ext.address"=>$address):array();
             if(!empty($consult) && $consult == '收费'){
                 $consultwhere = ['fee.state' => 1];
-                $datas = $datas->where('fee.fee','<>','null');
             } elseif(!empty($consult) && $consult == '免费'){
                 $consultwhere = ['fee.state' => 0];
-                $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
             } else {
                 $consultwhere = [];
             }
@@ -89,6 +87,7 @@ class ExpertController extends Controller
      * @return mixed
      */
     public  function detail($expertid){
+        $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
         $array = DB::table('t_u_expert as ext')
             ->leftJoin('t_u_expertfee as fee','ext.expertid' ,'=' ,'fee.expertid')
             ->leftJoin('view_expertcollectcount as coll','ext.expertid' ,'=' ,'coll.expertid')
@@ -143,7 +142,7 @@ class ExpertController extends Controller
         foreach ($getmsgcount as $k => $v) {
             $msgcount[$v->parentid] = $v->count;
         }
-        return view("expert.detail",compact('datas','recommendNeed','message','collectids','msgcount'));
+        return view("expert.detail",compact('datas','recommendNeed','domainselect','message','collectids','msgcount'));
     }
     //收藏专家
     public  function  collectExpert(){
@@ -270,7 +269,7 @@ class ExpertController extends Controller
 
                 }
                 if($expertuserid->userid != session('userId') && $data['parentid'] && $data['use_userid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('expert/detail',$data['expertid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('expert/detail',$data['expertid']).'#reply" target=_blank>点此查看</a>';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('expert/detail',$data['expertid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
                     if($data['use_userid'] != session('userId')){
                         $msg = DB::table('t_m_systemmessage')->insert([
                             'sendid' => 0,
