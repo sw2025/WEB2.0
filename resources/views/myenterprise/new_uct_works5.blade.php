@@ -207,7 +207,7 @@
                                                     </form>
                                                 </span>
                                                 <span>
-                                                    <a href="{{env('ImagePath').$configinfo[$lastpid->step-1]->documenturl}}" target="_blank" class="eventa1">{{$configinfo[$lastpid->step-1]->docname or ''}}</a>
+                                                    <a href="/showfile?path={{$configinfo[$lastpid->step-1]->documenturl}}" target="_blank" class="eventa1">{{$configinfo[$lastpid->step-1]->docname or ''}}</a>
                                                     <a href="@if(!empty($configinfo[$lastpid->step-1]->downurl)) /download?path={{$configinfo[$lastpid->step-1]->downurl}} " index="{{$configinfo[$lastpid->step-1]->downurl}}" style="padding-right: 2px;border: 1px solid #aaa;border-radius: 5px;margin-left: 10px;@endif"   class="eventa2"  >@if(!empty($configinfo[$lastpid->step-1]->downurl))&nbsp;下载&nbsp;@endif</a>
                                                 </span>
                                                 <br />
@@ -557,7 +557,7 @@
                                     window.location = window.location.href;
                                     return false;
                                 });
-                                var str = '<a href="'+spanobj.children('.eventa2').attr('href')+'">'+spanobj.children('.eventa1').html()+'</a>' +
+                                /*var str = '<a href="'+spanobj.children('.eventa2').attr('href')+'">'+spanobj.children('.eventa1').html()+'</a>' +
                                         '<a href="javascript:;" index="/deletedownload?path='+spanobj.children('.eventa2').attr('index')+'&&eid={{$eventId}}"  class="btnclass" >&nbsp;删除&nbsp;</a>';
                                 if($('.lssc').hasClass('haveclass') &&  spanobj.children('.eventa1').html().trim() != ''){
                                     $('.lssc').append(str);
@@ -586,7 +586,7 @@
                                         }
                                     });
                                     return false;
-                                });
+                                });*/
                             }
 
                         },

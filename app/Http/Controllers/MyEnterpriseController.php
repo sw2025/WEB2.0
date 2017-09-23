@@ -54,10 +54,8 @@ class MyEnterpriseController extends Controller
             $addresswhere = !empty($address)?array("ext.address"=>$address):array();
             if(!empty($consult) && $consult == '收费'){
                 $consultwhere = ['fee.state' => 1];
-                $datas = $datas->where('fee.fee','<>','null');
             } elseif(!empty($consult) && $consult == '免费'){
                 $consultwhere = ['fee.state' => 0];
-                $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
             } else {
                 $consultwhere = [];
             }
@@ -441,7 +439,7 @@ class MyEnterpriseController extends Controller
         $counts2=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',0)->count();
         foreach ($datas as $data){
            $configId=$data->configid;
-            if($counts){
+            if(!$counts){
                 $data->state="指定专家";
             }else{
                 $counts = $counts2;
@@ -995,7 +993,7 @@ class MyEnterpriseController extends Controller
                     ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
                     ->where('eventid', $_POST['eventId'])
                     ->pluck('enterprisename');
-                $this->_sendSms($phone, '办事选择', 'reselect', $name);
+                $this->_sendSms($phone, '办事选择', 'reselects', $name);
             }
             $Ids=DB::table("t_e_eventresponse")
                 ->select('expertid')
