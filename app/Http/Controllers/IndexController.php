@@ -41,6 +41,7 @@ class IndexController extends Controller
      */
     public  function returnData(){
         $result=array();
+        $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
         $expertType=!empty($_POST['type'])?$_POST['type']:"知名机构";
         switch($expertType){
             case "知名机构":
@@ -65,10 +66,11 @@ class IndexController extends Controller
                 ->orderBy("T_U_EXPERT.created_at","desc")
                 ->get();
             foreach ($datas as $data){
-                if($data->state==0){
+                $data->domain1 = $domainselect[$data->domain1];
+                if($data->state == 0 || $data->fee == 0){
                     $data->fee="免费";
                 }else{
-                    $data->fee=$data->fee."元";
+                    $data->fee=$data->fee."元/5分钟";
                 }
                 if(!empty(session('userId'))){
                     $userId=session('userId');

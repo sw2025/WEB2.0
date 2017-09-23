@@ -25,7 +25,7 @@
                     <input type="text" name="nickName" id="nickName" class="inpName basic-nickname" value="{{$data->nickname}}" />
                 </p>
                 <div class="basic-photo basic-row clearfix">
-                    <div class="basic-rect"><img id="avatar" src="{{env('ImagePath').$data->avatar}}" /></div><!-- 上传的图片摆放位置 -->
+                    <div class="basic-rect"><img id="avatar" src="@if(empty($data->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$data->avatar}}@endif" /></div><!-- 上传的图片摆放位置 -->
                     <input type="hidden" id="myAvatar" name="myAvatar" value="{{$data->avatar}}">
                     <div class="basic-upload">
                             <span class="basic-span change-btn fileinput-button">

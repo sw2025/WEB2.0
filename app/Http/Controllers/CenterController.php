@@ -437,7 +437,7 @@ class CenterController extends Controller
                     $verifyent = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterpriseid;
                     if($verifyent){
                         $verentconfig = DB::table('t_u_enterpriseverify')->where('enterpriseid',$verifyent)->orderBy('id','desc')->first()->configid;
-                        if($verentconfig != 4){
+                        if($verentconfig != 3){
 
                             return ['msg' => '您的企业未通过认证,暂不能发布','icon' => 2];
                         }

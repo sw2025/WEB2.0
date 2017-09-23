@@ -14,14 +14,14 @@
             </div>
             <div class="exp-details-con">
                 <div class="exp-det-con-top">
-                    <img src="{{env('ImagePath').$datas->showimage}}" class="exp-details-img" />
+                    <img src="@if(empty($datas->showimage)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$datas->showimage}}@endif" class="exp-details-img" />
                     <div class="exp-details-brief">
                         <span class="exp-details-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
                         <a href="javascript:;" index="{{$datas->expertid}}" class="collect-state @if(in_array($datas->expertid,$collectids)) done @endif">@if(in_array($datas->expertid,$collectids))已收藏 @else 收藏 @endif</a>
                         <span class="exp-details-time">入驻时间：<em>{{$datas->created_at}}</em></span>
                         <span class="exp-details-categary">分<b class="wem2"></b>类：<em>{{$datas->category}}</em></span>
-                        <span class="exp-details-video">视频咨询：<em>@if($datas->state && $datas->fee)￥{{$datas->fee}}@else 免费 @endif</em></span>
-                        <span class="exp-details-best">擅长领域：<em>{{$datas->domain1}}</em></span>
+                        <span class="exp-details-video">视频咨询：<em>@if(!$datas->state || $datas->fee == 0)免费@else ￥{{$datas->fee}} @endif</em></span>
+                        <span class="exp-details-best">擅长领域：<em>{{$domainselect[$datas->domain1]}}</em></span>
                         <div class="exp-details-lab">
                             @foreach(explode(',',$datas->domain2) as $do2)
                                 <span class="exp-lab-a">&nbsp;{{$do2}}&nbsp;</span>
@@ -63,9 +63,9 @@
                             @if(!$v->parentid)
                                 <div class="mes-list-box clearfix">
                                     <div class="floor-host">
-                                        <img src="{{env('ImagePath').$v->avatar}}" class="floor-host-ava" />
+                                        <img src="@if(empty($v->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$v->avatar}}@endif" class="floor-host-ava" />
                                         <div class="floor-host-desc">
-                                            <a href="javascript:;" class="floor-host-name">{{$v->nickname}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
+                                            <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
                                             <span class="floor-host-words">{{$v->content}}</span>
                                         </div>
                                     </div>
@@ -78,25 +78,25 @@
                                             @foreach($message as $reply)
                                                 @if(!$reply->use_userid && $reply->parentid == $v->id)
                                                     <li>
-                                                        <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
+                                                        <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
                                                         <div class="gloor-guest-cnt">
-                                                            <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>
+                                                            <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->enterprisename or $reply->expertname}}]</a>
                                                             <span class="floor-guest-words">{{$reply->content}}</span>
                                                         </div>
                                                         <div class="floor-bottom">
-                                                            <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn" userid="{{$v->userid}}">回复</a>
+                                                            <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn" userid="{{$reply->userid}}">回复</a>
                                                         </div>
                                                     </li>
                                                 @elseif($reply->parentid == $v->id)
 
                                                     <li>
-                                                        <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
+                                                        <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
                                                         <div class="gloor-guest-cnt">
-                                                            <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
+                                                            <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->enterprisename or $reply->expertname}}]</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
                                                             <span class="floor-guest-words">{{$reply->content}}</span>
                                                         </div>
                                                         <div class="floor-bottom">
-                                                            <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$v->userid}}" class="reply-btn">回复</a>
+                                                            <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$reply->userid}}" class="reply-btn">回复</a>
                                                         </div>
                                                     </li>
                                                 @endif
@@ -129,7 +129,7 @@
                                 <em class="rec-exp-name">{{$v->expertname}}</em>
                             </span>
                         <div class="exp-rec-right">
-                            <span class="exp-rec-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}@else 免费 @endif</em></span>
+                            <span class="exp-rec-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if(!$v->state || $v->fee == 0) 免费 @else ￥{{$v->fee}}/5分钟 @endif</em></span>
                             <span class="exp-rec-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$v->domain1}}</em></span>
                             <div class="exp-rec-lab">
                                 @foreach(explode(',',$v->domain2) as $v2)

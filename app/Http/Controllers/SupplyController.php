@@ -232,7 +232,7 @@ class SupplyController extends Controller
             try{
                 $res = DB::table('t_n_messagetoneed')->insert($data);
                 if($expertuserid->userid != session('userId') && !$data['parentid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br />' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
                     $msg = DB::table('t_m_systemmessage')->insert([
                         'sendid' => 0,
                         'receiveid' => $expertuserid->userid,
@@ -243,7 +243,7 @@ class SupplyController extends Controller
                     ]);
                 }
                 if($expertuserid->userid != session('userId') && $data['parentid'] && !$data['use_userid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br />' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
                     $parid = DB::table('t_n_messagetoneed')->where('id',$data['parentid'])->first();
                     if(empty($parid)){
                         return 'error';
@@ -260,7 +260,7 @@ class SupplyController extends Controller
                     }
                 }
                 if($expertuserid->userid != session('userId') && $data['parentid'] && $data['use_userid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('supply/detail',$data['needid']).'#reply" target=_blank>点此查看</a>';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br />' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
                     if($data['use_userid'] != session('userId')){
                         $msg = DB::table('t_m_systemmessage')->insert([
                             'sendid' => 0,
