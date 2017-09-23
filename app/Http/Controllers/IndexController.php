@@ -68,11 +68,7 @@ class IndexController extends Controller
                 if($data->state==0){
                     $data->fee="免费";
                 }else{
-                    if(!empty($data->fee)){
-                        $data->fee=$data->fee."元";
-                    }else{
-                        $data->fee="免费";
-                    }
+                    $data->fee=$data->fee."元";
                 }
                 if(!empty(session('userId'))){
                     $userId=session('userId');

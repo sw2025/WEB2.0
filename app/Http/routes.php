@@ -96,6 +96,8 @@ Route::post('replyextmessage','ExpertController@replyMessage');
     Route::post('verifyCard', 'CenterController@verifyCard');
 //提现
     Route::post('applicationCashs', 'CenterController@applicationCashs');
+//提现验证银行卡
+Route::post('haveCard', 'CenterController@haveCard');
 //获取充值记录
     Route::post('getRecord', 'CenterController@getRecord');
 //消息标记已读
