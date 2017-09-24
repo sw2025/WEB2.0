@@ -380,7 +380,7 @@ class PublicController extends Controller
         }
         $members=DB::table("t_u_enterprisemember")
             ->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")
-            ->where("enterpriseid",$enterpriseId)->orderBy("ID","desc")->take(1)->get();
+            ->where("enterpriseid",$enterpriseId)->get();
         if(count($members)){
             $currentTime=date('Y-m-d H:i:s');
             foreach ($members as $member){
