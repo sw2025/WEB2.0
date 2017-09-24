@@ -28,9 +28,7 @@
                                 <div class="details-graph forth"><span class="square"></span></div>
                                 <span class="details-tit-cap forth-cap">专家简介</span>
                             </div>
-                            <div class="myexp-brief-desc">
-                                {{$datas->brief}}
-                            </div>
+                            <textarea class="myexp-brief-desc" id="textarea" style="border:none;width: 85%;">{{$datas->brief}}</textarea>
                             <a href="javascript:;" class="collect @if(in_array($datas->expertid,$collectids)) red @endif" index="{{$datas->expertid}}" title="@if(in_array($datas->expertid,$collectids)) 已收藏 @else 收藏 @endif"><i class="iconfont icon-likeo"></i></a>
                         </div>
                         <div class="message-list">
@@ -121,4 +119,5 @@
         });
     </script>
     <script src="{{url('js/myexpert.js')}}" type="text/javascript"></script>
+    <script src="{{url('js/textareaauto.js')}}" type="text/javascript"></script>
 @endsection

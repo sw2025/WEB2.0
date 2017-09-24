@@ -28,11 +28,9 @@
                 <div class="details-abs">
                     <div class="details-abs-tit">
                         <div class="details-graph"><span class="square"></span></div>
-                        <span class="details-tit-cap">简介</span>
+                        <span class="details-tit-cap">需求详情</span>
                     </div>
-                    <div class="details-abs-desc">
-                      {{$datas->brief}}
-                    </div>
+                    <textarea class="details-abs-desc" disabled id="textarea">{{trim($datas->brief)}}</textarea>
                 </div>
             </div>
 
@@ -100,7 +98,7 @@
                                         @endforeach
                                     </ul>
                                     <div class="reply-box">
-                                        <textarea class="reply-enter" index="{{$v->needid}}" id="{{$v->id}}"></textarea>
+                                        <textarea class="reply-enter" index="{{$v->needid}}" id="{{$v->id}}"  ></textarea>
                                         <div class="publish-box"><button class="publish-btn" type="button">发表</button></div>
                                     </div>
                                 </div>
@@ -150,4 +148,6 @@
 </div>
 
 <script src="{{url('js/supply.js')}}" type="text/javascript"></script>
+<script src="{{url('js/textareaauto.js')}}" type="text/javascript"></script>
+
 @endsection
