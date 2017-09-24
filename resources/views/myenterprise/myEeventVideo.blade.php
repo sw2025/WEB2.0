@@ -1,4 +1,4 @@
-@extends("layouts.ucenter")
+@extends("layouts.ucenter4")
 @section("content")
     <link rel="stylesheet" href="{{asset('im/css/base.css')}}"/>
     <link rel="stylesheet" href="{{asset('im/css/animate.css')}}"/>
