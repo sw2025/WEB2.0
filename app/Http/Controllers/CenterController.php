@@ -82,7 +82,6 @@ class CenterController extends Controller
             "updated_at"=>date("Y-m-d H:i:s",time())
         ]);
         if($result){
-            $request->session()->flush();
             $res['code']="success";
         }else{
             $res['code']="error";
