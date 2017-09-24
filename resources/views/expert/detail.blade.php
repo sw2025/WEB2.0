@@ -32,11 +32,9 @@
                 <div class="details-abs">
                     <div class="details-abs-tit">
                         <div class="details-graph"><span class="square"></span></div>
-                        <span class="details-tit-cap">简介</span>
+                        <span class="details-tit-cap">专家介绍</span>
                     </div>
-                    <div class="details-abs-desc">
-                        {{$datas->brief}}
-                    </div><a name="reply">
+                    <textarea id="textarea" class="details-abs-desc" >{{$datas->brief}}</textarea><a name="reply"></a>
                 </div>
             </div>
             <div class="details-top clearfix">
@@ -152,4 +150,5 @@
     </div>
 </div>
 <script src="{{url('js/expert.js')}}" type="text/javascript"></script>
+<script src="{{url('js/textareaauto.js')}}" type="text/javascript"></script>
 @endsection

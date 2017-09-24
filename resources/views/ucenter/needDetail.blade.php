@@ -23,7 +23,7 @@
                             </div>
                             <div class="myneed-desc">
                                 <span class="myneed-desc-tit">需求描述</span>
-                                <div class="myneed-desc-para">{{$datas->brief}}</div>
+                                <textarea class="myneed-desc-para" id="textarea" style="width: 1000px;border:none;">{{$datas->brief}}</textarea>
                             </div>
                         </div>
                         <div class="message-list">
@@ -115,4 +115,5 @@
         });
     </script>
     <script src="{{url('js/mysupply.js')}}" type="text/javascript"></script>
+    <script src="{{url('js/textareaauto.js')}}" type="text/javascript"></script>
 @endsection

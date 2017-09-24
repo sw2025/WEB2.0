@@ -466,7 +466,7 @@ class CenterController extends Controller
                         DB::table('t_n_need')->where(['needid' => $data['needid']])->update([
                             'domain1' => $domain1,
                             'domain2' => $domain2,
-                            'brief' => $data['content'],
+                            'brief' => trim($data['content']),
                             'updated_at' => date('Y-m-d H:i:s',time())
                         ]);
                         DB::table('t_n_needverify')
