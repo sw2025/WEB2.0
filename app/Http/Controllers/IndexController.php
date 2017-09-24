@@ -24,10 +24,10 @@ class IndexController extends Controller
         $work=clone $invest;
         $product=clone $invest;
         $market=clone $invest;
-        $invests=$invest->where("domain1","资金需求")->take(5)->get();
-        $works=$work->where("domain1","战略与管理")->take(5)->get();
+        $invests=$invest->where("domain1","找资金")->take(5)->get();
+        $works=$work->where("domain1","定战略")->take(5)->get();
         $products=$product->where("domain1","找技术")->take(5)->get();
-        $markets=$market->where("domain1","寻合作")->take(5)->get();
+        $markets=$market->where("domain1","找市场")->take(5)->get();
         $invests=\NeedClass::dataHandle($invests);
         $works=\NeedClass::dataHandle($works);
         $products=\NeedClass::dataHandle($products);
