@@ -52,7 +52,7 @@ class SupplyController extends Controller
                 $obj = $obj->where("need.brief","like","%".$searchname."%");
             }
             if(!empty($address)){
-                $obj = $obj->whereRaw('ext.address ="'.$address.'" or ent.address = "'.$address.'"');
+                $obj = $obj->whereRaw('(ext.address ="'.$address.'" or ent.address = "'.$address.'")');
             }
             //对三种排序进行判断
             if(!empty($ordertime)){

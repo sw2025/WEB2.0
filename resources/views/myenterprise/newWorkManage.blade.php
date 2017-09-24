@@ -234,10 +234,10 @@
                     var account=res['account']
                     switch(code){
                         case "success":
-                            $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
+                            $.cookie("domain","",{path:'/',domain:'sw2025.com'});
+                            $.cookie("describe","",{path:'/',domain:'sw2025.com'});
+                            $.cookie("industry","",{path:'/',domain:'sw2025.com'});
                             window.location.href="{{asset('uct_works/applyWork')}}";
                         break;
                         case "enterprise":
@@ -276,10 +276,10 @@
                     var account=res['account']
                     switch(code){
                         case "success":
-                            $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
+                            $.cookie("domain","",{path:'/',domain:'sw2025.com'});
+                            $.cookie("describe","",{path:'/',domain:'sw2025.com'});
+                            $.cookie("industry","",{path:'/',domain:'sw2025.com'});
                             window.location.href="{{asset('uct_works/applyWork')}}";
                             break;
                         case "enterprise":

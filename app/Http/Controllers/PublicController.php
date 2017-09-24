@@ -209,7 +209,7 @@ class PublicController extends Controller
                                     "payno"=>$paynos,
                                     "billtime"=>date("Y-m-d H:i:s",time()),
                                     "brief"=>"进行消费",
-                                    "consultid"=>$_POST['consultId'],
+                                    "consultid"=>$markId,
                                     "created_at"=>date("Y-m-d H:i:s",time()),
                                     "updated_at"=>date("Y-m-d H:i:s",time()),
                                 ]);
@@ -281,7 +281,7 @@ class PublicController extends Controller
                                         "payno"=>$payno,
                                         "billtime"=>date("Y-m-d H:i:s",time()),
                                         "brief"=>"通过替别人办事，获取报酬",
-                                        "consultid"=>$_POST['consultId'],
+                                        "eventid"=>$markId,
                                         "created_at"=>date("Y-m-d H:i:s",time()),
                                         "updated_at"=>date("Y-m-d H:i:s",time()),
                                     ]);
@@ -295,7 +295,7 @@ class PublicController extends Controller
                                     "payno"=>$paynos,
                                     "billtime"=>date("Y-m-d H:i:s",time()),
                                     "brief"=>"进行消费",
-                                    "consultid"=>$_POST['consultId'],
+                                    "eventid"=>$markId,
                                     "created_at"=>date("Y-m-d H:i:s",time()),
                                     "updated_at"=>date("Y-m-d H:i:s",time()),
                                 ]);
