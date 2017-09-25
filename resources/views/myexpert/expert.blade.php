@@ -143,7 +143,7 @@
                         </div>
                     </div>
                     <div class="datas-rt htxt1">
-                        <textarea onkeyup="checkLength(this);" placeholder="请输入专家描述" id="brief" cols="30"
+                        <textarea onkeyup="checkLength(this);" placeholder="请输入专家描述（最多1000字）" id="brief" cols="30"
                                   rows="10">@if(!empty($result)){{$result->brief}}@endif</textarea>
                     </div>
                 </div>
@@ -254,11 +254,11 @@
                 $('.submit-audit').attr('disabled', false);
                 return false;
             } else {
-                if(brief.length>30 && brief.length<500){
+                if(brief.length>30 && brief.length<1000){
                 }else{
                     $('.submit-audit').attr('disabled', false);
                     $(this).html('提交认证');
-                    layer.msg('专家简介字数不符',{'icon':5});
+                    layer.msg('专家简介字数不符（30-1000字符）',{'icon':5});
                     return false;
                 }
                 $.ajax({

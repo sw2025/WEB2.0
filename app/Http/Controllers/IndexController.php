@@ -62,7 +62,7 @@ class IndexController extends Controller
                 ->where("category",$expertType)
                 ->whereIn("T_U_EXPERTVERIFY.configid",[2,4])
                 ->whereRaw("T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by T_U_EXPERTVERIFY.expertid)")
-                ->take(5)
+                ->take(15)
                 ->orderBy("T_U_EXPERT.created_at","desc")
                 ->get();
             foreach ($datas as $data){

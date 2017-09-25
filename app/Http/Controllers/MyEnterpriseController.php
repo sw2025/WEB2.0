@@ -139,6 +139,7 @@ class MyEnterpriseController extends Controller
             ->leftJoin('t_u_user as user','user.userid' ,'=' ,'msg.userid')
             ->leftJoin('t_u_user as user2','user2.userid' ,'=' ,'msg.use_userid')
             ->where('msg.expertid',$expertid)
+            ->where('msg.isdelete',0)
             ->select('msg.*','ent.enterprisename','ext.expertname','user.avatar','user.nickname','user.phone','user2.nickname as nickname2','user2.phone as phone2')
             ->orderBy('messagetime','desc')
             ->get();
@@ -446,13 +447,13 @@ class MyEnterpriseController extends Controller
                 $data->state="系统分配";
             }
         }
-
         if($request->ajax()){
 
             $data = $request->input();
-            $res = DB::table('t_e_eventprocessremark')->where('epid',$data['epid'])->paginate(1);
+            $res = DB::table('t_e_eventprocessremark')->where('epid',$data['epid'])->orderBy('id','desc')->paginate(5);
             return $res;
         }
+        $selExperts = null;
         switch($configId){
             case 4:
                 $selExperts=DB::table("t_e_eventresponse")
@@ -487,6 +488,18 @@ class MyEnterpriseController extends Controller
                     ->get();
                 $configId = 7;
                 break;
+            case 9:
+                $selExperts=DB::table("t_u_enterprise")
+                    ->where('userid',$datas[0]->userid)
+                    ->first();
+                $selExperts2=DB::table("t_e_eventresponse")
+                    ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_e_eventresponse.state",3)
+                    ->where("eventid",$eventId)
+                    ->first();
+                $configId = 9;
+                break;
+
 
             case 6:
                 //当config为6正在办事的状态的时候
@@ -571,7 +584,7 @@ class MyEnterpriseController extends Controller
                 $task = DB::table('t_e_eventtask')->whereIn('epid',$epids)->where('state','<>','2')->orderBy('etid','desc')->get();
                 $remark = [];
                 foreach($epids as $v){
-                    $data1 = DB::table('t_e_eventprocessremark')->where('epid',$v)->paginate(1);
+                    $data1 = DB::table('t_e_eventprocessremark')->where('epid',$v)->orderBy('id','desc')->paginate(5);
                     $data2 = DB::table('t_e_eventprocessremark')->where('epid',$v)->count();
                     if($data2){
                         //若有返回信息则吧反馈的信息对象存放到数组中
@@ -583,7 +596,7 @@ class MyEnterpriseController extends Controller
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
         $view="works".$configId;
-        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","eventId"));
+        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts",'selExperts2',"eventId"));
     }
 
     /**
@@ -638,7 +651,7 @@ class MyEnterpriseController extends Controller
             //$realPath = $file -> getRealPath();
             $entension = $file -> getClientOriginalExtension();
             //$mimeTye = $file -> getMimeType();
-            $fileTypes = ['pdf','doc','txt','excel','docx'];
+            $fileTypes = ['pdf','doc','txt','excel','docx','pptx','wps'];
             if(!in_array($entension,$fileTypes)){
                 return ['error' => '您上传的不是正确的类型文件','icon' => 2];
             }
@@ -868,7 +881,6 @@ class MyEnterpriseController extends Controller
         $result=array();
         $data = $request->input();
         $domain=explode("/",$data['domain']);
-
         DB::beginTransaction();
         try{
             $eventId=DB::table("t_e_event")->insertGetId([
@@ -884,6 +896,7 @@ class MyEnterpriseController extends Controller
             DB::table("t_e_eventverify")->insert([
                 "eventid"=>$eventId,
                 "configid"=>1,
+                'verifytime' => date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
@@ -1222,6 +1235,16 @@ class MyEnterpriseController extends Controller
                     ->where("t_c_consultresponse.state",3)
                     ->where("t_c_consultresponse.consultid",$consultId)
                     ->get();
+                break;
+            case 8:
+                $selExperts=DB::table("t_c_consultresponse")
+                    ->leftJoin("t_c_consultcomment","t_c_consultresponse.expertid","=","t_c_consultcomment.expertid" )
+                    ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_c_consultresponse.state",3)
+                    ->where("t_c_consultresponse.consultid",$consultId)
+                    ->get();
+                $configId = 7;
+                break;
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
@@ -1593,7 +1616,7 @@ class MyEnterpriseController extends Controller
             ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
             ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
             ->where("t_e_event.userid",$userId)
-            ->whereIn('t_e_eventverify.configid',[4,5,6,7,8])
+            ->whereIn('t_e_eventverify.configid',[4,5,6,7,8,9])
             ->where($typeWhere);
         $count=clone $result;
         $datas=$result->orderBy("t_e_event.created_at","desc")->paginate(6);
