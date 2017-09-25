@@ -82,7 +82,6 @@ class CenterController extends Controller
             "updated_at"=>date("Y-m-d H:i:s",time())
         ]);
         if($result){
-            $request->session()->flush();
             $res['code']="success";
         }else{
             $res['code']="error";
@@ -100,8 +99,9 @@ class CenterController extends Controller
         $pays=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"支出"])->sum("money");
         $expends=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"在途"])->sum("money");
         $balance=$incomes-$pays-$expends;
-        $bankcard=DB::table("t_u_bank")->where(["userid"=>$userId,"state"=>0])->pluck("bankcard");
-        return view("ucenter.recharge",compact("incomes","pays","expends","balance","bankcard"));
+        $bankcard=DB::table("t_u_bank")->where("userid",$userId)->pluck("bankcard");
+        $state=DB::table("t_u_bank")->where("userid",$userId)->pluck("state");
+        return view("ucenter.recharge",compact("incomes","pays","expends","balance","bankcard","state"));
     }
 
     /**充值
@@ -436,7 +436,7 @@ class CenterController extends Controller
                     $verifyent = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterpriseid;
                     if($verifyent){
                         $verentconfig = DB::table('t_u_enterpriseverify')->where('enterpriseid',$verifyent)->orderBy('id','desc')->first()->configid;
-                        if($verentconfig != 4){
+                        if($verentconfig != 3){
 
                             return ['msg' => '您的企业未通过认证,暂不能发布','icon' => 2];
                         }
@@ -466,7 +466,7 @@ class CenterController extends Controller
                         DB::table('t_n_need')->where(['needid' => $data['needid']])->update([
                             'domain1' => $domain1,
                             'domain2' => $domain2,
-                            'brief' => $data['content'],
+                            'brief' => trim($data['content']),
                             'updated_at' => date('Y-m-d H:i:s',time())
                         ]);
                         DB::table('t_n_needverify')
@@ -759,7 +759,7 @@ class CenterController extends Controller
                 "account"=>$_POST['account'],
                 "bankcard"=>$_POST['bankCard'],
                 "bankfullname"=>$_POST['bankFullName'],
-                "state"=>0,
+                "state"=>2,
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
         }else{
@@ -769,7 +769,7 @@ class CenterController extends Controller
                 "account"=>$_POST['account'],
                 "bankcard"=>$_POST['bankCard'],
                 "bankfullname"=>$_POST['bankFullName'],
-                "state"=>0,
+                "state"=>2,
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
@@ -796,6 +796,10 @@ class CenterController extends Controller
         $data=$request->all();
         $money=DB::table("t_u_bank")->where("userId",$data['userId'])->pluck("money");
         if($money==$data['money']){
+            DB::table('t_u_bank')->where('userId',$data['userId'])->update([
+                "state"=>0,
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
             $res['code']="success";
         }else{
             $res['code']="error";
@@ -834,5 +838,25 @@ class CenterController extends Controller
         }
         return $result;
 
+    }
+
+    public  function haveCard(){
+        $res=array();
+        $userId=session('userId');
+        $counts=DB::table('t_u_bank')->where('userid',$userId)->count();
+        if($counts){
+            $states=DB::table('t_u_bank')->where('userid',$userId)->pluck('state');
+            if($states==1 ){
+                $res['code']='0';
+            }elseif($states==0){
+                $res['code']='1';
+            }else{
+                $res['code']='2';
+            }
+        }else{
+            $res['code']='0';
+        }
+
+        return $res;
     }
 }

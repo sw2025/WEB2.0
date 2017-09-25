@@ -31,7 +31,7 @@
                         </div>
                         <div class="uct-works-exp">
                             <a href="javascript:;" class="special-btn  uct-works-btn @if($data->state=='指定专家') active @endif">指定专家</a>
-                            <a href="javascript:;" class="system-btn2 uct-works-btn @if($data->state=='系统分配') active @endif ">系统分配</a>
+                            <a href="javascript:;" class="system-btn2 uct-works-btn @if($data->state=='系统分配') active @endif ">系统分配专家</a>
                         </div>
                         <div class="uct-works-exps" style="margin-top: -35px;">
                             <ul class="uct-works-exps-list">

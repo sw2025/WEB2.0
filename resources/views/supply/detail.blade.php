@@ -28,11 +28,9 @@
                 <div class="details-abs">
                     <div class="details-abs-tit">
                         <div class="details-graph"><span class="square"></span></div>
-                        <span class="details-tit-cap">简介</span>
+                        <span class="details-tit-cap">需求详情</span>
                     </div>
-                    <div class="details-abs-desc">
-                      {{$datas->brief}}
-                    </div>
+                    <textarea class="details-abs-desc" disabled id="textarea">{{trim($datas->brief)}}</textarea>
                 </div>
             </div>
 
@@ -60,9 +58,9 @@
                             @if(!$v->parentid)
                             <div class="mes-list-box clearfix">
                                 <div class="floor-host">
-                                    <img src="{{env('ImagePath').$v->avatar}}" class="floor-host-ava" />
+                                    <img src="@if(empty($v->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$v->avatar}}@endif" class="floor-host-ava" />
                                     <div class="floor-host-desc">
-                                        <a href="javascript:;" class="floor-host-name">{{$v->nickname}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
+                                        <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
                                         <span class="floor-host-words">{{$v->content}}</span>
                                     </div>
                                 </div>
@@ -75,32 +73,32 @@
                                         @foreach($message as $reply)
                                             @if(!$reply->use_userid && $reply->parentid == $v->id)
                                             <li>
-                                                <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
+                                                <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
                                                 <div class="gloor-guest-cnt">
-                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>
+                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->enterprisename or $reply->expertname}}]</a>
                                                     <span class="floor-guest-words">{{$reply->content}}</span>
                                                 </div>
                                                 <div class="floor-bottom">
-                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn" userid="{{$v->userid}}">回复</a>
+                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn" userid="{{$reply->userid}}">回复</a>
                                                 </div>
                                             </li>
                                             @elseif($reply->parentid == $v->id)
 
                                             <li>
-                                                <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
+                                                <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
                                                 <div class="gloor-guest-cnt">
-                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
+                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->enterprisename or $reply->expertname}}]</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
                                                     <span class="floor-guest-words">{{$reply->content}}</span>
                                                 </div>
                                                 <div class="floor-bottom">
-                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$v->userid}}" class="reply-btn">回复</a>
+                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$reply->userid}}" class="reply-btn">回复</a>
                                                 </div>
                                             </li>
                                             @endif
                                         @endforeach
                                     </ul>
                                     <div class="reply-box">
-                                        <textarea class="reply-enter" index="{{$v->needid}}" id="{{$v->id}}"></textarea>
+                                        <textarea class="reply-enter" index="{{$v->needid}}" id="{{$v->id}}"  ></textarea>
                                         <div class="publish-box"><button class="publish-btn" type="button">发表</button></div>
                                     </div>
                                 </div>
@@ -126,9 +124,9 @@
                 <li>
                     <a href="{{url('supply/detail',$v->needid)}}" class="supp-rec-link">
                         <div class="supp-rec-top">
-                            <img src="@if(empty($v->entimg)) {{env('ImagePath').$v->extimg}} @else {{env('ImagePath').$v->entimg}}  @endif" class="supp-rec-img" />
+                            <img src="@if($v->needtype == '专家')) {{env('ImagePath').$v->extimg}} @else {{env('ImagePath').$v->entimg}}  @endif" class="supp-rec-img" />
                             <div class="supp-rec-com">
-                                <span class="supp-rec-name">【{{$v->needtype}}】@if(!empty($v->expertname)) {{$v->expertname}} @else {{$v->enterprisename}} @endif</span>
+                                <span class="supp-rec-name">【{{$v->needtype}}】@if(!empty($v->needtype == '专家')) {{$v->expertname}} @else {{$v->enterprisename}} @endif</span>
                                 <p class="supp-rec-category">需求分类：<span><em>{{$v->domain1}} / {{$v->domain2}}</em></span></p>
                             </div>
                         </div>
@@ -150,4 +148,6 @@
 </div>
 
 <script src="{{url('js/supply.js')}}" type="text/javascript"></script>
+<script src="{{url('js/textareaauto.js')}}" type="text/javascript"></script>
+
 @endsection

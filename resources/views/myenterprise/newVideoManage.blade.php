@@ -264,7 +264,7 @@
                         $.cookie("videodateEnd",'',{path:'/',domain:'sw2025.com'});
                         $.cookie("videoindustry",'',{epath:'/',domain:'sw2025.com'});
                         $.cookie("videoreselect","",{path:'/',domain:'sw2025.com'});
-                        window.location.href="{{asset('uct_works/applyVideo')}}";
+                        window.location.href="{{asset('uct_video/applyVideo')}}";
                         break;
                     case "enterprise":
                         layer.confirm('您还未进行企业认证？', {

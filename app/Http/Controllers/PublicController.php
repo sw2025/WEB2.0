@@ -29,21 +29,41 @@ class PublicController extends Controller
     }
 
 
+    public function showFile ()
+    {
+        $filepath = $_GET['path'];
+        $filepath = '../../swUpload/'.str_replace('../../swUpload/','',trim($filepath,'/'));
+        $filepath = str_replace('\\','/',$filepath);
+        $strarr = explode('/',$filepath);
+        $filename = iconv('utf-8','GB2312', array_pop($strarr));
+        $filepath = join('/',$strarr).'/'.$filename;
+        $extension = pathinfo($filepath)['extension'];
+        if($extension == 'pdf' || $extension == 'txt' ){
+            header('Content-type: application/'.$extension);
+            header('filename='.preg_replace('/^.+[\\\\\\/]/', '', $filepath));
+            readfile($filepath);
+        } else {
+            header( "Content-Disposition:  attachment;  filename=".preg_replace('/^.+[\\\\\\/]/', '', $filepath));
+            header('Content-Length: ' . filesize($filepath)); //下载文件大小
+            readfile($filepath);  //读取文件内容
+        }
+    }
+
     public function download ()
     {
         $filepath = Crypt::decrypt($_GET['path']);
         $filepath = '../../swUpload/'.str_replace('../../swUpload/','',trim($filepath,'/'));
         $filepath = str_replace('\\','/',$filepath);
         $filepath = iconv('utf-8','GB2312', $filepath);
-       /* header("Content-type: text/html;charset=utf-8");
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename='.basename($filepath));
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control:must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($filepath));*/
+        /* header("Content-type: text/html;charset=utf-8");
+         header('Content-Description: File Transfer');
+         header('Content-Type: application/octet-stream');
+         header('Content-Disposition: attachment; filename='.basename($filepath));
+         header('Content-Transfer-Encoding: binary');
+         header('Expires: 0');
+         header('Cache-Control:must-revalidate, post-check=0, pre-check=0');
+         header('Pragma: public');
+         header('Content-Length: ' . filesize($filepath));*/
         header( "Content-Disposition:  attachment;  filename=".preg_replace('/^.+[\\\\\\/]/', '', $filepath));
         header('Content-Length: ' . filesize($filepath)); //下载文件大小
         readfile($filepath);  //读取文件内容
@@ -189,7 +209,7 @@ class PublicController extends Controller
                                     "payno"=>$paynos,
                                     "billtime"=>date("Y-m-d H:i:s",time()),
                                     "brief"=>"进行消费",
-                                    "consultid"=>$_POST['consultId'],
+                                    "consultid"=>$markId,
                                     "created_at"=>date("Y-m-d H:i:s",time()),
                                     "updated_at"=>date("Y-m-d H:i:s",time()),
                                 ]);
@@ -261,7 +281,7 @@ class PublicController extends Controller
                                         "payno"=>$payno,
                                         "billtime"=>date("Y-m-d H:i:s",time()),
                                         "brief"=>"通过替别人办事，获取报酬",
-                                        "consultid"=>$_POST['consultId'],
+                                        "eventid"=>$markId,
                                         "created_at"=>date("Y-m-d H:i:s",time()),
                                         "updated_at"=>date("Y-m-d H:i:s",time()),
                                     ]);
@@ -275,7 +295,7 @@ class PublicController extends Controller
                                     "payno"=>$paynos,
                                     "billtime"=>date("Y-m-d H:i:s",time()),
                                     "brief"=>"进行消费",
-                                    "consultid"=>$_POST['consultId'],
+                                    "eventid"=>$markId,
                                     "created_at"=>date("Y-m-d H:i:s",time()),
                                     "updated_at"=>date("Y-m-d H:i:s",time()),
                                 ]);
@@ -360,7 +380,7 @@ class PublicController extends Controller
         }
         $members=DB::table("t_u_enterprisemember")
             ->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")
-            ->where("enterpriseid",$enterpriseId)->orderBy("ID","desc")->take(1)->get();
+            ->where("enterpriseid",$enterpriseId)->get();
         if(count($members)){
             $currentTime=date('Y-m-d H:i:s');
             foreach ($members as $member){

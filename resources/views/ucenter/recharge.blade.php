@@ -16,19 +16,20 @@
                     </div>
                     <div class="remain-bottom">
                         <a href="{{asset('uct_recharge/rechargeMoney')}}" class="recharge-money">充值</a>
-                        <a href="{{asset('uct_recharge/cash')}}" class="cash">提现</a>
+                        <a href="javascript:;" class="cash">提现</a>
                     </div>
                 </div>
                 <div class="upload-bankcard">
                     <!-- 已上传银行卡start -->
 
-                        <div class="uploaded-img" @if(!empty($bankcard))style="display: block"@else style="display: none" @endif>
-                            <div class="bankcard-img" ><em>卡号</em>{{$bankcard}}</div>
+                        <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: block"@else style="display: none" @endif>
+                            <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待审核)@elseif($state==4)(待验证)@endif</em>{{$bankcard}}</div>
+                            @if($state==4)<a href="{{asset('uct_recharge/card2')}}"><button type="button">去验证</button></a>@endif
                             <span class="delete-card" title="删除"><i class="iconfont icon-chahao"></i></span>
                         </div>
                     <!-- 已上传银行卡end -->
                     <!-- 未上传银行卡start -->
-                    <div class="card-upload" @if(!empty($bankcard))style="display: none" @else style="display: block" @endif>
+                    <div class="card-upload" @if(empty($bankcard) || $state==1)style="display:block" @else style="display: none" @endif>
                         <div class="card-span fileinput-button">
                             <span class="card-upload-tip" ><a href="{{asset('uct_recharge/card')}}"><i class="iconfont icon-add"></i>添加银行卡</a></span>
                         </div>
@@ -115,6 +116,29 @@
             returnRecord(type,startPage)
         })
 
+    })
+    $(".cash").on("click",function(){
+        $.ajax({
+            url:"{{url('haveCard')}}",
+           dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']==0){
+                    layer.confirm('您尚未绑定银行卡？', {
+                        btn: ['去绑定','暂不需要'], //按钮
+                    }, function(){
+                        window.location.href="{{asset('uct_recharge/card')}}";
+                    }, function(){
+                        layer.close();
+                    });
+                }else if(res['code']==2){
+                    layer.confirm('您银行卡尚未绑定成功!');
+                }else{
+                    window.location.href="{{url('uct_recharge/cash')}}";
+                }
+            }
+
+        })
     })
     $('.delete-card').click(function() {
         var userId=$.cookie("userId");

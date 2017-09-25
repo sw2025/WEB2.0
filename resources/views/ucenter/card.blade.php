@@ -69,7 +69,6 @@
         var bankCard=$("#bankCard").val();
         var account=$("#account").val();
         var bankName=$("#bankName").text();
-        alert(bankName);
         var bankFullName=$("#bankFullName").val();
         if(!bankCard){
             layer.tips("卡号不能为空", '.bank-card', {

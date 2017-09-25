@@ -207,10 +207,10 @@
         </div>
         <div class="col-md-6 contacts">
             <p class="footer-title">联系升维</p>
-            <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：400-898-8557</p>
-            <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>Mail：北京市海淀区中关村大街</p>
-            <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市海淀区中关村大街15-15号创业公社 · 中关村</p>
-            <p class="copyright">京ICP备 XXXXXXXXX<span></span>copyright &copy; XXXX 2017</p>
+            <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：010-64430881</p>
+            <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>E-Mail：shengwei2025@163.com</p>
+            <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市朝阳区安贞里街道浙江大厦1601</p>
+            <p class="copyright">京ICP备17053834号<span></span>copyright &copy; 2017 sw2025.com</p>
         </div>
         <!-- </div> -->
     </div>
@@ -303,42 +303,31 @@
             $(".before-login").show();
             $(".after-login").hide();
         }
-        if($.cookie("expertAvatar") && $.cookie("phone") && $.cookie("expertRemark")){
-            $(".v-avatar").attr('src',"{{env('ImagePath')}}"+$.cookie("expertAvatar"));
-            $(".v-nick").html($.cookie("phone"));
-            if($.cookie('expertRemark')=="success"){
-                $(".havevip").show();
-                $(".novip").hide();
-                $(".goto-renzh").attr("title","已认证");
-            }else{
-                $(".havevip").hide();
-                $(".novip").show();
-            }
-        }else{
-            $.ajax({
-                url:"{{asset('getAvatar')}}",
-                data:{userId:$.cookie('userId'),type:"expert"},
-                dateType:"json",
-                type:"POST",
-                success:function(res){
-                    $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['expertAvatar']);
-                    $(".v-nick").html(res['phone']);
-                    if(res['expertRemark']=="success"){
-                        $(".havevip").show();
-                        $(".novip").hide();
-                        $(".goto-renzh").attr("title","已认证");
-                    }else{
-                        $(".havevip").hide();
-                        $(".novip").show();
-                    }
-                    var date = new Date();
-                    date.setTime(date.getTime() + (120 * 60 * 1000));
-                    $.cookie("expertAvatar",res['expertAvatar'],{expires:date,path:'/',domain:'sw2025.com'});
-                    $.cookie("phone",res['phone'],{expires:date,path:'/',domain:'sw2025.com'});
-                    $.cookie("expertRemark",res['remark'],{expires:date,path:'/',domain:'sw2025.com'});
+
+        $.ajax({
+            url:"{{asset('getAvatar')}}",
+            data:{userId:$.cookie('userId'),type:"expert"},
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                $(".v-avatar").attr('src',"{{env('ImagePath')}}"+res['expertAvatar']);
+                $(".v-nick").html(res['phone']);
+                if(res['expertRemark']=="success"){
+                    $(".havevip").show();
+                    $(".novip").hide();
+                    $(".goto-renzh").attr("title","已认证");
+                }else{
+                    $(".havevip").hide();
+                    $(".novip").show();
                 }
-            })
-        }
+                var date = new Date();
+                date.setTime(date.getTime() + (120 * 60 * 1000));
+                $.cookie("expertAvatar",res['expertAvatar'],{expires:date,path:'/',domain:'sw2025.com'});
+                $.cookie("phone",res['phone'],{expires:date,path:'/',domain:'sw2025.com'});
+                $.cookie("expertRemark",res['remark'],{expires:date,path:'/',domain:'sw2025.com'});
+            }
+        })
+
         $.ajax({
             url:"{{url('getMessage')}}",
             data:{userId:$.cookie('userId')},

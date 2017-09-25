@@ -23,7 +23,7 @@
                             </div>
                             <div class="myneed-desc">
                                 <span class="myneed-desc-tit">需求描述</span>
-                                <div class="myneed-desc-para">{{$datas->brief}}</div>
+                                <textarea class="myneed-desc-para" id="textarea" style="width: 85%;border:none;">{{$datas->brief}}</textarea>
                             </div>
                         </div>
                         <div class="message-list">
@@ -38,7 +38,7 @@
                                             <div class="floor-host">
                                                 <img src="{{asset($v->avatar)}}" class="floor-host-ava" />
                                                 <div class="floor-host-desc">
-                                                    <a href="javascript:;" class="floor-host-name">{{$v->nickname}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
+                                                    <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
                                                     <span class="floor-host-words">{{$v->content}}</span>
                                                 </div>
                                             </div>
@@ -53,11 +53,11 @@
                                                             <li>
                                                                 <img src="{{asset($reply->avatar)}}" class="floor-guest-ava" />
                                                                 <div class="gloor-guest-cnt">
-                                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>
+                                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->enterprisename or $reply->expertname}}]</a>
                                                                     <span class="floor-guest-words">{{$reply->content}}</span>
                                                                 </div>
                                                                 <div class="floor-bottom">
-                                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn" userid="{{$v->userid}}">回复</a>
+                                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn" userid="{{$reply->userid}}">回复</a>
                                                                 </div>
                                                             </li>
                                                         @elseif($reply->parentid == $v->id)
@@ -65,11 +65,11 @@
                                                             <li>
                                                                 <img src="{{asset($reply->avatar)}}" class="floor-guest-ava" />
                                                                 <div class="gloor-guest-cnt">
-                                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
+                                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->enterprisename or $reply->expertname}}]</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
                                                                     <span class="floor-guest-words">{{$reply->content}}</span>
                                                                 </div>
                                                                 <div class="floor-bottom">
-                                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$v->userid}}" class="reply-btn">回复</a>
+                                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$reply->userid}}" class="reply-btn">回复</a>
                                                                 </div>
                                                             </li>
                                                         @endif
@@ -115,4 +115,5 @@
         });
     </script>
     <script src="{{url('js/mysupply.js')}}" type="text/javascript"></script>
+    <script src="{{url('js/textareaautp.js')}}" type="text/javascript"></script>
 @endsection

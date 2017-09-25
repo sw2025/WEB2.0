@@ -9,11 +9,11 @@
                 <div class="main-right">
                     <div class="myexpert">
                         <div class="myexpert-top">
-                            <img src="{{env('ImagePath').$datas->showimage}}" class="myexpert-img" />
+                            <img src="@if(empty($datas->showimage)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$datas->showimage}}@endif" class="myexpert-img" />
                             <div class="myexpert-rt">
                                 <span class="myexp-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
-                                <span class="myexp-best">擅长行业：<em>{{$datas->industry}}</em></span>
                                 <span class="myexp-best">擅长领域：<em>{{$datas->domain1}}</em></span>
+                                <span class="myexp-best">咨询费用：<em>@if($datas->fee == 0) 免费 @else ￥{{$datas->fee}}/5分钟 @endif</em></span>
                                 <div class="myexpert-lab">
                                     @foreach(explode(',',$datas->domain2) as $do2)
                                         <span class="myexp-lab-a">&nbsp;{{$do2}}&nbsp;</span>
@@ -28,9 +28,7 @@
                                 <div class="details-graph forth"><span class="square"></span></div>
                                 <span class="details-tit-cap forth-cap">专家简介</span>
                             </div>
-                            <div class="myexp-brief-desc">
-                                {{$datas->brief}}
-                            </div>
+                            <textarea class="myexp-brief-desc" id="textarea" style="border:none;width: 85%;">{{$datas->brief}}</textarea>
                             <a href="javascript:;" class="collect @if(in_array($datas->expertid,$collectids)) red @endif" index="{{$datas->expertid}}" title="@if(in_array($datas->expertid,$collectids)) 已收藏 @else 收藏 @endif"><i class="iconfont icon-likeo"></i></a>
                         </div>
                         <div class="message-list">
@@ -43,9 +41,9 @@
                                     @if(!$v->parentid)
                                         <div class="mes-list-box clearfix">
                                             <div class="floor-host">
-                                                <img src="{{env('ImagePath').$v->avatar}}" class="floor-host-ava" />
+                                                <img src="@if(empty($v->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$v->avatar}}@endif" class="floor-host-ava" />
                                                 <div class="floor-host-desc">
-                                                    <a href="javascript:;" class="floor-host-name">{{$v->nickname}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
+                                                    <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
                                                     <span class="floor-host-words">{{$v->content}}</span>
                                                 </div>
                                             </div>
@@ -58,25 +56,25 @@
                                                     @foreach($message as $reply)
                                                         @if(!$reply->use_userid && $reply->parentid == $v->id)
                                                             <li>
-                                                                <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
+                                                                <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
                                                                 <div class="gloor-guest-cnt">
-                                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>
+                                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->enterprisename or $reply->expertname}}]</a>
                                                                     <span class="floor-guest-words">{{$reply->content}}</span>
                                                                 </div>
                                                                 <div class="floor-bottom">
-                                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn" userid="{{$v->userid}}">回复</a>
+                                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn" userid="{{$reply->userid}}">回复</a>
                                                                 </div>
                                                             </li>
                                                         @elseif($reply->parentid == $v->id)
 
                                                             <li>
-                                                                <img src="{{env('ImagePath').$reply->avatar}}" class="floor-guest-ava" />
+                                                                <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
                                                                 <div class="gloor-guest-cnt">
-                                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
+                                                                    <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->enterprisename or $reply->expertname}}]</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
                                                                     <span class="floor-guest-words">{{$reply->content}}</span>
                                                                 </div>
                                                                 <div class="floor-bottom">
-                                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$v->userid}}" class="reply-btn">回复</a>
+                                                                    <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$reply->userid}}" class="reply-btn">回复</a>
                                                                 </div>
                                                             </li>
                                                         @endif
@@ -121,4 +119,5 @@
         });
     </script>
     <script src="{{url('js/myexpert.js')}}" type="text/javascript"></script>
+    <script src="{{url('js/textareaauto.js')}}" type="text/javascript"></script>
 @endsection

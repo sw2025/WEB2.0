@@ -57,7 +57,8 @@ class ExpertUcenterController extends Controller
         $expends=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"在途"])->sum("money");
         $balance=$incomes-$pays-$expends;
         $bankcard=DB::table("t_u_bank")->where(["userid"=>$userId,"state"=>0])->pluck("bankcard");
-        return view("expertUcenter.recharge",compact("incomes","pays","expends","balance","bankcard"));
+        $state=DB::table("t_u_bank")->where("userid",$userId)->pluck("state");
+        return view("expertUcenter.recharge",compact("incomes","pays","expends","balance","bankcard","state"));
     }
     /**充值
      * @return mixed
@@ -458,5 +459,27 @@ class ExpertUcenterController extends Controller
         $selected=!empty($selected)?$selected:"";
         $view="works".$configId;
         return view("expertUcenter.".$view,compact("datas","counts","selected","selExperts","eventId"));
+    }
+
+    /**判断用户是否绑定银行卡
+     * @return array
+     */
+    public  function expertHaveCard(){
+        $res=array();
+        $userId=session('userId');
+        $counts=DB::table('t_u_bank')->where('userid',$userId)->count();
+        if($counts){
+            $states=DB::table('t_u_bank')->where('userid',$userId)->pluck('state');
+            if($states==1 ){
+                $res['code']='0';
+            }elseif($states==0){
+                $res['code']='1';
+            }else{
+                $res['code']='2';
+            }
+        }else{
+            $res['code']='0';
+        }
+        return $res;
     }
 }

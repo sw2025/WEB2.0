@@ -82,6 +82,8 @@ Route::post('replyextmessage','ExpertController@replyMessage');
     Route::any('eventupload', 'PublicController@eventUpload');
 //办事上传资料
     Route::any('download', 'PublicController@download');
+//查看上传资料
+Route::get('showfile', 'PublicController@showFile');
 //办事上传资料
     Route::any('deletedownload', 'PublicController@deleteDownload');
 //基本资料修改
@@ -96,6 +98,10 @@ Route::post('replyextmessage','ExpertController@replyMessage');
     Route::post('verifyCard', 'CenterController@verifyCard');
 //提现
     Route::post('applicationCashs', 'CenterController@applicationCashs');
+//提现验证银行卡
+Route::post('haveCard', 'CenterController@haveCard');
+//专家绑定银行卡
+Route::post('expertHaveCard', 'ExpertUcenterController@expertHaveCard');
 //获取充值记录
     Route::post('getRecord', 'CenterController@getRecord');
 //消息标记已读
