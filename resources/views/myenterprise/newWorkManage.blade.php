@@ -226,12 +226,12 @@
             var userId=$.cookie('userId');
             $.ajax({
                 url:"{{asset('IsMember')}}",
-                data:{"userId":userId,"type":"work"},
+                data:{"userId":userId},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
                     var code=res['code'];
-                    var account=res['account']
+                    var account=res['account'];
                     switch(code){
                         case "success":
                             $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
@@ -249,14 +249,8 @@
                                 layer.close();
                             });
                             break;
-                        case "error":
-                            pop(code,account);
-                            break;
                         case "expried":
                             pop(code,account);
-                            break;
-                        case "finish":
-                           pop(code,account)
                             break;
                     }
                 }
@@ -268,7 +262,7 @@
             var userId=$.cookie('userId');
             $.ajax({
                 url:"{{asset('IsMember')}}",
-                data:{"userId":userId,"type":"work"},
+                data:{"userId":userId},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
@@ -291,14 +285,8 @@
                                 layer.close();
                             });
                             break;
-                        case "error":
-                            pop(code,account);
-                            break;
                         case "expried":
                             pop(code,account);
-                            break;
-                        case "finish":
-                            pop(code,account)
                             break;
                     }
                 }

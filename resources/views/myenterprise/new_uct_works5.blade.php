@@ -179,7 +179,7 @@
                                         </div>
                                         <div class="camera-comunicate">
                                             <span class="camera"><img src="{{asset('img/camera.png')}}" /></span>
-                                            <a href="{{url('uct_works/eventVideo/'.$datas->eventid)}}" class="video-comu">视频沟通</a>
+                                            <a href="javascript:;" class="video-comu" id="eventVideo">视频沟通</a>
                                         </div>
                                     </div>
                                 </div>
@@ -736,6 +736,26 @@
                 content: '//fly.layui.com/'
             });*/
         });
+        $("#eventVideo").on("click",function(){
+            $eventId=$("#eventId").val();
+            $.ajax({
+                url:"{{url('getEventVideoTime')}}",
+                data:{"eventId":$eventId},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=='error'){
+                        layer.confirm('您该次办事的免费视频的时间已经用完', {
+                            btn: ['确认']
+                        }, function(){
+                            layer.closeAll('dialog');
+                        })
+                    }else{
+                        window.location.href="/uct_works/eventVideo/"+$eventId;
+                    }
+                }
+            })
+        })
 
     </script>
     <!-- 修改意见/end -->

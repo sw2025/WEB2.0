@@ -201,19 +201,15 @@
                                             $(".uct-works-expava").show();
                                         }else{
                                             var domains=$(".publ-need-sel-def").text().trim();
-                                            /*var industry=$("#industrys").text().trim();*/
                                             var describes=$(".uct-works-txt").val();
                                             $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
-                                           /* $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                             $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                                             window.location.href="{{asset('uct_works/reselect')}}"
                                         }
                                     }else{
                                         var domains=$(".publ-need-sel-def").text().trim();
-                                        /*var industry=$("#industrys").text().trim();*/
                                         var describes=$(".uct-works-txt").val();
                                         $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
-                                       /* $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                         $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                                         window.location.href="{{asset('uct_works/reselect')}}";
                                     }
@@ -232,7 +228,6 @@
                                     $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
-                                    /* $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});*/
                                     window.location.href="{{url('uct_works/applyWork')}}";
                                 }
                             });
@@ -247,31 +242,24 @@
                                         $(".uct-works-expava").show();
                                     }else{
                                         var domains=$(".publ-need-sel-def").text().trim();
-                                        /*var industry=$("#industrys").text().trim();*/
                                         var describes=$(".uct-works-txt").val();
                                         $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
-                                       /* $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                         $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                                         window.location.href="{{asset('uct_works/reselect')}}"
                                         return false;
                                     }
                                 }else{
                                     var domains=$(".publ-need-sel-def").text().trim();
-                                    /*var industry=$("#industrys").text().trim();*/
                                     var describes=$(".uct-works-txt").val();
                                     $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
-                                    /*$.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                                     $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
-
                                     window.location.href="{{asset('uct_works/reselect')}}"  ;
-
                                     return false;
                                 }
                             }, function(){
                                 $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
                                 $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
                                 $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
-                               /* $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});*/
                                 window.location.href="{{url('uct_works/applyWork')}}"
                                 return false;
 
@@ -285,19 +273,15 @@
                             $(".uct-works-expava").show();
                         }else{
                             var domains=$(".publ-need-sel-def").text().trim();
-                           /* var industry=$("#industrys").text().trim();*/
                             var describes=$(".uct-works-txt").val();
                             $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
-                           /* $.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                             $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                             window.location.href="{{asset('uct_works/reselect')}}"
                         }
                     }else{
                         var domains=$(".publ-need-sel-def").text().trim();
-                       /* var industry=$("#industrys").text().trim();*/
                         var describes=$(".uct-works-txt").val();
                         $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
-                        /*$.cookie("industry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
                         $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('uct_works/reselect')}}"
                     }
@@ -307,7 +291,6 @@
         $(".submit-audit").on("click",function(){
             var that=this;
             var domain=$(".publ-need-sel-def").text().trim();
-           /* var industry=$("#industrys").text().trim();*/
             var describe=$(".uct-works-txt").val();
             var isAppoint=($.cookie("isAppoint"))?$.cookie("isAppoint"):1;
             var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
@@ -323,14 +306,6 @@
             }else{
                 var state=0;
             }
-           /* if(industry=="请选择"){
-                layer.tips("问题行业不能为空", '.datas-sel-def', {
-                    tips: [2, '#00a7ed'],
-                    time: 4000
-                });
-                return false;
-            }*/
-
             if(domain=="请选择"){
                 layer.tips("问题分类不能为空", '.publ-need-sel-def', {
                     tips: [2, '#00a7ed'],
@@ -367,7 +342,6 @@
                         $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
-                        /*$.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});*/
                         if(state == 0){
                             layer.msg(res.msg,{'icon':6},function () {
                                 window.location = '{{url('uct_works')}}';
@@ -390,10 +364,8 @@
                                 }
                             });
                         }
-
                     }else{
                         $(".publ-need-sel-def").text(domain);
-                        /*$("#industrys").text(describe);*/
                         $(".uct-works-txt").val(describe);
                         layer.alert(res.msg+' 申请失败,请重新申请', {
                             btn: ['确定'] //按钮

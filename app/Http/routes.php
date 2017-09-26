@@ -216,6 +216,8 @@ Route::post('expertHaveCard', 'ExpertUcenterController@expertHaveCard');
     Route::post('selectExpert', 'MyEnterpriseController@selectExpert');
 //办事视频咨询
     Route::get('uct_works/eventVideo/{eventId}','MyEnterpriseController@eventVideo');
+//获取办事视频咨询的时间
+Route::post('getEventVideoTime','MyEnterpriseController@getEventVideoTime');
 //办事完成，给专家星级评论
     Route::post('toExpertMsg', 'MyEnterpriseController@toExpertMsg');
 //办事完成，给专家评论

@@ -255,7 +255,6 @@
             type:"POST",
             success:function(res){
                 var code=res['code'];
-                var account=res['account']
                 switch(code){
                     case "success":
                         $.cookie("videodomain",'',{path:'/',domain:'sw2025.com'});

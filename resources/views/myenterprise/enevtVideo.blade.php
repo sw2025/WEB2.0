@@ -226,5 +226,11 @@
         $(".unusual-btn").on('click',function(){
             window.history.back()
         })
+       /* $(".hangupButton").on("click",function(){
+            alert(123);
+        })*/
+        $("#netcallMeetingBox").on("click",function(){
+            alert(123);
+        })
     </script>
 @endsection

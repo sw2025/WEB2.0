@@ -363,68 +363,30 @@ class PublicController extends Controller
     public function  IsMember(Request $request){
         $result=array();
         $userId=$_POST['userId'];
-        $type=$_POST['type'];
-        $enterpriseId=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("enterpriseid");
         $account=\UserClass::getMoney($userId);
         $result['account']=$account;
-        $enterprise=DB::table("t_u_enterprise")
-            ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
-            ->where("t_u_enterprise.enterpriseid",$enterpriseId)
-            ->orderBy("t_u_enterpriseverify.id","desc")
-            ->take(1)
-            ->pluck('configid');
-        if($enterprise!=3){
-            $result['code']="enterprise";
-        }else{
-            $result['code']='success';
-        }
-        $members=DB::table("t_u_enterprisemember")
-            ->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")
-            ->where("enterpriseid",$enterpriseId)->get();
-        if(count($members)){
-            $currentTime=date('Y-m-d H:i:s');
-            foreach ($members as $member){
-                $endTime=$member->endtime;
-                $startTime=$member->starttime;
-                $eventCount=$member->eventcount;
-                $consultCount=$member->consultcount;
-            }
-            if(strtotime($currentTime) < strtotime($endTime)){
-                if($type=="work"){
-                    $counts=DB::table("t_e_event")
-                        ->leftJoin("view_eventstatus","t_e_event.eventid","=","view_eventstatus.eventid")
-                        ->whereIn("configid",[6,7,8])
-                        ->whereBetween("t_e_event.eventtime",[$startTime,$endTime])
-                        ->where("t_e_event.userid",session('userId'))
-                        ->count();
-                    if($counts>=$eventCount){
-                        $result['code']="finsh";
-                    }else{
-                        $result['code']="success";
-                    }
-                }else{
-                    $counts=DB::table("t_c_consult")
-                        ->leftJoin("view_consultstatus","t_c_consult.consultid","=","view_consultstatus.consultid")
-                        ->whereIn("configid",[6,7,8])
-                        ->whereBetween("t_e_event.eventtime",[$startTime,$endTime])
-                        ->where("t_c_consult.userid",session('userId'))
-                        ->count();
-                    if($counts>=$consultCount){
-                        $result['code']="finsh";
-                    }else{
-                        $result['code']="success";
-                    }
-                }
+        $enterpriseId=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("enterpriseid");
+        if($enterpriseId){
+            $enterprise=DB::table("t_u_enterprise")
+                ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
+                ->where("t_u_enterprise.enterpriseid",$enterpriseId)
+                ->orderBy("t_u_enterpriseverify.id","desc")
+                ->take(1)
+                ->pluck('configid');
+            if($enterprise!=3){
+                $result['code']="enterprise";
             }else{
-                $result['enterpriseId']=$enterpriseId;
-                $result['code']="expried";
+                $eventCounts=DB::table("t_u_enterprisemember")->where("enterpriseid",$enterpriseId)->pluck('eventcount');
+                if($eventCounts){
+                    $result['code']="success";
+                }else{
+                    $result['code']="expried";
+                }
             }
         }else{
-            $result['code']="error";
+            $result['code']="enterprise";
         }
-        $result['enterpriseid']=$enterpriseId;
         return $result;
-
     }
 
     /**判断是否认证企业
@@ -435,18 +397,21 @@ class PublicController extends Controller
         $result=array();
         $userId=$_POST['userId'];
         $enterpriseId=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("enterpriseid");
-        $enterprise=DB::table("t_u_enterprise")
-            ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
-            ->where("t_u_enterprise.enterpriseid",$enterpriseId)
-            ->orderBy("t_u_enterpriseverify.id","desc")
-            ->take(1)
-            ->pluck('configid');
-        if($enterprise!=3){
-            $result['code']="enterprise";
+        if($enterpriseId){
+            $enterprise=DB::table("t_u_enterprise")
+                ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
+                ->where("t_u_enterprise.enterpriseid",$enterpriseId)
+                ->orderBy("t_u_enterpriseverify.id","desc")
+                ->take(1)
+                ->pluck('configid');
+            if($enterprise!=3){
+                $result['code']="enterprise";
+            }else{
+                $result['code']='success';
+            }
         }else{
-            $result['code']='success';
+            $result['code']="enterprise";
         }
-        $result['enterpriseid']=$enterpriseId;
         return $result;
     }
 
@@ -762,7 +727,6 @@ class PublicController extends Controller
     {
         switch ($type){
             case 'event':
-
                 $eventid = $data['eventid'];
                 $eventinfo = DB::table('t_e_event')->where('eventid',$eventid)->first();
                 DB::beginTransaction();
@@ -850,6 +814,8 @@ class PublicController extends Controller
                     DB::commit();
                     $expertsinfo = DB::table('t_u_expert')->whereIn('expertid',$expids)->select('expertname','showimage','expertid')->get();
                     $msg = ['msg' => '办事通过审核并推送到指定专家','icon' => 1,'expertsinfo' => $expertsinfo];
+                    $enterpriseId=DB::table("t_u_enterprise")->where("userid",session('userId'))->pluck("enterpriseid");
+                    $eventCounts=DB::table('t_u_enterprisemember')->where("enterpriseid",$enterpriseId)->decrement('eventcount');
                 }catch(Exception $e){
                     DB::rollback();
                     throw $e;
@@ -870,7 +836,6 @@ class PublicController extends Controller
                     return $msg;
                 }
             break;
-
             case 'video':
                 $consultid = $data['consultid'];
                 $consultinfo = DB::table('t_c_consult')->where('consultid',$consultid)->first();
@@ -907,7 +872,6 @@ class PublicController extends Controller
 
                         shuffle($expert);
                         shuffle($expert2);
-
                         if(empty($expert) && empty($expert2)){
 
                             DB::commit();
@@ -924,7 +888,6 @@ class PublicController extends Controller
                             return ['msg' => '系统匹配专家失败'.$consultid,'icon' => 2];
 
                         } elseif(!empty($expert)) {
-
                             foreach($expert as $v){
                                 $pushexpert = DB::table('view_expertresponsetime')
                                     ->where('expertid',$v->expertid)
@@ -949,8 +912,6 @@ class PublicController extends Controller
                             if(!count($expids)){
                                 return ['msg' => '很抱歉系统未在您指定的时间段内找到合适的专家请重新更改下咨询时间谢谢','icon' => 2];
                             }
-
-
                         } elseif (!empty($expert2)){
                             foreach($expert2 as $v){
                                 $pushexpert = DB::table('view_expertresponsetime')
@@ -1012,7 +973,6 @@ class PublicController extends Controller
                     return  ['msg' => '推送失败','icon' => 2];
                     throw $e;
                 }
-
                 if($msg['icon'] == 2){
                     DB::table('t_c_consultverify')->insert([
                         'consultid' => $consultid,
@@ -1028,8 +988,6 @@ class PublicController extends Controller
                     return $msg;
                 }
                 break;
-
-
         }
     }
 
