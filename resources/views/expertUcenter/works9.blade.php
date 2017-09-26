@@ -1,8 +1,35 @@
 @extends("layouts.ucenter4")
 @section("content")
     <script type="text/javascript" src="{{asset('js/jquery.raty.min.js')}}"></script>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <!--    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+       <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> -->
+    <style type="text/css">
+        table.table-striped {
+            font-family: verdana,arial,sans-serif;
+            font-size:11px;
+            color:#333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+        table.table-striped th {
+            font-size: 15px;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+        table.table-striped td {
+            font-size: 14px;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+
+    </style>
     <div class="main">
         <!-- 企业办事服务 / start -->
         <h3 class="main-top">企业办事服务</h3>
@@ -27,19 +54,19 @@
                     @foreach($datas as $v)
                         <table class="table table-striped" style="width: 80%;margin: 10px auto;">
                             <tr class="success">
-                                <td>办事企业</td>
+                                <th>办事企业</th>
                                 <td>{{$selExperts->enterprisename}}</td>
                             </tr>
                             <tr>
-                                <td>办事领域</td>
+                                <th>办事领域</th>
                                 <td>{{$v->domain1.' / '.$v->domain2}}</td>
                             </tr>
                             <tr>
-                                <td>办事描述</td>
+                                <th>办事描述</th>
                                 <td>{{mb_substr($v->brief,0,50)}}</td>
                             </tr>
                             <tr>
-                                <td>办事专家</td>
+                                <th>办事专家</th>
                                 <td><a href="{{url('expert/detail',$selExperts2->expertid)}}">{{$selExperts2->expertname}}</a></td>
                             </tr>
                         </table>
