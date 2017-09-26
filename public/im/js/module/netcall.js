@@ -986,7 +986,6 @@ fn.reject = function () {
 // 取消呼叫
 fn.cancelCalling = function (isClick) {
     if (isClick === true && this.$callingHangupButton.is(".disabled")) return;
-
     if (!this.isBusy) {
         this.log("取消呼叫");
         this.netcall.hangup();
@@ -1022,9 +1021,9 @@ fn.hangup = function () {
     this.stopRemoteStream();
     this.stopLocalStream();
 
-    /** 重置文案聊天高度 */
+    /* 重置文案聊天高度 */
     this.resizeChatContent();
-    /**状态重置 */
+    /*状态重置 */
     this.resetWhenHangup();
 };
 // 其它端已处理
@@ -1071,13 +1070,13 @@ fn.onHangup = function (obj) {
     this.clearBeCallTimer();
     /* var tipText;
     if(this.netcallDurationTimer !== null) {
-        // this.sendLocalMessage("通话拨打时长" + this.getDurationText(this.netcallDuration));
+         this.sendLocalMessage("通话拨打时长" + this.getDurationText(this.netcallDuration));
         tipText = "对方已挂断";
     } else {
         // var to = obj.account;
         tipText = "对方已挂断";
         // this.sendLocalMessage("未接听", to);
-    } */
+    }*/
 
     close.call(this);
 

@@ -868,7 +868,6 @@ class MyEnterpriseController extends Controller
         $result=array();
         $data = $request->input();
         $domain=explode("/",$data['domain']);
-
         DB::beginTransaction();
         try{
             $eventId=DB::table("t_e_event")->insertGetId([
@@ -1746,8 +1745,31 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public function eventVideo($eventId){
-        return view('myenterprise.enevtVideo',compact('eventId'));
+        $consulttime=DB::table("t_e_event")->where("eventid",$eventId)->pluck("consulttime");
+        if(!empty($consulttime)){
+            return view('myenterprise.enevtVideo',compact('eventId'));
+        }else{
+            return redirect('uct_works/detail/'+$eventId);
+        }
+
     }
+
+    /**获取办事中视频的免费时长
+     * @return array
+     */
+    public  function  getEventVideoTime(){
+        $res=array();
+        $eventId=$_POST['eventId'];
+        $consultTime=DB::table('t_e_event')->where("eventid",$eventId)->pluck('consulttime');
+        if(!empty($consultTime)){
+            $res['code']="success";
+        }else{
+            $res['code']="error";
+        }
+        return $res;
+        dd($res);
+    }
+
 
    
 
