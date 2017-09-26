@@ -77,9 +77,10 @@
         <div class="more-box"><a href="{{asset('expert')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
         <div class="row tab-resources">
             <div class="tabar clearfix" id="knowExpert">
-                <a href="javascript:;" class="tabar-opt">知名机构<div class="triangle-top"></div></a>
                 <a href="javascript:;" class="tabar-opt">资深专家<div class="triangle-top"></div></a>
                 <a href="javascript:;" class="tabar-opt">成功企业家<div class="triangle-top"></div></a>
+                <a href="javascript:;" class="tabar-opt">知名机构<div class="triangle-top"></div></a>
+
             </div>
             <div class="tab-con">
                 <ul class="tab-list clearfix" id="konwExpertList">
@@ -152,6 +153,7 @@
     })
     $("#knowExpert a").on("click",function(){
         $("#konwExpertList").empty();
+        $("#konwExpertList").css('left','0%');
         var expertType= $(this).text();
         getType(expertType);
     })
@@ -306,22 +308,22 @@
         var type=$(this).text();
         getPath(type);
     })
-    
+
     $('.item-con-hover span').on('click',function () {
         var aa = $(this).parent('p').parent('div').prev('div').children('h2').html();
         switch(aa)
         {
             case '01':
-               var domain='找资金';
-                break;
-            case '02':
-                var domain='找技术';
-                break;
-            case '03':
                var domain='定战略';
                 break;
+            case '02':
+                var domain='找资金';
+                break;
+            case '03':
+               var domain='找市场';
+                break;
             case '04':
-                var domain='找市场';
+                var domain='找技术';
                 break;
             default:
                 var domain='全部';

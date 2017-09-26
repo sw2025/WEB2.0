@@ -186,7 +186,7 @@ class MyExpertController extends Controller
             //datas2为我的办事列表
             $datas2 = $obj
                 ->where(['res.expertid' => $expertid])
-                ->whereIn('status.configid',[5,6,7,8])
+                ->whereIn('status.configid',[5,6,7,8,9])
                 ->where('res.state','<>',5)
                 ->orderBy('res.id','desc')
                 ->paginate(6);
