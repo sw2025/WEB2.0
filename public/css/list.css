@@ -52,7 +52,7 @@ body{background: #f8f8f8;}
 .exp-list-video em,.exp-list-best em{color:#333;}
 .exp-list-video i,.exp-list-best i{font-size: 14px;margin-right: 5px;}
 .exp-list-lab{overflow: hidden;max-height: 52px;}
-.exp-list-lab span{float: left;display: block;border: 1px solid #ccc;color:#999;border-radius: 3px;line-height: 1.4;margin-right: 4px;margin-bottom: 8px;white-space: nowrap;font-size: 12px;}
+.exp-list-lab span{float: left;display: block;border: 1px solid #0c588e;color:#000;border-radius: 3px;line-height: 1.4;margin-right: 4px;margin-bottom: 8px;white-space: nowrap;font-size: 12px;}
 .exp-list-lab span:first-child{margin-left: 105px;}
 .exp-list-desc{text-indent: 2em;color:#333;line-height:20px;height:60px;text-align: justify;overflow: hidden;}
 .exp-list-icon,.supp-list-icon{position: absolute;bottom:8px;}

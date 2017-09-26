@@ -161,6 +161,7 @@ class PublicController extends Controller
             $members=DB::table("t_u_enterprisemember")
                         ->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")
                         ->where("enterpriseid",$enterpriseId)
+                        ->select('t_u_enterprisemember.*')
                         ->get();
             if($members){
                 $currentTime=time();
@@ -169,7 +170,7 @@ class PublicController extends Controller
                     $eventCount=$member->eventcount;
                     $consultCount=$member->consultcount;
                 }
-                if(date('Y-m-d H:i:s')<$member->endtime){
+                if(time() < $endTime){
                     if($type=="consult"){
                         $counts=DB::table("t_c_consult")
                             ->leftJoin("view_consultstatus","t_c_consult.consultid","=","view_consultstatus.consultid")

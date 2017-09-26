@@ -96,7 +96,7 @@
             var epid = '{{$lastpid->epid or null}}';
             var state = '{{$configinfo[$lastpid->step-1]->state}}';
         @if($lastpid->step != 4 && empty($_GET['step']))
-            @if(!$configinfo[$lastpid->step-1]->starttype && $datas->userid == session('userId'))
+            @if(!$configinfo[$lastpid->step-1]->starttype && $datas->userid == session('userId') && $isfirstevent)
 
                     geteventnewstate = function () {
                 $.post('{{url('ifeventtrue')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
