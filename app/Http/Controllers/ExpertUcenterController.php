@@ -242,6 +242,7 @@ class ExpertUcenterController extends Controller
             ->leftJoin('t_u_user as user','user.userid' ,'=' ,'msg.userid')
             ->leftJoin('t_u_user as user2','user2.userid' ,'=' ,'msg.use_userid')
             ->where('needid',$supplyId)
+            ->where('msg.isdelete',0)
             ->select('msg.*','ent.enterprisename','ext.expertname','user.avatar','user.nickname','user.phone','user2.nickname as nickname2','user2.phone as phone2')
             ->orderBy('messagetime','desc')
             ->get();
@@ -326,9 +327,10 @@ class ExpertUcenterController extends Controller
         }
         if($request->ajax()){
             $data = $request->input();
-            $res = DB::table('t_e_eventprocessremark')->where('epid',$data['epid'])->paginate(1);
+            $res = DB::table('t_e_eventprocessremark')->where('epid',$data['epid'])->orderBy('id','desc')->paginate(5);
             return $res;
         }
+        $selExperts = null;
         switch($configId){
             case 5:
                 $selExperts=DB::table("t_e_eventresponse")
@@ -355,6 +357,18 @@ class ExpertUcenterController extends Controller
                     ->where("t_e_eventresponse.eventid",$eventId)
                     ->get();
                 $configId = 7;
+                break;
+
+            case 9:
+                $selExperts=DB::table("t_u_enterprise")
+                    ->where('userid',$datas[0]->userid)
+                    ->first();
+                $selExperts2=DB::table("t_e_eventresponse")
+                    ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_e_eventresponse.state",3)
+                    ->where("eventid",$eventId)
+                    ->first();
+                $configId = 9;
                 break;
             case 6:
                 //当config为6正在办事的状态的时候
@@ -446,7 +460,7 @@ class ExpertUcenterController extends Controller
                 $task = DB::table('t_e_eventtask')->whereIn('epid',$epids)->where('state','<>','2')->orderBy('etid','desc')->get();
                 $remark = [];
                 foreach($epids as $v){
-                    $data1 = DB::table('t_e_eventprocessremark')->where('epid',$v)->paginate(1);
+                    $data1 = DB::table('t_e_eventprocessremark')->where('epid',$v)->orderBy('id','desc')->paginate(5);
                     $data2 = DB::table('t_e_eventprocessremark')->where('epid',$v)->count();
                     if($data2){
                         //若有返回信息则吧反馈的信息对象存放到数组中
@@ -458,7 +472,7 @@ class ExpertUcenterController extends Controller
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
         $view="works".$configId;
-        return view("expertUcenter.".$view,compact("datas","counts","selected","selExperts","eventId"));
+        return view("expertUcenter.".$view,compact("datas","counts","selected","selExperts",'selExperts2',"eventId"));
     }
 
     /**判断用户是否绑定银行卡

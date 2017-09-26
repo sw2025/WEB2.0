@@ -504,7 +504,7 @@
             $('.datum-history').on('click', function(event) {
                 var epid = $(this).attr('index');
                 var page = $(this).attr('page');
-                var pageobj = $(this).parent().siblings('.history-opinion');
+                var pageobj = $(this).parent().parent().siblings('.history-opinion');
                 var contobj = pageobj.children('ul');
 
                 pageobj.children().children('#Pagination').pagination(page,{'callback':function (page_index, jq) {

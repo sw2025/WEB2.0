@@ -145,11 +145,10 @@
         <div class="main-right v-step-box">
             <div class="card-step works-step">
                 <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
-                <span class="green-circle">2</span>办事审核<span class="card-step-cap">&gt;</span>
-                <span class="green-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
-                <span class="green-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-                <span class="green-circle">5</span>办事管理<span class="card-step-cap">&gt;</span>
-                <span class="gray-circle">6</span>完成
+                <span class="green-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
+                <span class="green-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
+                <span class="green-circle">4</span>办事管理<span class="card-step-cap">&gt;</span>
+                <span class="green-circle">5</span>完成
             </div>
             <div class="uct-video-manage">
                 <div class="video-manage-top">
@@ -515,12 +514,12 @@
             $('.datum-history').on('click', function(event) {
                 var epid = $(this).attr('index');
                 var page = $(this).attr('page');
-                var pageobj = $(this).parent().siblings('.history-opinion');
+                var pageobj = $(this).parent().parent().siblings('.history-opinion');
                 var contobj = pageobj.children('ul');
 
                 pageobj.children().children('#Pagination').pagination(page,{'callback':function (page_index, jq) {
                     var current = parseInt(page_index)+1;
-                    $.get('{{url('mywork/workDetail',$eventId)}}?page='+current,{'epid':epid},function (data) {
+                    $.get('{{url('uct_mywork/workDetails',$eventId)}}?page='+current,{'epid':epid},function (data) {
                         var ee = data.data;
                         contobj.html('');
                         var str = '';
