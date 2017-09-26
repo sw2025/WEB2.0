@@ -45,9 +45,9 @@
                             </div>
                         </div>
                     @endforeach
-                    <div class="uct-works-con">
+                   {{-- <div class="uct-works-con">
                         <button class="test-btn rate-star-btn" type="button">确认</button>
-                    </div>
+                    </div>--}}
                 </div>
             </div>
         </div>
