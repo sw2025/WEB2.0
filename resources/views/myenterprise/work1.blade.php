@@ -222,14 +222,18 @@
                                     $(".submit-audit").css('background-color','#ed0021');
                                     layer.close(index);
 
+                                    //按钮【按钮三】的回调
+                                },btn3: function(index, layero){
+                                    $(".submit-audit").attr('disabled',false);
+                                    $(".submit-audit").css('background-color','#ed0021');
+                                    layer.close(index);
+
                                     //按钮【按钮二】的回调},btn3: function(index, layero){
                                     $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
                                     $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
-                                   /* $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});*/
+                                    /* $.cookie("industry","",{expires:date,path:'/',domain:'sw2025.com'});*/
                                     window.location.href="{{url('uct_works/applyWork')}}";
-
-                                    //按钮【按钮三】的回调
                                 }
                             });
 

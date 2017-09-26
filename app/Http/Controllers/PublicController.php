@@ -389,7 +389,7 @@ class PublicController extends Controller
                 $eventCount=$member->eventcount;
                 $consultCount=$member->consultcount;
             }
-            if($currentTime<$endTime){
+            if(strtotime($currentTime) < strtotime($endTime)){
                 if($type=="work"){
                     $counts=DB::table("t_e_event")
                         ->leftJoin("view_eventstatus","t_e_event.eventid","=","view_eventstatus.eventid")
