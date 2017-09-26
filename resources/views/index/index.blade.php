@@ -306,22 +306,22 @@
         var type=$(this).text();
         getPath(type);
     })
-    
+
     $('.item-con-hover span').on('click',function () {
         var aa = $(this).parent('p').parent('div').prev('div').children('h2').html();
         switch(aa)
         {
             case '01':
-               var domain='找资金';
-                break;
-            case '02':
-                var domain='找技术';
-                break;
-            case '03':
                var domain='定战略';
                 break;
+            case '02':
+                var domain='找资金';
+                break;
+            case '03':
+               var domain='找市场';
+                break;
             case '04':
-                var domain='找市场';
+                var domain='找技术';
                 break;
             default:
                 var domain='全部';
