@@ -334,13 +334,15 @@ class MyExpertController extends Controller
 
         $countobj4 = clone $datas;
         $count= $countobj4
-           ->where(['res.expertid' => $expertid,'status.configid' => 4])
+           ->where(['res.expertid' => $expertid])
+            ->whereIn('status.configid' ,[4,5])
             ->whereIn('res.state',[0,1])
            ->orderBy('res.id','desc')
            ->count();
 
         $datas = $datas
-            ->where(['res.expertid' => $expertid,'status.configid' => 4])
+            ->where(['res.expertid' => $expertid])
+            ->whereIn('status.configid' ,[4,5])
             ->whereIn('res.state',[0,1])
             ->orderBy('res.id','desc')
             ->paginate(6);
