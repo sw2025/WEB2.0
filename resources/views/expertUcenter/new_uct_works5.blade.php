@@ -21,7 +21,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
     <!-- 侧边栏公共部分/end -->
-    @if($stmpstate->step == 1 && !$isfirstevent)
+    @if($stmpstate->step == 1 && $isfirstevent)
         <script>
             var cookie = $.cookie('isnewpeople') ? $.cookie('isnewpeople'):0;
             if (cookie == '' || cookie == NaN || cookie == undefined){
@@ -98,7 +98,7 @@
             var epid = '{{$lastpid->epid or null}}';
             var state = '{{$configinfo[$lastpid->step-1]->state}}';
             @if($lastpid->step != 4 && empty($_GET['step']))
-            @if($configinfo[$lastpid->step-1]->starttype && $info->userid == session('userId') && $isfirstevent)
+            @if($configinfo[$lastpid->step-1]->starttype && $info->userid == session('userId'))
 
                     geteventnewstate = function () {
                 $.post('{{url('ifeventtrue')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
