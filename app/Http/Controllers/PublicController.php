@@ -1062,6 +1062,23 @@ class PublicController extends Controller
         }
         return ['msg' => '非法操作','icon' => 2];
     }
-    
+
+    /**
+     *统计省略+
+     */
+    static public function numToCount($looks)
+    {
+        if($looks >= 100000){
+            return   round($looks/10000).'万+';
+        }
+        elseif($looks >= 10000){
+            return   round($looks/10000).'0000+';
+        }elseif ($looks >= 1000){
+            return   round($looks/1000).'000+';
+        }else{
+            return $looks;
+        }
+    }
+
 
 }
