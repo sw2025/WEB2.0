@@ -17,11 +17,10 @@
             <div class="main-right v-step-box">
                 <div class="card-step works-step">
                     <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">2</span>办事审核<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">5</span>办事管理<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">6</span>完成
+                    <span class="green-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
+                    <span class="green-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
+                    <span class="green-circle">4</span>办事管理<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">5</span>完成
                 </div>
                 <div class="uct-video-manage">
                     <div class="wrapper box-sizing">
@@ -158,7 +157,7 @@
                                         <a class="icon icon-file" data-type="file"></a>
                                     </span>
                                         <a class="chat-btn u-netcall-audio-link" id="showNetcallAudioLink">&nbsp;</a>
-                                        <a class="chat-btn u-netcall-video-link" id="showNetcallVideoLink">&nbsp;</a>
+                                        <a class="chat-btn u-netcall-video-link" id="showNetcallVideoLink" >&nbsp;</a>
                                         <textarea id="messageText" class="chat-btn msg-input box-sizing radius5px p2p" rows="1" autofocus="autofocus" maxlength="500"></textarea>
                                         <a class="btn-send radius5px" id="sendBtn">发送</a>
                                         <form action="#" id="uploadForm">
@@ -226,11 +225,41 @@
         $(".unusual-btn").on('click',function(){
             window.history.back()
         })
-       /* $(".hangupButton").on("click",function(){
-            alert(123);
-        })*/
-        $("#netcallMeetingBox").on("click",function(){
-            alert(123);
+        $("#netcallMeetingBox").on("click",".hangupButton",function(){
+            var eventVideoTime=$(this).parent().next().text();
+            var eventId=$("#eventVideo").val();
+            $.ajax({
+                url:"{{url('reduceTime')}}",
+                data:{"eventId":eventId,"eventVideoTime":eventVideoTime},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="error"){
+                        layer.confirm('您该次办事的免费视频的时间已经用完', {
+                            btn: ['确认']
+                        }, function(){
+                            layer.closeAll('dialog');
+                            window.history.back()
+                        })
+                    }
+                }
+            })
         })
+        var time=setInterval(function(){
+            var timeLong=$("#netcallMeetingBox").find(".tip:last").text();
+                var eventId=$("#eventVideo").val();
+                $.ajax({
+                    url:"{{url('compareTime')}}",
+                    data:{"eventId":eventId,"timeLong":timeLong},
+                    dateType:"json",
+                    type:"POST",
+                    success:function(res){
+                        if(res['code']=="error"){
+                            $("#netcallMeetingBox").find('.hangupButton').trigger('click');
+                            clearInterval(time);
+                        }
+                    }
+                })
+        },300000);
     </script>
 @endsection

@@ -1,6 +1,6 @@
 body{background: #f8f8f8;}
 /***********搜索框 start***********/
-.section{padding-top: 100px;}
+.section{margin-top: 90px;}
 .list-bg{height: 101px;background:url(../img/listbg.jpg) no-repeat center top;margin: 25px auto;}
 .list-search{width:525px;margin:0 auto;padding-top: 30px;font-size: 16px;position: relative;}
 .list-search-inp{width:475px;height: 40px;line-height: 40px;padding:0 20px;box-sizing: border-box;}
@@ -52,7 +52,7 @@ body{background: #f8f8f8;}
 .exp-list-video em,.exp-list-best em{color:#333;}
 .exp-list-video i,.exp-list-best i{font-size: 14px;margin-right: 5px;}
 .exp-list-lab{overflow: hidden;max-height: 52px;}
-.exp-list-lab span{float: left;display: block;border: 1px solid #ccc;color:#999;border-radius: 3px;line-height: 1.4;margin-right: 4px;margin-bottom: 8px;white-space: nowrap;font-size: 12px;}
+.exp-list-lab span{float: left;display: block;border: 1px solid #00a7ed;color:#00a7ed;border-radius: 3px;line-height: 1.4;margin-right: 4px;margin-bottom: 8px;white-space: nowrap;font-size: 12px;}
 .exp-list-lab span:first-child{margin-left: 105px;}
 .exp-list-desc{text-indent: 2em;color:#333;line-height:20px;height:60px;text-align: justify;overflow: hidden;}
 .exp-list-icon,.supp-list-icon{position: absolute;bottom:8px;}
@@ -75,3 +75,15 @@ body{background: #f8f8f8;}
 .supp-list-desc{text-indent: 2em;color:#333;line-height:18px;text-align: justify;overflow: hidden;font-size: 12px;height:90px;overflow: hidden;}
 .supply-list-link:hover,.expert-list-link:hover{border-color: #3c99e1;box-shadow: 0 0 10px #ccc;}
 /***********供求列表 end***********/
+/*适配*/
+.list-search{width:80%;}
+.list-search-inp{width:100%;}
+.list-search-btn{}
+.oh{overflow: hidden;}
+@media (max-width:750px){
+    .list-search{width:100%;}
+    .list-search-inp{font-size: 12px;}
+    .supp-list-img{width:100px;height: 100px;}
+    .supp-list-brief{margin-left: 120px;}
+}
+

@@ -142,9 +142,6 @@
             if($.cookie("videodomain") != "请选择" && $.cookie("videodomain") != ""){
                 $(".publ-need-sel-def").text($.cookie("videodomain"));
             }
-          /*  if($.cookie("videoindustry") != "请选择" && $.cookie("videoindustry") != ""){
-                $("#industrys").text($.cookie("videoindustry"));
-            }*/
             if($.cookie("videodescribe")){
                 $(".uct-works-txt").val($.cookie("videodescribe"));
             }
@@ -447,8 +444,8 @@
             istime: true,
             istoday: false,
             choose: function(datas){
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                end.start = datas //将结束日的初始值设定为开始日
+               // end.min = datas; //开始日选好后，重置结束日的最小日期
+               // end.start = datas //将结束日的初始值设定为开始日
             }
         };
         var end = {

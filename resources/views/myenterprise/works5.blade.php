@@ -79,7 +79,6 @@
             }
             //处理反选的专家
             $(".test-btn").on("click",function(){
-
                 if(expertIds.length!=0 && expertIds.length == 1){
                    var eventId=$("#event").val();
                     $.ajax({

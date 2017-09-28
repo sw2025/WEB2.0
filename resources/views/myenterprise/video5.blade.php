@@ -91,18 +91,9 @@
                 var consultId=$("#consult").val();
                 var totalCount=0;
                 if(expertIds.length!=0){
-                   $.each(expertIds,function(key,value){
-                       console.log(value);
-                       var values=value.split("/");
-                       for(var i=0;i<=values.length;i++){
-                           if(i==1){
-                               totalCount= parseInt(totalCount)+ parseInt(values[i]);
-                           }
-                       }
-                   });
                     $.ajax({
-                        url:"{{asset('returnMoney')}}",
-                        data:{"userId":$.cookie('userId'),"expertIds":expertIds,"type":"consult","markId":consultId,"totalCount":totalCount},
+                        url:"{{asset('handleSelect')}}",
+                        data:{"userId":$.cookie('userId'),"expertIds":expertIds,"markId":consultId},
                         dateType:"json",
                         type:"POST",
                         success:function(res){

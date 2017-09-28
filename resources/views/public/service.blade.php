@@ -1,7 +1,7 @@
 @extends("layouts.master")
 @section("content")
     <link rel="stylesheet" type="text/css" href="css/service.css" />
-    <div class="serve-banner serve2-banner"></div>
+    <div class="serve-banner serve2-banner"><img src="img/banner_ser.jpg" /></div>
     <!-- banner / end -->
     <!-- 平台简介 / start -->
     <div class="serve-stage serve2-stage container">
@@ -65,4 +65,10 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(function(){
+            var height = $('.serve2-banner img').height();
+            $('.serve2-banner').css('height', height+'px');
+        })
+    </script>
   @endsection

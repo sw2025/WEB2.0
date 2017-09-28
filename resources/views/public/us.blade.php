@@ -2,7 +2,7 @@
 @section("content")
     <link rel="stylesheet" type="text/css" href="css/about.css" />
     <!-- banner / start -->
-    <div class="serve-banner banner-us"></div>
+    <div class="serve-banner banner-us"><img src="img/banner_us.jpg" /></div>
     <!-- banner / end -->
     <!-- 主体 / start -->
     <div class="serve-stage stage-us container">
@@ -203,24 +203,36 @@
     <!-- 平台合作机构/  end -->
     <script type="text/javascript">
         $(function(){
+            var height = $('.banner-us img').height();
+            $('.banner-us').css('height', height+'px');
             var len = $('.core-list2 li').length;
             var wid1 = $('.core-item').width();
             var wid = $('.core-item').width() * len;
             $('.core-list2').width(wid);
-            if($(window).width() < 1200){
+            if($(window).width() < 1200 && $(window).width() > 996){
                 $('.core-list2 li').hover(function() {
-                var $this = $(this);
-                $this.stop().animate({'width': '250px'}, 800);
-                $this.siblings().stop().animate({'width': '120px'}, 800);
-                $this.children('.core-hover').stop().animate({'top': 0}, 800);
-                $this.siblings().children('.core-hover').stop().animate({'top': '-100%'}, 800);
-            }, function() {
-                var $this = $(this);
-                $this.children('.core-hover').stop().animate({'top': '-100%'}, 800);
-                $this.siblings().stop().animate({'width': wid1+'px'}, 800);
-                $this.stop().animate({'width': wid1+'px'}, 800);
-            });
-            }else{
+                    var $this = $(this);
+                    $this.stop().animate({'width': '250px'}, 800);
+                    $this.siblings().stop().animate({'width': '120px'}, 800);
+                    $this.children('.core-hover').stop().animate({'top': 0}, 800);
+                    $this.siblings().children('.core-hover').stop().animate({'top': '-100%'}, 800);
+                }, function() {
+                    var $this = $(this);
+                    $this.children('.core-hover').stop().animate({'top': '-100%'}, 800);
+                    $this.siblings().stop().animate({'width': wid1+'px'}, 800);
+                    $this.stop().animate({'width': wid1+'px'}, 800);
+                });
+            }else if($(window).width()<=996){
+                $('.core-list2 li').hover(function() {
+                    var $this = $(this);
+                    $this.children('.core-hover').stop().animate({'top': 0}, 800);
+                    $this.siblings().children('.core-hover').stop().animate({'top': '-100%'}, 800);
+                }, function() {
+                    var $this = $(this);
+                    $this.children('.core-hover').stop().animate({'top': '-100%'}, 800);
+                });
+            }
+            else{
                 $('.core-list2 li').hover(function() {
                     var $this = $(this);
                     $this.stop().animate({'width': '270px'}, 800);
