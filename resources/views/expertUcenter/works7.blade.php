@@ -8,11 +8,10 @@
             <div class="main-right">
                 <div class="card-step works-step">
                     <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">2</span>办事审核<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">5</span>办事管理<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">6</span>完成
+                    <span class="green-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
+                    <span class="green-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
+                    <span class="green-circle">4</span>办事管理<span class="card-step-cap">&gt;</span>
+                    <span class="green-circle">5</span>完成
                 </div>
                 <input type="hidden" id="event" name="event" value="{{$eventId}}">
                 <div class="publish-need uct-works-final">

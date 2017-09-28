@@ -69,6 +69,11 @@
                                 <th>办事专家</th>
                                 <td><a href="{{url('expert/detail',$selExperts2->expertid)}}">{{$selExperts2->expertname}}</a></td>
                             </tr>
+
+                            <tr>
+                                <th>终止原因</th>
+                                <td>{{$v->remark}}</td>
+                            </tr>
                         </table>
 
                     @endforeach

@@ -605,26 +605,111 @@ class MyEnterpriseController extends Controller
     public function stopEvent(Request $request)
     {
         if($request->ajax()){
-            $data = $request->input();
-            if($data['action']){
-                $res = DB::table('t_e_eventverify')->insert([
-                    'eventid' => $data['eventid'],
-                    'configid' => 7,
-                    'verifytime' => date('Y-m-d H:i:s',time()),
-                    'remark' => ''
-                ]);
-                $action = '办事已完成';
+            if(empty(session('userId'))){
+                return ['msg' => '请登录','icon' => 2];
+            }
+            $data = $request->only('eventid','laststep','msg','action');
+            $eventinfo = DB::table('t_e_event')
+                ->leftJoin('t_u_enterprise as pre','pre.userid','=','t_e_event.userid')
+                ->leftJoin('view_eventstatus as state','state.eventid','=','t_e_event.eventid')
+                ->select('t_e_event.*','pre.enterprisename','state.configid')
+                ->where('t_e_event.eventid',$data['eventid'])
+                ->first();
+            if(empty($eventinfo) || $eventinfo->configid != 6){
+                return ['msg' => '找不到此办事或此办事状态不正确','icon' => 2];
+            }
+            $eventexpert = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first();
+            $nowexpert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+            if(empty($eventexpert)){
+                return ['msg' => '找不到办事的专家','icon' => 2];
+            }
+            //若参与者是发起办事的人
+            if($eventinfo->userid == session('userId')){
+                if($data['action']){
+                    DB::beginTransaction();
+                    try{
+                        $res = DB::table('t_e_eventverify')->insert([
+                            'eventid' => $data['eventid'],
+                            'configid' => 7,
+                            'verifytime' => date('Y-m-d H:i:s',time()),
+                            'remark' => ''
+                        ]);
+                        DB::table('t_e_eventresponse')->insert([
+                            'eventid' => $data['eventid'],
+                            'expertid' => $eventexpert->expertid,
+                            'responsetime' => date('Y-m-d H:i:s',time()),
+                            'state' => 4,
+                            'updated_at' => date('Y-m-d H:i:s',time())
+                        ]);
+                        DB::commit();
+                        $action = '办事已完成,请您继续给为您办事的专家做出等级及文字';
+                    }catch(Exception $e){
+                        DB::rollback();
+                        return ['msg' => '操作失败','icon' => 2];
+                    }
+
+                } else {
+                    $remark = '企业'.$eventinfo->enterprisename.'终止办事，原因：'.$data['msg'];
+                    DB::beginTransaction();
+                    try{
+                        $res = DB::table('t_e_eventverify')->insert([
+                            'eventid' => $data['eventid'],
+                            'configid' => 9,
+                            'verifytime' => date('Y-m-d H:i:s',time()),
+                            'remark' => $remark
+                        ]);
+                        DB::table('t_e_eventresponse')->insert([
+                            'eventid' => $data['eventid'],
+                            'expertid' => $eventexpert->expertid,
+                            'responsetime' => date('Y-m-d H:i:s',time()),
+                            'state' => 5,
+                            'updated_at' => date('Y-m-d H:i:s',time())
+                        ]);
+
+                        DB::commit();
+
+                    }catch(Exception $e){
+                        DB::rollback();
+                        return ['msg' => '操作失败','icon' => 2];
+                    }
+                    $action = '办事中止...';
+                }
+            } elseif(!empty($nowexpert) && $eventexpert->expertid == $nowexpert->expertid){
+                if($data['action']){
+                    $action = '办事只能够企业完成，您不能完成此办事';
+                } else {
+                    $remark = '专家'.$nowexpert->expertname.'终止办事，原因：'.$data['msg'];
+                    DB::beginTransaction();
+                    try{
+                        $res = DB::table('t_e_eventverify')->insert([
+                            'eventid' => $data['eventid'],
+                            'configid' => 9,
+                            'verifytime' => date('Y-m-d H:i:s',time()),
+                            'remark' => $remark
+                        ]);
+                        DB::table('t_e_eventresponse')->insert([
+                            'eventid' => $data['eventid'],
+                            'expertid' => $eventexpert->expertid,
+                            'responsetime' => date('Y-m-d H:i:s',time()),
+                            'state' => 5,
+                            'updated_at' => date('Y-m-d H:i:s',time())
+                        ]);
+
+                        DB::commit();
+
+                    }catch(Exception $e){
+                        DB::rollback();
+                        return ['msg' => '操作失败','icon' => 2];
+                    }
+
+
+                    $action = '办事中止...';
+                }
             } else {
-                $res = DB::table('t_e_eventverify')->insert([
-                    'eventid' => $data['eventid'],
-                    'configid' => 9,
-                    'verifytime' => date('Y-m-d H:i:s',time()),
-                    'remark' => ''
-                ]);
-                $action = '办事中止...';
+                return ['msg' => '非办事参与者','icon' => 2];
             }
 
-            if($res){
+            if(!empty($res)){
                 return ['msg' => $action,'icon' => 1];
             }
             return ['msg' => '操作失败','icon' => 2];
@@ -1213,6 +1298,10 @@ class MyEnterpriseController extends Controller
                     ->where("t_c_consultresponse.state",2)
                     ->where("consultid",$consultId)
                     ->get();
+                $expertcost = 0;
+                foreach($selExperts as $v){
+                    $expertcost += $v->fee;
+                }
                 $selected=count($selExperts);
             break;
             case 6:
@@ -1250,7 +1339,7 @@ class MyEnterpriseController extends Controller
         $selected=!empty($selected)?$selected:"";
         $comperes=!empty($comperes)?$comperes:"";
         $view="video".$configId;
-        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId","comperes"));
+        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId","comperes",'expertcost'));
     }
     /**申请视频咨询
      * @return mixed
@@ -1401,8 +1490,7 @@ class MyEnterpriseController extends Controller
         $startTimes=strtotime($consults->starttime);
         $endTimes=strtotime($consults->endtime);
         $timeLong=($endTimes-$startTimes)/60;
-        $times=round($timeLong/env('Time'));
-        foreach ($expertIds as $value){
+        $times=round($timeLong/env('Time'));        foreach ($expertIds as $value){
             $values=explode("/",$value);
             $expertMoney=$expertMoney+$values[1]*$times;
         }
@@ -1438,11 +1526,13 @@ class MyEnterpriseController extends Controller
                     "money"=>$_POST['totalCount'],
                     "payno"=>$paynos,
                     "billtime"=>date("Y-m-d H:i:s",time()),
-                    "brief"=>"进行消费",
+
+                    "brief"=>"通过视频咨询收费，获取报酬",
                     "consultid"=>$_POST['consultId'],
                     "created_at"=>date("Y-m-d H:i:s",time()),
                     "updated_at"=>date("Y-m-d H:i:s",time()),
                 ]);
+
                 $Ids=DB::table("T_C_CONSULTRESPONSE")
                     ->select('expertid')
                     ->where("consultid",$_POST['consultId'])

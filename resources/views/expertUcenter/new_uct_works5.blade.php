@@ -21,7 +21,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
     <!-- 侧边栏公共部分/end -->
-    @if($stmpstate->step == 1 && !$isfirstevent)
+    @if($stmpstate->step == 1 && $isfirstevent)
         <script>
             var cookie = $.cookie('isnewpeople') ? $.cookie('isnewpeople'):0;
             if (cookie == '' || cookie == NaN || cookie == undefined){
@@ -228,9 +228,12 @@
                                 <div class="datum-manage">
                                     <a href="javascript:;" class="datum-btn datum-change" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}">修改意见</a>
                                     @if(!$configinfo[$lastpid->step-1]->starttype && $info->userid == session('userId'))
-                                        <a href="javascript:;" class="datum-btn datum-confirm" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}" pid="{{$configinfo[$lastpid->step-1]->ppid}}">专家确认上传资料</a>
+                                        <a href="javascript:;" class="datum-btn datum-confirm" id="truelib" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}" pid="{{$configinfo[$lastpid->step-1]->ppid}}"  style="background: #004981;display: none;">专家确认上传资料</a>
+                                    @else
+                                        <a href="javascript:;" id="truelib" class="datum-btn" onclick="layer.alert('请您等待企业确认资料进入下一步')" style="width:60px;display: none;background: #004981;">继续</a>
                                     @endif
-                                    <a href="javascript:;" class="datum-btn" id="stop" style="width: 60px;background: #f10;">终止合作</a>
+                                    <a href="javascript:;" class="datum-btn" style="width: 120px;background: #004981;" onclick="$('#stop').show(1000);$('#truelib').show(1000);$(this).hide(1000);">是否继续参与办事</a>
+                                    <a href="javascript:;" class="datum-btn" id="stop" style="width: 60px;background: #f10;display: none;">终止合作</a>
                                 </div>
                                 <div class="v-manage-link-rate">
                                     @foreach($configinfo as $k => $v)
@@ -695,22 +698,40 @@
             });
 
             $('#stop').on('click',function () {
-                layer.confirm('确认要终止合作么？', {
-                    title:false,
-                    btn: ['确认','取消']
-                }, function(index){
+                layer.prompt({title: '请输入终止合作原因', formType: 2}, function(pass, index){
+                    if(pass == ''){
+                        layer.msg('请输入原因',{'time':1000});
+                        return false;
+                    }
                     var eventid =  {{$eventId}};
-                    $.post('{{url('stopevent')}}',{'eventid':eventid,'action':0},function (data) {
+                    var laststep = {{$stmpstate->step}};
+                    $.post('{{url('stopevent')}}',{'eventid':eventid,'action':0,'msg':pass,'laststep':laststep},function (data) {
                         if(data.icon == 2){
                             layer.msg(data.msg,{'icon':2});
                         } else {
                             layer.msg(data.msg,{'icon':1,'time':1500},function () {
-                                window.location = window.location.href;
+                                window.location = '{{url('/uct_mywork')}}';
                             });
                         }
                     });
+                    //layer.close(index);
+                });
+                /*layer.confirm('确认要终止合作么？', {
+                 title:false,
+                 btn: ['确认','取消']
+                 }, function(index){
+                 var eventid =  {{$eventId}};
+                 $.post('{{url('stopevent')}}',{'eventid':eventid,'action':0},function (data) {
+                 if(data.icon == 2){
+                 layer.msg(data.msg,{'icon':2});
+                 } else {
+                 layer.msg(data.msg,{'icon':1,'time':1500},function () {
+                 window.location = window.location.href;
+                 });
+                 }
+                 });
 
-                })
+                 })*/
             });
 
         })

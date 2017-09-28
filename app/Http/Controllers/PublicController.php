@@ -185,6 +185,7 @@ class PublicController extends Controller
             $members=DB::table("t_u_enterprisemember")
                         ->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")
                         ->where("enterpriseid",$enterpriseId)
+                        ->select('t_u_enterprisemember.*')
                         ->get();
             if($members){
                 $currentTime=time();
@@ -193,7 +194,7 @@ class PublicController extends Controller
                     $eventCount=$member->eventcount;
                     $consultCount=$member->consultcount;
                 }
-                if(date('Y-m-d H:i:s')<$member->endtime){
+                if(time() < $endTime){
                     if($type=="consult"){
                         if($counts>=$consultCount){
                             $result['code']="payMoney";
@@ -1006,6 +1007,23 @@ class PublicController extends Controller
         }
         return ['msg' => '非法操作','icon' => 2];
     }
-    
+
+    /**
+     *统计省略+
+     */
+    static public function numToCount($looks)
+    {
+        if($looks >= 100000){
+            return   round($looks/10000).'万+';
+        }
+        elseif($looks >= 10000){
+            return   round($looks/10000).'0000+';
+        }elseif ($looks >= 1000){
+            return   round($looks/1000).'000+';
+        }else{
+            return $looks;
+        }
+    }
+
 
 }
