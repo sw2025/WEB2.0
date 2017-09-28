@@ -21,7 +21,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
     <!-- 侧边栏公共部分/end -->
-    @if($stmpstate->step == 1 && !$isfirstevent)
+    @if($stmpstate->step == 1 && $isfirstevent)
         <script>
             var cookie = $.cookie('isnewpeople') ? $.cookie('isnewpeople'):0;
             if (cookie == '' || cookie == NaN || cookie == undefined){

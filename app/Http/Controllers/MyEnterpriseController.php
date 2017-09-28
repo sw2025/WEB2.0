@@ -1213,6 +1213,10 @@ class MyEnterpriseController extends Controller
                     ->where("t_c_consultresponse.state",2)
                     ->where("consultid",$consultId)
                     ->get();
+                $expertcost = 0;
+                foreach($selExperts as $v){
+                    $expertcost += $v->fee;
+                }
                 $selected=count($selExperts);
             break;
             case 6:
@@ -1250,7 +1254,7 @@ class MyEnterpriseController extends Controller
         $selected=!empty($selected)?$selected:"";
         $comperes=!empty($comperes)?$comperes:"";
         $view="video".$configId;
-        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId","comperes"));
+        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId","comperes",'expertcost'));
     }
     /**申请视频咨询
      * @return mixed
@@ -1401,8 +1405,7 @@ class MyEnterpriseController extends Controller
         $startTimes=strtotime($consults->starttime);
         $endTimes=strtotime($consults->endtime);
         $timeLong=($endTimes-$startTimes)/60;
-        $times=round($timeLong/env('Time'));
-        foreach ($expertIds as $value){
+        $times=round($timeLong/env('Time'));        foreach ($expertIds as $value){
             $values=explode("/",$value);
             $expertMoney=$expertMoney+$values[1]*$times;
         }
@@ -1438,11 +1441,13 @@ class MyEnterpriseController extends Controller
                     "money"=>$_POST['totalCount'],
                     "payno"=>$paynos,
                     "billtime"=>date("Y-m-d H:i:s",time()),
-                    "brief"=>"进行消费",
+
+                    "brief"=>"通过视频咨询收费，获取报酬",
                     "consultid"=>$_POST['consultId'],
                     "created_at"=>date("Y-m-d H:i:s",time()),
                     "updated_at"=>date("Y-m-d H:i:s",time()),
                 ]);
+
                 $Ids=DB::table("T_C_CONSULTRESPONSE")
                     ->select('expertid')
                     ->where("consultid",$_POST['consultId'])

@@ -21,7 +21,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
 
-         @if($stmpstate->step == 1 && !$isfirstevent)
+         @if($stmpstate->step == 1 && $isfirstevent)
             <script>
                 var cookie = $.cookie('isnewpeople') ? $.cookie('isnewpeople'):0;
                 if (cookie == '' || cookie == NaN || cookie == undefined){
@@ -309,10 +309,8 @@
                         @if($lastpid->step == count($configinfo))
                             <div class="works-f-s">
                                 <button class="stop red-finish" id="finish" type="button">完成</button>
-                                <button class="stop" id="stop" type="button">终止合作</button>
                             </div>
                         @else
-                            <button class="stop" id="stop" type="button">终止合作</button>
                         @endif
 
                     </div>

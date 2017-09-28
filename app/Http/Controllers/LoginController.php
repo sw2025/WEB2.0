@@ -53,7 +53,7 @@ class LoginController extends Controller
         $code=$_POST['codes'];
         $role=$_POST['role'];
         $str=array();
-        if(Cache::has($phone)){
+       if(Cache::has($phone)){
             $smsCode=Cache::get($phone);
             if($smsCode!=$code){
                 $str['code']="code";
