@@ -227,7 +227,7 @@ class MyExpertController extends Controller
             ->first();
         if(!$datas){
             return redirect('/');
-        } elseif ($datas->configid == 6 || $datas->configid == 8 || $datas->configid == 7){
+        } elseif ($datas->configid == 6 || $datas->configid == 8 || $datas->configid == 7 || $datas->configid == 9){
            // dd(234);
             return redirect('uct_mywork/workDetails/'.$eventid);
         }
