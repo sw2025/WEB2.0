@@ -88,7 +88,7 @@
 </div>
 <!-- 筛选条件 / end -->
 <div class="container">
-    <div class="row">
+    <div class="row oh">
         <!-- 排序 / start -->
         <div class="sort">
             <a href="javascript:;" class="list-time @if(!empty($ordertime)) active @endif">发布时间<span class="list-order-icon"><i class="iconfont icon-triangle-copy @if(!empty($ordertime) && $ordertime == 'asc') white-color @elseif(!empty($ordertime) && $ordertime == 'desc') blue-color  @endif"></i><i class="iconfont icon-sanjiaoxing @if(!empty($ordertime) && $ordertime == 'asc') blue-color  @elseif(!empty($ordertime) && $ordertime == 'desc') white-color  @endif"></i></span></a>
@@ -133,7 +133,8 @@
 <script type="text/javascript">
     $(function(){
         $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':{{$datas->currentPage()-1}}});
-
+        var height = $('.location-province').height();
+        $('.location').css('height', height+'px');
         function pageselectCallback(page_index, jq){
             // 从表单获取每页的显示的列表项数目
             var current = parseInt(page_index)+1;

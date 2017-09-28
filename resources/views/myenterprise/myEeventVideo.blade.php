@@ -225,5 +225,41 @@
         $(".unusual-btn").on('click',function(){
             window.history.back()
         })
+        $("#netcallMeetingBox").on("click",".hangupButton",function(){
+            var eventVideoTime=$(this).parent().next().text();
+            var eventId=$("#eventVideo").val();
+            $.ajax({
+                url:"{{url('reduceTime')}}",
+                data:{"eventId":eventId,"eventVideoTime":eventVideoTime},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="error"){
+                        layer.confirm('您该次办事的免费视频的时间已经用完', {
+                            btn: ['确认']
+                        }, function(){
+                            layer.closeAll('dialog');
+                            window.history.back()
+                        })
+                    }
+                }
+            })
+        })
+        var time=setInterval(function(){
+            var timeLong=$("#netcallMeetingBox").find(".tip:last").text();
+            var eventId=$("#eventVideo").val();
+            $.ajax({
+                url:"{{url('compareTime')}}",
+                data:{"eventId":eventId,"timeLong":timeLong},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="error"){
+                        $("#netcallMeetingBox").find('.hangupButton').trigger('click');
+                        clearInterval(time);
+                    }
+                }
+            })
+            },300000);
     </script>
 @endsection

@@ -1,6 +1,6 @@
 /***********header start***********/
 .header{position: fixed;top: 0;width: 100%;z-index: 10;box-sizing: border-box;height: 60px;background:#004981;min-width: 560px;} 
-.header .container{position: relative;}
+.header .container{position: relative;padding-left: 0;padding-right: 0;}
 .navbar-header{float: left;}
 .navbar-brand{float: left;margin-top: 8px;}
 .navbar-toggle{float: left;position: relative;padding: 4px 10px;margin-top: 12px;margin-left: 35px;background-color: transparent;background-image: none;border: 1px solid transparent;border-radius: 4px;border-color: #ddd;color:#fff;z-index: 24;}
@@ -190,3 +190,16 @@
 .mt20{margin-top:20px;}
 .mt20 .datas-sel-def{margin-left:108px;}
 .datas-list li{height: 28px;line-height:28px;}
+/*适配*/
+@media (max-width: 750px){
+    .navbar-link{display: none;}
+    .navbar-toggle{margin-left: 10px;}
+    .search-text{width: 88px;}
+    .tab-list{width:100%;}
+    .tab-list li{width:100%;float: none;margin-top: 10px;}
+    .tab-leftbtn,.tab-rightbtn{display: none!important;}
+    .banner ol{bottom:6px;}
+}
+@media (max-width: 540px){
+    .bars{right: 240px;}
+}

@@ -890,6 +890,7 @@ class MyEnterpriseController extends Controller
                 "brief"=>$data['describe'],
                 "isRandom"=>$data['isAppoint'],
                 "eventtime"=>date("Y-m-d H:i:s",time()),
+                "consulttime"=>env('EventVideoTime'),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
@@ -996,18 +997,6 @@ class MyEnterpriseController extends Controller
         $result=array();
         $expertIds=$_POST['expertIds'];
         try{
-
-           foreach ($expertIds as $expertId) {
-                $phone = DB::table('t_u_expert')
-                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
-                    ->where('expertid', $expertId)
-                    ->pluck('phone');
-                $name = DB::table('t_e_event')
-                    ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
-                    ->where('eventid', $_POST['eventId'])
-                    ->pluck('enterprisename');
-                $this->_sendSms($phone, '办事选择', 'reselects', $name);
-            }
             $Ids=DB::table("t_e_eventresponse")
                 ->select('expertid')
                 ->where("eventid",$_POST['eventId'])
@@ -1043,6 +1032,17 @@ class MyEnterpriseController extends Controller
             throw $e;
         }
         if(!isset($e)){
+            foreach ($expertIds as $expertId) {
+                $phone = DB::table('t_u_expert')
+                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                    ->where('expertid', $expertId)
+                    ->pluck('phone');
+                $name = DB::table('t_e_event')
+                    ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
+                    ->where('eventid', $_POST['eventId'])
+                    ->pluck('enterprisename');
+                $this->_sendSms($phone, '办事选择', 'reselects', $name);
+            }
             \UserClass::createEventGroups($expertIds,$_POST['eventId']);
             $result['code']="success";
         }else{
@@ -1301,8 +1301,6 @@ class MyEnterpriseController extends Controller
             } else {
                 return ['msg' => '操作失败','icon' => 2];
             }
-
-
         }catch(Exception $e){
             DB::rollback();
             return ['msg' => '操作失败','icon' => 2];
@@ -1399,95 +1397,116 @@ class MyEnterpriseController extends Controller
     public  function handleSelect(){
         $result=array();
         $expertIDS=array();
+        $expertMoney=0;
         $expertIds=$_POST['expertIds'];
-        DB::beginTransaction();
-        try{
-            foreach ($expertIds as $expertId){
-                $selectedIds=explode("/",$expertId);
-                $expertIDS[]=$selectedIds[0];
-                $userId=DB::table("view_userrole")->where("expertid",$selectedIds[0])->pluck("userid");
-                $payno=$this->getPayNum("消费");
+        $userId=$_POST['userId'];
+        $consultId=$_POST['consultId'];
+        $consults=DB::table("t_c_consult")->where("consultid",$consultId)->first();
+        $startTimes=strtotime($consults->starttime);
+        $endTimes=strtotime($consults->endtime);
+        $timeLong=($endTimes-$startTimes)/60;
+        $times=round($timeLong/env('Time'));        foreach ($expertIds as $value){
+            $values=explode("/",$value);
+            $expertMoney=$expertMoney+$values[1]*$times;
+        }
+        $consultMoney=env('Money')*$times;
+        $totalMoney=$expertMoney+$consultMoney;
+        $account=\UserClass::getMoney($userId);
+        if($account>$totalMoney){
+            DB::beginTransaction();
+            try{
+                foreach ($expertIds as $expertId){
+                    $selectedIds=explode("/",$expertId);
+                    $expertIDS[]=$selectedIds[0];
+                    $userId=DB::table("view_userrole")->where("expertid",$selectedIds[0])->pluck("userid");
+                    $payno=$this->getPayNum("消费");
+                    DB::table("t_u_bill")->insert([
+                        "userid"=>$userId,
+                        "type"=>"收入",
+                        "channel"=>"消费",
+                        "money"=>$selectedIds[1],
+                        "payno"=>$payno,
+                        "billtime"=>date("Y-m-d H:i:s",time()),
+                        "brief"=>"通过替别人办事，获取报酬",
+                        "consultid"=>$_POST['consultId'],
+                        "created_at"=>date("Y-m-d H:i:s",time()),
+                        "updated_at"=>date("Y-m-d H:i:s",time()),
+                    ]);
+                }
+                $paynos=$this->getPayNum("消费");
                 DB::table("t_u_bill")->insert([
-                    "userid"=>$userId,
-                    "type"=>"收入",
+                    "userid"=>$_POST['userId'],
+                    "type"=>"支出",
                     "channel"=>"消费",
-                    "money"=>$selectedIds[1],
-                    "payno"=>$payno,
+                    "money"=>$_POST['totalCount'],
+                    "payno"=>$paynos,
                     "billtime"=>date("Y-m-d H:i:s",time()),
+
                     "brief"=>"通过视频咨询收费，获取报酬",
                     "consultid"=>$_POST['consultId'],
                     "created_at"=>date("Y-m-d H:i:s",time()),
                     "updated_at"=>date("Y-m-d H:i:s",time()),
                 ]);
-            }
-            $paynos=$this->getPayNum("消费");
-            DB::table("t_u_bill")->insert([
-                "userid"=>$_POST['userId'],
-                "type"=>"支出",
-                "channel"=>"消费",
-                "money"=>$_POST['totalCount'],
-                "payno"=>$paynos,
-                "billtime"=>date("Y-m-d H:i:s",time()),
-                "brief"=>"进行消费",
-                "consultid"=>$_POST['consultId'],
-                "created_at"=>date("Y-m-d H:i:s",time()),
-                "updated_at"=>date("Y-m-d H:i:s",time()),
-            ]);
-            $Ids=DB::table("T_C_CONSULTRESPONSE")
-                ->select('expertid')
-                ->where("consultid",$_POST['consultId'])
-                ->whereRaw('T_C_CONSULTRESPONSE.id in (select max(id) from T_C_CONSULTRESPONSE group by  T_C_CONSULTRESPONSE.expertid)')
-                ->distinct()
-                ->get();
-            foreach ($Ids as $ID){
-                if(in_array($ID->expertid,$expertIDS)){
-                    DB::table("T_C_CONSULTRESPONSE")->insert([
-                        "consultid"=>$_POST['consultId'],
-                        "state"=>3,
-                        "expertid"=>$ID->expertid,
-                        "responsetime"=>date("Y-m-d H:i:s",time()),
-                        "created_at"=>date("Y-m-d H:i:s",time()),
-                        "updated_at"=>date("Y-m-d H:i:s")
-                    ]);
-                    $phone=DB::table('t_u_expert')
-                        ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
-                        ->where('expertid',$ID->expertid)
-                        ->pluck('phone');
-                    $name=DB::table('t_c_consult')
-                        ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
-                        ->where('consultid',$_POST['consultId'])
-                        ->pluck('enterprisename');
-                    $this->_sendSms($phone,'视频咨询','reselects',$name);
 
-                }else{
-                    DB::table("T_C_CONSULTRESPONSE")->insert([
-                        "consultid"=>$_POST['consultId'],
-                        "state"=>5,
-                        "expertid"=>$ID->expertid,
-                        "responsetime"=>date("Y-m-d H:i:s",time()),
-                        "created_at"=>date("Y-m-d H:i:s",time()),
-                        "updated_at"=>date("Y-m-d H:i:s")
-                    ]);
+                $Ids=DB::table("T_C_CONSULTRESPONSE")
+                    ->select('expertid')
+                    ->where("consultid",$_POST['consultId'])
+                    ->whereRaw('T_C_CONSULTRESPONSE.id in (select max(id) from T_C_CONSULTRESPONSE group by  T_C_CONSULTRESPONSE.expertid)')
+                    ->distinct()
+                    ->get();
+                foreach ($Ids as $ID){
+                    if(in_array($ID->expertid,$expertIDS)){
+                        DB::table("T_C_CONSULTRESPONSE")->insert([
+                            "consultid"=>$_POST['consultId'],
+                            "state"=>3,
+                            "expertid"=>$ID->expertid,
+                            "responsetime"=>date("Y-m-d H:i:s",time()),
+                            "created_at"=>date("Y-m-d H:i:s",time()),
+                            "updated_at"=>date("Y-m-d H:i:s")
+                        ]);
+                        $phone=DB::table('t_u_expert')
+                            ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                            ->where('expertid',$ID->expertid)
+                            ->pluck('phone');
+                        $name=DB::table('t_c_consult')
+                            ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
+                            ->where('consultid',$_POST['consultId'])
+                            ->pluck('enterprisename');
+                        $this->_sendSms($phone,'视频咨询','reselect',$name);
+
+                    }else{
+                        DB::table("T_C_CONSULTRESPONSE")->insert([
+                            "consultid"=>$_POST['consultId'],
+                            "state"=>5,
+                            "expertid"=>$ID->expertid,
+                            "responsetime"=>date("Y-m-d H:i:s",time()),
+                            "created_at"=>date("Y-m-d H:i:s",time()),
+                            "updated_at"=>date("Y-m-d H:i:s")
+                        ]);
+                    }
                 }
+                DB::table("t_c_consultverify")->insert([
+                    "consultid"=>$_POST['consultId'],
+                    "configid"=>6,
+                    "verifytime"=>date("Y-m-d H:i:s",time()),
+                    "created_at"=>date("Y-m-d H:i:s",time()),
+                    "updated_at"=>date("Y-m-d H:i:s",time())
+                ]);
+                DB::commit();
+            }catch (Exception $e){
+                DB::rollback();
+                throw $e;
             }
-            DB::table("t_c_consultverify")->insert([
-                "consultid"=>$_POST['consultId'],
-                "configid"=>6,
-                "verifytime"=>date("Y-m-d H:i:s",time()),
-                "created_at"=>date("Y-m-d H:i:s",time()),
-                "updated_at"=>date("Y-m-d H:i:s",time())
-            ]);
-            DB::commit();
-        }catch (Exception $e){
-            DB::rollback();
-            throw $e;
-        }
-        if(!isset($e)){
-            \UserClass::createGroups($expertIDS,$_POST['consultId']);
-            $result['code']="success";
+            if(!isset($e)){
+                \UserClass::createGroups($expertIDS,$_POST['consultId']);
+                $result['code']="success";
+            }else{
+                $result['code']="error";
+            }
         }else{
-            $result['code']="error";
+            $result['code']="noMoney";
         }
+
         return $result;
     }
     /*
@@ -1795,7 +1814,47 @@ class MyEnterpriseController extends Controller
             $res['code']="error";
         }
         return $res;
-        dd($res);
+    }
+
+    /**
+     * 办事减少咨询时间
+     * @return array
+     */
+    public  function reduceTime(){
+        $res=array();
+        $eventVideoTime=$_POST['eventVideoTime'];
+        $eventVideoTimes=explode(":",$eventVideoTime);
+        $eventId=$_POST['eventId'];
+        $consulttime=DB::table("t_e_event")->where("eventid",$eventId)->pluck("consulttime");
+        if(intval($eventVideoTimes[0])>$consulttime){
+            $consulttime=0;
+            $res['code']="error";
+        }else{
+            $consulttime=$consulttime-intval($eventVideoTimes[0]);
+            $res['code']="success";
+        }
+        $datas=DB::table("t_e_event")->where("eventid",$eventId)->update([
+            "consulttime"=>$consulttime,
+            "updated_at"=>date("Y-m-d H:i:s",time()),
+        ]);
+        return $res;
+
+    }
+
+    /**比较当前时间与办事剩余的时间
+     * @return array
+     */
+    public  function compareTime(){
+        $res=array();
+        $eventId=$_POST['eventId'];
+        $timeLong=explode(":",$_POST['timeLong']);
+        $consulttime=DB::table("t_e_event")->where("eventid",$eventId)->pluck("consulttime");
+        if(intval($timeLong[0])>$consulttime){
+            $res['code']="error";
+        }else{
+            $res['code']="success";
+        }
+        return $res;
     }
 
 

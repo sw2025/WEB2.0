@@ -4,9 +4,9 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/index.css')}}" />
 <div class="banner">
     <ul>
-        <li class="img01"></li>
-        <li class="img02"></li>
-        <li class="img03"></li>
+        <li class="img01"><img src="img/banner1.jpg" /></li>
+        <li class="img02"><img src="img/banner2.jpg" /></li>
+        <li class="img03"><img src="img/banner3.jpg" /></li>
     </ul>
     <ol>
         <li class="cur"></li>
@@ -147,6 +147,9 @@
 <!-- section3 / end -->
 <script>
     $(function(){
+        var height = $('.banner ul li').height()
+        $('.banner ul').css('height', height+'px');
+
         var type=$("#knowExpert a:first-child").text();
         $("#knowExpert a:first-child").addClass("current")
         getType(type)
