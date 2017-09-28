@@ -188,21 +188,19 @@
         <div class="container institution">
             <span class="us-cap">平台合作机构</span>
             <div class="brands">
-                <img src="{{env('ImagePath')}}/images/partner08.png" style="height:82px; width:214px;float: left;margin:2px 3px;" alt="" />
-                <img src="{{env('ImagePath')}}/images/partner01.png" style="height:82px; width:157px;float: left;margin:2px 3px;" alt="" />
-                <img src="{{env('ImagePath')}}/images/partner02.png" style="height:82px; width:161px;float: left;margin:2px 3px;" alt="" />
-                <img src="{{env('ImagePath')}}/images/partner10.png" style="height:82px; width:160px;float: left;margin:2px 3px;" alt="" />
-                <img src="{{env('ImagePath')}}/images/partner09.png" style="height:82px; width:229px;float: left;margin:2px 3px;" alt="" />
-
-                <img src="{{env('ImagePath')}}/images/partner03.png" style="height:82px; width:495px;float: left;margin:2px 3px;" alt="" />
-                <img src="{{env('ImagePath')}}/images/partner05.png" style="height:82px; width:404px;float: left;margin:2px 3px;" alt="" />
-                <img src="{{env('ImagePath')}}/images/partner04.png" style="height:82px; width:195px;float: left;margin:2px 3px;" alt="" />
-
-                <img src="{{env('ImagePath')}}/images/partner06.gif" style="height:82px; width:381px;float: left;margin:2px 3px;" alt="" />
-                <img src="{{env('ImagePath')}}/images/partner11.png" style="height:82px; width:359px;float: left;margin:2px 3px;" alt="" />
-                <img src="{{env('ImagePath')}}/images/partner07.png" style="height:82px; width:257;float: left;margin:2px 3px;" alt="" />
-
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner01.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner02.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner03.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner04.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner05.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner06.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner07.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner08.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner09.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner10.jpg')}}" /></a>
+                <a href="javascript:;" class="brand col-md-3"><img src="{{asset('img/partner11.jpg')}}" /></a>
             </div>
+
         </div>
     </div>
     <!-- 平台合作机构/  end -->
