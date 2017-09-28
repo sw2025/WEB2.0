@@ -12,6 +12,7 @@
                     <div class="mywork-det">
                         <div class="mywork-det-txt">
                             <span class="mywork-det-tit"><em class="light-color">需求分类：</em>{{$datas->domain1.' / '.$datas->domain2}}</span>
+                            <span class="mywork-det-tit"><em class="light-color">企业行业：</em>{{$selExperts->industry}}</span>
                             <div class="mywork-det-desc">
                                 <em class="light-color">描述：</em>
                                 <p class="mywork-det-desc-para">{{$datas->brief}}</p>

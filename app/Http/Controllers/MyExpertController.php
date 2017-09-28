@@ -225,6 +225,9 @@ class MyExpertController extends Controller
             ->where(['event.eventid' => $eventid,'expertid' => $expertid])
             ->select('event.*','ent.enterprisename','res.expertid','status.configid')
             ->first();
+        $selExperts=DB::table("t_u_enterprise")
+            ->where('userid',$datas->userid)
+            ->first();
         if(!$datas){
             return redirect('/');
         } elseif ($datas->configid == 6 || $datas->configid == 8 || $datas->configid == 7 || $datas->configid == 9){
@@ -232,7 +235,7 @@ class MyExpertController extends Controller
             return redirect('uct_mywork/workDetails/'.$eventid);
         }
         $token = Crypt::encrypt(session('userId'));
-        return view("myexpert.workDetail",compact('datas','token'));
+        return view("myexpert.workDetail",compact('datas','token','selExperts'));
     }
 
     /**专家响应办事
