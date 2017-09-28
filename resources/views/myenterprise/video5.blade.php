@@ -93,44 +93,22 @@
                 if(expertIds.length!=0){
                     $.ajax({
                         url:"{{asset('handleSelect')}}",
-                        data:{"userId":$.cookie('userId'),"expertIds":expertIds,"markId":consultId},
+                        data:{"userId":$.cookie('userId'),"expertIds":expertIds,"consultId":consultId},
                         dateType:"json",
                         type:"POST",
                         success:function(res){
                             switch(res['code']){
-                                case "noEnterprise":
-                                    layer.confirm('您还不是企业,去开通?', {
-                                        btn: ['开通','取消'], //按钮
+                                case "noMoney":
+                                    layer.confirm('您的余额不足,前去充值?', {
+                                        btn: ['充值','取消'], //按钮
                                     }, function(){
                                         window.location.href="{{asset('uct_member')}}";
-                                    }, function(){
-                                        layer.close();
-                                    });
-                                break;
-                                case "noMember":
-                                    layer.confirm('您还没认证企业,去认证?', {
-                                        btn: ['认证','取消'], //按钮
-                                    }, function(){
-                                        window.location.href="{{asset('uct_member')}}";
-                                    }, function(){
-                                        layer.close();
-                                    });
-                                break;
-                                case "expried":
-                                    layer.confirm('您的会员已过期,请续费', {
-                                        btn: ['续费','取消'], //按钮
-                                    }, function(){
-                                        window.location.href='{{asset('uct_member/member4/2')}}';
                                     }, function(){
                                         layer.close();
                                     });
                                 break;
                                 case "success":
                                     window.location.reload();
-                                break;
-                                case "payMoney":
-                                    var account=res['account'];
-                                    checkMoney(totalCount,account,consultId)
                                 break;
                                 case "error":
                                     layer.msg("网络异常");
@@ -145,38 +123,6 @@
                     return false;
                 }
             })
-            //判断余额和要消费的钱
-            var  checkMoney=function(totalCount,account,consultId){
-                var userId=$.cookie("userId");
-                if(account>=totalCount){
-                    $.ajax({
-                        url:"{{asset('handleSelect')}}",
-                        data:{"consultId":consultId,"expertIds":expertIds,"totalCount":totalCount,"userId":userId},
-                        dateType:"json",
-                        type:"POST",
-                        success:function(res){
-                            if(res['code']=="success"){
-                                    window.location.reload();
-                            }else{
-                                layer.confirm('您选定专家失败,重新选定', {
-                                    btn: ['确定'] //按钮
-                                });
-                                return false;
-                            }
-                        }
-                    })
-                }else{
-                    layer.confirm('您余额不足,前去充值', {
-                        btn: ['充值','取消'], //按钮
-                    }, function(){
-                        window.location.href="{{asset('uct_recharge')}}";
-                    }, function(){
-                        layer.close();
-                    });
-                }
-            }
         })
-
-
     </script>
 @endsection

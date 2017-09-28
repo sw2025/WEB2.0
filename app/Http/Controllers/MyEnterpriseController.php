@@ -1490,7 +1490,8 @@ class MyEnterpriseController extends Controller
         $startTimes=strtotime($consults->starttime);
         $endTimes=strtotime($consults->endtime);
         $timeLong=($endTimes-$startTimes)/60;
-        $times=round($timeLong/env('Time'));        foreach ($expertIds as $value){
+        $times=round($timeLong/env('Time'));
+        foreach ($expertIds as $value){
             $values=explode("/",$value);
             $expertMoney=$expertMoney+$values[1]*$times;
         }
@@ -1509,7 +1510,7 @@ class MyEnterpriseController extends Controller
                         "userid"=>$userId,
                         "type"=>"收入",
                         "channel"=>"消费",
-                        "money"=>$selectedIds[1],
+                        "money"=>$selectedIds[1]*$times,
                         "payno"=>$payno,
                         "billtime"=>date("Y-m-d H:i:s",time()),
                         "brief"=>"通过替别人办事，获取报酬",
@@ -1523,11 +1524,11 @@ class MyEnterpriseController extends Controller
                     "userid"=>$_POST['userId'],
                     "type"=>"支出",
                     "channel"=>"消费",
-                    "money"=>$_POST['totalCount'],
+                    "money"=>$totalMoney,
                     "payno"=>$paynos,
                     "billtime"=>date("Y-m-d H:i:s",time()),
 
-                    "brief"=>"通过视频咨询收费，获取报酬",
+                    "brief"=>"通过视频咨询支出费用",
                     "consultid"=>$_POST['consultId'],
                     "created_at"=>date("Y-m-d H:i:s",time()),
                     "updated_at"=>date("Y-m-d H:i:s",time()),
@@ -1536,7 +1537,6 @@ class MyEnterpriseController extends Controller
                 $Ids=DB::table("T_C_CONSULTRESPONSE")
                     ->select('expertid')
                     ->where("consultid",$_POST['consultId'])
-                    ->whereRaw('T_C_CONSULTRESPONSE.id in (select max(id) from T_C_CONSULTRESPONSE group by  T_C_CONSULTRESPONSE.expertid)')
                     ->distinct()
                     ->get();
                 foreach ($Ids as $ID){
@@ -1938,6 +1938,22 @@ class MyEnterpriseController extends Controller
             $res['code']="error";
         }else{
             $res['code']="success";
+        }
+        return $res;
+    }
+
+    /**视频咨询时间
+     * @return array
+     */
+    public  function compareConsultTime(){
+        $res=array();
+        $consultId=$_POST['consultId'];
+        $nowTime=$_POST['nowTime'];
+        $endTime=DB::table("t_c_consult")->where("consultId",$consultId)->pluck("endtime");
+        if(strtotime($nowTime)>=strtotime($endTime)){
+            $res['code']="success";
+        }else{
+            $res['code']="error";
         }
         return $res;
     }

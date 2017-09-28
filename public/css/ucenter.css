@@ -425,7 +425,7 @@
 .vid-man-top-con{background:#f8f8f8;padding:16px 12px;border: 1px solid #ccc;border-radius: 3px;}
 .vid-man-top-rt .vid-man-top-con{padding:12px 12px 0;}
 .vid-man-top-cat{margin-bottom: 9px;color:#333;}
-.vid-man-top-desc{text-align: justify;color:#333;line-height: 22px;}
+.vid-man-top-desc{text-align: justify;color:#333;line-height: 22px;word-break: break-all;}
 .video-manage-frame{padding:35px 0 25px;border-top: 1px dashed #ccc;}
 .emcee,.emcee-bottom{overflow: hidden;}
 .emcee span,.emceer-pers{display: block;float: left;text-align: center;}

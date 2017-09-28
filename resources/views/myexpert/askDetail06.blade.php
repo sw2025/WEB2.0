@@ -211,6 +211,10 @@
                 <div class="dialog-team-container radius5px hide" id="dialogTeamContainer"></div>
                 <!-- 技术方案弹框 -->
                 <div class="dialog-team-container radius5px hide" id="dialogCallMethod"></div>
+                <div class="chat-room-btns">
+                    <button type="button" class="chat-room-btn unusual-btn">异常</button>
+                    <button type="button" class="chat-room-btn chat-room-btn1">完成</button>
+                </div>
             </div>
         </div>
     </div>
@@ -251,5 +255,83 @@
     <script src="{{asset('im/js/module/netcall_ui.js')}}"></script>
     <script src="{{asset('im/js/module/dialog_call_method.js')}}"></script>
     <script src="{{asset('im/js/main.js?v=2')}}"></script>
+    <script>
+        $(function(){
+            var today=new Date();
+            var year=today.getFullYear();
+            var month=today.getMonth()+1;
+            var day=today.getDate();
+            var hours=today.getHours();
+            var minutes=today.getMinutes();
+            var nowTime=year+"-"+month+"-"+day+" "+hours+":"+minutes;
+            var consultId=$("#consult").val();
+            $.ajax({
+                url:"{{url('compareConsultTime')}}",
+                data:{"consultId":consultId,"nowTime":nowTime},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        $("#showNetcallVideoLink").hide();
+                    }
+                }
+            })
+        })
+        $(".unusual-btn").on('click',function(){
+            var consultId=$('#consult').val();
+            $.ajax({
+                url:"{{url('finishConsult')}}",
+                data:{"consultId":consultId,'type':'unusual'},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=='success'){
+                        window.location.reload();
+                    }else{
+                        alert('点击完成失败,请再次尝试')
+                    }
+                }
+            })
+        })
+        $(".chat-room-btn1").on('click',function(){
+            var consultId=$('#consult').val();
+            $.ajax({
+                url:"{{url('finishConsult')}}",
+                data:{"consultId":consultId,"type":'end'},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=='success'){
+                        window.location.reload();
+                    }else{
+                        alert('点击完成失败,请再次尝试')
+                    }
+                }
+            })
+        })
+        var time=setInterval(function(){
+            var today=new Date();
+            var year=today.getFullYear();
+            var month=today.getMonth()+1;
+            var day=today.getDate();
+            var hours=today.getHours();
+            var minutes=today.getMinutes();
+            var nowTime=year+"-"+month+"-"+day+"-"+" "+hours+":"+minutes;
+            var consultId=$("#consult").val();
+            $.ajax({
+                url:"{{url('compareConsultTime')}}",
+                data:{"consultId":consultId,"nowTime":nowTime},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        $("#netcallMeetingBox").find('.hangupButton').trigger('click');
+                        $("#showNetcallVideoLink").hide();
+                        clearInterval(time);
+                    }
+                }
+            })
+        },300000);
+    </script>
 @endsection
 

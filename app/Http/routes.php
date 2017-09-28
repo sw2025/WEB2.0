@@ -238,6 +238,8 @@ Route::post('compareTime','MyEnterpriseController@compareTime');
     Route::get('uct_video/videoSelect', 'MyEnterpriseController@videoSelect');
 //视频咨询处理响应的专家
     Route::post('handleSelect', 'MyEnterpriseController@handleSelect');
+//判断正在咨询的时间
+Route::post('compareConsultTime', 'MyEnterpriseController@compareConsultTime');
 //咨询结束
     Route::post('finishConsult', 'MyEnterpriseController@finishConsult');
 //咨询完成，给专家星级评论
@@ -287,6 +289,7 @@ Route::get('uct_mywork/myEventVideo/{eventid}', 'MyExpertController@myEventVideo
     Route::post('uct_myask/responseconsult', 'MyExpertController@responseConsult');
 //进入咨询会议
     Route::get('uct_myask/myaskinvt', 'MyExpertController@myaskinvt');
+
 //收费标准
     Route::any('uct_standard', 'MyExpertController@standard');
     /***********************************视频路由*******************************************/
