@@ -103,6 +103,22 @@ abstract class Controller extends BaseController{
         return $payNo;
     }
 
+    static public function getPayNum2($type){
+        switch($type){
+            case "提现":
+                $payPrefix='TX';
+                break;
+            case "充值":
+                $payPrefix='CZ';
+                break;
+            case "消费":
+                $payPrefix="XF";
+                break;
+        }
+        $payNo=$payPrefix.time() . mt_rand(1000,9999);
+        return $payNo;
+    }
+
     public  function  _sendSms($mobile,$message,$action,$name='',$time=''){
         ini_set("display_errors", "on");
         require(base_path().'/vendor/alidayus/api_sdk/vendor/autoload.php');
