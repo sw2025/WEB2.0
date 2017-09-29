@@ -537,3 +537,5 @@
 .datas-member-audit{width: 662px;margin: 0 auto;overflow: hidden;}
 .datas-member-audit .datas-lt{display: block;float: left;}
 .datas-member-audit .datas-rt{float: right;display: block;}
+.view{padding: 20px;text-align: justify;line-height:2;color:#333;}
+.view-fz{font-size:16px;}
