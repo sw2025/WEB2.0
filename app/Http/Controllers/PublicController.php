@@ -745,7 +745,7 @@ class PublicController extends Controller
                         "created_at" => date("Y-m-d H:i:s",time()),
                         "updated_at" => date("Y-m-d H:i:s",time())
                     ]);
-                    $paynos=self::getPayNum("消费");
+                    $paynos=self::getPayNum2("消费");
                     DB::table("t_u_bill")->insert([
                         "userid"=>session('userId'),
                         "type"=>"支出",
