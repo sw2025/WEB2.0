@@ -307,3 +307,9 @@ Route::post('getAccid','PublicController@getAccid');
 Route::post('getTeamId','PublicController@getTeamId');
 //获取个人中心头像
 Route::post('getAvatar','PublicController@getAvatar');
+
+
+/**************************************支付*****************************/
+Route::post('initpay','PingpayController@initPay');
+
+Route::get('pingsuccess','PingpayController@pingSuccess');

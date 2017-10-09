@@ -960,7 +960,7 @@ class PublicController extends Controller
                 }*/
                 if(!empty($newstate)){
                     if($newstate->state == 2 && $data['state'] !== $newstate->state && $newstate->epid == $data['epid']){
-                        return ['msg' => '对方确认了资料,是否查看','icon' => 1];
+                        return ['msg' => '对方确认了资料,是否进入下一步','icon' => 1];
                     }
                     return ['msg' => 'nostate2','icon' => 3];
                 }
@@ -1014,7 +1014,7 @@ class PublicController extends Controller
     static public function numToCount($looks)
     {
         if($looks >= 100000){
-            return   round($looks/10000).'万+';
+            return   round($looks/10000).'w+';
         }
         elseif($looks >= 10000){
             return   round($looks/10000).'0000+';
