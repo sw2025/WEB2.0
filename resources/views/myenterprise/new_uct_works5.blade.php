@@ -20,6 +20,13 @@
         #template span{
             padding-left:20px;
         }
+        #uploadfilename{
+            font-size: 15px;
+            border: 2px solid #000;
+            padding: 2px 5px;
+            border-radius: 5px;
+            background: #ddd;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
 
@@ -210,11 +217,11 @@
                                                         <input type="hidden" name="startuserid" value='@if($info->userid == session('userId')) {{$info->userid}} @else {{$datas->userid}} @endif '>
                                                         <input type="hidden" name="acceptuserid" value='@if($info->userid == session('userId')) {{$datas->userid}} @else {{$info->userid}} @endif '>
                                                         <span>选择文件</span>
-                                                        <input class="fileupload1"  type="file" name="files" multiple="" index="{{$configinfo[$lastpid->step-1]->ppid}}" @if(!empty($_GET['step'])) disabled @endif/>
+                                                        <input class="fileupload1"  type="file" name="files" multiple="" index="{{$configinfo[$lastpid->step-1]->ppid}}" @if(!empty($_GET['step']) || $configinfo[$lastpid->step-1]->starttype) disabled @endif/>
 
                                                 </span>
-                                                    <span id="uploadfilename" style="font-size: 18px;"></span>
-                                                <input type="submit"  class="btn btn-success" value="开始上传" onmouseover="this.style.cursor='pointer'" style="margin: 5px 5px;width: 80px;height: 28px;border-radius: 5px;background: #004981;color: #fff;">
+                                                <span id="uploadfilename" ></span>
+                                                <input type="submit"  class="btn btn-success" value="@if($configinfo[$lastpid->step-1]->starttype) 等待专家上传 @else 开始上传 @endif" @if($configinfo[$lastpid->step-1]->starttype) disabled @endif onmouseover="this.style.cursor='pointer'" style="margin: 5px 5px;width: 100px;height: 28px;border-radius: 5px;background: #004981;color: #fff;">
 
                                                 <div class="progress">
                                                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%;border: 1px solid #fff;max-width:220px;background: #004981;color: #fff;border-radius: 5px;" >
@@ -376,7 +383,7 @@
                         layer.alert(data.error);
                         return false;
                     } else {
-                        layer.alert(data.msg,function () {
+                        layer.msg(data.msg,function () {
                             location.href = window.location.href;
                         });
 

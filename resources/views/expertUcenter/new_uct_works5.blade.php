@@ -1,5 +1,6 @@
 @extends("layouts.ucenter4")
 @section("content")
+    <script src="http://malsup.github.com/jquery.form.js"></script>
     <style>
         .btnclass{
             padding-right: 2px;
@@ -17,6 +18,14 @@
         }
         #template span{
             padding-left:20px;
+        }
+
+        #uploadfilename{
+            font-size: 15px;
+            border: 2px solid #000;
+            padding: 2px 5px;
+            border-radius: 5px;
+            background: #ddd;
         }
     </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
@@ -194,21 +203,31 @@
                             </div>
                             <div class="upload-box">
                                 <div class="u-b-left clearfix">
-                                    <div class="handle-up">
+                                    <form id='myupload' action='{{url('uct_works/upload',$configinfo[$lastpid->step-1]->ppid)}}' method='post'>
+                                        <div class="handle-up">
                                                 <span class="handle-up-btn basic-span change-btn fileinput-button" style="margin-bottom:10px;">
-                                                    <form>
+
                                                         <input type="hidden" name="eventid" value='{{$eventId}}'>
                                                         <input type="hidden" name="startuserid" value='@if($info->userid == session('userId')) {{$info->userid}} @else {{$datas->userid}} @endif '>
                                                         <input type="hidden" name="acceptuserid" value='@if($info->userid == session('userId')) {{$datas->userid}} @else {{$info->userid}} @endif '>
-                                                        <span>上传文件</span>
-                                                        <input class="fileupload1" type="file" name="files" multiple="" index="{{$configinfo[$lastpid->step-1]->ppid}}" @if(!empty($_GET['step'])) disabled @endif/>
-                                                    </form>
+                                                        <span>选择文件</span>
+                                                        <input class="fileupload1"  type="file" name="files" multiple="" index="{{$configinfo[$lastpid->step-1]->ppid}}" @if(!empty($_GET['step']) || !$configinfo[$lastpid->step-1]->starttype) disabled @endif/>
+
                                                 </span>
+                                        <span id="uploadfilename"></span>
+                                            <input type="submit"  class="btn btn-success" value="@if($configinfo[$lastpid->step-1]->starttype) 开始上传 @else 等待企业上传 @endif" @if(!$configinfo[$lastpid->step-1]->starttype) disabled @endif onmouseover="this.style.cursor='pointer'" style="margin: 5px 5px;width: 100px;height: 28px;border-radius: 5px;background: #004981;color: #fff;">
+
+                                            <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%;border: 1px solid #fff;max-width:220px;background: #004981;color: #fff;border-radius: 5px;" >
+                                                <span class="sr-only">0% Complete</span>
+                                            </div>
+                                        </div>
+                                        <br />
                                         <span>
                                             <a href="/showfile?path={{$configinfo[$lastpid->step-1]->documenturl}}" target="_blank" class="eventa1">{{$configinfo[$lastpid->step-1]->docname or ''}}</a>
                                             <a href="@if(!empty($configinfo[$lastpid->step-1]->downurl)) /download?path={{$configinfo[$lastpid->step-1]->downurl}} " index="{{$configinfo[$lastpid->step-1]->downurl}}"  style="padding-right: 2px;border: 1px solid #aaa;border-radius: 5px;margin-left: 10px;@endif"   class="eventa2"  >@if(!empty($configinfo[$lastpid->step-1]->downurl))&nbsp;下载&nbsp;@endif</a>
                                         </span>
-                                        <br />
+                                            <br />
                                         <span class="lssc @if(!empty($configinfo[$lastpid->step-1]->oldpath)) haveclass @endif" >
                                             @if(!empty($configinfo[$lastpid->step-1]->oldpath))
                                                 <span>历史上传：</span>
@@ -223,7 +242,8 @@
                                         </span>
 
                                     </div>
-                                    <div class="handle-cap">点击上传基本资料<br />文件格式限制： word  excel  pdf ppt txt</div>
+                                    </form>
+                                    <div class="handle-cap">选择基本资料后上传文件<br />文件格式限制： word  excel  pdf ppt txt</div>
                                 </div>
                                 <div class="datum-manage">
                                     <a href="javascript:;" class="datum-btn datum-change" index="{{$lastpid->epid or 0}}" eventid="{{$eventId}}">修改意见</a>
@@ -329,6 +349,48 @@
             <button type="button" class="test-btn cover-cancel">取消</button>
         </div>
     </div>
+
+    <script type="text/javascript">
+        $(function () {
+
+            $("#myupload").ajaxForm({
+                dataType:'json',
+                beforeSend:function(){
+                    if($('#uploadfilename').text().trim() == ''){layer.msg('请选择文件后上传',{'icon':5}); return false;}
+                    $(".progress").show();
+                },
+                uploadProgress:function(event,position,total,percentComplete){
+                    var percentVal = percentComplete + '%';
+                    $(".progress-bar").width(percentComplete + '%');
+                    $(".progress-bar").html(percentVal);
+                    $(".sr-only").html(percentComplete + '%');
+                },
+                success:function(data){
+                    $(".progress-bar").width('0%');
+                    $(".progress-bar").html('0%');
+                    $(".sr-only").html('0%');
+                    if(data.icon == 2){
+                        $(".progress").hide();
+                        layer.alert(data.error);
+                        return false;
+                    } else {
+                        layer.msg(data.msg,function () {
+                            location.href = window.location.href;
+                        });
+
+                    }
+
+                },
+                error:function(){
+                    layer.alert("图片上传失败");
+                }
+
+            });
+            $(".progress").hide();
+        });
+
+    </script>
+
     @if($lastpid->step == count($configinfo))
 
         <script type="text/javascript">
@@ -542,12 +604,36 @@
                 $(this).closest('.works-manage-step').children('.history-opinion').stop().slideToggle();
             });
 
-
+            function getFileName(path) {
+                var pos1 = path.lastIndexOf('/');
+                var pos2 = path.lastIndexOf('\\');
+                var pos = Math.max(pos1, pos2);
+                if (pos < 0) {
+                    return path;
+                }
+                else {
+                    return path.substring(pos + 1);
+                }
+            }
 
 
             $('.fileupload1').on('change', function(e){
+                var str = $(this).val();
+                var filesize = $(this)[0].files[0].size;
+                var fileName = getFileName(str);
+                var fileExt = str.substring(str.lastIndexOf('.') + 1);
+                if(filesize > 1024*1024*2){
+                    layer.msg('文件大小不能超过2M',{'time':3000,'icon':5});
+                    return false;
+                }
+                if (fileExt != "doc" && fileExt != "pdf" && fileExt != "txt" && fileExt != "docx" && fileExt != "ppt" && fileExt != "excel"&& fileExt != "pptx"&& fileExt != "wps") {
+                    layer.msg('文件格式不正确',{'time':3000,'icon':5});
+                    return false;
+                }
+                $('#uploadfilename').text(fileName);
+                layer.msg('添加文件成功，请点击上传按钮进行上传',{'time':3000});
                 //$('#upload-avatar').html('正在上传...');
-                var thisobj = $(this);
+                /*var thisobj = $(this);
                 var spanobj = $(this).parent().parent().siblings('span');
                 var formobj = $(this).parent();
                 var divobj = formobj.parent().parent().parent();
@@ -572,7 +658,7 @@
                                 window.location = window.location.href;
                                 return false;
                             });
-                            /*var str = '<a href="'+spanobj.children('.eventa2').attr('href')+'">'+spanobj.children('.eventa1').html()+'</a>' +
+                            var str = '<a href="'+spanobj.children('.eventa2').attr('href')+'">'+spanobj.children('.eventa1').html()+'</a>' +
                                     '<a href="javascript:;" index="/deletedownload?path='+spanobj.children('.eventa2').attr('index')+'&&eid={{$eventId}}"  class="btnclass" >&nbsp;删除&nbsp;</a>';
                             if($('.lssc').hasClass('haveclass') &&  spanobj.children('.eventa1').html().trim() != ''){
                                 $('.lssc').append(str);
@@ -601,14 +687,14 @@
                                     }
                                 });
                                 return false;
-                            });*/
+                            });
                         }
 
                     },
                     error: function (returndata) {
                         return 0;
                     }
-                });
+                });*/
 
 
             });
@@ -744,7 +830,7 @@
                 skin: 'layui-layer-rim', //加上边框
                 area: ['950px', '350px'], //宽高
                 maxmin: true, //开启最大化最小化按钮
-                content: '<div style="padding:20px;line-height: 29px;">'+content+'</div>',
+                content: '<textarea style="padding:20px;line-height: 29px;width:900px;height:250px;border:none">'+content+'</textarea>',
             });
             /* layer.open({
              type: 2,
