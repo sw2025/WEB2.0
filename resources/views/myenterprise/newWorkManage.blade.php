@@ -190,6 +190,7 @@
             <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage() }}</strong>页</span>
         </div>
     </div>
+    <script src="pingppjs/dist/pingpp.js"></script>
     <script>
         var select = new Array();
         // 提示申请服务内容
@@ -251,6 +252,7 @@
                             break;
                         case "expried":
                             pop(code,account);
+
                             break;
                     }
                 }
@@ -267,7 +269,8 @@
                 type:"POST",
                 success:function(res){
                     var code=res['code'];
-                    var account=res['account']
+                    var account=res['account'];
+
                     switch(code){
                         case "success":
                             $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
@@ -286,12 +289,20 @@
                             });
                             break;
                         case "expried":
+
                             pop(code,account);
+
                             break;
                     }
                 }
             })
 
         })
+    </script>
+
+
+    <script>
+
+
     </script>
 @endsection
