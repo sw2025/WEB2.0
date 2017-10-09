@@ -116,7 +116,7 @@
                     }
                 });
             }
-            var tinterval=setInterval(geteventnewstate,2000);
+            var tinterval=setInterval(geteventnewstate,5000);
             @else
 
                     geteventnewstate2 = function () {
@@ -135,7 +135,7 @@
                     }
                 });
             }
-            var tinterval2=setInterval(geteventnewstate2,2000);
+            var tinterval2=setInterval(geteventnewstate2,5000);
 
             @endif
             @endif
