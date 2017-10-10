@@ -954,6 +954,7 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public function applyWork(){
+
         $cate = DB::table('t_common_domaintype')->get();
         return view("myenterprise.work1",compact("cate"));
     }

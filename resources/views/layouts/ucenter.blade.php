@@ -223,6 +223,7 @@
             <button type="button" class="pop-btn vip" id="vip">开 通</button>
             <div class="cub" style="display:block"></div>
         </div>
+        <input type="hidden" id="code" value="">
     </div>
 </div>
 <!-- 公共footer / end -->
@@ -341,15 +342,45 @@
     })
 
     $('.vip').on('click',function(){
-        var paytype = $('.paytype input:radio:checked').val();
-        var number = $('.years input:radio:checked').val();
-        console.log(paytype);
-        console.log(number);
-        if(paytype == undefined || paytype == ''  || number == undefined|| number == ''){
+        var allowajax = true;
+        var amount = $.trim($('.years input:radio:checked').val());
+        var channel = $('.paytype input:radio:checked').val();
+        if(channel == undefined || channel == ''  || amount == undefined|| amount == ''){
             layer.msg('请选好条件');
             return false;
         }
-        $.post('{{url('initpay')}}',{'type':paytype,'number':number},function (data) {
+        if(allowajax){
+            allowajax = false;
+            $.ajax({
+                type:'post',
+                url:'{{url('initpay')}}',
+                dataType:"json",
+                data:{amount:amount,channel:channel,subject:'测试标题',body:'测试摘要',code:$.trim($('#code').val())},
+                success:function(msg){
+                    if(msg.code == 1){
+                        pingpp.createPayment(msg.data.charge, function(result, err) {         //调起微信支付控件 进行支付
+                            if (result=="success") {
+                                // payment succeeded支付成功后的回调函数
+                                //window.location.href='http://xxxx.com/demo/pingview'+"?id="+10000*Math.random();成功跳转到指定地址
+                                layer.alert('支付成功');
+                            } else {
+                                //window.location.href='http://xxxx.com/demo/pingview'+"?id="+10000*Math.random();失败或关闭了支付控件 做对应处理
+                                console.log(result+" "+err.msg+" "+err.extra);
+                                layer.alert('支付失败');
+                            }
+                        });
+                    } else {
+                        layer.alert(msg.data.error_message);
+                    }
+
+                },
+                error:function(){
+                    layer.alert('支付异常1');
+                    console.log('请求是否关注信息失败');
+                },
+            });
+        }
+       /* $.post('{{url('initpay')}}',{'type':paytype,'amount':amount},function (data) {
             if(paytype == 'wx_pub_qr'){
                 layer.open({
                     type: 1,
@@ -372,7 +403,7 @@
                 });
             }
 
-        });
+        });*/
     });
 
 

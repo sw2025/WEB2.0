@@ -132,7 +132,7 @@
             </div>
             <div class="col-md-6">
                 <div class="demands">
-                    <h2 class="category">寻合作<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
+                    <h2 class="category">拓市场<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
                     <ul class="demands-list">
                         @foreach($markets as $market)
                         <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$market->needid)}}"><span class="dem-li-tit">{{$market->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$market->created_at}}</span></a></li>

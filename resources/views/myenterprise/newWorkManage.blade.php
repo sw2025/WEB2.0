@@ -224,6 +224,7 @@
         }
 
         $("#applyEvent").on("click",function(){
+            $(this).attr('disabled',true);
             var userId=$.cookie('userId');
             $.ajax({
                 url:"{{asset('IsMember')}}",
@@ -247,6 +248,7 @@
                             }, function(){
                                 window.location.href="{{asset('uct_member')}}";
                             }, function(){
+                                $(this).attr('disabled',false);
                                 layer.close();
                             });
                             break;
@@ -261,6 +263,7 @@
         })
 
         $("#applyEvent1").on("click",function(){
+            $(this).attr('disabled',true);
             var userId=$.cookie('userId');
             $.ajax({
                 url:"{{asset('IsMember')}}",
@@ -285,6 +288,7 @@
                             }, function(){
                                 window.location.href="{{asset('uct_member')}}";
                             }, function(){
+                                $(this).attr('disabled',false);
                                 layer.close();
                             });
                             break;
