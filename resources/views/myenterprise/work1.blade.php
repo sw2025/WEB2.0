@@ -8,11 +8,10 @@
             <div class="main-right">
                 <div class="card-step works-step">
                     <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">2</span>办事审核<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">5</span>办事管理<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">6</span>完成
+                    <span class="gray-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">4</span>办事管理<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">5</span>完成
                 </div>
                 <div class="publish-need uct-works">
                     <div class="expert-certy-state">
@@ -41,7 +40,7 @@
                         </ul>
                     </div>
 
-                    <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述" ></textarea>
+                    <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述（30-800字之间）" ></textarea>
                     <div class="uct-works-exp">
                         <span>专家</span>
                         <a href="javascript:;" class="system-btn uct-works-btn" id="random" style="padding:0 10px;">系统分配专家</a>
@@ -294,13 +293,7 @@
             var describe=$(".uct-works-txt").val();
             var isAppoint=($.cookie("isAppoint"))?$.cookie("isAppoint"):1;
             var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
-            if(describe.length>30 && describe.length<500){
-            }else{
-                $(this).attr('disabled',false);
-                $(this).html('提交认证');
-                layer.msg('办事描述不符合',{'icon':5});
-                return false;
-            }
+
             if($("#random").hasClass('active')){
                 var state=1;
             }else{
@@ -315,10 +308,18 @@
             }
 
             if(!describe){
-                layer.tips("问题描述不能为空", '.uct-works-txt', {
+                layer.tips("办事描述不能为空", '.uct-works-txt', {
                     tips: [2, '#00a7ed'],
                     time: 4000
                 });
+                return false;
+            }
+
+            if(describe.length>30 && describe.length<800){
+            }else{
+                $(this).attr('disabled',false);
+                $(this).html('提交认证');
+                layer.msg('办事描述应在30到800字之间',{'icon':5});
                 return false;
             }
             if(!$('.uct-works-exp a').hasClass('active')){
@@ -364,13 +365,25 @@
                                 }
                             });
                         }
-                    }else{
+                    }else if(res['icon'] == 2){
                         $(".publ-need-sel-def").text(domain);
                         $(".uct-works-txt").val(describe);
                         layer.alert(res.msg+' 申请失败,请重新申请', {
                             btn: ['确定'] //按钮
                         },function () {
                             window.location.href=window.location.href;
+                        });
+                    } else if(res['icon'] == 3){
+                        layer.confirm(res.msg, {
+                            btn: ['确定','取消'] ,
+                            skin: 'layer-ext-moon',
+                            icon:0,
+                        }, function(){
+                            window.location = res['url'];
+                        }, function(index){
+                            $(that).attr('disabled',false);
+                            $(that).html('提交审核');
+                            layer.close(index);
                         });
                     }
                 }

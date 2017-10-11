@@ -48,7 +48,7 @@
                     <div class="item-con dif-hexagon3">
                         <span class="hexagon"></span>
                         <h2 class="number">03</h2>
-                        <span class="item-tit">促合作</span>
+                        <span class="item-tit">拓市场</span>
                     </div>
                     <div class="item-con-hover">
                         <p><br /><span style="font-size: 1.5em;">寻求渠道与代理</span><br /><br /><br /><span style="font-size: 1.5em;">营销推广</span><br /><br /><br /><span style="font-size: 1.5em;">品牌建设</span><br /><br /></p>

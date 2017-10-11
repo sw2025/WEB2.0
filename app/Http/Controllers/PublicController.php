@@ -323,6 +323,35 @@ class PublicController extends Controller
         return $result;
     }
 
+    /**
+     * 会员权益判定
+     */
+    static public function entMemberJudge($type = 'eventcount')
+    {
+       if(empty(session('userId'))){
+           return ['code' => 1,'msg' => '请登录','url' => url('login')];
+       }
+       $userid = session('userId');
+        $enterprise=DB::table("t_u_enterprise")
+            ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
+            ->where("t_u_enterprise.userid",$userid)
+            ->orderBy("t_u_enterpriseverify.id","desc")
+            ->first();
+        if(empty($enterprise) || $enterprise->configid != 3){
+            return ['code' => 2,'msg' => '企业不存在或者未通过认证','url' => url('uct_member')];
+        }
+        $entmember = DB::table('t_u_enterprisemember')->where('enterpriseid',$enterprise->enterpriseid)->first();
+        if(empty($entmember)){
+            return ['code' => 3 ,'msg' => '您不是会员,请办理会员或充值单次收费','url' => '?'];
+        } elseif(strtotime($entmember->endtime) < time()){
+            return ['code' => 4 ,'msg' => '您的会员已过期,是否续交会员','url' => '?'];
+        } elseif($entmember->$type <= 0){
+            return ['code' => 5 ,'msg' => '您的可用次数已不足,是否续交会员或者按照优惠价格冲次数','url' => '?'];
+        }
+        return ['code' => 0 ,'msg' => '会员可用'];
+
+    }
+
     /**判断是否认证企业
      * @return array
      * @throws \Exception
