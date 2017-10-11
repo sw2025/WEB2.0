@@ -63,7 +63,8 @@ class IndexController extends Controller
                 ->whereIn("T_U_EXPERTVERIFY.configid",[2,4])
                 ->whereRaw("T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by T_U_EXPERTVERIFY.expertid)")
                 ->take(15)
-                ->orderBy("T_U_EXPERT.created_at","desc")
+                ->orderBy("T_U_EXPERT.order","asc")
+                ->orderBy("T_U_EXPERT.expertid","desc")
                 ->get();
             foreach ($datas as $data){
                 $data->domain1 = $domainselect[$data->domain1];
@@ -92,5 +93,6 @@ class IndexController extends Controller
         }
         return $result;
     }
+
 
 }
