@@ -1,10 +1,15 @@
 $(document).ready(function(){
-    $('.reply-list').on('click', '.reply-btn', function(event) {
+    $('.reply-list').on('click', '.replybtn1', function(event) {
         var obj = $(this).closest('li').parent().siblings();
         obj.show();
         var name = $(this).closest('li').find('.floor-guest-name').html();
         obj.children('.reply-enter').attr('touser',$(this).attr('userid'));
         obj.children('.reply-enter').attr('placeholder','回复 '+name+':');
+    });
+
+    $('.message-reply').on('click', function(event) {
+        $(this).parent().siblings('.reply-list').find('.reply-enter').attr('touser','');
+        $(this).parent().siblings('.reply-list').find('.reply-enter').attr('placeholder','');
     });
     // 查看回复
     $('.message-reply-show').on('click','.look-reply', function(event) {

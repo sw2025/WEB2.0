@@ -298,7 +298,7 @@
             }else{
                 $(this).attr('disabled',false);
                 $(this).html('提交认证');
-                layer.msg('企业简介字数不符',{'icon':5});
+                layer.msg('办事描述不符合',{'icon':5});
                 return false;
             }
             if($("#random").hasClass('active')){
