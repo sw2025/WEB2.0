@@ -41,13 +41,13 @@
                         </div>
                     </li>
                     <li class="core-item">
-                        <img src="{{env('ImagePath')}}/images/.jpg" class="core-pic" title="" />
+                        <img src="{{env('ImagePath')}}/images/wangliang.jpg" class="core-pic" title="" />
                         <div class="core-hover">
                             <div class="core-top">
                                 <strong>王亮</strong>
                                 <span class="job2">市场总监</span>
                             </div>
-                            <img src="{{env('ImagePath')}}/images/.jpg" class="core-img2" />
+                            <img src="{{env('ImagePath')}}/images/wangliang.jpg" class="core-img2" />
                             <p class="core-desc">曾任绿豆拼车市场总监  包之网、资芽网联合创始人  志腾企业管理咨询有限公司创始人&CEO  河北省人社厅授予创业导师 河北省共青团授予创业之星  擅长企业管理、战略定位、互联网企业系统搭建、企业融资等</p>
                         </div>
                     </li>

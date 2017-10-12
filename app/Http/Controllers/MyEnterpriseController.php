@@ -967,6 +967,12 @@ class MyEnterpriseController extends Controller
         $result=array();
         $data = $request->input();
         $domain=explode("/",$data['domain']);
+        $ismember = PublicController::entMemberJudge('eventcount');
+        if($ismember['code']){
+            $ismember['icon'] = 3;
+            return $ismember;
+        }
+        dd($ismember);
         DB::beginTransaction();
         try{
             $eventId=DB::table("t_e_event")->insertGetId([

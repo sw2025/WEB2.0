@@ -194,7 +194,7 @@
     <script>
         var select = new Array();
         // 提示申请服务内容
-        var $html = '<h2>办事规则介绍</h2>任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报关于小李同志本次任务工作情况汇报';
+        var $html = '<h2>办事规则介绍</h2>根据用户提出的领域分类和描述系统可以匹配此类专家或者用户自选专家后按照办事流程开始办事<br />办事流程介绍：<p style="color:#000;font-weight: bolder    ;">办事申请→专家响应→选择专家→进入办事→办事完成</p>';
         $('.goto-work').hover(function(){
             $('.v-supply-con').html($html).show();
         },function(){
@@ -253,7 +253,14 @@
                             });
                             break;
                         case "expried":
-                            pop(code,account);
+                            //pop(code,account);
+                            layer.msg('您的余额不足，请及时充值',{'time':1500},function(){
+                                $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
+                                $.cookie("domain","",{path:'/',domain:'sw2025.com'});
+                                $.cookie("describe","",{path:'/',domain:'sw2025.com'});
+                                $.cookie("industry","",{path:'/',domain:'sw2025.com'});
+                                window.location.href="{{asset('uct_works/applyWork')}}";
+                            });
 
                             break;
                     }
@@ -293,9 +300,14 @@
                             });
                             break;
                         case "expried":
-
-                            pop(code,account);
-
+                            //pop(code,account);
+                            layer.msg('您的余额不足，请及时充值',{'time':1500},function(){
+                                $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
+                                $.cookie("domain","",{path:'/',domain:'sw2025.com'});
+                                $.cookie("describe","",{path:'/',domain:'sw2025.com'});
+                                $.cookie("industry","",{path:'/',domain:'sw2025.com'});
+                                window.location.href="{{asset('uct_works/applyWork')}}";
+                            });
                             break;
                     }
                 }

@@ -264,6 +264,8 @@ Route::post('compareConsultTime', 'MyEnterpriseController@compareConsultTime');
     Route::post("IsMember", 'PublicController@IsMember');
 //判断是否认证企业
 Route::post("IsEnterprise", 'PublicController@IsEnterprise');
+//判断会员去哪一
+Route::post('entMemberJudge','PublicController@entMemberJudge');
     /************************************我是专家*********************************************************/
 //专家认证
     Route::get('uct_expert', 'MyExpertController@expert');
