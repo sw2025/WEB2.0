@@ -172,7 +172,7 @@
                             </span>
                         <div class="exp-rec-right">
                             <span class="exp-rec-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if(!$v->state || $v->fee == 0) 免费 @else ￥{{$v->fee}}/5分钟 @endif</em></span>
-                            <span class="exp-rec-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$v->domain1}}</em></span>
+                            <span class="exp-rec-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$domainselect[$v->domain1]}}</em></span>
                             <div class="exp-rec-lab">
                                 @foreach(explode(',',$v->domain2) as $v2)
                                 <span class="exp-lab-a">{{$v2}}</span>

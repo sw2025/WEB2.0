@@ -6,6 +6,7 @@
 <div class="section">
     <div class="container list-bg">
         <form action="" onsubmit="return false">
+            <a href="javascript:;" class="releaseNeed">发布需求</a>
             <div class="list-search">
                 <input type="text" class="list-search-inp"  placeholder="请输入要搜索的需求信息关键字" value="{{$searchname or null}}"/>
                 <button type="button" class="list-search-btn"><i class="iconfont icon-sousuo"></i></button>
@@ -151,6 +152,63 @@
             return false;
         }
     })
+
+    $(".releaseNeed").on('click',function () {
+        if($.cookie('role')=="专家"){
+            $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
+                if(data.type == 3){
+                    layer.msg(data.msg,{'icon':data.icon});
+                } else if(data.type == 2){
+                    layer.confirm(data.msg, {
+                        btn: ['去认证','以企业身份发起需求'], //按钮
+                        skin:'layui-layer-molv'
+                    }, function(){
+                        window.location.href=data.url;
+                    }, function(){
+                        enterpriseputneed();
+                    });
+                } else if (data.type == 1){
+                    layer.confirm(data.msg+', 您是否以企业身份发起需求？', {
+                        btn: ['是','否'], //按钮
+                        skin:'layui-layer-molv'
+                    }, function(){
+                        enterpriseputneed();
+                    }, function(){
+                        layer.close();
+                    });
+                } else {
+                    window.location = '{{asset('myneed/supplyNeed')}}';
+                }
+            });
+        }else{
+            $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
+                if(data.type == 3){
+                    layer.msg(data.msg,{'icon':data.icon});
+                } else if(data.type == 2){
+                    layer.confirm(data.msg, {
+                        btn: ['去认证','以专家身份发起需求'], //按钮
+                        skin:'layui-layer-molv'
+                    }, function(){
+                        window.location.href=data.url;
+                    }, function(){
+                        expertputneed();
+                    });
+                } else if (data.type == 1){
+                    layer.confirm(data.msg+', 您是否以专家身份发起需求？', {
+                        btn: ['是','否'], //按钮
+                        skin:'layui-layer-molv'
+                    }, function(){
+                        expertputneed();
+                    }, function(){
+                        layer.close();
+                    });
+                } else {
+                    window.location = '{{asset('uct_myneed/supplyNeed')}}';
+                }
+            });
+        }
+    })
+
 </script>
 <script src="{{url('js/supply.js')}}" type="text/javascript"></script>
 
