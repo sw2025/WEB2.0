@@ -972,7 +972,6 @@ class MyEnterpriseController extends Controller
             $ismember['icon'] = 3;
             return $ismember;
         }
-        dd($ismember);
         DB::beginTransaction();
         try{
             $eventId=DB::table("t_e_event")->insertGetId([
