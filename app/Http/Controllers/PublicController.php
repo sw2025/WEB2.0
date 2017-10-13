@@ -713,8 +713,6 @@ class PublicController extends Controller
                             ->whereRaw('1=1  group by rand()')
                             ->limit(5)
                             ->get();
-
-
                         if(empty($expert) && empty($expert2)){
                             DB::table('t_e_eventverify')->insert([
                                 'eventid' => $eventid,
@@ -728,7 +726,7 @@ class PublicController extends Controller
                             DB::commit();
                             return ['msg' => '系统匹配专家失败'.$eventid,'icon' => 2];
 
-                        } elseif(!empty($expert)) {
+                        }elseif(!empty($expert)) {
                             foreach($expert as $v){
                                 DB::table('t_e_eventresponse')->insert([
                                     'eventid' => $eventid,
