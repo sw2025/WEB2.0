@@ -315,10 +315,4 @@
 
         })
     </script>
-
-
-    <script>
-
-
-    </script>
 @endsection

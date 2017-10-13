@@ -231,6 +231,9 @@
 </div>
 <!-- 公共footer / end -->
 <script type="text/javascript">
+    if(typeof($.cookie('userId'))=="undefined"){
+        window.location.href="{{url('login')}}";
+    }
     $(function(){
         var str=window.location.pathname;
         var num1=str.indexOf('/');
@@ -252,10 +255,6 @@
         }
         $("#"+string).addClass('active');
         //alert($.cookie('userId'));
-        if(typeof($.cookie('userId'))=="undefined"){
-            window.location.href="{{url('login')}}";
-            return false;
-        }
         if($.cookie('userId')){
             var name=$.cookie("name");
             $(".before-login").hide();
@@ -265,7 +264,6 @@
             $(".before-login").show();
             $(".after-login").hide();
         }
-
         $.ajax({
             url:"{{asset('getAvatar')}}",
             data:{userId:$.cookie('userId'),type:"enterprise"},

@@ -218,6 +218,9 @@
 </div>
 <!-- 公共footer / end -->
 <script type="text/javascript">
+    if(typeof($.cookie('userId'))=="undefined"){
+        window.location.href="{{url('login')}}";
+    }
     $(function(){
         var str=window.location.pathname;
         var num1=str.indexOf('/');
@@ -238,10 +241,6 @@
             var string=str.substring(num1+1);
         }
         $("#"+string).addClass('active');
-        if(typeof($.cookie('userId'))=="undefined"){
-            window.location.href="{{url('login')}}";
-            return false;
-        }
         if($.cookie('userId')){
             var name=$.cookie("name");
             $(".before-login").hide();
