@@ -77,9 +77,9 @@
         <div class="more-box"><a href="{{asset('expert')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
         <div class="row tab-resources">
             <div class="tabar clearfix" id="knowExpert">
-                <a href="javascript:;" class="tabar-opt">资深专家<div class="triangle-top"></div></a>
-                <a href="javascript:;" class="tabar-opt">成功企业家<div class="triangle-top"></div></a>
-                <a href="javascript:;" class="tabar-opt">知名机构<div class="triangle-top"></div></a>
+                <a href="javascript:;" style="width: 50%;" class="tabar-opt">资深专家<div class="triangle-top"></div></a>
+                {{--<a href="javascript:;" class="tabar-opt">成功企业家<div class="triangle-top"></div></a>--}}
+                <a href="javascript:;" style="width: 50%;" class="tabar-opt">知名机构<div class="triangle-top"></div></a>
 
             </div>
             <div class="tab-con">

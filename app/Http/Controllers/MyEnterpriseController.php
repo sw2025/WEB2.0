@@ -768,6 +768,7 @@ class MyEnterpriseController extends Controller
                 $data['pid'] = $proid;
                 $data['documenturl'] = $path;
                 $data['state'] = 0;
+                $data['time'] = date('Y-m-d H:i:s',time());
                 //获取到该办事的指定的过程的信息
                 $verify = DB::table('t_e_eventprocess')->where(['pid' => $proid,'eventid' => $data['eventid']])->first();
                 //如果存在过程信息  更改
@@ -876,6 +877,7 @@ class MyEnterpriseController extends Controller
         $res = DB::table('t_e_eventprocess')->where(['pid' => $data['pid'],'eventid' => $data['eventid']])->first();
         if(empty($res)){
             $data['state'] = 0;
+            $data['time'] = date('Y-m-d H:i:s',time());
             $epid = DB::table('t_e_eventprocess')->insertGetId($data);
             return $epid;
         }
@@ -972,7 +974,6 @@ class MyEnterpriseController extends Controller
             $ismember['icon'] = 3;
             return $ismember;
         }
-        dd($ismember);
         DB::beginTransaction();
         try{
             $eventId=DB::table("t_e_event")->insertGetId([
