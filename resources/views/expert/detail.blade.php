@@ -36,7 +36,7 @@
             </div>
             <div class="exp-details-con">
                 <div class="exp-det-con-top">
-                    <button id="selectexpert" style="font-size: 15px;" onclick="selectexpertjoinevent(null)">邀请专家办事</button>
+                    <button id="selectexpert" style="font-size: 15px;" onclick="selectexpertjoinevent(null)">邀请专家办事/视频咨询</button>
                     <img src="@if(empty($datas->showimage)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$datas->showimage}}@endif" class="exp-details-img" />
                     <div class="exp-details-brief">
                         <span class="exp-details-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
@@ -227,19 +227,30 @@
      * Created by admin on 2017/9/24.
      */
     function selectexpertjoinevent(obj){
+        if(!$.cookie('userId')){
+            layer.confirm('您还未登陆是否去登陆？', {
+                btn: ['去登陆','暂不需要'], //按钮
+                skin:'layui-layer-molv'
+            }, function(){
+                window.location.href='/login';
+            }, function(){
+                layer.close();
+            });
+            return false;
+        }
         if(obj != null){
-            var str = '<div style="padding:10px;">系统会自动在创建办事的过程中将您的问题分类和需求自动填充到新建办事中，可进行修改后完成办事邀请专家。是否继续？</div>';
+            var str = '<div style="padding:10px;">系统会自动在创建办事/视频咨询的过程中将您的问题分类和需求自动填充到新建办事/视频咨询中，可进行修改后完成邀请专家。是否继续？</div>';
         }else{
-            var str = '<div style="padding:10px;">系统会自动选定当前专家作为您的自选专家请后续补充相关的领域和办事描述</div>';
+            var str = '<div style="padding:10px;">系统会自动选定当前专家作为您的自选专家请后续补充相关的领域和办事/视频咨询描述</div>';
         }
         layer.open({
             type: 1,
             skin: 'layui-layer-rim', //加上边框
             area: ['400px', '180px'],
             shadeClose: false, //开启遮罩关闭
-            title:'新建办事提醒',
+            title:'新建[办事/视频咨询]提醒',
             content: str,
-            btn: ['邀请该专家','取消'],
+            btn: ['邀请办事','邀请视频咨询','取消'],
             yes: function(index, layero){
                 $.cookie("isAppoint",1,{path:'/',domain:'sw2025.com'});
                 $.cookie("reselect",'{{$datas->expertid.$datas->showimage}}',{path:'/',domain:'sw2025.com'});
@@ -250,6 +261,15 @@
                 }
                 window.location.href="{{url('uct_works/applyWork')}}";
             },btn2: function(index, layero){
+                $.cookie("videoisAppoint",1,{path:'/',domain:'sw2025.com'});
+                $.cookie("videoreselect",'{{$datas->expertid.$datas->showimage}}',{path:'/',domain:'sw2025.com'});
+                if(obj != null){
+                    var ss = $(obj).val().split(/【(.*)】/i);
+                    $.cookie("videodomain",ss[1],{path:'/',domain:'sw2025.com'});
+                    $.cookie("videodescribe", $.trim(ss[2]),{path:'/',domain:'sw2025.com'});
+                }
+                window.location.href="{{url('/uct_video/applyVideo')}}";
+            },btn3: function (index, layero){
                 layer.close(index);
             }
         });
