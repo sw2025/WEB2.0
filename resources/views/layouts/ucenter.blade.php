@@ -85,7 +85,7 @@
             </a>
             <!-- 我是企业时 -->
             <div class="v-money-info ">
-                <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
+                <a href="{{asset('uct_recharge')}}" class="v-money" title="充值"><i class="iconfont icon-chongzhihetixian"></i></a>
                 <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
             </div>
           {{--  <!-- 我是专家时 -->
