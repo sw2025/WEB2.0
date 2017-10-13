@@ -154,6 +154,10 @@
     })
 
     $(".releaseNeed").on('click',function () {
+        if(!$.cookie('userId')){
+            window.location.href="/login"
+            return false;
+        }
         if($.cookie('role')=="专家"){
             $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
                 if(data.type == 3){
