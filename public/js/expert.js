@@ -231,19 +231,28 @@ $('.details-message .submit').on('click',function () {
 });
 
 function replymessage (datas,obj) {
+    if($.trim($('#message').text()) == '请选择' && datas.parentid == 0){
+        layer.msg('请选择留言问题分类',{'icon':0});
+        $(obj).attr('disabled',false);
+        return false;
+    }
     if(!datas.content.trim().length){
         layer.msg('请输入留言内容');
         $(obj).attr('disabled',false);
         return false;
     }
+
+    if(datas.parentid == 0){
+        datas.content = '【'+$.trim($('#message').text())+'】'+'\n'+datas.content;
+    }
     $.post('/replyextmessage',datas,function (data) {
-        if(data == 'success'){
-            layer.msg('回复成功',{time:2000},function () {
+        if(data.icon == 1){
+            layer.msg(data.msg,{time:2000,'icon':6},function () {
                 var url = window.location.href;
                 url = url.replace(/\#reply/,'');
                 window.location = url;
             });
-        }else if(data == 'nologin') {
+        }else if(data.icon == 5) {
             layer.confirm('您还未登陆是否去登录？', {
                 btn: ['去登录','暂不需要'], //按钮
                 skin:'layui-layer-molv'
@@ -259,7 +268,8 @@ function replymessage (datas,obj) {
                 $(obj).attr('disabled',false);
             });
         } else {
-            layer.msg('处理失败');
+            layer.msg(data.msg,{'icon':data.icon});
+            $(obj).attr('disabled',false);
         }
     });
 }

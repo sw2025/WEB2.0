@@ -226,7 +226,7 @@
         })
         $("#return").on("click",function(){
             $.cookie("videoreselect","",{path:'/',domain:'sw2025.com'});
-            window.location.href="{{url('uct_works/applyWork')}}";
+            window.location.href="{{url('uct_video/applyVideo')}}";
         })
 
     </script>

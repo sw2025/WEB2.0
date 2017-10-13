@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>升维</title>
+    <meta name="Keywords" content="2025,升维网,升维,对接资源,转型升级,投融资,企业服务,管理咨询">
+    <meta name="description" content="升维网是一个为广大中小型企业与外部专家资源对接提供服务的大型平台。这里汇聚了国际国内大量优秀的专家和资源，通过升维网平台，企业可以向行业专家咨询在经营过程中遇到的相关问题，专家为企业提供最专业的指导服务。"/>
+    <meta name="author" content="www.sw2025.com">
+    <title>升维网-企业对接高端资源的平台</title>
     <link rel="stylesheet" type="text/css" href="{{asset('iconfont/iconfont.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/global.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/public.css')}}" />
@@ -138,7 +141,7 @@
             </div>--}}
             <!-- 我是专家时 -->
             <div class="v-money-info iamexpert">
-                <a href="{{asset('recharge')}}" class="v-money" title="提现"><i class="iconfont icon-chongzhihetixian"></i></a>
+                <a href="{{asset('recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
                 <a href="{{asset('uct_standard')}}" class="v-info border2" title="收费标准"><i class="iconfont icon-shenjia"></i></a>
                 <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
             </div>

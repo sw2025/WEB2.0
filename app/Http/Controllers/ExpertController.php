@@ -98,6 +98,7 @@ class ExpertController extends Controller
         if(!in_array("$expertid",$array)){
             return redirect("/");
         }
+        $cate = DB::table('t_common_domaintype')->get();
         //取出指定的供求信息
         $datas = DB::table('t_u_expert as ext')
             ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
@@ -143,7 +144,7 @@ class ExpertController extends Controller
         foreach ($getmsgcount as $k => $v) {
             $msgcount[$v->parentid] = $v->count;
         }
-        return view("expert.detail",compact('datas','recommendNeed','domainselect','message','collectids','msgcount'));
+        return view("expert.detail",compact('datas','recommendNeed','domainselect','message','collectids','msgcount','cate'));
     }
     //收藏专家
     public  function  collectExpert(){
@@ -223,16 +224,33 @@ class ExpertController extends Controller
      */
     public function replyMessage (Request $request)
     {
-        if(!session('userId')) {
-            return 'nologin';
+        if(empty(session('userId'))) {
+            return ['msg' => 'nologin','icon' => 5];
         }
         if($request->ajax()){
             $data = $request->only('content', 'needid','parentid','use_userid');
+            if($data['use_userid'] == session('userId')){
+                return ['msg' => '亲,没必要自己回复自己','icon' => 0];
+            }
             $data['expertid'] = $data['needid'];
             $expertuserid = DB::table('t_u_expert')->where('expertid',$data['expertid'])->first();
             $userinfo = DB::table('t_u_user')->where('userid',session('userId'))->first();
             if(empty($expertuserid) || empty($userinfo)){
-                return 'error';
+                return ['msg' => '专家不存在或用户不存在','icon' => 0];
+            }
+            $verifymember = DB::table('t_u_enterprise as ent')
+                ->leftJoin('t_u_enterpriseverify as ver','ver.enterpriseid','=','ent.enterpriseid')
+                ->orderBy('ver.id','desc')
+                ->where('ent.userid',session('userId'))
+                ->first();
+            if($expertuserid->userid != session('userId') && (empty($verifymember) || $verifymember->configid != 3)){
+                return ['msg' => '不是认证企业或者本专家不能留言','icon' => 0];
+            }
+            if($data['parentid'] != 0){
+                $msgcount = DB::table('t_u_messagetoexpert')->where('parentid',$data['parentid'])->where('isdelete',0)->count();
+                if($msgcount >= 5){
+                    return ['msg' => '留言下的回复最多回复5次想详细交流可异步办事','icon' => 6];
+                }
             }
             unset($data['needid']);
             $data['userid'] = session('userId');
@@ -270,7 +288,7 @@ class ExpertController extends Controller
 
                 }
                 if($expertuserid->userid != session('userId') && $data['parentid'] && $data['use_userid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br /><a href="'.url('expert/detail',$data['expertid']).'#reply" target=_blank>点此查看</a>' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br />' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
                     if($data['use_userid'] != session('userId')){
                         $msg = DB::table('t_m_systemmessage')->insert([
                             'sendid' => 0,
@@ -283,15 +301,15 @@ class ExpertController extends Controller
                     }
                 }
                 DB::commit();
-                return ['success'];
+                return ['msg' => '留言/回复成功','icon' => 1];
             }catch (Exception $e){
                 DB::rollback();
-                return 'error';
+                return ['msg' => '留言失败请刷新重试','icon' => 0];
             }
 
 
 
         }
-        return 'error';
+        return ['msg' => '留言失败请刷新重试','icon' => 0];
     }
 }

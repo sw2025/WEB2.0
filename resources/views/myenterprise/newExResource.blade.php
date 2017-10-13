@@ -103,7 +103,7 @@
                     <ul class="supply-list clearfix">
                         @foreach($datas as $v)
                         <li class="col-md-6">
-                            <a href="{{url('uct_resource/resDetail',$v->expertid)}}" class="expert-list-link">
+                            <a href="{{url('/expert/detail',$v->expertid)}}" class="expert-list-link">
                                 <div class="exp-list-top">
                                     <span class="exp-list-img"><img src="{{env('ImagePath').$v->showimage}}" /></span>
                                     <div class="exp-list-brief">
