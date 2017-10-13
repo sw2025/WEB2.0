@@ -64,7 +64,6 @@ body{background:#fff;}
 .serve2-line{padding-left: 45px;background:url(../img/squre.jpg) no-repeat left center;}
 .serve2-bgthree{text-align: left;}
 .serve2-banner{background:none;}
-.serve2-banner img{height:350px;}
 .serve2-banner img{width:100%;max-width: 100%;}
 @media (max-width:970px){
     .serve2-bg{width:auto;}

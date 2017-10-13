@@ -186,6 +186,7 @@ function fnc_collect (supplyid,action,obj) {
                     $(obj).removeClass('done');
                     $(obj).text("收藏");
                 }
+                $(obj).attr('disabled',false);
             });
         } else if(data == 'success') {
             if(action == 'collect'){
@@ -260,11 +261,7 @@ function replymessage (datas,obj) {
                 window.location.href='/login';
             }, function(){
                 layer.close();
-                $(obj).attr("title","收藏");
-                $(obj).removeClass('red');
-                if($(obj).hasClass('done')){
-                    $(obj).removeClass('done');
-                }
+
                 $(obj).attr('disabled',false);
             });
         } else {

@@ -170,6 +170,7 @@ function fnc_collect (supplyid,action,obj) {
                     $(obj).removeClass('done');
                     $(obj).text("收藏");
                 }
+                $(obj).attr('disabled',false);
            });
         } else if(data == 'success') {
             if(action == 'collect'){
