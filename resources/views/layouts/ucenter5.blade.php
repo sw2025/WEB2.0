@@ -138,7 +138,7 @@
             </div>--}}
             <!-- 我是专家时 -->
             <div class="v-money-info iamexpert">
-                <a href="{{asset('recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
+                <a href="{{asset('recharge')}}" class="v-money" title="提现"><i class="iconfont icon-chongzhihetixian"></i></a>
                 <a href="{{asset('uct_standard')}}" class="v-info border2" title="收费标准"><i class="iconfont icon-shenjia"></i></a>
                 <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
             </div>
