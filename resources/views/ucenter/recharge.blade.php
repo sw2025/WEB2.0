@@ -7,16 +7,11 @@
             <div class="main-right clearfix">
                 <div class="remaining ">
                     <div class="remain-top clearfix">
-                       {{-- <span class="remain-num">余额<em>{{$balance or 0}}</em></span>
+                        <span class="remain-num">余额<em>{{$balance or 0}}</em></span>
                         <div class="remain-state">
                             <span><i class="iconfont icon-shouru"></i>收入：{{$incomes or 0}}</span>
                             <span><i class="iconfont icon-zhichu"></i>支出：{{$pays or 0}}</span>
                             <span><i class="zaitu"></i>在途：{{$expends or 0}}</span>
-                        </div>--}}
-                        <span class="remain-num"><em>{{$members}}</em></span>
-                        <div class="remain-state">
-                           <span><i class="iconfont icon-shouru"></i>剩余次数：{{$eventCount}}</span>
-                            <span><i class="iconfont icon-zhichu"></i>剩余时间：{{$consultCount}}</span>
                         </div>
                     </div>
                     <div class="remain-bottom">
@@ -78,11 +73,11 @@
 
 <script type="text/javascript">
     $(function(){
-        var returnRecord=function(type,startPage,role){
+        var returnRecord=function(type,startPage){
             $("#tbody").empty();
             $.ajax({
                 url:"{{asset('getRecord')}}",
-                data:{"startPage":startPage,"type":type,"role":role},
+                data:{"startPage":startPage,"type":type},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
@@ -109,11 +104,11 @@
         }
         var type=$("#moneyList").text();
         var startPage=1;
-        returnRecord(type,startPage,"企业");
+        returnRecord(type,startPage);
         function pageselectCallback(page_index,jq){
              var startPage=parseInt(page_index)+1;
              var type=$("#moneyList").text();
-             returnRecord(type,startPage,"企业")
+             returnRecord(type,startPage)
          }
         $("#cateList").on("click","li",function(){
             var type=$(this).text();
