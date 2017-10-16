@@ -6,7 +6,8 @@
             5 => '已响应',
             6 => '正在咨询',
             7 => '已完成',
-            8 => '已评价'
+            8 => '已评价',
+            9 => '异常结束'
         ];
 
         static public function handelObj ($data)

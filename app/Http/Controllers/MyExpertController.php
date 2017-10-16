@@ -351,7 +351,7 @@ class MyExpertController extends Controller
             ->paginate(6);
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
-            ->whereIn('status.configid',[5,6,7,8])
+            ->whereIn('status.configid',[5,6,7,8,9])
             ->where('res.state','<>',5)
             ->orderBy('res.id','desc')
             ->paginate(6);
@@ -380,12 +380,24 @@ class MyExpertController extends Controller
     public function askDetail($consultId){
 
         $consultStatus=DB::table("view_consultstatus")->where("consultid",$consultId)->pluck("configid");
-        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
-        $datas = DB::table('t_c_consult as consult')
+        $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+        if(empty(session('userId')) || empty($expertid->expertid)){
+            return redirect('login');
+        }
+        /*$datas = DB::table('t_c_consult as consult')
             ->leftJoin('t_c_consultresponse as res','consult.consultid','=','res.consultid')
             ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
             ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
-            ->where(['consult.consultid'=>$consultId,'res.expertid'=>$expertid])
+            ->where(['consult.consultid'=>$consultId,'res.expertid'=>$expertid->expertid])
+            ->select('consult.*','res.*','status.*','consult.brief','')
+            ->first();*/
+        $datas=DB::table("t_c_consult")
+            ->leftJoin('t_c_consultresponse as res','t_c_consult.consultid','=','res.consultid')
+            ->leftJoin("t_c_consultverify","t_c_consultverify.consultid","=","t_c_consult.consultid")
+            ->leftJoin('t_u_enterprise as ent','t_c_consult.userid','=','ent.userid')
+            ->where(['t_c_consult.consultid'=>$consultId,'res.expertid'=>$expertid->expertid])
+            ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
+            ->select('t_c_consult.*','res.*','ent.*','t_c_consultverify.*','t_c_consult.brief')
             ->first();
         switch ($consultStatus){
             case 4:
@@ -427,6 +439,18 @@ class MyExpertController extends Controller
                     ->where("t_c_consultresponse.consultid",$consultId)
                     ->get();
                 return view("myexpert.video7",compact('selExperts','comperes','datas',"consultId"));
+                break;
+            case 9:
+
+                $selExperts=DB::table("t_u_enterprise")
+                    ->where('userid',$datas->userid)
+                    ->first();
+                $selExperts2=DB::table("t_c_consultresponse")
+                    ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_c_consultresponse.state",3)
+                    ->where("consultid",$consultId)
+                    ->get();
+                return view("myexpert.video9",compact('selExperts','comperes','datas',"consultId",'selExperts2'));
                 break;
 
         }

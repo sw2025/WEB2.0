@@ -1,6 +1,6 @@
 @extends("layouts.ucenter4")
 @section("content")
-    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script src="{{asset('./js/jqueryform.js')}}"></script>
     <style>
         .btnclass{
             padding-right: 2px;
@@ -782,6 +782,11 @@
             $('.cover-cancel').click(function(event) {
                 $(this).closest('.cover').fadeOut();
             });
+
+            layer.config({
+                extend: '/extend/layer.ext.js'
+            });
+
 
             $('#stop').on('click',function () {
                 layer.prompt({title: '请输入终止合作原因', formType: 2}, function(pass, index){
