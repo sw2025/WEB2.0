@@ -277,21 +277,32 @@
                 }
             })
         })
+        layer.config({
+            extend: '/extend/layer.ext.js'
+        });
         $(".unusual-btn").on('click',function(){
             var consultId=$('#consult').val();
-            $.ajax({
-                url:"{{url('finishConsult')}}",
-                data:{"consultId":consultId,'type':'unusual'},
-                dateType:"json",
-                type:"POST",
-                success:function(res){
-                    if(res['code']=='success'){
-                        window.location.reload();
-                    }else{
-                        alert('点击完成失败,请再次尝试')
-                    }
+            layer.prompt({title: '请输入异常原因', formType: 2}, function(pass, index){
+                if(pass == ''){
+                    layer.msg('请输入原因',{'time':1000});
+                    return false;
                 }
-            })
+                $.ajax({
+                    url:"{{url('finishConsult')}}",
+                    data:{"consultId":consultId,'type':'unusual','msg':pass},
+                    dateType:"json",
+                    type:"POST",
+                    success:function(res){
+                        if(res['code']=='success'){
+                            window.location.reload();
+                        }else{
+                            layer.alert('处理失败,请再次尝试')
+                        }
+                    }
+                })
+                //layer.close(index);
+            });
+
         })
         $(".chat-room-btn1").on('click',function(){
             var consultId=$('#consult').val();

@@ -662,7 +662,7 @@ class MyEnterpriseController extends Controller
                             'eventid' => $data['eventid'],
                             'expertid' => $eventexpert->expertid,
                             'responsetime' => date('Y-m-d H:i:s',time()),
-                            'state' => 5,
+                            'state' => 4,
                             'updated_at' => date('Y-m-d H:i:s',time())
                         ]);
 
@@ -1337,12 +1337,23 @@ class MyEnterpriseController extends Controller
                     ->get();
                 $configId = 7;
                 break;
+            case 9:
+
+                $selExperts=DB::table("t_u_enterprise")
+                    ->where('userid',$datas[0]->userid)
+                    ->first();
+                $selExperts2=DB::table("t_c_consultresponse")
+                    ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
+                    ->where("t_c_consultresponse.state",3)
+                    ->where("consultid",$consultId)
+                    ->get();
+                break;
         }
         $selExperts=!empty($selExperts)?$selExperts:"";
         $selected=!empty($selected)?$selected:"";
         $comperes=!empty($comperes)?$comperes:"";
         $view="video".$configId;
-        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId","comperes",'expertcost'));
+        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId","comperes",'expertcost','selExperts2'));
     }
     /**申请视频咨询
      * @return mixed
@@ -1516,7 +1527,7 @@ class MyEnterpriseController extends Controller
                         "money"=>$selectedIds[1]*$times,
                         "payno"=>$payno,
                         "billtime"=>date("Y-m-d H:i:s",time()),
-                        "brief"=>"通过替别人办事，获取报酬",
+                        "brief"=>"视频咨询收取费用，获取报酬",
                         "consultid"=>$_POST['consultId'],
                         "created_at"=>date("Y-m-d H:i:s",time()),
                         "updated_at"=>date("Y-m-d H:i:s",time()),
@@ -1603,14 +1614,13 @@ class MyEnterpriseController extends Controller
     public  function finishConsult(){
         $consutId=$_POST['consultId'];
         $type=$_POST['type'];
+        $content = empty($_POST['msg']) ? '' : '异常终止:'.$_POST['msg'];
         if($type=='end'){
             $configId=7;
             $state=4;
-            $remark='';
         }else{
-            $configId=8;
-            $state=5;
-            $remark='视频异常终止';
+            $configId=9;
+            $state=4;
         }
         $res=array();
         DB::beginTransaction();
@@ -1619,7 +1629,7 @@ class MyEnterpriseController extends Controller
                 'consultid'=>$consutId,
                 'configid'=>$configId,
                 'verifytime'=>date('Y-m-d H:i:s',time()),
-                'remark'=>$remark,
+                'remark'=>$content,
                 'created_at'=>date('Y-m-d H:i:s',time()),
                 'updated_at'=>date('Y-m-d H:i:s',time()),
             ]);
@@ -1807,7 +1817,7 @@ class MyEnterpriseController extends Controller
             ->select("t_c_consult.consultid",'t_c_consultverify.configid',"t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief")
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
             ->where("t_c_consult.userid",$userId)
-            ->whereIn('t_c_consultverify.configid',[4,5,6,7,8])
+            ->whereIn('t_c_consultverify.configid',[4,5,6,7,8,9])
             ->where($typeWhere);
         $count=clone $result;
         $datas=$result->orderBy("t_c_consult.created_at","desc")->paginate(6);
