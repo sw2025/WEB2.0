@@ -38,10 +38,20 @@ class PublicController extends Controller
         $filename = iconv('utf-8','GB2312', array_pop($strarr));
         $filepath = join('/',$strarr).'/'.$filename;
         $extension = pathinfo($filepath)['extension'];
+        //var_dump('http://images.sw2025.com/'.str_replace('../../swUpload/','',trim($filepath,'/')));
+        //dd(preg_replace('/^.+[\\\\\\/]/', '', $filepath));
+        // header("Content-type: text/html; charset=utf-8");
+        //
         if($extension == 'pdf' || $extension == 'txt' ){
-            header('Content-type: application/'.$extension);
-            header('filename='.preg_replace('/^.+[\\\\\\/]/', '', $filepath));
-            readfile($filepath);
+            if($extension == 'txt'){
+                header('location:'.env('ImagePath').'./'.str_replace('../../swUpload/','',trim($filepath,'/')));
+                exit();
+            } else {
+                header("Content-type: text/html; charset=utf-8");
+                header('Content-type: application/pdf');
+                header( 'Content-Disposition:inline;filename='.preg_replace('/^.+[\\\\\\/]/', '', $filepath));
+                readfile($filepath);
+            }
         } else {
             header( "Content-Disposition:  attachment;  filename=".preg_replace('/^.+[\\\\\\/]/', '', $filepath));
             header('Content-Length: ' . filesize($filepath)); //下载文件大小
@@ -959,7 +969,7 @@ class PublicController extends Controller
             if(!empty(session('userId'))){
                 $data = $request->only('eventid','epid','state');
                 $eventinfo = DB::table('t_e_event')->where('eventid',$data['eventid'])->first();
-                $state = DB::table('t_e_eventprocess')->where(['eventid' => $data['eventid'],'epid' => $data['eventid']])->first();
+                $state = DB::table('t_e_eventprocess')->where(['eventid' => $data['eventid'],'epid' => $data['epid']])->first();
                 $newstate = DB::table('t_e_eventprocess')->where('eventid',$data['eventid'])->orderBy('pid','desc')->first();
                 if(empty($state) && empty($eventinfo)){
                     return ['msg' => '非法操作(寻找不到该办事)','icon' => 2];
@@ -971,7 +981,7 @@ class PublicController extends Controller
                     }
                 }*/
                 if(!empty($newstate)){
-                    if($newstate->state == 2 && $data['state'] !== $newstate->state && $newstate->epid == $data['epid']){
+                    if($newstate->state == 0 && $data['state'] !== $newstate->state && $newstate->pid == $state->pid+1){
                         return ['msg' => '对方确认了资料,是否进入下一步','icon' => 1];
                     }
                     return ['msg' => 'nostate2','icon' => 3];
@@ -991,9 +1001,9 @@ class PublicController extends Controller
     {
         if($request->ajax()){
             if(!empty(session('userId'))){
-                $data = $request->only('eventid','epid','state');
+                $data = $request->only('eventid','epid','state','url');
                 $eventinfo = DB::table('t_e_event')->where('eventid',$data['eventid'])->first();
-                $state = DB::table('t_e_eventprocess')->where(['eventid' => $data['eventid'],'epid' => $data['eventid']])->first();
+                $state = DB::table('t_e_eventprocess')->where(['eventid' => $data['eventid'],'epid' => $data['epid']])->first();
                 $newstate = DB::table('t_e_eventprocess')->where('eventid',$data['eventid'])->orderBy('pid','desc')->first();
                 if(empty($state) && empty($eventinfo)){
                     return ['msg' => '非法操作(寻找不到该办事)','icon' => 2];
@@ -1006,10 +1016,10 @@ class PublicController extends Controller
 
                     $state1 = trim($data['state']) !== '' ? intval($data['state']) : '';
                     $state2 = intval($newstate->state);
-                    if(($newstate->state == 0 || $newstate->state == 1) && $state1 !== $state2 && $newstate->epid != $data['epid']){
-                        return ['msg' => '对方上传了新的文件,是否查看','icon' => 1];
-                    } elseif(($newstate->state == 0 || $newstate->state == 1) && $state1 !== $state2 && $newstate->epid == $data['epid']){
-                        return ['msg' => '对方修改上传了新的文件,是否查看','icon' => 1];
+                    if($newstate->state == 1 && $state1 !== $state2 && $newstate->epid == $data['epid']){
+                        return ['msg' => '对方上传了新的文件,是否查看?','icon' => 1];
+                    } elseif($newstate->state == 1 && $newstate->documenturl != $data['url'] && $newstate->epid == $data['epid']){
+                        return ['msg' => '对方修改上传的文件,是否查看?','icon' => 1];
                     }
                     return ['msg' => 'noupload1','icon' => 3];
                 }
