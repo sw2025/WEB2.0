@@ -70,6 +70,9 @@ $(function(){
     });
     // 首页幻灯轮播start
     $('.banner ul li').eq(0).show();
+    var height = $('.banner ul li').eq(0).height()
+    $('.banner').css('height', height+'px');
+    console.log(height)
 //*****
     var imgKey = 0;
     var lunbo = function(){
@@ -253,8 +256,14 @@ $(function(){
     /****弹出层
      付款方式与年份选择
      ****/
+    $('.years .pay-opt').eq(2).addClass('juniorbe');
     $('.payoff-way .pay-opt').click(function(event) {
         $(this).addClass('been').siblings().removeClass('been');
+        $(this).children('input').prop('checked', true);
+        $(this).siblings().children('input').prop('checked', false);
+    });
+    $('.years .pay-opt').click(function(event) {
+        $(this).addClass('juniorbe').siblings().removeClass('juniorbe');
         $(this).children('input').prop('checked', true);
         $(this).siblings().children('input').prop('checked', false);
     });
@@ -293,7 +302,7 @@ function checkLength(which) {
     }
 }
 function pop(code,account){
-    $("#money").text(account);
+    /*$("#money").text(account);
     switch(code){
         case "error":
             $(".pay-tit").text("尚未开通会员,请开通");
@@ -306,6 +315,6 @@ function pop(code,account){
         case "finish":
             $(".open-member").hide();
             break;
-    }
+    }*/
     $('.pop-pay').show();
 }

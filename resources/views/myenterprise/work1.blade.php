@@ -92,6 +92,7 @@
         .layer_image span {
             color:#fff;
         }
+        .popWeixin img{margin:0 auto;}
     </style>
     <ul class="layer_notice" style="display: none;">
         <li><a>近期，网监部门查敏感类信息比较严格，所以内容中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写办事内容。</a></li>
@@ -102,9 +103,72 @@
         <li>
         </li>
     </ul>
+    <div class="pop-pay">
+        <div class="payoff">
+            <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
+            <div class="single">
+                <div class="single-two">
+                <span class="single-opt pay-opt" id="singlePay">
+                    <input class="rad-inp" type="radio">
+                    <div class="opt-label"><span></span>单次缴费：￥<b class="money">{{env('EventMoney')}}</b>/ 次</div>
+                </span>
+                </div>
+                <div class="cub" style="display:block"></div>
+
+            </div>
+            <div class="single open-member">
+                <div class="single-opt pay-opt been">
+                    <input class="rad-inp" type="radio">
+                    <div class="opt-label dibs"><span></span>开通会员</div>
+                    <span class="open-right">会员权益</span>
+                </div>
+                <div class="years">
+                    @foreach($memberrights as $memberright)
+                    <span class="pay-opt" memberId="{{$memberright->memberid}}">
+                        <input class="rad-inp" type="radio" >
+                        <div class="opt-label"><span></span>{{$memberright->termtime}}年&nbsp;&nbsp;￥{{$memberright->cost}}<em class="benifit">优惠次数 {{$memberright->eventcounts}} 次</em><em class="benifit">优惠时间 {{$memberright->consultcounts}} 分钟</em></div>
+                    </span>
+                    @endforeach
+                </div>
+
+                <div class="cub"></div>
+            </div>
+            <div class="paytype payoff-way">
+                    <span class="pay-opt focus been">
+                        <input class="rad-inp" type="radio"  value="wx_pub_qr">
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lweixin.png')}}"><em class="way-cap">微信支付</em></div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio"  value="alipay_pc_direct">
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lzhifubao.png')}}"><em class="way-cap">支付宝支付</em></div>
+                    </span>
+            </div>
+            <div style="text-align: center;padding: 0 0 20px;"><button type="button" class="pop-btn vip" id="vip">付费</button></div>
+        </div>
+    </div>
+    <div class="layer-pop" style="position:fixed;background: rgba(0,0,0,0.3);top: 0;left: 0;width: 100%;height: 100%;z-index: 1000;display: none;">
+        <div class="popWx" style="position: absolute;top: 10%;width: 285px;border: 2px solid #ccc;left: 50%;top: 50%;margin: -160px 0 0 -145px;background: #fff;text-align: center;border-radius: 3px;font-size: 14px;padding: 30px 0 27px;">
+            <div class="changeWeixin">
+                <div class="popWeixin" id="code">
+                </div>
+            </div>
+            <span class="weixinLittle"></span>
+            <div class="weixinTips" style="display: none"><strong>扫瞄二维码完成支付</strong><br>支付完成后请关闭二维码</div>
+            <a href="javascript:;" class="closePop" title="关闭" style="position: absolute;top: 0;right: 0;"><i class="iconfont icon-chahao"></i></a>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{{url('/js/jquery.qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
     <script type="text/javascript">
         $(function(){
-
+            $('.closePop').click(function () {
+                $(this).closest('.layer-pop').hide();
+                $('.pop-pay').hide();
+                $(".submit-audit").attr('disabled',false);
+                $(".submit-audit").html('提交审核');
+            })
            /* layer.open({
                 type: 1,
                 shade: false,
@@ -332,7 +396,7 @@
             $(this).attr('disabled',true);
             $(this).html('正在提交');
             $.ajax({
-                url:"{{asset('saveEvent')}}",
+                url:"{{asset('eventCharge')}}",
                 data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state},
                 dateType:"json",
                 type:"POST",
@@ -378,8 +442,9 @@
                             btn: ['确定','取消'] ,
                             skin: 'layer-ext-moon',
                             icon:0,
-                        }, function(){
-                            window.location = res['url'];
+                        }, function(index){
+                            pop();
+                            layer.close(index);
                         }, function(index){
                             $(that).attr('disabled',false);
                             $(that).html('提交审核');
@@ -388,7 +453,72 @@
                     }
                 }
             })
+        })
+        $("#vip").on("click",function(){
+            var payType;
+            var memberId;
+            var channel;
+            var amount;
+            var res=$("#singlePay").hasClass("been");
+            if(res){
+                payType="payMoney";
+                amount=$("#singlePay").find(".money").text();
+                memberId=0;
+            }else{
+                payType="payMember";
+                $(".years").children().each(function(){
+                    if($(this).hasClass('juniorbe')){
+                        memberId=$(this).attr("memberId");
+                    }
+                })
+                amount=0;
+            }
+            $(".payoff-way").children().each(function(){
+                if($(this).hasClass('been')){
+                    channel=$(this).children(":first").attr("value");
+                }
+            });
+            $.ajax({
+                url:"{{url('charge')}}",
+                data:{"payType":payType,"memberId":memberId,"channel":channel,"amount":amount,"type":"event","eventCount":1},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    var charge =JSON.parse(res);
+                    $('#code').empty();
+                    if(charge.credential.wx_pub_qr){
+                        var qrcode = new QRCode('code', {
+                            text: charge.credential.wx_pub_qr,
+                            width: 200,
+                            height: 200,
+                            colorDark : '#000000',
+                            colorLight : '#ffffff',
+                            correctLevel : QRCode.CorrectLevel.H
+                        });
+                      console.log(qrcode);
+                        if(channel=="wx_pub_qr"){
+                            $('.poplayer').show();
+                            $('.layer-pop').show();
+                            $(".weixinTips").show();
+                        }
+                        return;
+                    }
+                    pingpp.createPayment(charge, function(result, err){
+                        // console.log(result);
+                        // console.log(err.msg);
+                        // console.log(err.extra);
+                        if (result == "success") {
+                            // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+                        } else if (result == "fail") {
+                            // charge 不正确或者微信公众账号支付失败时会在此处返回
+                        } else if (result == "cancel") {
+                            // 微信公众账号支付取消支付
+                        }
+                    });
+                }
+            })
 
         })
+
     </script>
 @endsection

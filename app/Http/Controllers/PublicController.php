@@ -310,12 +310,7 @@ class PublicController extends Controller
             if($enterprise!=3){
                 $result['code']="enterprise";
             }else{
-                $account=\UserClass::getMoney($userId);
-                if($account>env('EventMoney')){
-                    $result['code']="success";
-                }else{
-                    $result['code']="expried";
-                }
+                $result['code']="success";
             }
         }else{
             $result['code']="enterprise";
@@ -326,7 +321,7 @@ class PublicController extends Controller
     /**
      * 会员权益判定
      */
-    static public function entMemberJudge($type = 'eventcount')
+   /* static public function entMemberJudge($type = 'eventcount')
     {
        if(empty(session('userId'))){
            return ['code' => 1,'msg' => '请登录','url' => url('login')];
@@ -350,8 +345,8 @@ class PublicController extends Controller
         }
         return ['code' => 0 ,'msg' => '会员可用'];
 
-    }
-
+    }*/
+    
     /**判断是否认证企业
      * @return array
      * @throws \Exception
@@ -686,7 +681,7 @@ class PublicController extends Controller
         return ['msg' => '非法操作','type' => 4];
     }
 
-    static public function  eventPutExpert ($type,$data)
+    static public function  eventPutExpert ($type,$data,$memberType,$enterpriseId)
     {
         switch ($type){
             case 'event':
@@ -772,19 +767,9 @@ class PublicController extends Controller
                         "created_at" => date("Y-m-d H:i:s",time()),
                         "updated_at" => date("Y-m-d H:i:s",time())
                     ]);
-                    $paynos=self::getPayNum2("消费");
-                    DB::table("t_u_bill")->insert([
-                        "userid"=>session('userId'),
-                        "type"=>"支出",
-                        "channel"=>"消费",
-                        "money"=>env('EventMoney'),
-                        "payno"=>$paynos,
-                        "billtime"=>date("Y-m-d H:i:s",time()),
-                        "brief"=>"进行消费",
-                        "eventid"=>$eventid,
-                        "created_at"=>date("Y-m-d H:i:s",time()),
-                        "updated_at"=>date("Y-m-d H:i:s",time()),
-                    ]);
+                    if($memberType=="非无限"){
+                        self::reduceEventCount($enterpriseId);
+                    }
                     DB::commit();
                     $expertsinfo = DB::table('t_u_expert')->whereIn('expertid',$expids)->select('expertname','showimage','expertid')->get();
                     $msg = ['msg' => '办事通过审核并推送到指定专家','icon' => 1,'expertsinfo' => $expertsinfo];
@@ -1051,6 +1036,28 @@ class PublicController extends Controller
             return $looks;
         }
     }
+
+    /**企业提交办事申请次数减1
+     * @param $enterpriseid
+     */
+    static public  function reduceEventCount($enterpriseid){
+        DB::table('t_u_enterprisemember')
+            ->where('enterpriseid', $enterpriseid)
+            ->decrement('eventcount');
+    }
+
+    /*static  public function reduceConsultCount($enterpriseid){
+        $time = (strtotime($payload['endTime']) - strtotime($payload['startTime'])) / 60 ;
+        $shengyu = DB::table('t_u_enterprisemember')
+            ->where('enterpriseid', $enterpriseid)
+            ->pluck('consultcount');
+        $ben = $shengyu - $time ;
+        DB::table('t_u_enterprisemember')
+            ->where('enterpriseid', $enterpriseid)
+            ->update([
+                'consultcount' => $ben
+            ]) ;
+    }*/
 
 
 }

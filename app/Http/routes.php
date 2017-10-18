@@ -208,8 +208,10 @@ Route::post('expertHaveCard', 'ExpertUcenterController@expertHaveCard');
     Route::post('uct_works/sendremark', 'MyEnterpriseController@sendRemark');
 //申请办事服务1
     Route::get('uct_works/applyWork', 'MyEnterpriseController@applyWork');
+/*//保存申请的办事服务
+    Route::post('saveEvent', 'MyEnterpriseController@saveEvent');*/
 //保存申请的办事服务
-    Route::post('saveEvent', 'MyEnterpriseController@saveEvent');
+Route::post('eventCharge', 'MyEnterpriseController@eventCharge');
 //申请办事服务,指定专家
     Route::get('uct_works/reselect', 'MyEnterpriseController@reselect');
 //申请办事服务,反选专家处理
@@ -315,3 +317,5 @@ Route::post('getAvatar','PublicController@getAvatar');
 Route::post('initpay','PingpayController@initPay');
 
 Route::get('pingsuccess','PingpayController@pingSuccess');
+
+Route::post("charge",'PingpayController@charge');
