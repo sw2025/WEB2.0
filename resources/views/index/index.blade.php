@@ -147,8 +147,7 @@
 <!-- section3 / end -->
 <script>
     $(function(){
-        var height = $('.banner ul li').height()
-        $('.banner ul').css('height', height+'px');
+
 
         var type=$("#knowExpert a:first-child").text();
         $("#knowExpert a:first-child").addClass("current")

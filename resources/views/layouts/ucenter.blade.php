@@ -167,68 +167,6 @@
         <!-- </div> -->
     </div>
 </div>
-<div class="pop-pay">
-    <div class="payoff">
-        <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
-        <div class="pay-tit">咯咯咯咯咯咯咯咯咯咯嘎嘎嘎嘎嘎嘎嘎嘎嘎咕咕咕咕</div>
-        <div class="single">
-            <div class="years single-two">
-                <span class="single-opt pay-opt been">
-                    <input class="rad-inp" type="radio" id="single1" name="charge" value="50000" checked>
-                    <div class="opt-label"><span></span>单次缴费：￥500 / 次</div>
-                </span>
-                <span class="single-opt pay-opt">
-                    <input class="rad-inp" type="radio" id="single2" name="charge" value="50000">
-                    <div class="opt-label"><span></span>可用余额：￥<em id="money">500</em> 元</div>
-                </span>
-            </div>
-            <div class="paytype payoff-way">
-                    <span class="pay-opt">
-                        <input class="rad-inp" type="radio" id="payway1" name="payways" value="wx_pub_qr">
-                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lweixin.png')}}"><em class="way-cap">微信支付</em></div>
-                    </span>
-                    <span class="pay-opt">
-                        <input class="rad-inp" type="radio" id="payway2" name="payways" value="alipay_pc_direct">
-                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lzhifubao.png')}}"><em class="way-cap">支付宝支付</em></div>
-                    </span>
-            </div>
-            <button type="button" class="pop-btn vip">缴 费</button>
-            <div class="cub"></div>
-        </div>
-        <div class="single open-member">
-            <div>
-                <div class="single-opt pay-opt">
-                    <input class="rad-inp" type="radio" id="open" name="charge">
-                    <div class="opt-label dibs"><span></span>开通会员</div>
-                    <span class="open-right">会员权益</span>
-                </div>
-            </div>
-            <div class="years payoff-way">
-                    <span class="pay-opt">
-                        <input class="rad-inp" type="radio" id="oneyear" name="payyear" value="100000">
-                        <div class="opt-label"><span></span>一年&nbsp;&nbsp;￥1000</div>
-                    </span>
-                    <span class="pay-opt">
-                        <input class="rad-inp" type="radio" id="twoyear" name="payyear" value="200000">
-                        <div class="opt-label"><span></span>两年&nbsp;&nbsp;￥2000</div>
-                    </span>
-            </div>
-            <div class="paytype payoff-way">
-                    <span class="pay-opt focus">
-                        <input class="rad-inp" type="radio" id="openway1" name="openway" value="wx_pub_qr">
-                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lweixin.png')}}"><em class="way-cap">微信支付</em></div>
-                    </span>
-                    <span class="pay-opt">
-                        <input class="rad-inp" type="radio" id="openway2" name="openway" value="alipay_pc_direct">
-                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lzhifubao.png')}}"><em class="way-cap">支付宝支付</em></div>
-                    </span>
-            </div>
-            <button type="button" class="pop-btn vip" id="vip">开 通</button>
-            <div class="cub" style="display:block"></div>
-        </div>
-        <input type="hidden" id="code" value="">
-    </div>
-</div>
 <!-- 公共footer / end -->
 <script type="text/javascript">
     if(typeof($.cookie('userId'))=="undefined"){
@@ -342,7 +280,7 @@
         }
     })
 
-    $('.vip').on('click',function(){
+  /*  $('.vip').on('click',function(){
         var allowajax = true;
         var amount = $.trim($('.years input:radio:checked').val());
         var channel = $('.paytype input:radio:checked').val();
@@ -381,7 +319,7 @@
                 },
             });
         }
-       /* $.post('{{url('initpay')}}',{'type':paytype,'amount':amount},function (data) {
+       /!* $.post('{{url('initpay')}}',{'type':paytype,'amount':amount},function (data) {
             if(paytype == 'wx_pub_qr'){
                 layer.open({
                     type: 1,
@@ -404,8 +342,8 @@
                 });
             }
 
-        });*/
-    });
+        });*!/
+    });*/
 
 
 </script>

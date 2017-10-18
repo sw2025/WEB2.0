@@ -958,22 +958,17 @@ class MyEnterpriseController extends Controller
     public function applyWork(){
 
         $cate = DB::table('t_common_domaintype')->get();
-        return view("myenterprise.work1",compact("cate"));
+        $memberrights=DB::table("t_u_memberright")->where("memberid","<>",1)->get();
+        return view("myenterprise.work1",compact("cate",'memberrights'));
     }
     /**保存申请的办事
      * @return array
      * @throws Exception
      */
-    public function saveEvent(Request $request){
+    public function saveEvent($data,$memberType,$enterpriseId){
         $userId=session("userId");
         $result=array();
-        $data = $request->input();
         $domain=explode("/",$data['domain']);
-        $ismember = PublicController::entMemberJudge('eventcount');
-        if($ismember['code']){
-            $ismember['icon'] = 3;
-            return $ismember;
-        }
         DB::beginTransaction();
         try{
             $eventId=DB::table("t_e_event")->insertGetId([
@@ -1001,7 +996,7 @@ class MyEnterpriseController extends Controller
             if($verify['icon'] == 2){
                 return $verify;
             } elseif ($verify['icon'] == 1){
-                $verify2 = PublicController::eventPutExpert('event',['eventid' => $eventId,'state' => $data['state'],'expertIds' => $data['expertIds']]);
+                $verify2 = PublicController::eventPutExpert('event',['eventid' => $eventId,'state' => $data['state'],'expertIds' => $data['expertIds'],$memberType,$enterpriseId]);
                 return $verify2;
             } else {
                 return ['msg' => '操作失败','icon' => 2];
@@ -1565,7 +1560,7 @@ class MyEnterpriseController extends Controller
                             ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                             ->where('consultid',$_POST['consultId'])
                             ->pluck('enterprisename');
-                        $this->_sendSms($phone,'视频咨询','reselect',$name);
+                        $this->_sendSms($phone,'视频咨询','reselects',$name);
 
                     }else{
                         DB::table("T_C_CONSULTRESPONSE")->insert([
@@ -1964,6 +1959,65 @@ class MyEnterpriseController extends Controller
             $res['code']="error";
         }
         return $res;
+    }
+
+    /**
+     * 企业办事充值判断
+     */
+    public function eventCharge(){
+        $res=array();
+        $userId=session('userId');
+        $data=$_POST;
+        $enterprise=DB::table("t_u_enterprise")
+            ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
+            ->where("t_u_enterprise.userid",$userId)
+            ->orderBy("t_u_enterpriseverify.id","desc")
+            ->first();
+        if(empty($enterprise) || $enterprise->configid != 3){
+            return ['icon'=>3,'code' => 2,'msg' => '企业不存在或者未通过认证','url' => url('uct_member')];
+        }
+        $enterpriseid = DB::table('t_u_enterprise')
+            ->where('userid', $userId)
+            ->pluck('enterpriseid') ;
+        $results = DB::table('t_u_enterprisemember')
+            ->where('enterpriseid', $enterpriseid)
+            ->get() ;
+        if(!$results){
+            //不存在记录 202 开通会员操作
+            return ['icon'=>3,'code' => 3 ,'msg' => '您不是会员,请办理会员或充值单次收费','url' => '?'];
+        }
+        $datas = DB::table('t_u_enterprisemember')
+            ->leftJoin("t_u_memberright", "t_u_memberright.memberid", "=", "t_u_enterprisemember.memberid")
+            ->where('enterpriseid', $enterpriseid)
+            ->get() ;
+        //判断是否是普通会员
+        if ($datas[0]->cost == 0){
+            if ($datas[0]->eventcount == 1){
+                $benben = $this->saveEvent($data,"非无限",$enterpriseid) ;
+                return $benben ;
+            }else{
+                //没有可剩余次数 ，去充值次数
+                return ['icon'=>3,'code' => 4 ,'msg' => '没有可剩余次数 ，是否充值','url' => '?'];
+            }
+        }else{
+            //是否过期
+            $endTime = $datas[0] -> endtime ;
+            if($endTime <= date("Y-m-d H:i:s")){
+                //会员过期返回204
+                return ['icon'=>3,'code' => 5 ,'msg' => '您的会员已过期,是否续交会员','url' => '?'];
+            }else{
+                if ($datas[0]->eventcounts  == "无限"){
+                    $benben = $this->saveEvent($data,"无限",$enterpriseid) ;
+                    return $benben ;
+                }else if ($datas[0]->eventcount  >= 1 ){
+                    $benben = $this->saveEvent($data,"非无限",$enterpriseid) ;
+                    return $benben ;
+                }else{
+                    //超过剩余使用次数 ，优惠充次
+                    return ['icon'=>3,'code' => 6 ,'msg' => '没有可用次数 ，是否优惠充值','url' => '?'];
+                }
+            }
+        }
     }
 
 

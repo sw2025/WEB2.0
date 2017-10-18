@@ -14,281 +14,182 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-require_once('../vendor/pingpp-php/init.php');
-
-define('APP_ID', "app_0Oyfn5SOevHO1qnX");   //配置应用id
+use Cache;
+use DB;
+/*define('APP_ID', "app_0Oyfn5SOevHO1qnX");   //配置应用id
 
 define('APP_KEY', "sk_test_8uTifL8KmvDGqTiHKG5ebvzL");  //配置应用秘钥(test)
-//define('APP_KEY', "sk_live_e1uzr1vX5uPG8OebnD0qLGOC");  //配置应用秘钥(live)
+//define('APP_KEY', "sk_live_e1uzr1vX5uPG8OebnD0qLGOC");  //配置应用秘钥(live)*/
 class PingpayController extends Controller
 {
-    private $channel_supported = array(  //支持的支付渠道
-        'alipay', 'wx', 'alipay_wap', 'alipay_pc_direct'
-    );
+    public  function charge(){
+        require(base_path().'/vendor/pingplusplus/pingpp-php/init.php');
+        // api_key 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Secret Key
+        $api_key = 'sk_live_e1uzr1vX5uPG8OebnD0qLGOC';
+        // app_id 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击你创建的应用->应用首页->应用 ID(App ID)
+        $app_id = 'app_0Oyfn5SOevHO1qnX';
 
-    //创建charge对象
-    public function create_charge($channel, $amount, $order_no, $extra=array(), $description='', $subject ='', $body=''){
-        /*----检查参数格式----*/
-        if (!in_array($channel, $this->channel_supported)){
-            return array(
-                'code' => 0,
-                'data' => array(
-                    'error_message' => 'channel "'.$channel.'" has not been supported yet'
-                )
-            );
+        // 此处为 Content-Type 是 application/json 时获取 POST 参数的示例
+        $payload=$_POST;
+       /* if (empty($payload['channel']) || empty($payload['amount'])) {
+            echo 'channel or amount is empty';
+            exit();
+        }*/
+        $user = session('userId');
+        $channel = strtolower($payload['channel']);
+        if($payload['payType']=="member"){
+            $memberMoney=DB::table("t_u_memberright")->where("memberid",$payload['memberId'])->pluck("cost");
+            $amount=$memberMoney;
+            $orderNo = 'KT' . time() . mt_rand(1000,9999);
+            $url = "http://sw2025.com/uct_recharge";
+            $metadata=['payType'=>'member','memberId'=>$payload['memberId'],'userid'=>$user];
+        }else if($payload['payType']=="payExpertMoney"){
+            $amount = $payload['amount'];
+            $orderNo = 'CZ' . time() . mt_rand(1000,9999);
+            $url = "http://sw2025.com/uct_recharge";
+            $metadata=['payType'=>'payExpertMoney','type'=>$payload['type'],'userid'=>$user,"expert"=>$payload['expert'],"consultid  "=>$payload['consultid']];
+        }else{
+            $amount = $payload['amount'];
+            $orderNo = 'CZ' . time() . mt_rand(1000,9999);
+            $url = "http://sw2025.com/uct_recharge";
+            $eventcount=isset($payload['eventCount'])?$payload['eventCount']:0;
+            $consultcount=isset($payload['consultCount'])?$payload['consultCount']:0;
+            $metadata=['payType'=>'payMoney','type'=>$payload['type'],'userid'=>$user,"eventCount"=>$eventcount,"consultCount"=>$consultcount];
         }
-        if ( $amount<=0 ){
-            return array(
-                'code' => 0,
-                'data' => array(
-                    'error_message' => 'amount format invalid'
-                )
-            );
-        }
-        if (!preg_match('/^[0-9a-zA-Z]+$/',$order_no)){
-            return array(
-                'code' => 0,
-                'data' => array(
-                    'error_message' => 'order_no can`t contain special characters'
-                )
-            );
-        }
+        $amountMoney=$amount*100;
+        $subject = isset($payload['subject']) ? $payload['subject']:'充值金额';
 
-        /*----调用下单api----*/
-        \Pingpp\Pingpp::setApiKey(APP_KEY);// 设置 API Key
-        \Pingpp\Pingpp::setPrivateKeyPath('../vendor/pingpp-php/private_key.pem');
+        /**
+         * 设置请求签名密钥，密钥对需要你自己用 openssl 工具生成，如何生成可以参考帮助中心：https://help.pingxx.com/article/123161；
+         * 生成密钥后，需要在代码中设置请求签名的私钥(rsa_private_key.pem)；
+         * 然后登录 [Dashboard](https://dashboard.pingxx.com)->点击右上角公司名称->开发信息->商户公钥（用于商户身份验证）
+         * 将你的公钥复制粘贴进去并且保存->先启用 Test 模式进行测试->测试通过后启用 Live 模式
+         */
+        // 设置私钥内容方式1
+        \Pingpp\Pingpp::setPrivateKeyPath(base_path() . '/public/your_rsa_private_key.pem');
+
+        // 设置私钥内容方式2
+        // \Pingpp\Pingpp::setPrivateKey(file_get_contents(__DIR__ . '/your_rsa_private_key.pem'));
+
+        /**
+         * $extra 在使用某些渠道的时候，需要填入相应的参数，其它渠道则是 array()。
+         * 以下 channel 仅为部分示例，未列出的 channel 请查看文档 https://pingxx.com/document/api#api-c-new；
+         * 或直接查看开发者中心：https://www.pingxx.com/docs/server/charge；包含了所有渠道的 extra 参数的示例；
+         */
+        $extra = array();
+        switch ($channel) {
+            case 'alipay_wap':
+                $extra = array(
+                    // success_url 和 cancel_url 在本地测试不要写 localhost ，请写 127.0.0.1。URL 后面不要加自定义参数
+                    'success_url' => $url,
+                    'cancel_url' => 'http://example.com/cancel'
+                );
+                break;
+            case 'alipay_pc_direct':
+                $extra = array(
+                    // success_url 和 cancel_url 在本地测试不要写 localhost ，请写 127.0.0.1。URL 后面不要加自定义参数
+                    'success_url' => $url,
+                );
+                break;
+            case 'bfb_wap':
+                $extra = array(
+                    'result_url' => 'http://example.com/result',// 百度钱包同步回调地址
+                    'bfb_login' => true// 是否需要登录百度钱包来进行支付
+                );
+                break;
+            case 'upacp_wap':
+                $extra = array(
+                    'result_url' => $url// 银联同步回调地址
+                );
+                break;
+            case 'upacp_pc':
+                $extra = array(
+                    'result_url' => $url// 银联同步回调地址
+                );
+                break;
+            case 'wx_pub':
+                $extra = array(
+                    'open_id' => 'openidxxxxxxxxxxxx'// 用户在商户微信公众号下的唯一标识，获取方式可参考 pingpp-php/lib/WxpubOAuth.php
+                );
+                break;
+            case 'wx_pub_qr':
+                $extra = array(
+                    'product_id' => 'yabi'// 为二维码中包含的商品 ID，1-32 位字符串，商户可自定义
+                );
+                break;
+            case 'yeepay_wap':
+                $extra = array(
+                    'product_category' => '1',// 商品类别码参考链接 ：https://www.pingxx.com/api#api-appendix-2
+                    'identity_id'=> 'your identity_id',// 商户生成的用户账号唯一标识，最长 50 位字符串
+                    'identity_type' => 1,// 用户标识类型参考链接：https://www.pingxx.com/api#yeepay_identity_type
+                    'terminal_type' => 1,// 终端类型，对应取值 0:IMEI, 1:MAC, 2:UUID, 3:other
+                    'terminal_id'=>'your terminal_id',// 终端 ID
+                    'user_ua'=>'your user_ua',// 用户使用的移动终端的 UserAgent 信息
+                    'result_url'=>'http://example.com/result'// 前台通知地址
+                );
+                break;
+            case 'jdpay_wap':
+                $extra = array(
+                    'success_url' => 'http://example.com/success',// 支付成功页面跳转路径
+                    'fail_url'=> 'http://example.com/fail',// 支付失败页面跳转路径
+                    /**
+                     *token 为用户交易令牌，用于识别用户信息，支付成功后会调用 success_url 返回给商户。
+                     *商户可以记录这个 token 值，当用户再次支付的时候传入该 token，用户无需再次输入银行卡信息
+                     */
+                    'token' => 'dsafadsfasdfadsjuyhfnhujkijunhaf' // 选填
+                );
+                break;
+        }
+        \Pingpp\Pingpp::setApiKey($api_key);// 设置 API Key
         try {
-            $charge = \Pingpp\Charge::create(
+            $ch = \Pingpp\Charge::create(
                 array(
                     //请求参数字段规则，请参考 API 文档：https://www.pingxx.com/api#api-c-new
-                    'subject'   => $subject ? $subject : 'Your Subject',
-                    'body'      => $body ? $body : 'Your Body',
-                    'amount'    => $amount,//订单总金额, 人民币单位：分（如订单总金额为 1 元，此处请填 100）
-                    'order_no'  => $order_no,// 推荐使用 8-20 位，要求数字或字母，不允许其他字符
+                    'subject'   => $subject,
+                    'body'      => '充值',
+                    'amount'    => $amountMoney,//订单总金额, 人民币单位：分（如订单总金额为 1 元，此处请填 100）
+                    'order_no'  => $orderNo,// 推荐使用 8-20 位，要求数字或字母，不允许其他字符
                     'currency'  => 'cny',
                     'extra'     => $extra,
                     'channel'   => $channel,// 支付使用的第三方支付渠道取值，请参考：https://www.pingxx.com/api#api-c-new
-                    'client_ip' => \Request::ip(),// 发起支付请求客户端的 IP 地址，格式为 IPV4，如: 127.0.0.1
-                    'app'       => array('id' => APP_ID),
-                    'description' => $description
+                    'client_ip' => $_SERVER['REMOTE_ADDR'],// 发起支付请求客户端的 IP 地址，格式为 IPV4，如: 127.0.0.1
+                    'app'       => array('id' => $app_id),
+                    'metadata'  => $metadata
                 )
             );
+            //整理插入数据
+            $data = array();
+            if($payload['payType']=="member"){
+                $data['userid'] = $user;
+                $data['type'] ="开通会员";
+                $data['channel'] = "消费";
+                $data['billtime'] = date("Y-m-d H:i:s",time());
+                $data['money'] = $amount;
+                $data['payno'] = $orderNo;
+                $data['created_at'] = date('Y-m-d H:i:s',time());
+                $data['brief']="开通会员";
+                $data['payflag'] = 0;
+            }else{
+                $data['userid'] = $user;
+                $data['type'] ="支出";
+                $data['channel'] = "消费";
+                $data['billtime'] = date("Y-m-d H:i:s",time());
+                $data['money'] = $amount;
+                $data['payno'] = $orderNo;
+                $data['created_at'] = date('Y-m-d H:i:s',time());
+                $data['brief']="企业单次充值";
+                $data['payflag'] = 0;
+            }
+            DB::table("t_u_bill")->insert($data);
+            echo $ch;// 输出 Ping++ 返回的支付凭据 Charge
         } catch (\Pingpp\Error\Base $e) {
             // 捕获报错信息
             if ($e->getHttpStatus() != NULL) {
-                $data = array(
-                    'code' => 0,
-                    'data' => array(
-                        'error_message' => $e->getHttpBody()
-                    )
-                );
+                header('Status: ' . $e->getHttpStatus());
+                echo $e->getHttpBody();
             } else {
-                $data = array(
-                    'code' => 0,
-                    'data' => array(
-                        'error_message' => $e->getMessage()
-                    )
-                );
+                echo $e->getMessage();
             }
-            return $data;
-        }
-        return array(
-            'code' => 1,
-            'data' => array(
-                'charge' => json_decode($charge, true)
-            )
-        );
-    }
-
-    public function initPay(Request $request)
-    {
-        $data = $request->input();
-        if(empty($data['code']) && $data['channel'] == 'alipay_pc_direct'){
-            $order_no = date('YmdHis') . (microtime(true) % 1) * 1000 . mt_rand(0, 9999).uniqid();
-            $extra = [
-                'success_url' => 'http://www.sw2025.com/pingsuccess',
-            ];
-            $result = $this->create_charge($data['channel'], $data['amount'], $order_no, $extra, $description='', $data['subject'], $data['body']);
-            return $result;
-        } elseif(empty($data['code']) && $data['channel'] == 'wx_pub_qr'){
-
-        }
-//        $data = $request->input();
-//
-//        \Pingpp\Pingpp::setApiKey('sk_live_e1uzr1vX5uPG8OebnD0qLGOC');
-//        \Pingpp\Pingpp::setPrivateKeyPath('../vendor/pingpp-php/private_key.pem');
-//        $arr =  array(
-//            'order_no'  => '2312553123',
-//            'app'       => array('id' => 'app_0Oyfn5SOevHO1qnX'),
-//            'channel'   => $data['type'],
-//            'amount'    => $data['number'],
-//            'client_ip' => '127.0.0.1',
-//            'currency'  => 'cny',
-//            'subject'   => '升维网办事费用',
-//            'body'      => 'Your Body',
-//        );
-//        if($data['type'] == 'wx_pub_qr'){
-//            $arr['extra'] = array('product_id' => 'myproid');
-//
-//        } elseif($data['type'] == 'alipay_pc_direct'){
-//            $arr['extra'] = array('success_url' => 'http://www.sw2025.com/pingsuccess');
-//        }
-//        $ch = \Pingpp\Charge::create($arr);
-//        if($data['type'] == 'wx_pub_qr'){
-//            /**
-//             * google api 二维码生成【QRcode可以存储最多4296个字母数字类型的任意文本，具体可以查看二维码数据格式】
-//             * @param string $chl 二维码包含的信息，可以是数字、字符、二进制信息、汉字。
-//            不能混合数据类型，数据必须经过UTF-8 URL-encoded
-//             * @param int $widhtHeight 生成二维码的尺寸设置
-//             * @param string $EC_level 可选纠错级别，QR码支持四个等级纠错，用来恢复丢失的、读错的、模糊的、数据。
-//             * L-默认：可以识别已损失的7%的数据
-//             * M-可以识别已损失15%的数据
-//             * Q-可以识别已损失25%的数据
-//             * H-可以识别已损失30%的数据
-//             * @param int $margin 生成的二维码离图片边框的距离
-//             */
-//            $chl=$ch->credential['wx_pub_qr'];
-//            $margin='0';
-//            $EC_level='L';
-//            $widhtHeight ='150';
-//            $chl = urlencode($chl);
-//            return array('charge' => '<img src="http://chart.apis.google.com/chart?chs='.$widhtHeight.'x'.$widhtHeight.'&cht=qr&chld='.$EC_level.'|'.$margin.'&chl='.$chl.'" alt="QR code" widhtHeight="'.$widhtHeight.'" widhtHeight="'.$widhtHeight.'"/>');
-//        }
-//        return  array('charge' => json_decode($ch, true));
-
-    }
-
-    public function pingSuccess(Request $request)
-    {
-
-        dd($request->input());
-    }
-
-    //查询charge对象
-    public function check_charge($id){
-        /*----调用查询api----*/
-        \Pingpp\Pingpp::setApiKey(APP_KEY);// 设置 API Key
-        try {
-            $charge = \Pingpp\Charge::retrieve($id);
-            return array(
-                'code' => 1,
-                'data' => array(
-                    'charge' => $charge
-                )
-            );
-        } catch (\Pingpp\Error\Base $e) {
-            // 捕获报错信息
-            if ($e->getHttpStatus() != NULL) {
-                $data = array(
-                    'code' => 0,
-                    'data' => array(
-                        'error_message' => $e->getHttpBody()
-                    )
-                );
-            } else {
-                $data = array(
-                    'code' => 0,
-                    'data' => array(
-                        'error_message' => $e->getMessage()
-                    )
-                );
-            }
-            return $data;
-        }
-    }
-
-    //Webhooks回调
-    public function Webhooks(){
-        \Pingpp\Pingpp::setApiKey(APP_KEY);// 设置 API Key
-        $row_data = file_get_contents('php://input');
-
-        //从头信息获取签名
-        $headers = \Pingpp\Util\Util::getRequestHeaders();
-        $signature = isset($headers['X-Pingplusplus-Signature']) ? $headers['X-Pingplusplus-Signature'] : NULL;
-
-        //验证签名
-        $pub_key_path =  "../vendor/pingpp-php/webhook_public_key.pem"; //Ping++ 公钥
-        $pub_key_contents = file_get_contents($pub_key_path);
-        $verify_result = openssl_verify($row_data, base64_decode($signature), $pub_key_contents, 'sha256');
-
-        if (!$verify_result){
-            return array(
-                'code' => 0,
-                'data' => array(
-                    'error_message' => 'signature verify fail',
-                    'event' => $row_data
-                ),
-            );
-        } else{
-            return array(
-                'code' => 1,
-                'data' => array(
-                    'event' => $row_data
-                ),
-            );
-        }
-    }
-
-    //批量转账
-    public function Batch_transfer($batch_no, $description, $recipients){
-        /*----检查参数格式----*/
-        if (is_array($recipients) && !empty($recipients)){
-            $amount = 0;
-            $recipient_array = array();
-            foreach ($recipients as $item){
-                if (isset($item['account']) && $item['account'] && isset($item['amount']) && $item['amount'] && isset($item['name']) && $item['name']){
-                    $recipient_array[] = $item;
-                    $amount += $item['amount'];
-                }
-            }
-        } else{
-            return array(
-                'code' => 0,
-                'data' => 'invalid $recipients'
-            );
-        }
-
-        \Pingpp\Pingpp::setApiKey(APP_KEY);// 设置 API Key
-        \Pingpp\Pingpp::setPrivateKeyPath( __DIR__ . "/certs/your_rsa_private_key.pem");
-        try {
-            $batch_transfer = \Pingpp\Batch_transfer::create(
-                array(
-                    'batch_no'  => $batch_no,
-                    'channel'   => 'alipay',
-                    'app'       => APP_ID,
-                    'amount'    => $amount,//订单总金额, 人民币单位：分（如订单总金额为 1 元，此处请填 100）
-                    'currency'  => 'cny',
-                    'description' => $description,
-                    'type' => 'b2c',
-                    'recipients' => $recipient_array,
-                )
-            );
-            return array(
-                'code' => 1,
-                'data' => array(
-                    'batch_transfer' => $batch_transfer
-                )
-            );
-
-        } catch (\Pingpp\Error\Base $e) {
-            // 捕获报错信息
-            if ($e->getHttpStatus() != NULL) {
-                $data = array(
-                    'code' => 0,
-                    'data' => array(
-                        'error_message' => $e->getHttpBody()
-                    )
-                );
-            } else {
-                $data = array(
-                    'code' => 0,
-                    'data' => array(
-                        'error_message' => $e->getMessage()
-                    )
-                );
-            }
-            return $data;
         }
     }
 }
