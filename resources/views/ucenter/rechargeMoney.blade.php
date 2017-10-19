@@ -68,8 +68,7 @@
                     channel=$(this).attr("value");
                 }
             })
-            alert(channel);
-          $.ajax({
+            $.ajax({
               url:"{{url('charge')}}",
               data:{"payType":payType,"memberId":memberId,"channel":channel,"urlType":urlType},
               dateType:"json",
