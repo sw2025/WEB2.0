@@ -212,6 +212,15 @@
                 $("#appoint").addClass('active');
                 $("#random").removeClass('active')
             }
+            if($.cookie('state')){
+                if($.cookie('state')==1){
+                    $("#appoint").removeClass('active');
+                    $("#random").addClass('active')
+                }else{
+                    $("#appoint").addClass('active');
+                    $("#random").removeClass('active')
+                }
+            }
             $('.publ-need-sel-def').click(function() {
                 $(this).next('ul').stop().slideToggle();
             });
@@ -417,6 +426,14 @@
                 });
                 return false;
             }
+            var date = new Date();
+            date.setTime(date.getTime() + (120 * 60 * 1000));
+            $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("videoreselect",expertIds,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("state",state,{expires:date,path:'/',domain:'sw2025.com'});
             $(this).attr('disabled',true);
             $(this).html('正在提交');
             $.ajax({
@@ -433,6 +450,7 @@
                         $.cookie("videodescribe","",{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videodateStart","",{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("videodateEnd","",{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("state","",{expires:date,path:'/',domain:'sw2025.com'});
                         /*$.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});*/
                         if(state == 0){
                             layer.msg(res.msg,{'icon':6},function () {

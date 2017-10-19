@@ -261,8 +261,9 @@
                         $.cookie("videodescribe",'',{path:'/',domain:'sw2025.com'});
                         $.cookie("videodateStart",'',{path:'/',domain:'sw2025.com'});
                         $.cookie("videodateEnd",'',{path:'/',domain:'sw2025.com'});
-                        $.cookie("videoindustry",'',{epath:'/',domain:'sw2025.com'});
+                        //$.cookie("videoindustry",'',{epath:'/',domain:'sw2025.com'});
                         $.cookie("videoreselect","",{path:'/',domain:'sw2025.com'});
+                        $.cookie("state","",{path:'/',domain:'sw2025.com'});
                         window.location.href="{{asset('uct_video/applyVideo')}}";
                         break;
                     case "enterprise":

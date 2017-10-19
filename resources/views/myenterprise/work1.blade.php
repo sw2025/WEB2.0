@@ -200,6 +200,16 @@
                 $("#appoint").addClass('active');
                 $("#random").removeClass('active')
             }
+            alert($.cookie('state'));
+            if($.cookie('state')){
+                if($.cookie('state')==1){
+                    $("#appoint").removeClass('active');
+                    $("#random").addClass('active')
+                }else{
+                    $("#appoint").addClass('active');
+                    $("#random").removeClass('active')
+                }
+            }
             $('.publ-need-sel-def').click(function() {
                 $(this).next('ul').stop().slideToggle();
             });
@@ -350,7 +360,6 @@
             var describe=$(".uct-works-txt").val();
             var isAppoint=($.cookie("isAppoint"))?$.cookie("isAppoint"):1;
             var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
-
             if($("#random").hasClass('active')){
                 var state=1;
             }else{
@@ -386,6 +395,12 @@
                 });
                 return false;
             }
+            var date = new Date();
+            date.setTime(date.getTime() + (120 * 60 * 1000));
+            $.cookie("domain",domain,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("describe",describe,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("state",state,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("expertIds",expertIds,{expires:date,path:'/',domain:'sw2025.com'});
             $(this).attr('disabled',true);
             $(this).html('正在提交');
             $.ajax({
@@ -399,6 +414,7 @@
                     if(res['icon'] == 1){
                         $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("state","",{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
                         if(state == 0){
                             layer.msg(res.msg,{'icon':6},function () {
