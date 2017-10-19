@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="remain-bottom">
-                        <a href="{{asset('uct_recharge/rechargeMoney')}}" class="recharge-money">充值</a>
+                        <a href="{{asset('uct_recharge/rechargeMoney')}}" class="recharge-money">开通会员</a>
                     </div>
                 </div>
                 <div class="upload-bankcard">
