@@ -90,7 +90,6 @@ body{background:#f8f8f8;}
 .us-link:hover{color:#0060c1;}
 .banner-us{background:none;}
 .banner-us img{width:100%;max-width: 100%;}
-.banner-us img{height:350px;}
 @media (max-width: 1199px) {
     .core-item{width:138.5px;}
 }

@@ -147,8 +147,7 @@
 <!-- section3 / end -->
 <script>
     $(function(){
-        var height = $('.banner ul li').height()
-        $('.banner ul').css('height', height+'px');
+
 
         var type=$("#knowExpert a:first-child").text();
         $("#knowExpert a:first-child").addClass("current")
@@ -251,33 +250,8 @@
                 window.location.href="{{asset('uct_expert')}}";
                 break;
             case "发布需求":
-                    if($.cookie('role')=="专家"){
-                        $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
-                            if(data.type == 3){
-                                layer.msg(data.msg,{'icon':data.icon});
-                            } else if(data.type == 2){
-                                layer.confirm(data.msg, {
-                                    btn: ['去认证','以企业身份发起需求'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    window.location.href=data.url;
-                                }, function(){
-                                    enterpriseputneed();
-                                });
-                            } else if (data.type == 1){
-                                layer.confirm(data.msg+', 您是否以企业身份发起需求？', {
-                                    btn: ['是','否'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    enterpriseputneed();
-                                }, function(){
-                                    layer.close();
-                                });
-                            } else {
-                                window.location = '{{asset('myneed/supplyNeed')}}';
-                            }
-                        });
-                    }else{
+                    if($.cookie('role')=="企业"){
+
                         $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
                             if(data.type == 3){
                                 layer.msg(data.msg,{'icon':data.icon});
@@ -303,6 +277,33 @@
                                 window.location = '{{asset('uct_myneed/supplyNeed')}}';
                             }
                         });
+                    }else{
+                        $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
+                            if(data.type == 3){
+                                layer.msg(data.msg,{'icon':data.icon});
+                            } else if(data.type == 2){
+                                layer.confirm(data.msg, {
+                                    btn: ['去认证','以企业身份发起需求'], //按钮
+                                    skin:'layui-layer-molv'
+                                }, function(){
+                                    window.location.href=data.url;
+                                }, function(){
+                                    enterpriseputneed();
+                                });
+                            } else if (data.type == 1){
+                                layer.confirm(data.msg+', 您是否以企业身份发起需求？', {
+                                    btn: ['是','否'], //按钮
+                                    skin:'layui-layer-molv'
+                                }, function(){
+                                    enterpriseputneed();
+                                }, function(){
+                                    layer.close();
+                                });
+                            } else {
+                                window.location = '{{asset('myneed/supplyNeed')}}';
+                            }
+                        });
+
                     }
             break;
         }

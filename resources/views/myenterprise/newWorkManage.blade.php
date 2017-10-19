@@ -280,7 +280,6 @@
                 success:function(res){
                     var code=res['code'];
                     var account=res['account'];
-
                     switch(code){
                         case "success":
                             $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
@@ -299,26 +298,10 @@
                                 layer.close();
                             });
                             break;
-                        case "expried":
-                            //pop(code,account);
-                            layer.msg('您的余额不足，请及时充值',{'time':1500},function(){
-                                $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
-                                $.cookie("domain","",{path:'/',domain:'sw2025.com'});
-                                $.cookie("describe","",{path:'/',domain:'sw2025.com'});
-                                $.cookie("industry","",{path:'/',domain:'sw2025.com'});
-                                window.location.href="{{asset('uct_works/applyWork')}}";
-                            });
-                            break;
                     }
                 }
             })
 
         })
-    </script>
-
-
-    <script>
-
-
     </script>
 @endsection
