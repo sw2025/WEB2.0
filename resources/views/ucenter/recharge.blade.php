@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="remain-bottom">
-                        <a href="{{asset('uct_recharge/rechargeMoney')}}" class="recharge-money">充值</a>
+                        <a href="{{asset('uct_recharge/rechargeMoney')}}" class="recharge-money">开通会员</a>
                     </div>
                 </div>
                 <div class="upload-bankcard">
@@ -25,7 +25,7 @@
                             @if($state==4)<a href="{{asset('uct_recharge/card2')}}"><button type="button">去验证</button></a>@endif
                             <span class="delete-card" title="删除"><i class="iconfont icon-chahao"></i></span>
                         </div>
-                    <!-- 已上传银行卡end -->
+                    <!-- 已上传银行卡end ---->
                     <!-- 未上传银行卡start -->
                     <div class="card-upload" @if(empty($bankcard) || $state==1)style="display:block" @else style="display: none" @endif>
                         <div class="card-span fileinput-button">
