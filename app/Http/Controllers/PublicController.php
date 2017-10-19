@@ -890,13 +890,10 @@ class PublicController extends Controller
                                 if(count($expids) >= 5){
                                     break;
                                 }
-
                             }
                             if(!count($expids)){
                                 return ['msg' => '很抱歉系统未在您指定的时间段内找到合适的专家请重新更改下咨询时间谢谢','icon' => 2];
                             }
-
-
                         }
                     } else {
 
@@ -913,7 +910,6 @@ class PublicController extends Controller
                             $expids[] = $val;
                         }
                     }
-
                     DB::table('t_c_consultverify')->insert([
                         'consultid' => $consultid,
                         'configid' => 4,
@@ -921,8 +917,8 @@ class PublicController extends Controller
                         "created_at" => date("Y-m-d H:i:s",time()),
                         "updated_at" => date("Y-m-d H:i:s",time())
                     ]);
+                    PublicController::reduceConsultCount($enterpriseId,$data['dateStart'],$data['dateEnd']);
                     DB::commit();
-
                     $expertsinfo = DB::table('t_u_expert')->whereIn('expertid',$expids)->select('expertname','showimage','expertid')->get();
                     $msg = ['msg' => '恭喜您,视频咨询通过审核并推送到指定专家','icon' => 1,'expertsinfo' => $expertsinfo];
 
@@ -1046,18 +1042,18 @@ class PublicController extends Controller
             ->decrement('eventcount');
     }
 
-    /*static  public function reduceConsultCount($enterpriseid){
-        $time = (strtotime($payload['endTime']) - strtotime($payload['startTime'])) / 60 ;
-        $shengyu = DB::table('t_u_enterprisemember')
+    static  public function reduceConsultCount($enterpriseid,$dateStart,$dateEnd){
+        $time = (strtotime($dateEnd) - strtotime($dateStart)) / 60 ;
+        $consultCount = DB::table('t_u_enterprisemember')
             ->where('enterpriseid', $enterpriseid)
             ->pluck('consultcount');
-        $ben = $shengyu - $time ;
+        $count = $consultCount - $time ;
         DB::table('t_u_enterprisemember')
             ->where('enterpriseid', $enterpriseid)
             ->update([
-                'consultcount' => $ben
+                'consultcount' => $count
             ]) ;
-    }*/
+    }
 
 
 }

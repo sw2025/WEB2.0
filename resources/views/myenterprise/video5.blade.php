@@ -1,5 +1,8 @@
 @extends("layouts.ucenter")
 @section("content")
+    <style>
+        .changeWeixin img{margin:0 auto;}
+    </style>
     <div class="main">
         <!-- 专家视频咨询 / start -->
         <h3 class="main-top">专家视频咨询</h3>
@@ -45,9 +48,52 @@
             </div>
         </div>
     </div>
+    <div class="pop-pay">
+        <div class="payoff">
+            <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
+            <div class="single">
+                <div class="single-two">
+                <span class="single-opt pay-opt" id="singlePay">
+                    <input class="rad-inp" type="radio" style="width: 12%;">
+                    <div class="opt-label normal "></div>
+                </span>
+                </div>
+                <div class="cub" style="display:block"></div>
+            </div>
+            <div class="paytype payoff-way">
+                    <span class="pay-opt focus been">
+                        <input class="rad-inp" type="radio"  value="wx_pub_qr">
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lweixin.png')}}"><em class="way-cap">微信支付</em></div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio"  value="alipay_pc_direct">
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lzhifubao.png')}}"><em class="way-cap">支付宝支付</em></div>
+                    </span>
+            </div>
+            <div style="text-align: center;padding: 0 0 20px;"><button type="button" class="pop-btn vip" id="vip">付费</button></div>
+        </div>
+    </div>
+    <div class="layer-pop" style="position:fixed;background: rgba(0,0,0,0.3);top: 0;left: 0;width: 100%;height: 100%;z-index: 1000;display: none;">
+        <div class="popWx" style="position: absolute;top: 10%;width: 285px;border: 2px solid #ccc;left: 50%;top: 50%;margin: -160px 0 0 -145px;background: #fff;text-align: center;border-radius: 3px;font-size: 14px;padding: 30px 0 27px;">
+            <div class="changeWeixin">
+                <div class="popWeixin" id="code">
+                </div>
+            </div>
+            <span class="weixinLittle"></span>
+            <div class="weixinTips" style="display: none"><strong>扫瞄二维码完成支付</strong><br>支付完成后请关闭二维码</div>
+            <a href="javascript:;" class="closePop" title="关闭" style="position: absolute;top: 0;right: 0;"><i class="iconfont icon-chahao"></i></a>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{url('/js/jquery.qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
     <script type="text/javascript">
         $(function(){
             var expertIds=new Array();
+            $('.closePop').click(function () {
+                $(this).closest('.layer-pop').hide();
+                $('.pop-pay').hide();
+            })
             $('.uct-works-exps-list li').click(function(event) {
                 var expertId=$(this).attr("id");
                 var state=$(this).attr("state");
@@ -87,7 +133,6 @@
             }
             //处理反选的专家
             $(".test-btn").on("click",function(){
-                console.log(expertIds);
                 var consultId=$("#consult").val();
                 var totalCount=0;
                 if(expertIds.length!=0){
@@ -99,13 +144,9 @@
                         success:function(res){
                             switch(res['code']){
                                 case "noMoney":
-                                    layer.confirm('您的余额不足,前去充值?', {
-                                        btn: ['充值','取消'], //按钮
-                                    }, function(){
-                                        window.location.href="{{asset('uct_member')}}";
-                                    }, function(){
-                                        layer.close();
-                                    });
+                                    var str;
+                                    str="专家费用：￥<b class='money'>"+res['money']+"</b>/元"
+                                    pop(str);
                                 break;
                                 case "success":
                                     window.location.reload();
@@ -122,6 +163,61 @@
                     });
                     return false;
                 }
+            })
+            $("#vip").on("click",function(){
+                var payType="payExpertMoney";
+                var channel;
+                var amount;
+                var urlType=window.location.href;
+                amounts=$(".money").text();
+                amount=amounts*100;
+                $(".payoff-way").children().each(function(){
+                    if($(this).hasClass('been')){
+                        channel=$(this).children(":first").attr("value");
+                    }
+                });
+                var consultId=$("#consult").val();
+                $.ajax({
+                    url:"{{url('charge')}}",
+                    data:{"payType":payType,"channel":channel,"amount":amount,"type":"consult","consultid":consultId,"expert":expertIds,"urlType":urlType,"chargeFrom":"PC"},
+                    dateType:"json",
+                    type:"POST",
+                    success:function(res){
+                        var charge =JSON.parse(res);
+                        console.log(charge);
+                        $('#code').empty();
+                        if(charge.credential.wx_pub_qr){
+                            var qrcode = new QRCode('code', {
+                                text: charge.credential.wx_pub_qr,
+                                width: 200,
+                                height: 200,
+                                colorDark : '#000000',
+                                colorLight : '#ffffff',
+                                correctLevel : QRCode.CorrectLevel.H
+                            });
+                            console.log(qrcode);
+                            if(channel=="wx_pub_qr"){
+                                $('.poplayer').show();
+                                $('.layer-pop').show();
+                                $(".weixinTips").show();
+                            }
+                            return;
+                        }
+                        pingpp.createPayment(charge, function(result, err){
+                            // console.log(result);
+                            // console.log(err.msg);
+                            // console.log(err.extra);
+                            if (result == "success") {
+                                // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+                            } else if (result == "fail") {
+                                // charge 不正确或者微信公众账号支付失败时会在此处返回
+                            } else if (result == "cancel") {
+                                // 微信公众账号支付取消支付
+                            }
+                        });
+                    }
+                })
+
             })
         })
     </script>

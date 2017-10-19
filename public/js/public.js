@@ -301,20 +301,7 @@ function checkLength(which) {
         return false;
     }
 }
-function pop(code,account){
-    /*$("#money").text(account);
-    switch(code){
-        case "error":
-            $(".pay-tit").text("尚未开通会员,请开通");
-            $("#vip").text("开通");
-            break;
-        case "expried":
-            $(".pay-tit").text("会员过期,请续费");
-            $("#vip").text("续费");
-            break;
-        case "finish":
-            $(".open-member").hide();
-            break;
-    }*/
+function pop(str){
+    $(".normal").append(str)
     $('.pop-pay').show();
 }

@@ -23,7 +23,7 @@
         <div class="supply-service-tit">升维网为企业提供的服务<span class="long-line"></span></div>
         <div class="supply-service-entit">{{--SERVICE PROVIDED BY SHENGWEI FOR ENTERPRISES--}}</div>
         <ul class="clearfix">
-            <li class="item col-md-3"><a href="javascript:;">
+            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
                     <div class="item-con dif-hexagon1">
                         <span class="hexagon"></span>
                         <h2 class="number">01</h2>
@@ -34,7 +34,7 @@
                         <p><br /><span style="font-size: 1.5em;">战略定位</span><br /><br /><span style="font-size: 1.5em;">战略执行</span><br /><br /><span style="font-size: 1.5em;">商业模式</span><br /><br /><span style="font-size: 1.5em;">项目评价</span> </p>
                     </div>
                 </a></li>
-            <li class="item col-md-3"><a href="javascript:;">
+            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
                     <div class="item-con dif-hexagon2">
                         <span class="hexagon"></span>
                         <h2 class="number">02</h2>
@@ -44,7 +44,7 @@
                         <p><br/><span style="font-size: 1.0em;">融资综合方案</span><br /><span style="font-size: 1.0em;">项目融资</span><br /><span style="font-size: 1.0em;">政府性质贷款</span><br /><span style="font-size: 1.0em;">企业债</span><br /><span style="font-size: 1.0em;">资产证券化</span><br /><span style="font-size: 1.0em;">境外融资</span><br /><span style="font-size: 1.0em;">租赁与信托</span><br /><span style="font-size: 1.0em;">保理</span><br /><span style="font-size: 1.0em;">天使投资</span><br /><span style="font-size: 1.0em;">风险投资</span><br /></p>
                     </div>
                 </a></li>
-            <li class="item col-md-3"><a href="javascript:;">
+            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
                     <div class="item-con dif-hexagon3">
                         <span class="hexagon"></span>
                         <h2 class="number">03</h2>
@@ -54,7 +54,7 @@
                         <p><br /><span style="font-size: 1.5em;">寻求渠道与代理</span><br /><br /><br /><span style="font-size: 1.5em;">营销推广</span><br /><br /><br /><span style="font-size: 1.5em;">品牌建设</span><br /><br /></p>
                     </div>
                 </a></li>
-            <li class="item col-md-3"><a href="javascript:;">
+            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
                     <div class="item-con dif-hexagon4">
                         <span class="hexagon"></span>
                         <h2 class="number">04</h2>
