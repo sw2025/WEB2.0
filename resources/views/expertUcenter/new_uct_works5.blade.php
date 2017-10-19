@@ -127,9 +127,9 @@
             }
             var tinterval=setInterval(geteventnewstate,5000);
             @else
-
+                var url = '{{$configinfo[$lastpid->step-1]->documenturl}}';
                     geteventnewstate2 = function () {
-                $.post('{{url('ifeventupload')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
+                $.post('{{url('ifeventupload')}}',{'eventid':eventid,'epid':epid,'state':state,'url':url},function (data) {
                     if(data.icon == 3){}else if(data.icon == 2){
                         layer.msg(data.msg,{'time':1000},function () {
                             window.location = '/';

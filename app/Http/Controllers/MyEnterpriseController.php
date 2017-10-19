@@ -812,7 +812,69 @@ class MyEnterpriseController extends Controller
                     return ['error' => '该资料应由该办事专家确定','icon' => 2];
                 }
             }
+            $eventdomain = DB::table('t_e_event')->where('eventid',$data['eventid'])->pluck('domain1');
+            $res2 = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->first();
+            if(!empty($res2) && (empty(trim($res2->documenturl)) || $res2->state == 0)){
+                return ['error' => '暂未上传资料~','icon' => 2];
+            }
+
             $res = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->update(['state' => 2]);
+            switch ($eventdomain){
+                case "找资金" :
+                    if ($data['pid'] < 4){
+                        DB::table('t_e_eventprocess')
+                            ->insert([
+                                'pid' => ($data['pid']+1),
+                                'startuserid' => $res2->acceptuserid,
+                                'acceptuserid' => $res2->startuserid,
+                                'eventid' => $data['eventid'],
+                                'time' => date("Y-m-d H:i:s"),
+                                'state' => '0'
+                            ]);
+                    }
+                    break;
+                case "定战略" :
+                    if ($data['pid'] < 15){
+                        DB::table('t_e_eventprocess')
+                            ->insert([
+                                'pid' => ($data['pid']+1),
+                                'startuserid' => $res2->acceptuserid,
+                                'acceptuserid' => $res2->startuserid,
+                                'eventid' => $data['eventid'],
+                                'time' => date("Y-m-d H:i:s"),
+                                'state' => '0'
+                            ]);
+                    }
+                    break;
+                case "找技术" :
+                    if ($data['pid'] < 11){
+                        DB::table('t_e_eventprocess')
+                            ->insert([
+                                'pid' => ($data['pid']+1),
+                                'startuserid' => $res2->acceptuserid,
+                                'acceptuserid' => $res2->startuserid,
+                                'eventid' => $data['eventid'],
+                                'time' => date("Y-m-d H:i:s"),
+                                'state' => '0'
+                            ]);
+                    }
+                    break;
+                case "找市场" :
+                    if ($data['pid'] < 19){
+                        DB::table('t_e_eventprocess')
+                            ->insert([
+                                'pid' => ($data['pid']+1),
+                                'startuserid' => $res2->acceptuserid,
+                                'acceptuserid' => $res2->startuserid,
+                                'eventid' => $data['eventid'],
+                                'time' => date("Y-m-d H:i:s"),
+                                'state' => '0'
+                            ]);
+                    }
+                    break;
+                default :
+                    break ;
+            }
             if($res){
                 return ['msg' => '确认成功' ,'icon' => 1];
             }
@@ -858,6 +920,10 @@ class MyEnterpriseController extends Controller
                 } else {
                     $data['adduser'] = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
                 }
+            }
+            $res2 = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->first();
+            if(!empty($res2) && (empty(trim($res2->documenturl)) || $res2->state == 0)){
+                return ['error' => '暂未上传资料~','icon' => 2];
             }
             $data['addtime'] = date('Y-m-d H:i:s',time());
             DB::table('t_e_eventprocessremark')->insert($data);
@@ -1110,12 +1176,31 @@ class MyEnterpriseController extends Controller
                     ]);
                 }
             }
+
             DB::table("t_e_eventverify")->insert([
                 'eventid' => $_POST['eventId'],
                 "configid"=>6,
                 "verifytime"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
+
+            $domain1 = DB::table('t_e_event')
+                ->where('eventid' , $_POST['eventid'])
+                ->pluck('domain1') ;
+
+            $pid = DB::table('t_e_eventprocessconfig')
+                ->where('domain' , $domain1 )
+                ->orderby('step' , 'asc')
+                ->take(1)
+                ->pluck('pid') ;
+
+            DB::table('t_e_eventprocess')
+                ->insert([
+                    'pid' => $pid ,
+                    'eventid' => $_POST['eventid'],
+                    'state' => '0',
+                    'time' => date("Y-m-d H:i:s"),
+                ]);
         }catch (Exception $e){
             throw $e;
         }
