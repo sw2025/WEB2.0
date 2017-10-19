@@ -109,8 +109,8 @@
             <div class="single">
                 <div class="single-two">
                 <span class="single-opt pay-opt" id="singlePay">
-                    <input class="rad-inp" type="radio">
-                    <div class="opt-label"><span></span>单次缴费：￥<b class="money">{{env('EventMoney')}}</b>/ 次</div>
+                    <input class="rad-inp" type="radio" style="width: 12%;">
+                    <div class="opt-label normal "></div>
                 </span>
                 </div>
                 <div class="cub" style="display:block"></div>
@@ -157,7 +157,6 @@
             <a href="javascript:;" class="closePop" title="关闭" style="position: absolute;top: 0;right: 0;"><i class="iconfont icon-chahao"></i></a>
         </div>
     </div>
-
     <script type="text/javascript" src="{{url('/js/jquery.qrcode.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
@@ -169,12 +168,6 @@
                 $(".submit-audit").attr('disabled',false);
                 $(".submit-audit").html('提交审核');
             })
-           /* layer.open({
-                type: 1,
-                shade: false,
-                title: '尊敬的用户您好', //不显示标题
-                content: $('.layer_notice'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-            });*/
             $('.datas-sel-def').click(function () {
                 $(this).next('ul').stop().slideToggle();
                 $(this).parent().siblings().children('ul').hide();
@@ -443,7 +436,13 @@
                             skin: 'layer-ext-moon',
                             icon:0,
                         }, function(index){
-                            pop();
+                            var str;
+                            if(res['code']==6){
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('EventMemberMoney')}}</b>/ 次 &nbsp;&nbsp;&nbsp;&nbsp;充值次数 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
+                            }else{
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('EventMoney')}}</b>/ 次";
+                            }
+                            pop(str);
                             layer.close(index);
                         }, function(index){
                             $(that).attr('disabled',false);
@@ -459,19 +458,33 @@
             var memberId;
             var channel;
             var amount;
+            var eventCount;
+            var urlType=window.location.href;
             var res=$("#singlePay").hasClass("been");
             if(res){
                 payType="payMoney";
-                amount=$("#singlePay").find(".money").text();
+                var money=$("#singlePay").find(".money:first").text();
+                if(money=="{{env('EventMoney')}}"){
+                    eventCount=1;
+                    amount=money;
+                }else{
+                    eventCount=$("#singlePay").find(".times").val();
+                    if(eventCount<1){
+                        alert("请填写充值次数");
+                        return false;
+                    }
+                    amount=money*eventCount;
+                }
                 memberId=0;
             }else{
-                payType="payMember";
+                payType="member";
                 $(".years").children().each(function(){
                     if($(this).hasClass('juniorbe')){
                         memberId=$(this).attr("memberId");
                     }
                 })
                 amount=0;
+                eventCount=0;
             }
             $(".payoff-way").children().each(function(){
                 if($(this).hasClass('been')){
@@ -480,11 +493,12 @@
             });
             $.ajax({
                 url:"{{url('charge')}}",
-                data:{"payType":payType,"memberId":memberId,"channel":channel,"amount":amount,"type":"event","eventCount":1},
+                data:{"payType":payType,"memberId":memberId,"channel":channel,"amount":amount,"type":"event","eventCount":eventCount,"urlType":urlType},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
                     var charge =JSON.parse(res);
+                    console.log(charge);
                     $('#code').empty();
                     if(charge.credential.wx_pub_qr){
                         var qrcode = new QRCode('code', {

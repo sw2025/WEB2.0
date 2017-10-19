@@ -41,21 +41,28 @@ class PingpayController extends Controller
             $memberMoney=DB::table("t_u_memberright")->where("memberid",$payload['memberId'])->pluck("cost");
             $amount=$memberMoney;
             $orderNo = 'KT' . time() . mt_rand(1000,9999);
-            $url = "http://sw2025.com/uct_recharge";
             $metadata=['payType'=>'member','memberId'=>$payload['memberId'],'userid'=>$user];
         }else if($payload['payType']=="payExpertMoney"){
-            $amount = $payload['amount'];
+            $amounts = $payload['amount'];
+            $amount=$amounts/100;
             $orderNo = 'CZ' . time() . mt_rand(1000,9999);
-            $url = "http://sw2025.com/uct_recharge";
-            $metadata=['payType'=>'payExpertMoney','type'=>$payload['type'],'userid'=>$user,"expert"=>$payload['expert'],"consultid  "=>$payload['consultid']];
+            $metadata=['payType'=>'payExpertMoney','type'=>$payload['type'],'userid'=>$user['userid'],"expert"=>$payload['expert'],"consultid  "=>$payload['consultid'],"chargeFrom"=>$payload['chargeFrom']];
+
         }else{
-            $amount = $payload['amount'];
+            if($payload['type']=="consult"){
+                $amounts = $payload['amount'];
+                $amount=$amounts/100;
+            }else{
+                $amount = $payload['amount'];
+            }
             $orderNo = 'CZ' . time() . mt_rand(1000,9999);
-            $url = "http://sw2025.com/uct_recharge";
+
             $eventcount=isset($payload['eventCount'])?$payload['eventCount']:0;
             $consultcount=isset($payload['consultCount'])?$payload['consultCount']:0;
             $metadata=['payType'=>'payMoney','type'=>$payload['type'],'userid'=>$user,"eventCount"=>$eventcount,"consultCount"=>$consultcount];
         }
+     
+        $url =$payload['urlType'];
         $amountMoney=$amount*100;
         $subject = isset($payload['subject']) ? $payload['subject']:'充值金额';
 

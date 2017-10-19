@@ -15,8 +15,7 @@
                         </div>
                     </div>
                     <div class="remain-bottom">
-                        <a href="{{asset('recharge/rechargeMoney')}}" class="recharge-money">充值</a>
-                        <a href="{{asset('recharge/cash')}}" class="cash">提现</a>
+                        <a href="{{asset('recharge/cash')}}" class="recharge-money">提现</a>
                     </div>
                 </div>
                 <div class="upload-bankcard">

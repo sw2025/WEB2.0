@@ -20,25 +20,6 @@
                                     <em>会议申请</em>IS APPLYING
                                 </span>
                     </div>
-                    {{--<div class="datas-sel mt20" style="margin-top: 20px;z-index: 5">
-                        <span class="datas-sel-cap padd12" >问题行业</span>
-                        <a href="javascript:;" class="datas-sel-def" id="industrys">请选择</a>
-                        <ul class="datas-list">
-                            <li>IT|通信|电子|互联网</li>
-                            <li>金融业</li>
-                            <li>房地产|建筑业</li>
-                            <li>商业服务</li>
-                            <li>贸易|批发|零售|租赁业</li>
-                            <li>文体教育|工艺美术</li>
-                            <li>生产|加工|制造</li>
-                            <li>交通|运输|物流|仓储</li>
-                            <li>服务业</li>
-                            <li>文化|传媒|娱乐|体育</li>
-                            <li>能源|矿产|环保</li>
-                            <li>政府|非盈利机构</li>
-                            <li>农|林|牧|渔|其他</li>
-                        </ul>
-                    </div>--}}
                     <div class="publish-need-sel zindex4" style="margin-top: 20px;">
                         <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
                         <ul class="publish-need-list" style="display: none;">
@@ -118,6 +99,9 @@
         .layer_image span {
             color:#fff;
         }
+        .changeWeixin img{
+            margin:0 auto;
+        }
     </style>
     <ul class="layer_notice" style="display: none;">
         <li><a>近期，网监部门查敏感类信息比较严格，所以内容中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写办事内容。</a></li>
@@ -128,8 +112,71 @@
         <li>
         </li>
     </ul>
+    <div class="pop-pay">
+        <div class="payoff">
+            <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
+            <div class="single">
+                <div class="single-two">
+                <span class="single-opt pay-opt" id="singlePay">
+                    <input class="rad-inp" type="radio" style="width: 12%;">
+                    <div class="opt-label normal "></div>
+                </span>
+                </div>
+                <div class="cub" style="display:block"></div>
+
+            </div>
+            <div class="single open-member">
+                <div class="single-opt pay-opt been">
+                    <input class="rad-inp" type="radio">
+                    <div class="opt-label dibs"><span></span>开通会员</div>
+                    <span class="open-right">会员权益</span>
+                </div>
+                <div class="years">
+                    @foreach($memberrights as $memberright)
+                        <span class="pay-opt" memberId="{{$memberright->memberid}}">
+                        <input class="rad-inp" type="radio" >
+                        <div class="opt-label"><span></span>{{$memberright->termtime}}年&nbsp;&nbsp;￥{{$memberright->cost}}<em class="benifit">优惠次数 {{$memberright->eventcounts}} 次</em><em class="benifit">优惠时间 {{$memberright->consultcounts}} 分钟</em></div>
+                    </span>
+                    @endforeach
+                </div>
+
+                <div class="cub"></div>
+            </div>
+            <div class="paytype payoff-way">
+                    <span class="pay-opt focus been">
+                        <input class="rad-inp" type="radio"  value="wx_pub_qr">
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lweixin.png')}}"><em class="way-cap">微信支付</em></div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio"  value="alipay_pc_direct">
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lzhifubao.png')}}"><em class="way-cap">支付宝支付</em></div>
+                    </span>
+            </div>
+            <div style="text-align: center;padding: 0 0 20px;"><button type="button" class="pop-btn vip" id="vip">付费</button></div>
+        </div>
+    </div>
+    <div class="layer-pop" style="position:fixed;background: rgba(0,0,0,0.3);top: 0;left: 0;width: 100%;height: 100%;z-index: 1000;display: none;">
+        <div class="popWx" style="position: absolute;top: 10%;width: 285px;border: 2px solid #ccc;left: 50%;top: 50%;margin: -160px 0 0 -145px;background: #fff;text-align: center;border-radius: 3px;font-size: 14px;padding: 30px 0 27px;">
+            <div class="changeWeixin">
+                <div class="popWeixin" id="code">
+                </div>
+            </div>
+            <span class="weixinLittle"></span>
+            <div class="weixinTips" style="display: none"><strong>扫瞄二维码完成支付</strong><br>支付完成后请关闭二维码</div>
+            <a href="javascript:;" class="closePop" title="关闭" style="position: absolute;top: 0;right: 0;"><i class="iconfont icon-chahao"></i></a>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{url('/js/jquery.qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
     <script type="text/javascript">
         $(function(){
+            $('.closePop').click(function () {
+                $(this).closest('.layer-pop').hide();
+                $('.pop-pay').hide();
+                $(".submit-audit").attr('disabled',false);
+                $(".submit-audit").html('提交审核');
+            })
             $('.datas-sel-def').click(function () {
                 $(this).next('ul').stop().slideToggle();
                 $(this).parent().siblings().children('ul').hide();
@@ -312,6 +359,7 @@
 
             });
         })
+
         $(".submit-audit").on("click",function(){
             var that=this;
             var domain=$(".publ-need-sel-def").text().trim();
@@ -333,13 +381,6 @@
             }else{
                 var state=0;
             }
-            /*if(industry=="请选择"){
-                layer.tips("问题行业不能为空", '.datas-sel-def', {
-                    tips: [2, '#00a7ed'],
-                    time: 4000
-                });
-                return false;
-            }*/
             if(domain=="请选择"){
                 layer.tips("问题分类不能为空", '.publ-need-sel-def', {
                     tips: [2, '#00a7ed'],
@@ -379,7 +420,7 @@
             $(this).attr('disabled',true);
             $(this).html('正在提交');
             $.ajax({
-                url:"{{asset('saveVideo')}}",
+                url:"{{asset('consultCharge')}}",
                 data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state,"dateStart":dateStart,"dateEnd":dateEnd},
                 dateType:"json",
                 type:"POST",
@@ -416,7 +457,7 @@
                             });
                         }
 
-                    }else{
+                    }else if(res['icon'] == 2){
                         $(".publ-need-sel-def").text(domain);
                         $(".uct-works-txt").val(describe);
                         $("#start").text(dateStart);
@@ -426,7 +467,102 @@
                         });
                         $(that).removeAttr('disabled');
                         $(that).html('提交审核');
+                    }else if(res['icon'] == 3){
+                        layer.confirm(res.msg, {
+                            btn: ['确定','取消'] ,
+                            skin: 'layer-ext-moon',
+                            icon:0,
+                        }, function(index){
+                            var str;
+                            if(res['code']==6){
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('consultMemberMoney')}}</b>/{{env('Time')}} &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
+                            }else{
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('Money')}}</b>/{{env('Time')}} &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
+                            }
+                            pop(str);
+                            layer.close(index);
+                        }, function(index){
+                            $(that).attr('disabled',false);
+                            $(that).html('提交审核');
+                            layer.close(index);
+                        });
                     }
+                }
+            })
+        })
+
+        $("#vip").on("click",function(){
+            var payType;
+            var memberId;
+            var channel;
+            var amount;
+            var consultCount;
+            var urlType=window.location.href;
+            var res=$("#singlePay").hasClass("been");
+            if(res){
+                payType="payMoney";
+                var money=$("#singlePay").find(".money:first").text();
+                consultCount=$("#singlePay").find(".times").val();
+                if(consultCount<1){
+                    alert("请填写充值时间");
+                    return false;
+                }
+                amounts=money*100/{{env('Time')}};
+                amount=amounts*consultCount;
+                memberId=0;
+            }else{
+                payType="member";
+                $(".years").children().each(function(){
+                    if($(this).hasClass('juniorbe')){
+                        memberId=$(this).attr("memberId");
+                    }
+                })
+                amount=0;
+                consultCount=0;
+            }
+            $(".payoff-way").children().each(function(){
+                if($(this).hasClass('been')){
+                    channel=$(this).children(":first").attr("value");
+                }
+            });
+            $.ajax({
+                url:"{{url('charge')}}",
+                data:{"payType":payType,"memberId":memberId,"channel":channel,"amount":amount,"type":"consult","consultCount":consultCount,"urlType":urlType},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    var charge =JSON.parse(res);
+                    console.log(charge);
+                    $('#code').empty();
+                    if(charge.credential.wx_pub_qr){
+                        var qrcode = new QRCode('code', {
+                            text: charge.credential.wx_pub_qr,
+                            width: 200,
+                            height: 200,
+                            colorDark : '#000000',
+                            colorLight : '#ffffff',
+                            correctLevel : QRCode.CorrectLevel.H
+                        });
+                        console.log(qrcode);
+                        if(channel=="wx_pub_qr"){
+                            $('.poplayer').show();
+                            $('.layer-pop').show();
+                            $(".weixinTips").show();
+                        }
+                        return;
+                    }
+                    pingpp.createPayment(charge, function(result, err){
+                        // console.log(result);
+                        // console.log(err.msg);
+                        // console.log(err.extra);
+                        if (result == "success") {
+                            // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+                        } else if (result == "fail") {
+                            // charge 不正确或者微信公众账号支付失败时会在此处返回
+                        } else if (result == "cancel") {
+                            // 微信公众账号支付取消支付
+                        }
+                    });
                 }
             })
 
