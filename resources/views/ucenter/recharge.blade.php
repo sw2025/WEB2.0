@@ -9,8 +9,8 @@
                     <div class="remain-top clearfix">
                         <span class="remain-num"><em>{{$members}}</em></span>
                         <div class="remain-state">
-                            <span><i class="iconfont icon-shouru"></i>剩余次数：{{$eventCount}}</span>
-                            <span><i class="iconfont icon-zhichu"></i>剩余时间：{{$consultCount}}</span>
+                            <span><i class="iconfont icon-shouru"></i>剩余办事次数：{{$eventCount}}次</span>
+                            <span><i class="iconfont icon-zhichu"></i>剩余视频咨询时长：{{$consultCount}}分钟</span>
                         </div>
                     </div>
                     <div class="remain-bottom">
@@ -21,9 +21,10 @@
                     <!-- 已上传银行卡start -->
 
                         <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: block"@else style="display: none" @endif>
-                            <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待审核)@elseif($state==4)(待验证)@endif</em>{{$bankcard}}
-                                @if($state==4)<a class="gototest" href="{{asset('uct_recharge/card2')}}"><button type="button">去验证</button></a>@endif
-                            </div>
+
+                            <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待系统审核)@elseif($state==4)(待打款验证)@endif</em>{{$bankcard}}</div>
+                            @if($state==4)<a href="{{asset('uct_recharge/card2')}}"><button type="button">去验证</button></a>@endif
+
                             <span class="delete-card" title="删除"><i class="iconfont icon-chahao"></i></span>
                         </div>
                     <!-- 已上传银行卡end ---->
@@ -102,7 +103,9 @@
         }
         var type=$("#moneyList").text();
         var startPage=1;
+
         returnRecord(type,startPage,"企业");
+
         function pageselectCallback(page_index,jq){
              var startPage=parseInt(page_index)+1;
              var type=$("#moneyList").text();
@@ -140,7 +143,7 @@
     })
     $('.delete-card').click(function() {
         var userId=$.cookie("userId");
-        layer.confirm('您确定眼删除该银行卡吗？', {
+        layer.confirm('您确定删除该银行卡吗？', {
             btn: ['删除','取消'], //按钮
         }, function(){
             $.ajax({
