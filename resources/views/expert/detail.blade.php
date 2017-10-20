@@ -43,7 +43,7 @@
                         <a href="javascript:;" index="{{$datas->expertid}}" class="collect-state @if(in_array($datas->expertid,$collectids)) done @endif">@if(in_array($datas->expertid,$collectids))已收藏 @else 收藏 @endif</a>
                         <span class="exp-details-time">入驻时间：<em>{{$datas->created_at}}</em></span>
                         <span class="exp-details-categary">分<b class="wem2"></b>类：<em>{{$datas->category}}</em></span>
-                        <span class="exp-details-video">视频咨询：<em>@if(!$datas->state || $datas->fee == 0)免费@else ￥{{$datas->fee}} @endif</em></span>
+                        <span class="exp-details-video">视频咨询：<em>@if(!$datas->state || $datas->fee == 0)免费@else ￥{{$datas->fee}}/分钟 @endif</em></span>
                         <span class="exp-details-best">擅长领域：<em>{{$domainselect[$datas->domain1]}}</em></span>
                         <div class="exp-details-lab">
                             @foreach(explode(',',$datas->domain2) as $do2)
@@ -171,7 +171,7 @@
                                 <em class="rec-exp-name">{{$v->expertname}}</em>
                             </span>
                         <div class="exp-rec-right">
-                            <span class="exp-rec-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if(!$v->state || $v->fee == 0) 免费 @else ￥{{$v->fee}}/5分钟 @endif</em></span>
+                            <span class="exp-rec-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if(!$v->state || $v->fee == 0) 免费 @else ￥{{$v->fee}}/分钟 @endif</em></span>
                             <span class="exp-rec-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$domainselect[$v->domain1]}}</em></span>
                             <div class="exp-rec-lab">
                                 @foreach(explode(',',$v->domain2) as $v2)

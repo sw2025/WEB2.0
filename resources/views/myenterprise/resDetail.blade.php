@@ -13,7 +13,7 @@
                             <div class="myexpert-rt">
                                 <span class="myexp-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
                                 <span class="myexp-best">擅长领域：<em>{{$datas->domain1}}</em></span>
-                                <span class="myexp-best">咨询费用：<em>@if($datas->fee == 0) 免费 @else ￥{{$datas->fee}}/5分钟 @endif</em></span>
+                                <span class="myexp-best">咨询费用：<em>@if($datas->fee == 0) 免费 @else ￥{{$datas->fee}}/分钟 @endif</em></span>
                                 <div class="myexpert-lab">
                                     @foreach(explode(',',$datas->domain2) as $do2)
                                         <span class="myexp-lab-a">&nbsp;{{$do2}}&nbsp;</span>

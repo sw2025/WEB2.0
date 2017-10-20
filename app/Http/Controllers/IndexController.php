@@ -68,10 +68,10 @@ class IndexController extends Controller
                 ->get();
             foreach ($datas as $data){
                 $data->domain1 = $domainselect[$data->domain1];
-                if($data->state == 0 || $data->fee == 0){
+                if($data->state == '0' || $data->fee == '0'){
                     $data->fee="免费";
                 }else{
-                    $data->fee=$data->fee."元/5分钟";
+                    $data->fee="￥".$data->fee."/分钟";
                 }
                 if(!empty(session('userId'))){
                     $userId=session('userId');
