@@ -69,10 +69,8 @@ $(function(){
         event.stopPropagation();
     });
     // 首页幻灯轮播start
-   /* $('.banner ul li').eq(0).show();
-    var height = $('.banner ul li').eq(0).height()
-    $('.banner').css('height', height+'px');
-    console.log(height)*/
+   $('.banner ul li').eq(0).show();
+
 //*****
     var imgKey = 0;
     var lunbo = function(){
