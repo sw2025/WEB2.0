@@ -105,7 +105,6 @@
         }
         var type=$("#moneyList").text();
         var startPage=1;
-
         returnRecord(type,startPage,"专家");
         function pageselectCallback(page_index,jq){
              var startPage=parseInt(page_index)+1;
@@ -115,7 +114,6 @@
         $("#cateList").on("click","li",function(){
             var type=$(this).text();
             var startPage=1;
-
             returnRecord(type,startPage,"专家")
         })
 

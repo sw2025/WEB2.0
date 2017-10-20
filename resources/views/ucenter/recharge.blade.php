@@ -19,8 +19,7 @@
                 </div>
                 <div class="upload-bankcard">
                     <!-- 已上传银行卡start -->
-
-                        <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: block"@else style="display: none" @endif>
+                    <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: block"@else style="display: none" @endif>
                             <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待审核)@elseif($state==4)(待验证)@endif</em>{{$bankcard}}
                                 @if($state==4)<a class="gototest" href="{{asset('uct_recharge/card2')}}"><button type="button">去验证</button></a>@endif
                             </div>
