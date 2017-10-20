@@ -29,7 +29,7 @@
                             @endif
                         </div>
                             <div class="uct-works-tips standard-intro">
-                                说明：共享单车新规发布：禁止向未满12岁儿童提供
+                                说明：该收费标准是以每5分钟多少金额来进行收费定价，在参与视频咨询后会把相应的金额打入到余额中。
                             </div>
                             <div class="recharge-btn-box">
                                 <button class="test-btn recharge-submit" id="submit" type="button">保存</button>
