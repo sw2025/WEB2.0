@@ -920,6 +920,11 @@ class PublicController extends Controller
                             $expids[] = $val;
                         }
                     }
+                    $expertcosts = DB::table('t_u_expertfee')->whereIn('expertid',$expids)->where('state',1)->select('fee')->get();
+                    $cost = 0;
+                    foreach($expertcosts as $fee){
+
+                    }
                     DB::table('t_c_consultverify')->insert([
                         'consultid' => $consultid,
                         'configid' => 4,
