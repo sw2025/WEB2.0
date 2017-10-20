@@ -545,3 +545,5 @@
 .open-member-add .recharge-opt{display: block;margin-bottom:10px;}
 .caption-tip,.hui-time,.hui-count{margin-left: 15px;}
 .open-member-tit{text-align: center;font-size:16px;padding:20px 0 10px;}
+.gototest{position: absolute;bottom: 0;right: 0;display: block;line-height: 1;}
+.gototest button{background: #00a7ed;color: #fff;border: none;padding: 2px 5px;border-radius: 3px;}
