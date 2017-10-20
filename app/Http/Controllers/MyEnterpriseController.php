@@ -1598,7 +1598,7 @@ class MyEnterpriseController extends Controller
         $timeLong=($endTimes-$startTimes)/60;
         foreach ($expertIds as $value){
             $values=explode("/",$value);
-            $expertMoney=$expertMoney+$values[1]/5*$timeLong;
+            $expertMoney=$expertMoney+$values[1]*$timeLong;
         }
         if($consults->payflag==0){
             $result['code']="noMoney";
