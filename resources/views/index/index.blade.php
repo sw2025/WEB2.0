@@ -4,9 +4,12 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/index.css')}}" />
 <div class="banner">
     <ul>
-        <li class="img01"><img src="img/banner1.jpg" /></li>
+        {{--<li class="img01"><img src="img/banner1.jpg" /></li>
         <li class="img02"><img src="img/banner2.jpg" /></li>
-        <li class="img03"><img src="img/banner3.jpg" /></li>
+        <li class="img03"><img src="img/banner3.jpg" /></li>--}}
+        <li class="img01"></li>
+        <li class="img02"></li>
+        <li class="img03"></li>
     </ul>
     <ol>
         <li class="cur"></li>
@@ -146,10 +149,10 @@
 </div>
 <!-- section3 / end -->
 <script>
-    $(window).load(function(){
+    /*$(window).load(function(){
         var height = $('.banner ul li img').height()
         $('.banner ul').css('height', height+'px');
-    })
+    })*/
     $(function(){
 
 

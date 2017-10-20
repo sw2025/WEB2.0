@@ -9,10 +9,10 @@
         <div class="ucenter-con">
             <div class="main-right">
                 <div class="recharge-sum open-member-add">
-                    @foreach($memberrights as $memberright)
+                    @foreach($memberrights as $k => $memberright)
                         <span class="recharge-opt member  @if($memberright->memberid==2) focus @endif"  memberId="{{$memberright->memberid}}" >
-                            <input class="rad-inp"  checked="true" type="radio" id="rad1" name="money">
-                            <label for="rad1" class="recharge-radio"><span></span>{{$memberright->typename}}</label>
+                            <input class="rad-inp"  checked="true" type="radio" id="rad{{$k}}" name="money">
+                            <label for="rad{{$k}}" class="recharge-radio"><span></span>{{$memberright->typename}}</label>
                             <span class="caption-tip">￥{{$memberright->cost}}</span>
                             <span class="hui-time">优惠次数 {{$memberright->eventcounts}}次</span>
                             <span class="hui-count">优惠时间 {{$memberright->consultcounts}}分钟</span>

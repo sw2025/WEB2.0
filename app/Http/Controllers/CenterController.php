@@ -105,7 +105,7 @@ class CenterController extends Controller
                 ->pluck('configid');
             if($enterprise==3){
                 $datas=DB::table("t_u_enterprisemember")->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")->where("enterpriseid",$enterpriseId)->first();
-                if($datas->endtime>=date("Y-m-d H:i:s")){
+                if(!empty($datas) && $datas->endtime>=date("Y-m-d H:i:s")){
                     if($datas->memberid!=1 || $datas->memberid!=2){
                         $eventCount="无限";
                     }else{

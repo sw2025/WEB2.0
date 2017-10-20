@@ -56,6 +56,9 @@ class ExpertUcenterController extends Controller
         $pays=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"支出"])->sum("money");
         $expends=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"在途"])->sum("money");
         $balance=$incomes-$pays-$expends;
+
+        //$bankcard=DB::table("t_u_bank")->where(["userid"=>$userId,"state"=>0])->pluck("bankcard");
+
         $bankcard=DB::table("t_u_bank")->where(["userid"=>$userId])->pluck("bankcard");
         $state=DB::table("t_u_bank")->where("userid",$userId)->pluck("state");
         return view("expertUcenter.recharge",compact("incomes","pays","expends","balance","bankcard","state"));
