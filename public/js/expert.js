@@ -80,7 +80,7 @@ $(function(){
         var ordername = $(this).text();
         var firsticon = ($('.sort .active span .icon-triangle-copy').hasClass('blue-color'))?'desc':'asc';
         switch (ordername){
-            case '认证时间  ':
+            case '认证时间':
                 select[0] = 'ordertime';
                 select[1] = firsticon;
                 getCondition(select);

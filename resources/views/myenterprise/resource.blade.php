@@ -67,7 +67,7 @@
                         <div class="location filter-row clearfix">
                             <span class="left-cap">所在地区：</span>
                             <div class="location-province">
-                                <a href="javascript:;" @if(empty($address)) class="active" @endif">全部</a>
+                                <a href="javascript:;" @if(empty($address)) class="active" @endif>全部</a>
                                 <a href="javascript:;" @if(!empty($address) && $address=="北京") class="active" @endif>北京</a>
                                 <a href="javascript:;" @if(!empty($address) && $address=="上海") class="active" @endif>上海</a>
                                 <a href="javascript:;" @if(!empty($address) && $address=="天津") class="active" @endif>天津</a>
@@ -124,7 +124,7 @@
                                     <span class="exp-list-img"><img src="{{asset($v->showimage)}}" /></span>
                                     <div class="exp-list-brief">
                                         <span class="exp-list-name">{{$v->expertname}}</span>
-                                        <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}@else 免费 @endif</em></span>
+                                        <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if($v->state && $v->fee)￥{{$v->fee}}/分钟@else 免费 @endif</em></span>
                                         <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em> {{$v->domain1}} </em></span>
                                     </div>
                                     <div class="exp-list-lab">

@@ -33,11 +33,11 @@
                 </div>
 
                 <div class="datas">
-                    <div class="datas-lt">                        <div class="datas-lt-enter">
+                    <div class="datas-lt">
+                        <div class="datas-lt-enter">
                             <div class="datas-sel zindex4">
-                                <span class="datas-sel-cap">专家分类</span><a href="javascript:;" id="category"
-                                                                          class="datas-sel-def">专家</a>
-
+                                <span class="datas-sel-cap">专家分类</span>
+                                <a href="javascript:;" id="category" class="datas-sel-def">专家</a>
                                 <ul class="datas-list">
                                     <li>专家</li>
                                     <li>机构</li>
@@ -46,19 +46,27 @@
                             </div>
                             <div class="datas-sel">
                                 <span class="datas-sel-cap">输入姓名</span>
-                                <input class="datas-sel-name" type="text" placeholder=""
-                                       value="@if(!empty($result)){{$result->expertname }}@else @endif"/>
+                                <input class="datas-sel-name" type="text" placeholder="" value="@if(!empty($result)){{$result->expertname}}@else @endif" style="color:#666;margin-left:50px;"/>
                             </div>
                             <div class="publish-need-sel datas-newchange zindex2">
-                                <span class="publ-need-sel-cap">擅长领域</span>
-                                <a href="javascript:;" id="industry" class="publ-need-sel-def">
-                                    @if(!empty($info)) {{$data->domain1}}-{{mb_substr(join('/',explode(',',$data->domain2)),0,15)}} @else 请选择 @endif
+                                <span class="datas-sel-cap">擅长领域</span>
+                                <a href="javascript:;" id="industry" class="publ-need-sel-def" style="margin-left:93px;" index="{{$result->domain1}}-{{join('/',explode(',',$result->domain2))}}/">
+                                    @if(!empty($result->domain1))
+                                        @if($result->domain1=='找资金')
+                                            投融资
+                                        @elseif($result->domain1=='找技术')
+                                            科研技术
+                                        @elseif($result->domain1=='定战略')
+                                            战略管理
+                                        @else
+                                            市场资源
+                                        @endif-{{join('/',explode(',',$result->domain2))}}/
+                                    @else请选择@endif
                                 </a>
                                 <ul class="publish-need-list">
                                     @foreach($cate as $v)
                                         @if($v->level == 1)
                                             <li>
-
                                                 <a href="javascript:;" index="{{$v->domainname}}">{{$v->exdomainname}}</a>
                                                 <ul class="publ-sub-list">
                                                     @foreach($cate as $small)
@@ -73,8 +81,7 @@
                                 </ul>
                             </div>
                             <div class="datas-sel zindex1">
-                                <span class="datas-sel-cap">地区</span><a href="javascript:;" id="address"
-                                                                        class="datas-sel-def">北京</a>
+                                <span class="datas-sel-cap">地区</span><a href="javascript:;" id="address" class="datas-sel-def">北京</a>
                                 <ul class="datas-list zone-list">
                                     <li>北京</li>
                                     <li>上海</li>
@@ -147,14 +154,21 @@
                                   rows="10">@if(!empty($result)){{$result->brief}}@endif</textarea>
                     </div>
                 </div>
-                <div class="bottom-btn">
-                    <button class="test-btn submit-audit" type="button">提交审核</button>
-                </div>
+                @if(!empty($result) && $result->configid==3)
+                    <div class="bottom-btn">
+                        <button class="test-btn submit-audit" type="button">重新审核</button>
+                    </div>
+                @else
+                    <div class="bottom-btn">
+                        <button class="test-btn submit-audit" type="button">提交审核</button>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript">
+        <script src="/js/layer/extend/layer.ext.js"></script>
+        <script type="text/javascript">
     $(function () {
         $('.datas-sel-def').click(function () {
             $(this).next('ul').stop().slideToggle();
@@ -239,11 +253,29 @@
     });
     $(function () {
         $('.submit-audit').click(function () {
+            var abc = $('.submit-audit').html();
+           /* if(abc=='重新审核'){
+                layer.alert('的确很重要', {icon: 2});
+                    //询问框
+                /!*    layer.confirm('您已重新审核？', {
+                        btn: ['确定','取消'] //按钮
+                    }, function(){
+                        layer.msg('的确很重要', {icon: 1});
+                    }, function(){
+                    });*!/
+            }else{
+                return false;
+            }*/
+
             $('.submit-audit').attr('disabled', 'disabled');
             var category = $('#category').html();
             var name = $('.datas-sel-name').val();
             var industry = $('#industry').attr('index') ? $('#industry').attr('index') : '';
-            //var industrys = $("#industrys").html();
+            if(industry.indexOf("/")==-1)
+            {
+                layer.msg('请完善你的擅长领域');
+                return false;
+            }
             var address = $('#address').html();
             var photo1 = $('#photo1').attr('index');
             var photo2 = $('#photo2').attr('index');

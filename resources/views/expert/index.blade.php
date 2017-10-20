@@ -114,7 +114,7 @@
                         <span class="exp-list-img"><img src="{{env('ImagePath').$v->showimage}}" /></span>
                         <div class="exp-list-brief">
                             <span class="exp-list-name">{{$v->expertname}}</span>
-                            <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if(!$v->state || $v->fee == 0)免费 @else ￥{{$v->fee}} @endif</em></span>
+                            <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：<em>@if(!$v->state || $v->fee == 0)免费 @else ￥{{$v->fee}}/分钟@endif</em></span>
                             <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$domainselect[$v->domain1]}}</em></span>
                         </div>
                         <div class="exp-list-lab">
