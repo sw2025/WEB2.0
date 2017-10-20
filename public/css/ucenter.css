@@ -105,10 +105,10 @@
 .paycheck-list tbody tr:nth-child(even){background:#fcfcfc;}
 
 .remaining{margin: 10px 0;border-right: 2px solid #e2e2e2;width: 55%;box-sizing: border-box;float: left;text-align: center;}
-.remain-num{width: 150px;height: 85px;background:url(../img/recharge.png) no-repeat center top;text-align: center;font-size: 16px;padding-top: 32px;display: inline-block;vertical-align: 18px;}
+.remain-num{width: 150px;height: 85px;background:url(../img/recharge.png) no-repeat center top;text-align: center;font-size: 16px;padding-top: 32px;display: inline-block;vertical-align: 45px;}
 .remain-num em{display: block;color:#edad00;font-size: 20px;}
 .remain-state{font-size: 16px;color:#333;display: inline-block;overflow: hidden;text-align: left;}
-.remain-state span{display: block;width:50%;float: left;margin-top: 20px;}
+.remain-state span{display: block;/*width:50%;float: left;*/margin-top: 20px;}
 .remain-state i{font-size: 22px;margin-right: 3px;}
 .remain-state .icon-shouru{color:#63dfac;}
 .remain-state .icon-zhichu{color:#df6377;}
@@ -539,3 +539,11 @@
 .datas-member-audit .datas-rt{float: right;display: block;}
 .view{padding: 20px;text-align: justify;line-height:2;color:#333;}
 .view-fz{font-size:16px;}
+/*2017-10-19*/
+.about-border{border-top: 2px solid #eaeaea;}
+.open-member-add{text-align: left;width: 560px;margin: 0 auto;border-bottom: none;}
+.open-member-add .recharge-opt{display: block;margin-bottom:10px;}
+.caption-tip,.hui-time,.hui-count{margin-left: 15px;}
+.open-member-tit{text-align: center;font-size:16px;padding:20px 0 10px;}
+.gototest{position: absolute;bottom: 0;right: 0;display: block;line-height: 1;}
+.gototest button{background: #00a7ed;color: #fff;border: none;padding: 2px 5px;border-radius: 3px;}

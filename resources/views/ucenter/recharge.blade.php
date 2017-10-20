@@ -2,32 +2,30 @@
 @section("content")
     <!-- 充值提现 / start -->
     <div class="main">
-        <h3 class="main-top">充值提现</h3>
+        <h3 class="main-top">充值</h3>
         <div class="ucenter-con">
             <div class="main-right clearfix">
                 <div class="remaining ">
                     <div class="remain-top clearfix">
-                        <span class="remain-num">余额<em>{{$balance or 0}}</em></span>
+                        <span class="remain-num"><em>{{$members}}</em></span>
                         <div class="remain-state">
-                            <span><i class="iconfont icon-shouru"></i>收入：{{$incomes or 0}}</span>
-                            <span><i class="iconfont icon-zhichu"></i>支出：{{$pays or 0}}</span>
-                            <span><i class="zaitu"></i>在途：{{$expends or 0}}</span>
+                            <span><i class="iconfont icon-shouru"></i>剩余办事次数：{{$eventCount}}次</span>
+                            <span><i class="iconfont icon-zhichu"></i>剩余视频咨询时长：{{$consultCount}}分钟</span>
                         </div>
                     </div>
                     <div class="remain-bottom">
-                        <a href="{{asset('uct_recharge/rechargeMoney')}}" class="recharge-money">充值</a>
-                        <a href="javascript:;" class="cash">提现</a>
+                        <a href="{{asset('uct_recharge/rechargeMoney')}}" class="recharge-money">开通会员</a>
                     </div>
                 </div>
                 <div class="upload-bankcard">
                     <!-- 已上传银行卡start -->
-
-                        <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: block"@else style="display: none" @endif>
-                            <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待审核)@elseif($state==4)(待验证)@endif</em>{{$bankcard}}</div>
-                            @if($state==4)<a href="{{asset('uct_recharge/card2')}}"><button type="button">去验证</button></a>@endif
+                    <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: block"@else style="display: none" @endif>
+                            <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待审核)@elseif($state==4)(待验证)@endif</em>{{$bankcard}}
+                                @if($state==4)<a class="gototest" href="{{asset('uct_recharge/card2')}}"><button type="button">去验证</button></a>@endif
+                            </div>
                             <span class="delete-card" title="删除"><i class="iconfont icon-chahao"></i></span>
                         </div>
-                    <!-- 已上传银行卡end -->
+                    <!-- 已上传银行卡end ---->
                     <!-- 未上传银行卡start -->
                     <div class="card-upload" @if(empty($bankcard) || $state==1)style="display:block" @else style="display: none" @endif>
                         <div class="card-span fileinput-button">
@@ -39,11 +37,10 @@
             </div>
             <div class="money-category clearfix">
                 <div class="money-cate-fr">
-                    <span class="money-cate-fr-cap">类型</span><a href="javascript:;" class="money-cate-def" id="moneyList">收入</a>
+                    <span class="money-cate-fr-cap">类型</span><a href="javascript:;" class="money-cate-def" id="moneyList">支出</a>
                     <ul class="money-cate-list" id="cateList">
-                        <li>收入</li>
                         <li>支出</li>
-                        <li>在途</li>
+                        <li>开通会员</li>
                     </ul>
                 </div>
             </div>
@@ -73,11 +70,11 @@
 
 <script type="text/javascript">
     $(function(){
-        var returnRecord=function(type,startPage){
+        var returnRecord=function(type,startPage,role){
             $("#tbody").empty();
             $.ajax({
                 url:"{{asset('getRecord')}}",
-                data:{"startPage":startPage,"type":type},
+                data:{"startPage":startPage,"type":type,'role':role},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
@@ -104,16 +101,18 @@
         }
         var type=$("#moneyList").text();
         var startPage=1;
-        returnRecord(type,startPage);
+
+        returnRecord(type,startPage,"企业");
+
         function pageselectCallback(page_index,jq){
              var startPage=parseInt(page_index)+1;
              var type=$("#moneyList").text();
-             returnRecord(type,startPage)
+            returnRecord(type,startPage,"企业")
          }
         $("#cateList").on("click","li",function(){
             var type=$(this).text();
             var startPage=1;
-            returnRecord(type,startPage)
+            returnRecord(type,startPage,"企业")
         })
 
     })
@@ -142,7 +141,7 @@
     })
     $('.delete-card').click(function() {
         var userId=$.cookie("userId");
-        layer.confirm('您确定眼删除该银行卡吗？', {
+        layer.confirm('您确定删除该银行卡吗？', {
             btn: ['删除','取消'], //按钮
         }, function(){
             $.ajax({

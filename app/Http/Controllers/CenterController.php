@@ -95,20 +95,50 @@ class CenterController extends Controller
      */
     public function recharge(){
         $userId=session("userId");
-        $incomes=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"收入"])->sum("money");
-        $pays=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"支出"])->sum("money");
-        $expends=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"在途"])->sum("money");
-        $balance=$incomes-$pays-$expends;
+        $enterpriseId=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("enterpriseid");
+        if($enterpriseId){
+            $enterprise=DB::table("t_u_enterprise")
+                ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
+                ->where("t_u_enterprise.enterpriseid",$enterpriseId)
+                ->orderBy("t_u_enterpriseverify.id","desc")
+                ->take(1)
+                ->pluck('configid');
+            if($enterprise==3){
+                $datas=DB::table("t_u_enterprisemember")->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")->where("enterpriseid",$enterpriseId)->first();
+                if(!empty($datas) && $datas->endtime>=date("Y-m-d H:i:s")){
+                    if($datas->memberid!=1 || $datas->memberid!=2){
+                        $eventCount="无限";
+                    }else{
+                        $eventCount=$datas->eventcount;
+                    }
+                    $members=$datas->typename;
+                    $consultCount=$datas->consultcount;
+                }else{
+                    $members="非会员";
+                    $eventCount=0;
+                    $consultCount=0;
+                }
+            }else{
+                $members="非会员";
+                $eventCount=0;
+                $consultCount=0;
+            }
+        }else{
+            $members="非会员";
+            $eventCount=0;
+            $consultCount=0;
+        }
         $bankcard=DB::table("t_u_bank")->where("userid",$userId)->pluck("bankcard");
         $state=DB::table("t_u_bank")->where("userid",$userId)->pluck("state");
-        return view("ucenter.recharge",compact("incomes","pays","expends","balance","bankcard","state"));
+        return view("ucenter.recharge",compact("members","eventCount","consultCount","bankcard","state"));
     }
 
     /**充值
      * @return mixed
      */
     public function rechargeMoney(){
-        return view("ucenter.rechargeMoney");
+        $memberrights=DB::table("t_u_memberright")->where("memberid","<>",1)->get();
+        return view("ucenter.rechargeMoney",compact("memberrights"));
     }
 
     /**提现
@@ -814,13 +844,19 @@ class CenterController extends Controller
      */
     public  function getRecord(){
         $type=$_POST['type'];
+        $role=$_POST['role'];
         $startPage=isset($_POST['startPage'])?$_POST['startPage']:1;
         $offset=($startPage-1)*10;
         $userId=session("userId");
         $result=array();
-        $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("type",$type)->count();
+        if($role=="企业"){
+            $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("type",$type)->where("payflag",1)->count();
+            $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("type",$type)->where("payflag",1)->skip($offset)->take(10)->get();
+        }else{
+            $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("type",$type)->where("payflag",1)->count();
+            $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("type",$type)->where("payflag",1)->skip($offset)->take(10)->get();
+        }
         $counts=!empty(ceil($counts/10))?ceil($counts/10):0;
-        $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("type",$type)->skip($offset)->take(10)->get();
         foreach ($datas as $data){
             $data->created_at=date("Y-m-d",strtotime($data->created_at));
             if($data->type=="收入"){

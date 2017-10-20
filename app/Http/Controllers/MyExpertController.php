@@ -534,7 +534,6 @@ class MyExpertController extends Controller
      * @return mixed
      */
     public function standard(Request $request){
-
         $result = DB::table('t_u_expert')
             ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
             ->where('userid',session('userId'))

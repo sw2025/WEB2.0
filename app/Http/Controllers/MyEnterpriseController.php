@@ -812,7 +812,69 @@ class MyEnterpriseController extends Controller
                     return ['error' => '该资料应由该办事专家确定','icon' => 2];
                 }
             }
+            $eventdomain = DB::table('t_e_event')->where('eventid',$data['eventid'])->pluck('domain1');
+            $res2 = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->first();
+            if(!empty($res2) && (empty(trim($res2->documenturl)) || $res2->state == 0)){
+                return ['error' => '暂未上传资料~','icon' => 2];
+            }
+
             $res = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->update(['state' => 2]);
+            switch ($eventdomain){
+                case "找资金" :
+                    if ($data['pid'] < 4){
+                        DB::table('t_e_eventprocess')
+                            ->insert([
+                                'pid' => ($data['pid']+1),
+                                'startuserid' => $res2->acceptuserid,
+                                'acceptuserid' => $res2->startuserid,
+                                'eventid' => $data['eventid'],
+                                'time' => date("Y-m-d H:i:s"),
+                                'state' => '0'
+                            ]);
+                    }
+                    break;
+                case "定战略" :
+                    if ($data['pid'] < 15){
+                        DB::table('t_e_eventprocess')
+                            ->insert([
+                                'pid' => ($data['pid']+1),
+                                'startuserid' => $res2->acceptuserid,
+                                'acceptuserid' => $res2->startuserid,
+                                'eventid' => $data['eventid'],
+                                'time' => date("Y-m-d H:i:s"),
+                                'state' => '0'
+                            ]);
+                    }
+                    break;
+                case "找技术" :
+                    if ($data['pid'] < 11){
+                        DB::table('t_e_eventprocess')
+                            ->insert([
+                                'pid' => ($data['pid']+1),
+                                'startuserid' => $res2->acceptuserid,
+                                'acceptuserid' => $res2->startuserid,
+                                'eventid' => $data['eventid'],
+                                'time' => date("Y-m-d H:i:s"),
+                                'state' => '0'
+                            ]);
+                    }
+                    break;
+                case "找市场" :
+                    if ($data['pid'] < 19){
+                        DB::table('t_e_eventprocess')
+                            ->insert([
+                                'pid' => ($data['pid']+1),
+                                'startuserid' => $res2->acceptuserid,
+                                'acceptuserid' => $res2->startuserid,
+                                'eventid' => $data['eventid'],
+                                'time' => date("Y-m-d H:i:s"),
+                                'state' => '0'
+                            ]);
+                    }
+                    break;
+                default :
+                    break ;
+            }
             if($res){
                 return ['msg' => '确认成功' ,'icon' => 1];
             }
@@ -858,6 +920,10 @@ class MyEnterpriseController extends Controller
                 } else {
                     $data['adduser'] = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterprisename;
                 }
+            }
+            $res2 = DB::table('t_e_eventprocess')->where('epid',$data['epid'])->first();
+            if(!empty($res2) && (empty(trim($res2->documenturl)) || $res2->state == 0)){
+                return ['error' => '暂未上传资料~','icon' => 2];
             }
             $data['addtime'] = date('Y-m-d H:i:s',time());
             DB::table('t_e_eventprocessremark')->insert($data);
@@ -1110,12 +1176,31 @@ class MyEnterpriseController extends Controller
                     ]);
                 }
             }
+
             DB::table("t_e_eventverify")->insert([
                 'eventid' => $_POST['eventId'],
                 "configid"=>6,
                 "verifytime"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
+
+            $domain1 = DB::table('t_e_event')
+                ->where('eventid' , $_POST['eventid'])
+                ->pluck('domain1') ;
+
+            $pid = DB::table('t_e_eventprocessconfig')
+                ->where('domain' , $domain1 )
+                ->orderby('step' , 'asc')
+                ->take(1)
+                ->pluck('pid') ;
+
+            DB::table('t_e_eventprocess')
+                ->insert([
+                    'pid' => $pid ,
+                    'eventid' => $_POST['eventid'],
+                    'state' => '0',
+                    'time' => date("Y-m-d H:i:s"),
+                ]);
         }catch (Exception $e){
             throw $e;
         }
@@ -1360,25 +1445,26 @@ class MyEnterpriseController extends Controller
      */
     public function applyVideo(){
         $cate = DB::table('t_common_domaintype')->get();
-        return view("myenterprise.applyVideo",compact("cate"));
+        $memberrights=DB::table("t_u_memberright")->where("memberid","<>",1)->get();
+        return view("myenterprise.applyVideo",compact("cate",'memberrights'));
     }
     /**保存申请的咨询
      * @return array
      */
-    public  function saveVideo(){
+    public  function saveVideo($data,$enterpriseId){
         $userId=session("userId");
         $result=array();
-        $domain=explode("/",$_POST['domain']);
+        $domain=explode("/",$data['domain']);
         DB::beginTransaction();
         try{
             $consultId=DB::table("t_c_consult")->insertGetId([
                 "userid"=>$userId,
                 "domain1"=>$domain[0],
                 "domain2"=>$domain[1],
-                "brief"=>$_POST['describe'],
-                "isRandom"=>$_POST['isAppoint'],
-                "starttime"=>$_POST['dateStart'],
-                "endtime"=>$_POST['dateEnd'],
+                "brief"=>$data['describe'],
+                "isRandom"=>$data['isAppoint'],
+                "starttime"=>$data['dateStart'],
+                "endtime"=>$data['dateEnd'],
                 "consulttime"=>date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time()),
@@ -1395,7 +1481,7 @@ class MyEnterpriseController extends Controller
             if($verify['icon'] == 2){
                 return $verify;
             } elseif ($verify['icon'] == 1){
-                $verify2 = PublicController::eventPutExpert('video',['consultid' => $consultId,'state' => $_POST['state'],'expertIds' => $_POST['expertIds']]);
+                $verify2 = PublicController::eventPutExpert('video',['consultid' => $consultId,'state' => $data['state'],'expertIds' => $data['expertIds'],'dateEnd'=>$data['dateEnd'],'dateStart'=>$data['dateStart']],'',$enterpriseId);
                 return $verify2;
             } else {
                 return ['msg' => '操作失败','icon' => 2];
@@ -1500,54 +1586,27 @@ class MyEnterpriseController extends Controller
         $expertIds=$_POST['expertIds'];
         $userId=$_POST['userId'];
         $consultId=$_POST['consultId'];
-        $consults=DB::table("t_c_consult")->where("consultid",$consultId)->first();
+        $consults=DB::table("t_c_consult")
+            ->leftJoin("t_c_consultverify","t_c_consult.consultid","=","t_c_consultverify.consultid")
+            ->select("t_c_consult.starttime","t_c_consult.endtime","t_c_consultverify.payflag")
+            ->where(["t_c_consult.consultid"=>$consultId,"configid"=>5])
+            ->orderBy("t_c_consultverify.id","desc")
+            ->take(1)
+            ->first();
         $startTimes=strtotime($consults->starttime);
         $endTimes=strtotime($consults->endtime);
         $timeLong=($endTimes-$startTimes)/60;
-        $times=round($timeLong/env('Time'));
         foreach ($expertIds as $value){
             $values=explode("/",$value);
-            $expertMoney=$expertMoney+$values[1]*$times;
+            $expertMoney=$expertMoney+$values[1]*$timeLong;
         }
-        $consultMoney=env('Money')*$times;
-        $totalMoney=$expertMoney+$consultMoney;
-        $account=\UserClass::getMoney($userId);
-        if($account>$totalMoney){
+        if($consults->payflag==0){
+            $result['code']="noMoney";
+            $result['money']=$expertMoney;
+            return $result;
+        }else{
             DB::beginTransaction();
             try{
-                foreach ($expertIds as $expertId){
-                    $selectedIds=explode("/",$expertId);
-                    $expertIDS[]=$selectedIds[0];
-                    $userId=DB::table("view_userrole")->where("expertid",$selectedIds[0])->pluck("userid");
-                    $payno=$this->getPayNum("消费");
-                    DB::table("t_u_bill")->insert([
-                        "userid"=>$userId,
-                        "type"=>"收入",
-                        "channel"=>"消费",
-                        "money"=>$selectedIds[1]*$times,
-                        "payno"=>$payno,
-                        "billtime"=>date("Y-m-d H:i:s",time()),
-                        "brief"=>"视频咨询收取费用，获取报酬",
-                        "consultid"=>$_POST['consultId'],
-                        "created_at"=>date("Y-m-d H:i:s",time()),
-                        "updated_at"=>date("Y-m-d H:i:s",time()),
-                    ]);
-                }
-                $paynos=$this->getPayNum("消费");
-                DB::table("t_u_bill")->insert([
-                    "userid"=>$_POST['userId'],
-                    "type"=>"支出",
-                    "channel"=>"消费",
-                    "money"=>$totalMoney,
-                    "payno"=>$paynos,
-                    "billtime"=>date("Y-m-d H:i:s",time()),
-
-                    "brief"=>"通过视频咨询支出费用",
-                    "consultid"=>$_POST['consultId'],
-                    "created_at"=>date("Y-m-d H:i:s",time()),
-                    "updated_at"=>date("Y-m-d H:i:s",time()),
-                ]);
-
                 $Ids=DB::table("T_C_CONSULTRESPONSE")
                     ->select('expertid')
                     ->where("consultid",$_POST['consultId'])
@@ -1571,7 +1630,7 @@ class MyEnterpriseController extends Controller
                             ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                             ->where('consultid',$_POST['consultId'])
                             ->pluck('enterprisename');
-                        $this->_sendSms($phone,'视频咨询','reselects',$name);
+                        $this->_sendSms($phone,'视频咨询','reselect',$name);
 
                     }else{
                         DB::table("T_C_CONSULTRESPONSE")->insert([
@@ -1602,10 +1661,7 @@ class MyEnterpriseController extends Controller
             }else{
                 $result['code']="error";
             }
-        }else{
-            $result['code']="noMoney";
         }
-
         return $result;
     }
     /*
@@ -2025,6 +2081,65 @@ class MyEnterpriseController extends Controller
                 }else{
                     //超过剩余使用次数 ，优惠充次
                     return ['icon'=>3,'code' => 6 ,'msg' => '没有可用次数 ，是否优惠充值','url' => '?'];
+                }
+            }
+        }
+    }
+
+    public function  consultCharge(){
+        $res=array();
+        $userId=session('userId');
+        $data=$_POST;
+        $enterprise=DB::table("t_u_enterprise")
+            ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
+            ->where("t_u_enterprise.userid",$userId)
+            ->orderBy("t_u_enterpriseverify.id","desc")
+            ->first();
+        if(empty($enterprise) || $enterprise->configid != 3){
+            return ['icon'=>3,'code' => 2,'msg' => '企业不存在或者未通过认证','url' => url('uct_member')];
+        }
+        $enterpriseid = DB::table('t_u_enterprise')
+            ->where('userid', $userId)
+            ->pluck('enterpriseid') ;
+        $ben = DB::table('t_u_enterprisemember')
+            ->where('enterpriseid', $enterpriseid)
+            ->get() ;
+        if(!$ben){
+            //不存在记录 202 开通会员操作
+            return ['icon'=>3,'code' => 3 ,'msg' => '您不是会员,请办理会员或充值单次收费'];
+        }
+        $datas = DB::table('t_u_enterprisemember')
+            ->leftJoin("t_u_memberright", "t_u_memberright.memberid", "=", "t_u_enterprisemember.memberid")
+            ->where('enterpriseid', $enterpriseid)
+            ->get() ;
+        //时间段
+        $time = (strtotime($data['dateStart']) - strtotime($data['dateEnd'])) / 60 ;
+        //判断是否是普通会员
+        if ($datas[0]->cost == 0){
+            if ($datas[0]->consultcount >= $time ){
+               // $this->time111($enterpriseid ,$payload ) ;
+                $benben = $this->saveVideo($data , $enterpriseid ) ;
+                return $benben ;
+            }else{
+                //小于时长  ，去充值
+                //return $this->response->array(["return_code" => 203]);
+                return ['icon'=>3,'code' => 4 ,'msg' => '剩余时间不够，请充值'];
+            }
+        }else{
+            //是否过期
+            $endTime = $datas[0] -> endtime ;
+            if($endTime <= date("Y-m-d H:i:s")){
+                //会员过期返回204
+               // return $this->response->array(["return_code" => 204]);
+                return ['icon'=>3,'code' => 5 ,'msg' => '您的会员已过期,是否续交会员'];
+            }else{
+                if ($datas[0]->consultcount >= $time ){
+                   // $this->time111($enterpriseid ,$payload ) ;
+                    $benben = $this->saveVideo($data , $enterpriseid ) ;
+                    return $benben ;
+                }else{
+                   // return $this->response->array(["return_code" => 205]);
+                    return ['icon'=>3,'code' => 6 ,'msg' => '没有可用时长 ，是否优惠充值','url' => '?'];
                 }
             }
         }

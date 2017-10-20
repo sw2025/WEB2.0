@@ -51,6 +51,8 @@
                     layer.confirm('可用金额不足，无法提现', {
                         btn: ['确定'] //按钮
                     });
+                    $(this).attr('disabled',false);
+                    $(this).html('提交申请');
                 }else{
                     $enterValPre=$leftNum;
                     $('.avai-money-sum').html(surplusMoney)
@@ -77,6 +79,8 @@
             }else{
                 $('.avai-money-sum').html($enterValPre)
                 alert("请输入提现金额")
+                $(this).attr('disabled',false);
+                $(this).html('提交申请');
             }
         });
     })

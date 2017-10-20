@@ -1,7 +1,7 @@
 @extends("layouts.ucenter")
 @section("content")
     {{--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">--}}
-    <script src="{{}}"></script>
+    <script ></script>
     <style>
         .btnclass{
             padding-right: 1px;
@@ -125,9 +125,9 @@
             }
             var tinterval=setInterval(geteventnewstate,5000);
             @else
-
+            var url = '{{$configinfo[$lastpid->step-1]->documenturl}}';
                     geteventnewstate2 = function () {
-                $.post('{{url('ifeventupload')}}',{'eventid':eventid,'epid':epid,'state':state},function (data) {
+                $.post('{{url('ifeventupload')}}',{'eventid':eventid,'epid':epid,'state':state,'url':url},function (data) {
                     if(data.icon == 3){}else if(data.icon == 2){
                         layer.msg(data.msg,{'time':1000},function () {
                             window.location = '/';

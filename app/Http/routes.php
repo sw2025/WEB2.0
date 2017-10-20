@@ -235,7 +235,7 @@ Route::post('compareTime','MyEnterpriseController@compareTime');
 //申请视频咨询
     Route::get('uct_video/applyVideo', 'MyEnterpriseController@applyVideo');
 //保存视频咨询
-    Route::post('saveVideo', 'MyEnterpriseController@saveVideo');
+    Route::post('consultCharge', 'MyEnterpriseController@consultCharge');
 //申请视频咨询指定专家
     Route::get('uct_video/videoSelect', 'MyEnterpriseController@videoSelect');
 //视频咨询处理响应的专家

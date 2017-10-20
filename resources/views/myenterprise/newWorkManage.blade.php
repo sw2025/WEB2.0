@@ -285,7 +285,8 @@
                             $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
                             $.cookie("domain","",{path:'/',domain:'sw2025.com'});
                             $.cookie("describe","",{path:'/',domain:'sw2025.com'});
-                            $.cookie("industry","",{path:'/',domain:'sw2025.com'});
+                            //$.cookie("industry","",{path:'/',domain:'sw2025.com'});
+                            $.cookie("state","",{path:'/',domain:'sw2025.com'});
                             window.location.href="{{asset('uct_works/applyWork')}}";
                             break;
                         case "enterprise":
