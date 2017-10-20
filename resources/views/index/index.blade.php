@@ -149,10 +149,7 @@
 </div>
 <!-- section3 / end -->
 <script>
-    /*$(window).load(function(){
-        var height = $('.banner ul li img').height()
-        $('.banner ul').css('height', height+'px');
-    })*/
+
     $(function(){
 
 
