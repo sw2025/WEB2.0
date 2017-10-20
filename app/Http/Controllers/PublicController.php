@@ -922,8 +922,11 @@ class PublicController extends Controller
                     }
                     $expertcosts = DB::table('t_u_expertfee')->whereIn('expertid',$expids)->where('state',1)->select('fee')->get();
                     $cost = 0;
+                    $startTimes=strtotime($data['dateStart']);
+                    $endTimes=strtotime($data['dateEnd']);
+                    $timeLong=($endTimes-$startTimes)/60;
                     foreach($expertcosts as $fee){
-
+                        $cost += $fee->fee*$timeLong;
                     }
                     DB::table('t_c_consultverify')->insert([
                         'consultid' => $consultid,
@@ -935,7 +938,7 @@ class PublicController extends Controller
                     PublicController::reduceConsultCount($enterpriseId,$data['dateStart'],$data['dateEnd']);
                     DB::commit();
                     $expertsinfo = DB::table('t_u_expert')->whereIn('expertid',$expids)->select('expertname','showimage','expertid')->get();
-                    $msg = ['msg' => '恭喜您,视频咨询通过审核并推送到指定专家','icon' => 1,'expertsinfo' => $expertsinfo];
+                    $msg = ['msg' => '恭喜您,视频咨询通过审核并推送到指定专家。'.'您推送的专家所需的专家咨询费用一共 '.$cost.' 元(不包含该平台视频咨询费用)，系统将在您反选专家后会进行金额总结算。','icon' => 1,'expertsinfo' => $expertsinfo];
 
                 }catch(Exception $e){
                     DB::rollback();
