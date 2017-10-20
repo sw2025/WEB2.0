@@ -30,9 +30,8 @@
                             <div class="vid-man-top-lt vid-man-top-main">
                                 <div class="vid-man-top-con">
                                     <p class="vid-man-top-cat"><span class="light-color">分类：</span>{{$data->domain1.'/'.$data->domain2}}</p>
-                                    @foreach($comperes as $compere)
-                                    <p class="vid-man-top-cat"><span class="light-color">金额：</span>{{$compere->money}}</p>
-                                    @endforeach
+                                    <p class="vid-man-top-cat"><span class="light-color">金额：</span>{{$selectExpertMoney}}</p>
+
                                     <p class="vid-man-top-cat"><span class="light-color">开始时间：</span>{{$data->starttime}}</p>
                                     <p class="vid-man-top-cat"><span class="light-color">结束时间：</span>{{$data->endtime}}</p>
                                     <span class="light-color">描述：</span>

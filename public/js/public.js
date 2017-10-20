@@ -300,6 +300,7 @@ function checkLength(which) {
     }
 }
 function pop(str){
+    $(".normal").empty();
     $(".normal").append(str)
     $('.pop-pay').show();
 }
