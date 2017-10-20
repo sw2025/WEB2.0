@@ -22,7 +22,7 @@ class MyExpertController extends Controller
             ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
             ->orderBy('configid','desc')
             ->first();
-        //dd($result);
+/*        dd($result);*/
         if(!empty($result)) {
             if ($result->configid == 1) {
                 return redirect()->action('MyExpertController@expert2');

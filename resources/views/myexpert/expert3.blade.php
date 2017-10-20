@@ -32,10 +32,20 @@
                                         </div>
                                         <div class="datas-sel">
                                             <span class="datas-sel-cap">名称</span>
-                                            <input class="datas-sel-name" readonly="readonly" type="text" value="{{$data->expertname}}" style="color:#666;"/>
+                                            <input class="datas-sel-name" readonly="readonly" type="text" value="{{$data->expertname}}" style="color:#666;margin-left:50px;"/>
                                         </div>
                                         <div class="datas-sel zindex2">
-                                            <span class="datas-sel-cap">擅长领域</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->domain1}}-{{join('/',explode(',',$data->domain2))}}</a>
+                                            <span class="datas-sel-cap">擅长领域</span><a href="javascript:;" class="datas-sel-def verify-default">
+                                                @if($data->domain1=='找资金')
+                                                    投融资
+                                                @elseif($data->domain1=='找技术')
+                                                    科研技术
+                                                @elseif($data->domain1=='定战略')
+                                                    战略管理
+                                                @else
+                                                    市场资源
+                                                @endif
+                                                -{{join('/',explode(',',$data->domain2))}}/</a>
 
                                         </div>
                                         <div class="datas-sel zindex3">
@@ -57,6 +67,9 @@
                                 <div class="datas-rt htxt1">
                                     <textarea placeholder="请输入专家描述" readonly="readonly" cols="30" rows="10">{{$data->brief}}</textarea>
                                 </div>
+                            </div>
+                            <div class="bottom-btn">
+                                <button class="test-btn submit-audit" type="button">重新认证</button>
                             </div>
                         </div>
                     </div>
