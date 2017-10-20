@@ -2,7 +2,7 @@
 @section("content")
     <link rel="stylesheet" type="text/css" href="css/about.css" />
     <!-- banner / start -->
-    <div class="serve-banner banner-us"><img src="img/banner_us.jpg" /></div>
+    <div class="serve-banner banner-us">{{--<img src="img/banner_us.jpg" />--}}</div>
     <!-- banner / end -->
     <!-- 主体 / start -->
     <div class="serve-stage stage-us container">
@@ -206,8 +206,8 @@
     <!-- 平台合作机构/  end -->
     <script type="text/javascript">
         $(function(){
-            var height = $('.banner-us img').height();
-            $('.banner-us').css('height', height+'px');
+            /*var height = $('.banner-us img').height();
+            $('.banner-us').css('height', height+'px');*/
             var len = $('.core-list2 li').length;
             var wid1 = $('.core-item').width();
             var wid = $('.core-item').width() * len;
