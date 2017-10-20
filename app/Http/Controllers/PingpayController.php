@@ -43,10 +43,18 @@ class PingpayController extends Controller
             $orderNo = 'KT' . time() . mt_rand(1000,9999);
             $metadata=['payType'=>'member','memberId'=>$payload['memberId'],'userid'=>$user];
         }else if($payload['payType']=="payExpertMoney"){
+            $expertIDS=array();
             $amounts = $payload['amount'];
+            $selectExperts=$payload['expert'];
+            foreach ($selectExperts as $selectExpert){
+                $values=explode("/",$selectExpert);
+                if(!in_array($values,$expertIDS)){
+                    $expertIDS[]=$values[0];
+                }
+            }
             $amount=$amounts/100;
             $orderNo = 'CZ' . time() . mt_rand(1000,9999);
-            $metadata=['payType'=>'payExpertMoney','type'=>$payload['type'],'userid'=>$user['userid'],"expert"=>$payload['expert'],"consultid"=>$payload['consultid'],"chargeFrom"=>$payload['chargeFrom']];
+            $metadata=['payType'=>'payExpertMoney','type'=>$payload['type'],'userid'=>$user['userid'],"expert"=>$expertIDS,"consultid"=>$payload['consultid'],"chargeFrom"=>$payload['chargeFrom']];
         }else{
             if($payload['type']=="consult"){
                 $amounts = $payload['amount'];

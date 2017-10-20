@@ -90,6 +90,14 @@
     <script type="text/javascript">
         $(function(){
             var expertIds=new Array();
+            if($.cookie("selected")){
+                var selected=$.cookie("selected").split(',');
+                for(var i=0;i<selected.length;i++){
+                    var selectExpertId=selected[i].split('/');
+                    $("#"+selectExpertId[0]).addClass('current');
+                }
+                expertIds=$.cookie("selected").split(',');
+            }
             $('.closePop').click(function () {
                 $(this).closest('.layer-pop').hide();
                 $('.pop-pay').hide();
@@ -135,6 +143,9 @@
             $(".test-btn").on("click",function(){
                 var consultId=$("#consult").val();
                 var totalCount=0;
+                var date = new Date();
+                date.setTime(date.getTime() + (120 * 60 * 1000));
+                $.cookie("selected",expertIds,{expires:date,path:'/',domain:'sw2025.com'});
                 if(expertIds.length!=0){
                     $.ajax({
                         url:"{{asset('handleSelect')}}",
@@ -149,6 +160,9 @@
                                     pop(str);
                                 break;
                                 case "success":
+                                    var date = new Date();
+                                    date.setTime(date.getTime() + (120 * 60 * 1000));
+                                    $.cookie("selected","",{expires:date,path:'/',domain:'sw2025.com'});
                                     window.location.reload();
                                 break;
                                 case "error":
@@ -184,7 +198,6 @@
                     type:"POST",
                     success:function(res){
                         var charge =JSON.parse(res);
-                        console.log(charge);
                         $('#code').empty();
                         if(charge.credential.wx_pub_qr){
                             var qrcode = new QRCode('code', {

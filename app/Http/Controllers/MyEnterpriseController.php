@@ -1062,7 +1062,7 @@ class MyEnterpriseController extends Controller
             if($verify['icon'] == 2){
                 return $verify;
             } elseif ($verify['icon'] == 1){
-                $verify2 = PublicController::eventPutExpert('event',['eventid' => $eventId,'state' => $data['state'],'expertIds' => $data['expertIds'],$memberType,$enterpriseId]);
+                $verify2 = PublicController::eventPutExpert('event',['eventid' => $eventId,'state' => $data['state'],'expertIds' => $data['expertIds']],$memberType,$enterpriseId);
                 return $verify2;
             } else {
                 return ['msg' => '操作失败','icon' => 2];
@@ -1360,9 +1360,9 @@ class MyEnterpriseController extends Controller
         foreach ($datas as $data){
             $configId=$data->configid;
             if(!$counts){
+                $counts = $counts2;
                 $data->state="指定专家";
             }else{
-                $counts = $counts2;
                 $data->state="系统分配";
             }
             $data->starttime=date("Y年m月d日 H:i:s",strtotime($data->starttime));
@@ -1399,11 +1399,16 @@ class MyEnterpriseController extends Controller
                     ->where("t_c_consultresponse.state",3)
                     ->where("t_c_consultresponse.consultid",$consultId)
                     ->get();
-                $comperes=DB::table("t_u_bill")
-                    ->leftJoin("t_u_user","t_u_user.userid","=","t_u_bill.userid")
+                $ExpertMoneys=DB::table("t_u_bill")
                     ->where("t_u_bill.consultid",$consultId)
-                   ->where("t_u_bill.userid",$userId)
-                    ->get();
+                    ->where("type","收入")
+                    ->sum('money');
+                if($ExpertMoneys){
+                    $selectExpertMoney=$ExpertMoneys;
+                }else{
+                    $selectExpertMoney="免费";
+                }
+                $comperes=DB::table("t_u_user")->where("userid",session('userId'))->get();
                 break;
             case 7:
                 $selExperts=DB::table("t_c_consultresponse")
@@ -1438,7 +1443,7 @@ class MyEnterpriseController extends Controller
         $selected=!empty($selected)?$selected:"";
         $comperes=!empty($comperes)?$comperes:"";
         $view="video".$configId;
-        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId","comperes",'expertcost','selExperts2'));
+        return view("myenterprise.".$view,compact("datas","counts","selected","selExperts","consultId","userId","selectExpertMoney",'expertcost','selExperts2',"comperes"));
     }
     /**申请视频咨询
      * @return mixed
@@ -1598,9 +1603,12 @@ class MyEnterpriseController extends Controller
         $timeLong=($endTimes-$startTimes)/60;
         foreach ($expertIds as $value){
             $values=explode("/",$value);
+            if(!in_array($values,$expertIDS)){
+                $expertIDS[]=$values[0];
+            }
             $expertMoney=$expertMoney+$values[1]*$timeLong;
         }
-        if($consults->payflag==0){
+        if($consults->payflag==0 && $expertMoney ){
             $result['code']="noMoney";
             $result['money']=$expertMoney;
             return $result;
@@ -2113,7 +2121,7 @@ class MyEnterpriseController extends Controller
             ->where('enterpriseid', $enterpriseid)
             ->get() ;
         //时间段
-        $time = (strtotime($data['dateStart']) - strtotime($data['dateEnd'])) / 60 ;
+        $time = (strtotime($data['dateEnd']) - strtotime($data['dateStart'])) / 60 ;
         //判断是否是普通会员
         if ($datas[0]->cost == 0){
             if ($datas[0]->consultcount >= $time ){
@@ -2123,7 +2131,7 @@ class MyEnterpriseController extends Controller
             }else{
                 //小于时长  ，去充值
                 //return $this->response->array(["return_code" => 203]);
-                return ['icon'=>3,'code' => 4 ,'msg' => '剩余时间不够，请充值'];
+                return ['icon'=>3,'time'=>$time,'code' => 4 ,'msg' => '剩余时间不够，请充值'];
             }
         }else{
             //是否过期
@@ -2131,7 +2139,7 @@ class MyEnterpriseController extends Controller
             if($endTime <= date("Y-m-d H:i:s")){
                 //会员过期返回204
                // return $this->response->array(["return_code" => 204]);
-                return ['icon'=>3,'code' => 5 ,'msg' => '您的会员已过期,是否续交会员'];
+                return ['icon'=>3,'time'=>$time,'code' => 5 ,'msg' => '您的会员已过期,是否续交会员'];
             }else{
                 if ($datas[0]->consultcount >= $time ){
                    // $this->time111($enterpriseid ,$payload ) ;
@@ -2139,7 +2147,7 @@ class MyEnterpriseController extends Controller
                     return $benben ;
                 }else{
                    // return $this->response->array(["return_code" => 205]);
-                    return ['icon'=>3,'code' => 6 ,'msg' => '没有可用时长 ，是否优惠充值','url' => '?'];
+                    return ['icon'=>3,'time'=>$time,'code' => 6 ,'msg' => '没有可用时长 ，是否优惠充值','url' => '?'];
                 }
             }
         }

@@ -493,9 +493,9 @@
                         }, function(index){
                             var str;
                             if(res['code']==6){
-                                str="<span></span>单次缴费：￥<b class='money'>{{env('consultMemberMoney')}}</b>/{{env('Time')}} &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('consultMemberMoney')}}</b>/{{env('Time')}}分钟 &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
                             }else{
-                                str="<span></span>单次缴费：￥<b class='money'>{{env('Money')}}</b>/{{env('Time')}} &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('Money')}}</b>/{{env('Time')}}分钟 &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
                             }
                             pop(str);
                             layer.close(index);
