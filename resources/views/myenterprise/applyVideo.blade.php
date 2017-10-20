@@ -109,6 +109,7 @@
         <li><a style="margin-left: 80%;">升维网</a></li>
     </ul>
     <ul class="layer_image" style="display: none;">
+        <p style="color: #fff;padding: 5px 20px;"></p>
         <li>
         </li>
     </ul>
@@ -453,7 +454,7 @@
                         $.cookie("state","",{expires:date,path:'/',domain:'sw2025.com'});
                         /*$.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});*/
                         if(state == 0){
-                            layer.msg(res.msg,{'icon':6},function () {
+                            layer.msg(res.msg,{'icon':6,'time':5000},function () {
                                 window.location = '{{url('uct_video')}}';
                             });
                         } else {
@@ -463,11 +464,12 @@
                                 str += '<a href={{url("expert/detail")}}/'+obj[i]['expertid']+' target="_blank"><img src="{{env('ImagePath')}}'+obj[i]['showimage']+'"><span>'+obj[i]['expertname']+'</span></a>';
                             }
                             $('.layer_image li').append(str);
+                            $('.layer_image p').append(res.msg);
                             layer.open({
                                 type: 1,
                                 shade: false,
-                                area: ['695px', '210px'], //宽高
-                                title: res.msg+',以下的是专家的相关信息', //不显示标题
+                                area: ['695px', '240px'], //宽高
+                                title: '恭喜您，以为您推送到专家，以下的是专家的相关信息', //不显示标题
                                 content: $('.layer_image'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                                 cancel: function(){
                                     window.location.href="{{asset('uct_video')}}";
