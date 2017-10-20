@@ -6,8 +6,8 @@
 <div class="section">
     <div class="container list-bg">
         <form action="" onsubmit="return false">
-            <a href="javascript:;" class="releaseNeed">发布需求</a>
-            <div class="list-search">
+            <div class="releaseNeed"><a href="javascript:;">发布需求</a></div>
+            <div class="list-search p15">
                 <input type="text" class="list-search-inp"  placeholder="请输入要搜索的需求信息关键字" value="{{$searchname or null}}"/>
                 <button type="button" class="list-search-btn"><i class="iconfont icon-sousuo"></i></button>
             </div>
