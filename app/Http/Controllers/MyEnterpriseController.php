@@ -2135,7 +2135,7 @@ class MyEnterpriseController extends Controller
             }else{
                 if ($datas[0]->consultcount >= $time ){
                    // $this->time111($enterpriseid ,$payload ) ;
-                    $benben = $this->publishVideo($data , $enterpriseid ) ;
+                    $benben = $this->saveVideo($data , $enterpriseid ) ;
                     return $benben ;
                 }else{
                    // return $this->response->array(["return_code" => 205]);
