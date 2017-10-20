@@ -37,9 +37,12 @@
                 "type":"POST",
                 success:function(res){
                     if(res['code']=="success"){
-                        layer.msg("验证成功");
                         $("#money").val(money);
                         $(".test-btn").hide();
+                        layer.msg("验证成功",function () {
+                            window.location = '{{url('uct_recharge')}}';
+                        });
+
                     }else{
                         layer.msg("验证失败");
                     }
