@@ -22,9 +22,10 @@
                     <!-- 已上传银行卡start -->
 
                     <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: block"@else style="display: none" @endif>
-                        <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待审核)@elseif($state==4)(待验证)@endif</em>{{$bankcard}}
-                            @if($state==4)<a class="gototest" href="{{asset('uct_recharge/card2')}}"><button type="button">去验证</button></a>@endif
-                        </div>
+
+                        <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待系统审核)@elseif($state==4)(待打款验证)@endif</em>{{$bankcard}}</div>
+                        @if($state==4)<a href="{{asset('recharge/card2')}}"><button type="button">去验证</button></a>@endif
+
                         <span class="delete-card" title="删除"><i class="iconfont icon-chahao"></i></span>
                     </div>
                     <!-- 已上传银行卡end -->
@@ -105,6 +106,7 @@
         }
         var type=$("#moneyList").text();
         var startPage=1;
+
         returnRecord(type,startPage,"专家");
         function pageselectCallback(page_index,jq){
              var startPage=parseInt(page_index)+1;
