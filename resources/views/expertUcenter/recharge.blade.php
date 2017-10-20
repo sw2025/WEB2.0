@@ -22,8 +22,10 @@
                     <!-- 已上传银行卡start -->
 
                     <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: block"@else style="display: none" @endif>
+
                         <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待系统审核)@elseif($state==4)(待打款验证)@endif</em>{{$bankcard}}</div>
                         @if($state==4)<a href="{{asset('recharge/card2')}}"><button type="button">去验证</button></a>@endif
+
                         <span class="delete-card" title="删除"><i class="iconfont icon-chahao"></i></span>
                     </div>
                     <!-- 已上传银行卡end -->
@@ -41,7 +43,6 @@
                     <span class="money-cate-fr-cap">类型</span><a href="javascript:;" class="money-cate-def" id="moneyList">收入</a>
                     <ul class="money-cate-list" id="cateList">
                         <li>收入</li>
-                        <li>支出</li>
                         <li>在途</li>
                     </ul>
                 </div>
@@ -76,7 +77,9 @@
             $("#tbody").empty();
             $.ajax({
                 url:"{{asset('getRecord')}}",
+
                 data:{"startPage":startPage,"type":type,'role':role},
+
                 dateType:"json",
                 type:"POST",
                 success:function(res){
@@ -103,16 +106,18 @@
         }
         var type=$("#moneyList").text();
         var startPage=1;
-        returnRecord(type,startPage,'专家');
+
+        returnRecord(type,startPage,"专家");
         function pageselectCallback(page_index,jq){
              var startPage=parseInt(page_index)+1;
              var type=$("#moneyList").text();
-             returnRecord(type,startPage,'专家')
+             returnRecord(type,startPage,"专家")
          }
         $("#cateList").on("click","li",function(){
             var type=$(this).text();
             var startPage=1;
-            returnRecord(type,startPage,'专家')
+
+            returnRecord(type,startPage,"专家")
         })
 
     })

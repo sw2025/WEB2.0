@@ -850,11 +850,11 @@ class CenterController extends Controller
         $userId=session("userId");
         $result=array();
         if($role=="企业"){
-            $counts=DB::table("T_U_BILL")->where("userid",$userId)->whereIn("type",['支出','开通会员'])->where("payflag",1)->count();
-            $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->whereIn("type",['支出','开通会员'])->where("payflag",1)->skip($offset)->take(10)->get();
+            $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("type",$type)->where("payflag",1)->count();
+            $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("type",$type)->where("payflag",1)->skip($offset)->take(10)->get();
         }else{
-            $counts=DB::table("T_U_BILL")->where("userid",$userId)->wherein("type",['收入','在途'])->where("payflag",1)->count();
-            $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->whereIn("type",['收入','在途'])->where("payflag",1)->skip($offset)->take(10)->get();
+            $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("type",$type)->where("payflag",1)->count();
+            $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("type",$type)->where("payflag",1)->skip($offset)->take(10)->get();
         }
         $counts=!empty(ceil($counts/10))?ceil($counts/10):0;
         foreach ($datas as $data){
