@@ -200,7 +200,6 @@
                 $("#appoint").addClass('active');
                 $("#random").removeClass('active')
             }
-            alert($.cookie('state'));
             if($.cookie('state')){
                 if($.cookie('state')==1){
                     $("#appoint").removeClass('active');

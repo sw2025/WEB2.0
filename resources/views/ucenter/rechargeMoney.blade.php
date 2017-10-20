@@ -57,7 +57,7 @@
             var memberId;
             var channel;
             var payType="member"
-            var urlType=window.location.href;
+            var urlType="https://www.sw2025.com/uct_recharge";
             $(".member").each(function(){
                 if($(this).hasClass('focus')){
                     memberId=$(this).attr("memberId");
