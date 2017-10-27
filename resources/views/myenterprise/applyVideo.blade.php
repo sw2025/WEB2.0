@@ -115,7 +115,7 @@
     </ul>
     <div class="pop-pay">
         <div class="payoff">
-            <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
+            <span class="pay-close"  title="关闭"><i class="iconfont icon-chahao"></i></span>
             <div class="single">
                 <div class="single-two">
                 <span class="single-opt pay-opt" id="singlePay">
@@ -476,7 +476,6 @@
                                 }
                             });
                         }
-
                     }else if(res['icon'] == 2){
                         $(".publ-need-sel-def").text(domain);
                         $(".uct-works-txt").val(describe);
@@ -494,6 +493,9 @@
                             icon:0,
                         }, function(index){
                             var str;
+                            if(res['code']==2){
+                                window.location.href="/"+res['url'];
+                            }
                             if(res['code']==6){
                                 str="<span></span>单次缴费：￥<b class='money'>{{env('consultMemberMoney')}}</b>/{{env('Time')}}分钟 &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
                             }else{
