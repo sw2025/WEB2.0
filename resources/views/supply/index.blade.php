@@ -170,7 +170,7 @@
             });
             return false;
         }
-        if($.cookie('role')=="企业"){
+        if($.cookie('role')=="企业" || $.cookie('role')=="专家企业"){
             $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
                 if(data.type == 3){
                     layer.msg(data.msg,{'icon':data.icon});

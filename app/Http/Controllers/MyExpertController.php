@@ -187,12 +187,11 @@ class MyExpertController extends Controller
             $datas2 = $obj
                 ->where(['res.expertid' => $expertid])
                 ->whereIn('status.configid',[5,6,7,8,9])
-                ->where('res.state','<>',5)
                 ->orderBy('res.id','desc')
                 ->paginate(6);
             //调用eventclass中的方法进行对象的处理
-            $datas = \EventClass::handelObj($datas);
-            $datas2 = \EventClass::handelObj($datas2);
+            $datas = \EventClass::handelObj2($datas);
+            $datas2 = \EventClass::handelObj2($datas2);
             //ajax请求判定返回指定的对象
             if($request->ajax()){
                 $action = $request->input()['action'];
@@ -223,11 +222,24 @@ class MyExpertController extends Controller
             ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
             ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
             ->where(['event.eventid' => $eventid,'expertid' => $expertid])
-            ->select('event.*','ent.enterprisename','res.expertid','status.configid')
+            ->whereRaw('res.id in (select max(id) from t_e_eventresponse group by eventid,expertid)')
+            ->select('event.*','ent.enterprisename','res.expertid','status.configid','res.state')
             ->first();
         $selExperts=DB::table("t_u_enterprise")
             ->where('userid',$datas->userid)
             ->first();
+
+        if(!empty($datas) && $datas->configid != 9 && $datas->state == 5){
+            $selExperts2=DB::table("t_e_eventresponse")
+                ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
+                ->where("t_u_expert.expertid",$expertid)
+                ->where("eventid",$eventid)
+                ->first();
+            $remark = DB::table('t_e_eventverify')
+                ->where("t_e_eventverify.eventid",$eventid)
+                ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')->first();
+            return view("myexpert.workDetailFaild",compact('datas','selExperts','eventid','selExperts2','remark'));
+        }
         if(!$datas){
             return redirect('/');
         } elseif ($datas->configid == 6 || $datas->configid == 8 || $datas->configid == 7 || $datas->configid == 9){
@@ -352,11 +364,10 @@ class MyExpertController extends Controller
         $datas2 = $obj
             ->where(['res.expertid' => $expertid])
             ->whereIn('status.configid',[5,6,7,8,9])
-            ->where('res.state','<>',5)
             ->orderBy('res.id','desc')
             ->paginate(6);
-        $datas = \ConsultClass::handelObj($datas);
-        $datas2 = \ConsultClass::handelObj($datas2);
+        $datas = \ConsultClass::handelObj2($datas);
+        $datas2 = \ConsultClass::handelObj2($datas2);
         if($request->ajax()){
             $action = $request->input()['action'];
             if(!$action){
@@ -397,8 +408,23 @@ class MyExpertController extends Controller
             ->leftJoin('t_u_enterprise as ent','t_c_consult.userid','=','ent.userid')
             ->where(['t_c_consult.consultid'=>$consultId,'res.expertid'=>$expertid->expertid])
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
+            ->whereRaw('res.id in (select max(id) from t_c_consultresponse group by consultid,expertid)')
             ->select('t_c_consult.*','res.*','ent.*','t_c_consultverify.*','t_c_consult.brief')
             ->first();
+        if(!empty($datas) && $datas->configid != 9 && $datas->state == 5){
+            $selExperts=DB::table("t_u_enterprise")
+                ->where('userid',$datas->userid)
+                ->first();
+            /*$selExperts2=DB::table("t_c_consultresponse")
+                ->leftJoin("t_u_expert","t_c_consultresponse.consultid","=","t_u_expert.expertid")
+                ->where("t_u_expert.expertid",$expertid->expertid)
+                ->where("consultid",$consultId)
+                ->first();*/
+            $remark = DB::table('t_c_consultverify')
+                ->where("t_c_consultverify.consultid",$consultId)
+                ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')->first();
+            return view("myexpert.askDetailFaild",compact('datas','selExperts','consultId','selExperts2','remark','expertid'));
+        }
         switch ($consultStatus){
             case 4:
                 $token = Crypt::encrypt(session('userId'));

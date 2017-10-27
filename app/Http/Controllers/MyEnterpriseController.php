@@ -662,7 +662,7 @@ class MyEnterpriseController extends Controller
                             'eventid' => $data['eventid'],
                             'expertid' => $eventexpert->expertid,
                             'responsetime' => date('Y-m-d H:i:s',time()),
-                            'state' => 4,
+                            'state' => 5,
                             'updated_at' => date('Y-m-d H:i:s',time())
                         ]);
 
@@ -1185,7 +1185,7 @@ class MyEnterpriseController extends Controller
             ]);
 
             $domain1 = DB::table('t_e_event')
-                ->where('eventid' , $_POST['eventid'])
+                ->where('eventid' , $_POST['eventId'])
                 ->pluck('domain1') ;
 
             $pid = DB::table('t_e_eventprocessconfig')
@@ -1197,7 +1197,7 @@ class MyEnterpriseController extends Controller
             DB::table('t_e_eventprocess')
                 ->insert([
                     'pid' => $pid ,
-                    'eventid' => $_POST['eventid'],
+                    'eventid' => $_POST['eventId'],
                     'state' => '0',
                     'time' => date("Y-m-d H:i:s"),
                 ]);
@@ -1684,7 +1684,7 @@ class MyEnterpriseController extends Controller
             $state=4;
         }else{
             $configId=9;
-            $state=4;
+            $state=5;
         }
         $res=array();
         DB::beginTransaction();
@@ -1793,15 +1793,26 @@ class MyEnterpriseController extends Controller
     public function manage(){
         $userId=session('userId');
 
-        $type=isset($_GET['domain'])?$_GET['domain']:"全部";
-        $typeWhere=($type!="全部")?array("t_e_event.domain1"=>$type):array();
+        $type=isset($_GET['domain'])?$_GET['domain']:"全部办事";
+        /*if($type != '正常办事' && $type != '失效办事'){
+            $typeWhere = array("t_e_event.domain1"=>$type);
+            $configids = [4,5,6,7,8,9];
+        } else if($type == '失效办事'){
+            $typeWhere = ['t_e_eventverify.configid' => 9];
+            $configids = [4,5,6,7,8,9];
 
+        } else{
+            $typeWhere = [];
+            $configids = [4,5,6,7,8];
+        }*/
+        $typeWhere = ($type=='全部办事')?[]:["t_e_event.domain1"=>$type];
+        $configids = [4,5,6,7,8,9];
             $result=DB::table("t_e_event")
             ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
             ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
             ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
             ->where("t_e_event.userid",$userId)
-            ->whereIn('t_e_eventverify.configid',[4,5,6,7,8,9])
+            ->whereIn('t_e_eventverify.configid',$configids)
             ->where($typeWhere);
         $count=clone $result;
         $datas=$result->orderBy("t_e_event.created_at","desc")->paginate(6);

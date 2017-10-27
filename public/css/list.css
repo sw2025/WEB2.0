@@ -89,8 +89,22 @@ body{background: #f8f8f8;}
     .supp-list-brief{margin-left: 120px;}
 }
 .list-bg{position: relative;}
-.releaseNeed{position: absolute;top: 10px;left: 10px;}
 /*.p15{padding:15px 0 0;}*/
 /*.p15 .list-search-btn{top:15px;}*/
-.releaseNeed a{color: #fff;display: block;background: #00a7ed;padding: 0 5px;border-radius: 3px;}
-
+.releaseNeed {
+    position: absolute;
+    top: 30%;
+    left: 1%;
+}
+.releaseNeed a {
+    color: #fff;
+    display: block;
+    background: #00a7ed;
+    padding: 0 5px;
+    border-radius: 3px;
+    width: 96px;
+    height: 40px;
+    line-height: 38px;
+    font-size: 16px;
+    text-align: center;
+}

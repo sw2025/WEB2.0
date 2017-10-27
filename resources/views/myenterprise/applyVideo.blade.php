@@ -454,8 +454,22 @@
                         $.cookie("state","",{expires:date,path:'/',domain:'sw2025.com'});
                         /*$.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});*/
                         if(state == 0){
-                            layer.msg(res.msg,{'icon':6,'time':5000},function () {
+                            /*layer.msg(res.msg,{'icon':6,'time':5000},function () {
                                 window.location = '{{url('uct_video')}}';
+                            });*/
+                            layer.open({
+                                type: 1,
+                                shade: 0.6,
+                                title: '已为您推送到指定专家,30秒后自动跳转', //不显示标题
+                                content: '<div style=padding:10px;background:#5FB878;color:#fff;>'+res.msg+'</div>', //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                                time:30000,
+                                cancel: function(index,layero){
+                                    window.location = '{{url('uct_video')}}';
+                                },
+                                end:function () {
+                                    window.location = '{{url('uct_video')}}';
+                                }
+
                             });
                         } else {
                             var str = '';

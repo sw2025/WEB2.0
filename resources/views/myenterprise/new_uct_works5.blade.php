@@ -1,7 +1,7 @@
 @extends("layouts.ucenter")
 @section("content")
     {{--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">--}}
-    <script ></script>
+    <script src="{{asset('./js/jqueryform.js')}}"></script>
     <style>
         .btnclass{
             padding-right: 1px;
@@ -158,11 +158,10 @@
                     <div class="main-right v-step-box">
                         <div class="card-step works-step">
                             <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
-                            <span class="green-circle">2</span>办事审核<span class="card-step-cap">&gt;</span>
-                            <span class="green-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
-                            <span class="green-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-                            <span class="green-circle">5</span>办事管理<span class="card-step-cap">&gt;</span>
-                            <span class="gray-circle">6</span>完成
+                            <span class="green-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
+                            <span class="green-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
+                            <span class="green-circle">4</span>办事管理<span class="card-step-cap">&gt;</span>
+                            <span class="green-circle">5</span>完成
                         </div>
                         <input type="hidden" id="eventId" value="{{$datas->eventid}}" >
                         <div class="uct-video-manage">
