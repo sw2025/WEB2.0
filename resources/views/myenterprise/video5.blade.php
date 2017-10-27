@@ -27,7 +27,6 @@
                     @foreach($datas as $data)
                     <div class="mywork-det-txt uct-works-known">
                         <span class="mywork-det-tit"><em class="light-color">分类：</em>{{$data->domain1.'/'.$data->domain2}}</span>
-                        <span class="mywork-det-tit"><em class="light-color">金额：</em>{{$expertcost}} /分钟</span>
                         <span class="mywork-det-tit"><em class="light-color">开始时间：</em>{{$data->starttime}}</span>
                         <span class="mywork-det-tit"><em class="light-color">结束时间：</em>{{$data->endtime}}</span>
                         <div class="mywork-det-desc">

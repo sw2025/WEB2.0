@@ -1171,6 +1171,7 @@ class MyEnterpriseController extends Controller
                         'eventid' => $_POST['eventId'],
                         'expertid' =>$v->expertid,
                         "state"=>5,
+                        'remark'=>"您未被企业邀请",
                         'responsetime' => date("Y-m-d H:i:s"),
                         "updated_at"=>date("Y-m-d H:i:s")
                     ]);
@@ -1645,6 +1646,7 @@ class MyEnterpriseController extends Controller
                             "consultid"=>$_POST['consultId'],
                             "state"=>5,
                             "expertid"=>$ID->expertid,
+                            'remark'=>"您未被企业邀请",
                             "responsetime"=>date("Y-m-d H:i:s",time()),
                             "created_at"=>date("Y-m-d H:i:s",time()),
                             "updated_at"=>date("Y-m-d H:i:s")
@@ -1684,7 +1686,7 @@ class MyEnterpriseController extends Controller
             $state=4;
         }else{
             $configId=9;
-            $state=4;
+            $state=5;
         }
         $res=array();
         DB::beginTransaction();
@@ -2112,16 +2114,16 @@ class MyEnterpriseController extends Controller
         $ben = DB::table('t_u_enterprisemember')
             ->where('enterpriseid', $enterpriseid)
             ->get() ;
+        //时间段
+        $time = (strtotime($data['dateEnd']) - strtotime($data['dateStart'])) / 60 ;
         if(!$ben){
             //不存在记录 202 开通会员操作
-            return ['icon'=>3,'code' => 3 ,'msg' => '您不是会员,请办理会员或充值单次收费'];
+            return ['icon'=>3,'time'=>$time,'code' => 3 ,'msg' => '您不是会员,请办理会员或充值单次收费'];
         }
         $datas = DB::table('t_u_enterprisemember')
             ->leftJoin("t_u_memberright", "t_u_memberright.memberid", "=", "t_u_enterprisemember.memberid")
             ->where('enterpriseid', $enterpriseid)
             ->get() ;
-        //时间段
-        $time = (strtotime($data['dateEnd']) - strtotime($data['dateStart'])) / 60 ;
         //判断是否是普通会员
         if ($datas[0]->cost == 0){
             if ($datas[0]->consultcount >= $time ){
@@ -2147,7 +2149,7 @@ class MyEnterpriseController extends Controller
                     return $benben ;
                 }else{
                    // return $this->response->array(["return_code" => 205]);
-                    return ['icon'=>3,'time'=>$time,'code' => 6 ,'msg' => '没有可用时长 ，是否优惠充值','url' => '?'];
+                    return ['icon'=>3,'time'=>$time,'code' => 6 ,'msg' => '没有可用时长 ，是否优惠充值'];
                 }
             }
         }

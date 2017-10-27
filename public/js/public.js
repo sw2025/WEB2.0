@@ -284,6 +284,8 @@ $(function(){
     });
     // 关闭
     $('.pay-close').click(function(){
+        $('.submit-audit').attr('disabled',false);
+        $('.submit-audit').html('提交审核');
         $('.pop-pay').hide()
     })
 // 个人中心=======》我的需求和专家资源end
