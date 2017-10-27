@@ -254,7 +254,7 @@
                 window.location.href="{{asset('uct_expert')}}";
                 break;
             case "发布需求":
-                    if($.cookie('role')=="企业"){
+                    if($.cookie('role')=="企业" || $.cookie('role')=="专家企业"){
 
                         $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
                             if(data.type == 3){

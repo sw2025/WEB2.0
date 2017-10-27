@@ -105,7 +105,7 @@
             type:"POST",
             success:function(res){
                 if(res['code']=="success"){
-                    window.location.href="{{asset('uct_recharge/card2')}}"
+                    window.location.href="{{asset('uct_recharge')}}"
                 }else{
                     layer.msg("提交失败")
                 }

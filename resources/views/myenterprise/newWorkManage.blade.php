@@ -130,7 +130,8 @@
     <div class="vmain-manage-list clearfix">
         <div class="v-works-manage-list-top clearfix">
             <div class="v-works-mlt-select">
-                <a href="javascript:;" class="v-works-mlt-opt @if(!$type || $type == '全部') active @endif">全部</a>
+                <a href="javascript:;" class="v-works-mlt-opt @if(!$type || $type == '全部办事') active @endif">全部办事</a>
+                {{--<a href="javascript:;" class="v-works-mlt-opt @if(!$type || $type == '失效办事') active @endif">失效办事</a>--}}
                 @foreach($domains as $value)
                     <a href="javascript:;" class="v-works-mlt-opt @if($type && $type ==$value->domainname) active @endif">{{$value->domainname}}</a>
                 @endforeach

@@ -47,8 +47,8 @@
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
                     // console.log(file.name);
-                    $("#avatar").attr('src','../../swUpload/images/'+file.name).show();
-                    $("#myAvatar").val(file.name);
+                    $("#avatar").attr('src','{{env('ImagePath')}}/images/'+file.name).show();
+                    $("#myAvatar").val('/images/'+file.name);
                 });
             }
         });

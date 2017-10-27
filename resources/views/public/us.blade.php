@@ -19,7 +19,13 @@
         <div class="who">
             <span class="us-cap">我们是谁</span>
             <div class="about-desc">
-                升维网（www.sw2025.com）技术推广、技术转让、技术咨询；基础软件服务；应用软件服务；企业策划、设计；市场调查；企业管理咨询。（企业依法自主选择经营项目，开展经营活动；是为广大中小企业提供资源精准对接，以解决实际问题为导向，为广大中小型企业的转型升级提供一站式服务的大型平台。我们以帮助企业精准对接资源为目标，以为企业办实事、解难题为导向，通过升维网平台的运作，帮助广大企业有组织、系统、高效地利用外部资源，并将这些资源转化成企业的核心竞争力。
+                升维网（www.sw2025.com）是为广大中小企业提供资源精准对接，以解决实际问题为导向，为广大中小企业的转型升级提供一站式服务的的大型平台。
+                <br />
+                公司目标：帮助中小企业解决转型升级中遇到的四大瓶颈问题。
+                <br />
+                公司理念：帮助企业持续、高效、有组织地利用外部资源，并将这些外部资源提升整合为企业成长的一个新的维度亦即“升维”，从而极大地提高企业的竞争力，推动企业转型升级。
+                <br />
+                公司愿景：以帮助企业“找资源、办实事”为己任，打造一个能够帮助中小企业建立整合资源，高效利用资源的服务系统。
             </div>
         </div>
     </div>
@@ -97,69 +103,69 @@
                     </li>
 
                     <li class="core-item">
-                        <img src="{{env('ImagePath')}}/images/luopengfei.jpg" class="core-pic" title="" />
+                        <img src="{{env('ImagePath')}}/images/???jpg" class="core-pic" title="" />
                         <div class="core-hover">
                             <div class="core-top">
-                                <strong>胖大海</strong>
-                                <span class="job2">CEO</span>
+                                <strong>升维网</strong>
+                                <span class="job2">升维网</span>
                             </div>
-                            <img src="{{env('ImagePath')}}/images/luopengfei2.jpg" class="core-img2" />
-                            <p class="core-desc">技术推广、技术转让、技术咨询；基础软件服务；应用软件服务；企业策划、设计；市场调查；企业管理咨询。（企业依法自主选择经营项目，开展经营活动；</p>
+                            <img src="{{env('ImagePath')}}/images/???.jpg" class="core-img2" />
+                            <p class="core-desc">升维网</p>
                         </div>
                     </li>
                     <li class="core-item">
-                        <img src="{{env('ImagePath')}}/images/luopengfei2.jpg" class="core-pic" title="" />
+                        <img src="{{env('ImagePath')}}/images/???.jpg" class="core-pic" title="" />
                         <div class="core-hover">
                             <div class="core-top">
-                                <strong>胖大海</strong>
-                                <span class="job2">CEO</span>
+                                <strong>升维网</strong>
+                                <span class="job2">升维网</span>
                             </div>
-                            <img src="{{env('ImagePath')}}/images/luopengfei3.jpg" class="core-img2" />
-                            <p class="core-desc">技术推广、技术转让、技术咨询；基础软件服务；应用软件服务；企业策划、设计；市场调查；企业管理咨询。（企业依法自主选择经营项目，开展经营活动；</p>
+                            <img src="{{env('ImagePath')}}/images/???.jpg" class="core-img2" />
+                            <p class="core-desc">升维网</p>
                         </div>
                     </li>
                     <li class="core-item">
-                        <img src="{{env('ImagePath')}}/images/luopengfei2.jpg" class="core-pic" title="" />
+                        <img src="{{env('ImagePath')}}/images/???.jpg" class="core-pic" title="" />
                         <div class="core-hover">
                             <div class="core-top">
-                                <strong>胖大海</strong>
-                                <span class="job2">CEO</span>
+                                <strong>升维网</strong>
+                                <span class="job2">升维网</span>
                             </div>
-                            <img src="{{env('ImagePath')}}/images/luopengfei3.jpg" class="core-img2" />
-                            <p class="core-desc">技术推广、技术转让、技术咨询；基础软件服务；应用软件服务；企业策划、设计；市场调查；企业管理咨询。（企业依法自主选择经营项目，开展经营活动；</p>
+                            <img src="{{env('ImagePath')}}/images/???.jpg" class="core-img2" />
+                            <p class="core-desc">升维网</p>
                         </div>
                     </li>
                     <li class="core-item">
-                        <img src="{{env('ImagePath')}}/images/luopengfei2.jpg" class="core-pic" title="" />
+                        <img src="{{env('ImagePath')}}/images/???.jpg" class="core-pic" title="" />
                         <div class="core-hover">
                             <div class="core-top">
-                                <strong>胖大海</strong>
-                                <span class="job2">CEO</span>
+                                <strong>升维网</strong>
+                                <span class="job2">升维网</span>
                             </div>
-                            <img src="{{env('ImagePath')}}/images/luopengfei3.jpg" class="core-img2" />
-                            <p class="core-desc">技术推广、技术转让、技术咨询；基础软件服务；应用软件服务；企业策划、设计；市场调查；企业管理咨询。（企业依法自主选择经营项目，开展经营活动；</p>
+                            <img src="{{env('ImagePath')}}/images/???.jpg" class="core-img2" />
+                            <p class="core-desc">升维网</p>
                         </div>
                     </li>
                     <li class="core-item">
-                        <img src="{{env('ImagePath')}}/images/luopengfei2.jpg" class="core-pic" title="" />
+                        <img src="{{env('ImagePath')}}/images/???.jpg" class="core-pic" title="" />
                         <div class="core-hover">
                             <div class="core-top">
-                                <strong>胖大海</strong>
-                                <span class="job2">CEO</span>
+                                <strong>升维网</strong>
+                                <span class="job2">升维网</span>
                             </div>
-                            <img src="{{env('ImagePath')}}/images/luopengfei3.jpg" class="core-img2" />
-                            <p class="core-desc">技术推广、技术转让、技术咨询；基础软件服务；应用软件服务；企业策划、设计；市场调查；企业管理咨询。（企业依法自主选择经营项目，开展经营活动；</p>
+                            <img src="{{env('ImagePath')}}/images/???.jpg" class="core-img2" />
+                            <p class="core-desc">升维网</p>
                         </div>
                     </li>
                     <li class="core-item">
-                        <img src="{{env('ImagePath')}}/images/luopengfei2.jpg" class="core-pic" title="" />
+                        <img src="{{env('ImagePath')}}/images/???.jpg" class="core-pic" title="" />
                         <div class="core-hover">
                             <div class="core-top">
-                                <strong>胖大海</strong>
-                                <span class="job2">CEO</span>
+                                <strong>升维网</strong>
+                                <span class="job2">升维网</span>
                             </div>
-                            <img src="{{env('ImagePath')}}/images/luopengfei3.jpg" class="core-img2" />
-                            <p class="core-desc">技术推广、技术转让、技术咨询；基础软件服务；应用软件服务；企业策划、设计；市场调查；企业管理咨询。（企业依法自主选择经营项目，开展经营活动；</p>
+                            <img src="{{env('ImagePath')}}/images/???.jpg" class="core-img2" />
+                            <p class="core-desc">升维网</p>
                         </div>
                     </li>
                 </ul>
