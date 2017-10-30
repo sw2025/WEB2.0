@@ -733,6 +733,7 @@ class CenterController extends Controller
      * @return array
      */
     public function changeBasics(){
+        dd(1);
         $nickName=!empty($_POST['nickName'])?$_POST['nickName']:"";
         $avatar=!empty($_POST['myAvatar'])?$_POST['myAvatar']:"/images/avatar.jpg";
         $userId=$_POST["userId"];
