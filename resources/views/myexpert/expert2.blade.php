@@ -35,7 +35,7 @@
                                             <span class="datas-sel-cap">名称</span>
                                             <input class="datas-sel-name" readonly="readonly" type="text" value="{{$data->expertname}}" style="color:#666;margin-left:50px;"/>
                                         </div>
-                                        <div class="datas-sel zindex2">
+                                        <div class="datas-sel zindex2" style="overflow: hidden;">
                                             <span class="datas-sel-cap">擅长领域</span><a href="javascript:;" class="datas-sel-def verify-default">
                                                     @if($data->domain1=='找资金')
                                                         投融资
