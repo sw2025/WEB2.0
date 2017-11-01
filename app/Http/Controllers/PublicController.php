@@ -1040,12 +1040,12 @@ class PublicController extends Controller
     static public function numToCount($looks)
     {
         if($looks >= 100000){
-            return   round($looks/10000).'w+';
+            return   floor($looks/10000).'w+';
         }
         elseif($looks >= 10000){
-            return   round($looks/10000).'0000+';
+            return   floor($looks/10000).'0000+';
         }elseif ($looks >= 1000){
-            return   round($looks/1000).'000+';
+            return   floor($looks/1000).'000+';
         }else{
             return $looks;
         }
