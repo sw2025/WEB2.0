@@ -48,7 +48,7 @@
                                 <span class="datas-sel-cap">输入姓名</span>
                                 <input class="datas-sel-name" type="text" placeholder="" value="@if(!empty($result)){{$result->expertname}}@else @endif" style="color:#666;margin-left:50px;"/>
                             </div>
-                            <div class="publish-need-sel datas-newchange zindex2">
+                            <div class="publish-need-sel datas-newchange zindex2"  style="overflow: hidden;">
                                 <span class="datas-sel-cap">擅长领域</span>
                                 <a href="javascript:;" id="industry" class="publ-need-sel-def" style="margin-left:93px;" index="@if(!empty($result->domain1)){{$result->domain1}}-{{join('/',explode(',',$result->domain2))}}/@else 请选择 @endif">
                                     @if(!empty($result->domain1))
