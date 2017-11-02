@@ -36,7 +36,7 @@
             </div>
             <div class="exp-details-con">
                 <div class="exp-det-con-top">
-                    <button id="selectexpert" style="font-size: 15px;" onclick="selectexpertjoinevent(null)">邀请专家办事/视频咨询</button>
+                    @if(!empty(session('role')) && session('role') != '专家')<button id="selectexpert" style="font-size: 15px;" onclick="selectexpertjoinevent(null)">邀请专家[办事/视频咨询]</button>@endif
                     <img src="@if(empty($datas->showimage)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$datas->showimage}}@endif" class="exp-details-img" />
                     <div class="exp-details-brief">
                         <span class="exp-details-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
@@ -107,7 +107,7 @@
                                     <div class="floor-host">
                                         <img src="@if(empty($v->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$v->avatar}}@endif" class="floor-host-ava" />
                                         <div class="floor-host-desc">
-                                            <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>@if(!empty(session('userId')) && $v->userid == session('userId'))<button id="selectexpert" onclick="selectexpertjoinevent($(this).siblings('textarea'))">邀请专家进入办事</button>@endif
+                                            <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>@if(!empty(session('userId')) && $v->userid == session('userId') && $datas->userid != session('userId'))<button id="selectexpert" onclick="selectexpertjoinevent($(this).siblings('textarea'))">邀请专家[办事/视频咨询]</button>@endif
                                             <textarea class="floor-host-words textareaspan" readonly>{{$v->content}}</textarea>
                                         </div>
                                     </div>
@@ -239,14 +239,14 @@
             return false;
         }
         if(obj != null){
-            var str = '<div style="padding:10px;">系统会自动在创建办事/视频咨询的过程中将您的问题分类和需求自动填充到新建办事/视频咨询中，可进行修改后完成邀请专家。是否继续？</div>';
+            var str = '<div style="padding:10px;">系统会自动在创建办事/视频咨询的过程中将您的问题分类和需求自动填充到新建办事/视频咨询中，可进行修改后完成邀请专家。是否继续？<p style=color:red;font-size:12px;>提示：请您确保您的身份是升维网认证企业，且在后续创建办事或者咨询时会产生相关费用。请做好相关准备<p></div>';
         }else{
-            var str = '<div style="padding:10px;">系统会自动选定当前专家作为您的自选专家请后续补充相关的领域和办事/视频咨询描述</div>';
+            var str = '<div style="padding:10px;">系统会自动选定当前专家作为您的自选专家请后续补充相关的领域和办事/视频咨询描述。<p style=color:red;font-size:12px;>提示：请您确保您的身份是升维网认证企业，且在后续创建办事或者咨询时会产生相关费用。请做好相关准备<p></div>';
         }
         layer.open({
             type: 1,
             skin: 'layui-layer-rim', //加上边框
-            area: ['400px', '180px'],
+            area: ['400px', '210px'],
             shadeClose: false, //开启遮罩关闭
             title:'新建[办事/视频咨询]提醒',
             content: str,

@@ -9,6 +9,8 @@
                     <span class="green-circle">1</span>提交需求
                 </div>
                 <div class="publish-need">
+                    <div style="margin-top: 10px;"><p style="color: #007fff;">提示：当前您是以专家的身份发起的需求，请确定完成专家认证后发布。<a href="{{url('uct_myneed/supplyNeed')}}">点此以企业身份发布需求</a></p>
+                    </div>
                     @if(!empty($info))
                         <input type="hidden" id="refuseid" value="{{$info->needid}}">
                         <p class="wrong-reason" style="text-align:left;width:350px;margin:0 auto;padding-top:30px;"><span style="color: #e3643d">拒绝原因：</span><span style="color: #e3643d">{{$info->error}}</span></p>

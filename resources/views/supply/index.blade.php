@@ -170,7 +170,51 @@
             });
             return false;
         }
-        if($.cookie('role')=="企业"){
+        layer.confirm('请问您以什么身份发起需求？', {
+            btn: ['以企业身份发起','以专家身份发起','取消'], //按钮
+            yes: function(index, layero){
+                $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
+                    if(data.type == 3 || data.type == 1){
+                        layer.msg(data.msg,{'icon':data.icon});
+                    } else if(data.type == 2){
+                        layer.confirm(data.msg, {
+                            btn: ['去认证','取消'], //按钮
+                            skin:'layui-layer-molv'
+                        }, function(){
+                            window.location.href=data.url;
+                        }, function(){
+                            layer.closeAll();
+                        });
+                    } else {
+                        window.location = '{{asset('uct_myneed/supplyNeed')}}';
+                    }
+                });
+            },
+            btn2: function(index, layero){
+                $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
+                    if(data.type == 3 || data.type == 1){
+                        layer.msg(data.msg,{'icon':data.icon});
+                    } else if(data.type == 2){
+                        layer.confirm(data.msg, {
+                            btn: ['去认证','取消'], //按钮
+                            skin:'layui-layer-molv'
+                        }, function(){
+                            window.location.href=data.url;
+                        }, function(){
+                            layer.closeAll();
+                        });
+                    } else {
+                        window.location = '{{asset('myneed/supplyNeed')}}';
+                    }
+                });
+            },
+            btn3: function(index, layero){
+                //按钮【按钮三】的回调
+                layer.close(index);
+                //return false 开启该代码可禁止点击该按钮关闭
+            }
+        });
+        /*if($.cookie('role')=="企业" || $.cookie('role')=="专家企业"){
             $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
                 if(data.type == 3){
                     layer.msg(data.msg,{'icon':data.icon});
@@ -224,7 +268,7 @@
                 }
             });
 
-        }
+        }*/
     })
 
 </script>

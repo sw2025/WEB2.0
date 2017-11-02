@@ -561,6 +561,9 @@ class CenterController extends Controller
     public function verifyPutNeed(Request $request)
     {
         if($request->ajax()){
+            if(empty(session('userId'))){
+                return ['msg' => '未登录','icon' => 2,'type' => 4];
+            }
             $data = $request->only('role');
             if($data['role'] == '企业'){
                 $verifyent = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();

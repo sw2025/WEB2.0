@@ -52,6 +52,10 @@
             }
         });
     });
+    var date = new Date();
+    date.setTime(date.getTime() + (120 * 60 * 1000));
+    var nickName=$("#nickName").val();
+    $.cookie('name',nickName,{expires:date,path:'/',domain:'sw2025.com'});
     $(".basic-btn").on("click",function(){
         var that=this;
         $(this).attr('disabled',true);
@@ -68,6 +72,7 @@
                 $(that).removeAttr('disabled');
                 $(that).html('修改');
                 if(res['code']=="success"){
+                    $(".after-login").children(":last").text(nickName);
                     layer.msg("修改成功")
                 }else{
                     layer.msg("修改失败")

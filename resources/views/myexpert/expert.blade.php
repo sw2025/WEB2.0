@@ -48,9 +48,9 @@
                                 <span class="datas-sel-cap">输入姓名</span>
                                 <input class="datas-sel-name" type="text" placeholder="" value="@if(!empty($result)){{$result->expertname}}@else @endif" style="color:#666;margin-left:50px;"/>
                             </div>
-                            <div class="publish-need-sel datas-newchange zindex2">
+                            <div class="publish-need-sel datas-newchange zindex2"  style="overflow: hidden;">
                                 <span class="datas-sel-cap">擅长领域</span>
-                                <a href="javascript:;" id="industry" class="publ-need-sel-def" style="margin-left:93px;" index="{{$result->domain1}}-{{join('/',explode(',',$result->domain2))}}/">
+                                <a href="javascript:;" id="industry" class="publ-need-sel-def" style="margin-left:93px;" index="@if(!empty($result->domain1)){{$result->domain1}}-{{join('/',explode(',',$result->domain2))}}/@else 请选择 @endif">
                                     @if(!empty($result->domain1))
                                         @if($result->domain1=='找资金')
                                             投融资
@@ -60,8 +60,8 @@
                                             战略管理
                                         @else
                                             市场资源
-                                        @endif-{{join('/',explode(',',$result->domain2))}}/
-                                    @else请选择@endif
+                                        @endif -{{join('/',explode(',',$result->domain2))}}/
+                                    @else 请选择 @endif
                                 </a>
                                 <ul class="publish-need-list">
                                     @foreach($cate as $v)
@@ -126,7 +126,7 @@
                                      class="photo1" id="avatar1"/>
                                 <div class="photo-upload">
                                     <div class="photo-btn-box fileinput-button">
-                                        <span class="photo-btn-tip">上传专家执照</span>
+                                        <span class="photo-btn-tip">上传专家证件</span>
                                         <input id="photo1" type="file" name="files[]" data-url="{{asset('upload')}}"
                                                index="@if(!empty($result)){{$result->licenceimage}}@endif" multiple=""
                                                accept="image/png, image/gif, image/jpg, image/jpeg">
@@ -150,7 +150,7 @@
                         </div>
                     </div>
                     <div class="datas-rt htxt1">
-                        <textarea onkeyup="checkLength(this);" placeholder="请输入专家描述（最多1000字）" id="brief" cols="30"
+                        <textarea  placeholder="请输入专家描述（最多1000字）" id="brief" cols="30"
                                   rows="10">@if(!empty($result)){{$result->brief}}@endif</textarea>
                     </div>
                 </div>
@@ -167,8 +167,8 @@
         </div>
     </div>
 </div>
-        <script src="/js/layer/extend/layer.ext.js"></script>
-        <script type="text/javascript">
+<script src="/js/layer/extend/layer.ext.js"></script>
+<script type="text/javascript">
     $(function () {
         $('.datas-sel-def').click(function () {
             $(this).next('ul').stop().slideToggle();
@@ -254,18 +254,18 @@
     $(function () {
         $('.submit-audit').click(function () {
             var abc = $('.submit-audit').html();
-           /* if(abc=='重新审核'){
-                layer.alert('的确很重要', {icon: 2});
-                    //询问框
-                /!*    layer.confirm('您已重新审核？', {
-                        btn: ['确定','取消'] //按钮
-                    }, function(){
-                        layer.msg('的确很重要', {icon: 1});
-                    }, function(){
-                    });*!/
-            }else{
-                return false;
-            }*/
+            /* if(abc=='重新审核'){
+             layer.alert('的确很重要', {icon: 2});
+             //询问框
+             /!*    layer.confirm('您已重新审核？', {
+             btn: ['确定','取消'] //按钮
+             }, function(){
+             layer.msg('的确很重要', {icon: 1});
+             }, function(){
+             });*!/
+             }else{
+             return false;
+             }*/
 
             $('.submit-audit').attr('disabled', 'disabled');
             var category = $('#category').html();
