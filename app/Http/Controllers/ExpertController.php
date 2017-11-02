@@ -259,18 +259,19 @@ class ExpertController extends Controller
             try{
                 $res = DB::table('t_u_messagetoexpert')->insert($data);
                 if($expertuserid->userid != session('userId') && !$data['parentid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br />' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'] : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
                     $msg = DB::table('t_m_systemmessage')->insert([
                         'sendid' => 0,
                         'receiveid' => $expertuserid->userid,
                         'sendtime' => date('Y-m-d H:i:s',time()),
                         'title' => '有用户给您留言了',
                         'content' => $content,
+                        'expertid'=> $data['expertid'],
                         'state' => 0
                     ]);
                 }
                 if($expertuserid->userid != session('userId') && $data['parentid'] && !$data['use_userid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br />' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content']: '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
                     $parid = DB::table('t_u_messagetoexpert')->where('id',$data['parentid'])->first();
                     if(empty($parid)){
                         return 'error';
@@ -282,13 +283,13 @@ class ExpertController extends Controller
                             'sendtime' => date('Y-m-d H:i:s',time()),
                             'title' => '有用户给您留言了',
                             'content' => $content,
+                            'expertid'=> $data['expertid'],
                             'state' => 0
                         ]);
                     }
-
                 }
                 if($expertuserid->userid != session('userId') && $data['parentid'] && $data['use_userid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'].'<br />' : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'].'<br />';
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'] : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
                     if($data['use_userid'] != session('userId')){
                         $msg = DB::table('t_m_systemmessage')->insert([
                             'sendid' => 0,
@@ -296,6 +297,7 @@ class ExpertController extends Controller
                             'sendtime' => date('Y-m-d H:i:s',time()),
                             'title' => '有用户给您留言了',
                             'content' => $content,
+                            'expertid'=> $data['expertid'],
                             'state' => 0
                         ]);
                     }
@@ -306,9 +308,6 @@ class ExpertController extends Controller
                 DB::rollback();
                 return ['msg' => '留言失败请刷新重试','icon' => 0];
             }
-
-
-
         }
         return ['msg' => '留言失败请刷新重试','icon' => 0];
     }

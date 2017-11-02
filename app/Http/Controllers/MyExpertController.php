@@ -250,6 +250,9 @@ class MyExpertController extends Controller
             if(session('userId') == Crypt::decrypt($data['token'])){
                 //获取到该用户对应的专家的id
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
+                $expertIds=explode(",",$expertid);
+                //$counts=DB::table("t_e_eventresponse")->where("eventid",$data['eventid'])->where('state',1)->count();
+                $counts2=DB::table("t_e_eventresponse")->where("eventid",$data['eventid'])->where('state',0)->count();
                 DB::beginTransaction();
                 try{
                     //查询这个办事是否已经响应过了
@@ -260,13 +263,23 @@ class MyExpertController extends Controller
                     //查询是否存在响应的情况
                     $verify = DB::table('t_e_eventresponse')->where(['expertid' => $expertid,'eventid' => $data['eventid'],'state' => 2])->first();
                     if(!$verify){
-                       $res= DB::table('t_e_eventresponse')->insert([
-                            'expertid' => $expertid,
-                            'eventid' => $data['eventid'],
-                            'state' => 2,
-                            'responsetime' => date('Y-m-d H-:i:s',time()),
-                            'updated_at' => date('Y-m-d H-:i:s',time())
-                       ]);
+                        if($counts2){
+                            $res= DB::table('t_e_eventresponse')->insert([
+                                'expertid' => $expertid,
+                                'eventid' => $data['eventid'],
+                                'state' => 3,
+                                'responsetime' => date('Y-m-d H:i:s',time()),
+                                'updated_at' => date('Y-m-d H:i:s',time())
+                            ]);
+                        }else{
+                            $res= DB::table('t_e_eventresponse')->insert([
+                                'expertid' => $expertid,
+                                'eventid' => $data['eventid'],
+                                'state' => 2,
+                                'responsetime' => date('Y-m-d H:i:s',time()),
+                                'updated_at' => date('Y-m-d H:i:s',time())
+                            ]); 
+                        }
                         if($res){
                             $name=DB::table("t_u_expert")->where("expertid",$expertid)->pluck('expertname');
                             $phone=DB::table('t_e_event')
@@ -282,12 +295,22 @@ class MyExpertController extends Controller
                     //查询这个办事是否已经响应过了
                     $verify2 = DB::table('t_e_eventverify')->where(['eventid' => $data['eventid'],'configid' => 5])->first();
                     if(!$verify2){
-                        DB::table('t_e_eventverify')->insert([
-                            'eventid' => $data['eventid'],
-                            'configid' => 5,
-                            'verifytime' =>  date('Y-m-d H-:i:s',time()),
-                            'updated_at' => date('Y-m-d H-:i:s',time())
-                        ]);
+                        if($counts2){
+                            DB::table('t_e_eventverify')->insert([
+                                'eventid' => $data['eventid'],
+                                'configid' => 6,
+                                'verifytime' =>date('Y-m-d H:i:s',time()),
+                                'updated_at' =>date('Y-m-d H:i:s',time())
+                            ]);
+                            \UserClass::createEventGroups($expertIds,$data['eventid']);
+                        }else{
+                            DB::table('t_e_eventverify')->insert([
+                                'eventid' => $data['eventid'],
+                                'configid' => 5,
+                                'verifytime' =>date('Y-m-d H:i:s',time()),
+                                'updated_at' =>date('Y-m-d H:i:s',time())
+                            ]);
+                        }
                     }
                     DB::commit();
                     return ['msg' => '响应成功,请等待企业回应','icon' => 1];

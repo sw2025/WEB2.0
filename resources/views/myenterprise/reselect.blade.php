@@ -184,12 +184,12 @@
             reselect=[];
             $.cookie("reselect",reselect,{expires:date,path:'/',domain:'sw2025.com'});
         }
-        if(reselect.length==5){
+        if(reselect.length==1){
             if($.inArray(value,reselect)>=0){
                 deleteArray(reselect,value);
                 $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
             }else{
-                layer.confirm('您已经指定5位专家', {
+                layer.confirm('您已经指定1位专家', {
                     btn: ['确定'] //按钮
                 });
                 return false;

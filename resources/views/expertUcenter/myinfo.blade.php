@@ -31,10 +31,21 @@
                                     <span class="td-title">标题</span>
                                     <span class="td-title-con">{{$v->title}}</span>
                                     <span class="td-time">{{$v->sendtime}}</span>
-                                </a>
+                                    </a>
                             </div>
                             <div class="myinfo-row-details">
-                                <p class="myinfo-row-det-con">{!! $v->content !!}</p>
+                                @if(!empty($v->expertid))
+                                    <a href="{{url('expert/detail/'.$v->expertid)}}" target="_blank" >
+                                        <p class="myinfo-row-det-con">{!! $v->content !!}</p>
+                                    </a>
+                                @elseif(!empty($v->needid))
+                                    <a href="{{url('supply/detail',$v->needid)}}" target="_blank">
+                                        <p class="myinfo-row-det-con">{!! $v->content !!}</p>
+                                    </a>
+                                @else
+                                    <p class="myinfo-row-det-con">{!! $v->content !!}</p>
+                                @endif
+
                                 @if(!$v->sendid)
                                 <p class="myinfo-come">From 系统消息</p>
                                 @endif
