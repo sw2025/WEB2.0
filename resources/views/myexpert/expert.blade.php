@@ -126,7 +126,7 @@
                                      class="photo1" id="avatar1"/>
                                 <div class="photo-upload">
                                     <div class="photo-btn-box fileinput-button">
-                                        <span class="photo-btn-tip">上传专家执照</span>
+                                        <span class="photo-btn-tip">上传专家证件</span>
                                         <input id="photo1" type="file" name="files[]" data-url="{{asset('upload')}}"
                                                index="@if(!empty($result)){{$result->licenceimage}}@endif" multiple=""
                                                accept="image/png, image/gif, image/jpg, image/jpeg">

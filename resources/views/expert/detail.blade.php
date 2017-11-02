@@ -107,7 +107,7 @@
                                     <div class="floor-host">
                                         <img src="@if(empty($v->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$v->avatar}}@endif" class="floor-host-ava" />
                                         <div class="floor-host-desc">
-                                            <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>@if(!empty(session('userId')) && $v->userid == session('userId'))<button id="selectexpert" onclick="selectexpertjoinevent($(this).siblings('textarea'))">邀请专家[办事/视频咨询]</button>@endif
+                                            <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>@if(!empty(session('userId')) && $v->userid == session('userId') && $datas->userid != session('userId'))<button id="selectexpert" onclick="selectexpertjoinevent($(this).siblings('textarea'))">邀请专家[办事/视频咨询]</button>@endif
                                             <textarea class="floor-host-words textareaspan" readonly>{{$v->content}}</textarea>
                                         </div>
                                     </div>
