@@ -240,6 +240,7 @@ class SupplyController extends Controller
                         'sendtime' => date('Y-m-d H:i:s',time()),
                         'title' => '有用户给您发布的需求留言了',
                         'content' => $content,
+                        'needid'=>$data['needid'],
                         'state' => 0
                     ]);
                 }
@@ -256,6 +257,7 @@ class SupplyController extends Controller
                             'sendtime' => date('Y-m-d H:i:s',time()),
                             'title' => '有用户给您留言了',
                             'content' => $content,
+                            'needid'=>$data['needid'],
                             'state' => 0
                         ]);
                     }
@@ -269,6 +271,7 @@ class SupplyController extends Controller
                             'sendtime' => date('Y-m-d H:i:s',time()),
                             'title' => '有用户给您发布的需求留言了',
                             'content' => $content,
+                            'needid'=>$data['needid'],
                             'state' => 0
                         ]);
                     }

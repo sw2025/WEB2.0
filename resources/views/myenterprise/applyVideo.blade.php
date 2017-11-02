@@ -379,6 +379,7 @@
             var dateEnd=$("#end").text().trim();
             var isAppoint=($.cookie("videoisAppoint"))?$.cookie("videoisAppoint"):1;
             var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
+           // console.log(expertIds);
             if(describe.length>30 && describe.length<500){
             }else{
                 $(this).attr('disabled',false);

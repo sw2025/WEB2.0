@@ -188,10 +188,6 @@ class PublicController extends Controller
             }else{
                 $result['code']="noMember";
             }
-
-
-
-
             $members=DB::table("t_u_enterprisemember")
                         ->leftJoin("t_u_memberright","t_u_enterprisemember.memberid","=","t_u_memberright.memberid")
                         ->where("enterpriseid",$enterpriseId)
@@ -756,6 +752,13 @@ class PublicController extends Controller
                                 $expids[] = $v->expertid;
                             }
                         }
+                        DB::table('t_e_eventverify')->insert([
+                            'eventid' => $eventid,
+                            'configid' => 4,
+                            'verifytime' => date("Y-m-d H:i:s",time()),
+                            "created_at" => date("Y-m-d H:i:s",time()),
+                            "updated_at" => date("Y-m-d H:i:s",time())
+                        ]);
                     } else {
                         $expertIds=explode(",",$data['expertIds']);
                         foreach ($expertIds as $val){
@@ -769,14 +772,14 @@ class PublicController extends Controller
                             ]);
                             $expids[] = $val;
                         }
+                        DB::table('t_e_eventverify')->insert([
+                            'eventid' => $eventid,
+                            'configid' => 4,
+                            'verifytime' => date("Y-m-d H:i:s",time()),
+                            "created_at" => date("Y-m-d H:i:s",time()),
+                            "updated_at" => date("Y-m-d H:i:s",time())
+                        ]);
                     }
-                    DB::table('t_e_eventverify')->insert([
-                        'eventid' => $eventid,
-                        'configid' => 4,
-                        'verifytime' => date("Y-m-d H:i:s",time()),
-                        "created_at" => date("Y-m-d H:i:s",time()),
-                        "updated_at" => date("Y-m-d H:i:s",time())
-                    ]);
                     if($memberType=="非无限"){
                         self::reduceEventCount($enterpriseId);
                     }
