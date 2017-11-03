@@ -40,7 +40,7 @@
                         </ul>
                     </div>
 
-                    <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述（30-800字之间）" ></textarea>
+                    <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述（30-500字之间）" ></textarea>
                     <div class="uct-works-exp">
                         <span>专家</span>
                         <a href="javascript:;" class="system-btn uct-works-btn" id="random" style="padding:0 10px;">系统分配专家</a>
@@ -380,11 +380,11 @@
                 return false;
             }
 
-            if(describe.length>30 && describe.length<800){
+            if(describe.length>30 && describe.length<500){
             }else{
                 $(this).attr('disabled',false);
                 $(this).html('提交认证');
-                layer.msg('办事描述应在30到800字之间',{'icon':5});
+                layer.msg('办事描述应在30到500字之间',{'icon':5});
                 return false;
             }
             if(!$('.uct-works-exp a').hasClass('active')){

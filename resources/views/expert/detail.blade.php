@@ -63,14 +63,15 @@
             <div class="details-top clearfix">
                 <div class="details-bg">
                     <span class="blue-circle"><i class="iconfont icon-liuyan"></i></span>
-                    <span class="details-ch-tit">我的留言</span>
+                    <span class="details-ch-tit">@if(!$isexpert)发布办事@else 我的办事 @endif</span>
                 </div>
-                <span class="details-en-tit">COMMENT THREADS</span>
+                <span class="details-en-tit">APPLY EVENT</span>
             </div>
             <div class="details-message">
                 <!-- 新增代码/start -->
+                @if(!$isexpert)
                 <div class="publish-need-sel">
-                    <span class="publ-need-sel-cap">留言问题分类</span><a href="javascript:;" class="publ-need-sel-def" style="margin-left: 130px;" id="message">请选择</a>
+                    <span class="publ-need-sel-cap">办事问题分类</span><a href="javascript:;" class="publ-need-sel-def" style="margin-left: 130px;" id="message">请选择</a>
                     <ul class="publish-need-list" style="display: none;">
                         @foreach($cate as $v)
                             @if($v->level == 1)
@@ -88,69 +89,35 @@
                                 @endforeach
                     </ul>
                 </div>
+                @endif
                 <!-- 新增代码/end -->
                 <form action="">
                     <div class="message-write">
-                        <textarea name="content" id="{{$datas->expertid}}" cols="30" rows="10" class="message-txt" placeholder="请输入想给专家留言的需求信息(按照发布需求的格式)"></textarea>
-                        <div class="message-btn"><button class="submit" type="button">提交</button></div>
+                        <textarea name="content" id="{{$datas->expertid}}" cols="30" rows="10" class="message-txt" placeholder="请输入想给专家办事的描述信息（30-500字）"></textarea>
+                        <div class="message-btn"><button class="submit" type="button">请专家办事</button></div>
                     </div>
                 </form>
                 <div class="message-list">
                     <div class="details-abs-tit">
                         <div class="details-graph forth"><span class="square"></span></div>
-                        <span class="details-tit-cap forth-cap">留言列表</span>
+                        <span class="details-tit-cap forth-cap">办事列表</span>
                     </div>
                     <div class="all-replys">
-                        @foreach($message as $v)
-                            @if(!$v->parentid && ((!empty(session('userId')) && $v->userid == session('userId')) || $datas->userid == session('userId')))
-                                <div class="mes-list-box clearfix">
-                                    <div class="floor-host">
-                                        <img src="@if(empty($v->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$v->avatar}}@endif" class="floor-host-ava" />
-                                        <div class="floor-host-desc">
-                                            <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>@if(!empty(session('userId')) && $v->userid == session('userId') && $datas->userid != session('userId'))<button id="selectexpert" onclick="selectexpertjoinevent($(this).siblings('textarea'))">邀请专家[办事/视频咨询]</button>@endif
-                                            <textarea class="floor-host-words textareaspan" readonly>{{$v->content}}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="message-reply-show">
-                                        <a href="javascript:;" class="look-reply">查看回复（@if(key_exists($v->id,$msgcount)){{$msgcount[$v->id]}}@else 0 @endif）</a>
-                                        <a href="javascript:;" class="message-reply">回复</a>
-                                    </div>
-                                    <div class="reply-list">
-                                        <ul class="reply-list-ul">
-                                            @foreach($message as $reply)
-                                                @if(!$reply->use_userid && $reply->parentid == $v->id)
-                                                    <li>
-                                                        <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
-                                                        <div class="gloor-guest-cnt">
-                                                            <a href="javascript:;" class="floor-guest-name"> @if($reply->userid == $datas->userid) {{$reply->expertname}} @else{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->enterprisename or $reply->expertname}}] @endif</a>
-                                                            <span class="floor-guest-words">{{$reply->content}}</span>
-                                                        </div>
-                                                        <div class="floor-bottom">
-                                                            <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" class="reply-btn replybtn1" userid="{{$reply->userid}}">回复</a>
-                                                        </div>
-                                                    </li>
-                                                @elseif($reply->parentid == $v->id)
-
-                                                    <li>
-                                                        <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
-                                                        <div class="gloor-guest-cnt">
-                                                            <a href="javascript:;" class="floor-guest-name">@if($reply->userid == $datas->userid) {{$reply->expertname}} @else{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}}  [{{$reply->enterprisename or $reply->expertname}}] @endif</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">@if($reply->phone2 == $datas->phone) {{$reply->expertname}} @else {{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}} @endif</a>
-                                                            <span class="floor-guest-words">{{$reply->content}}</span>
-                                                        </div>
-                                                        <div class="floor-bottom">
-                                                            <span class="floor-guest-time">{{$reply->messagetime}}</span><a href="javascript:;" userid="{{$reply->userid}}" class="reply-btn replybtn1">回复</a>
-                                                        </div>
-                                                    </li>
-                                                @endif
-                                            @endforeach
-                                        </ul>
-                                        <div class="reply-box">
-                                            <textarea class="reply-enter" index="{{$v->expertid}}" id="{{$v->id}}"></textarea>
-                                            <div class="publish-box"><button class="publish-btn" type="button">发表</button></div>
-                                        </div>
+                        @foreach($eventinfo as $v)
+                            <div class="mes-list-box clearfix">
+                                <div class="floor-host">
+                                    <img src="{{env('ImagePath').$v->showimage}}" class="floor-host-ava" />
+                                    <div class="floor-host-desc">
+                                        <a href="javascript:;" class="floor-host-name">{{$v->name}}</a><span class="floor-host-time">{{$v->eventtime}}</span>
+                                        <textarea class="floor-host-words textareaspan" readonly>{{$v->brief}}</textarea>
                                     </div>
                                 </div>
-                            @endif
+                                <div class="message-reply-show">
+                                    <a href="@if($isexpert) {{url('/uct_work/workDetail',$v->eventid)}} @else {{url('/uct_works/detail',$v->eventid)}} @endif" class="look-reply">查看办事</a>
+                                    <a href="javascript:;" class="message-reply1">{{$v->status}}</a>
+                                </div>
+
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -184,13 +151,57 @@
                         </div>
                     </a>
                     <div class="exp-rec-icon">
-                        <a href="{{url('expert/detail',$v->expertid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i></a>
+                        <a href="{{url('expert/detail',$v->expertid)}}#reply" class="review" title="发起办事"><i class="iconfont icon-pinglun1"></i></a>
                         <a href="javascript:;" class="collect @if(in_array($v->expertid,$collectids)) red @endif" index="{{$v->expertid}}" title="@if(in_array($v->expertid,$collectids)) 已收藏 @else 收藏 @endif"><i class="iconfont icon-likeo"></i></a>
                     </div>
                 </li>
                 @endforeach
             </ul>
         </div>
+    </div>
+</div>
+
+<div class="pop-pay">
+    <div class="payoff">
+        <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
+        <div class="single">
+            <div class="single-two">
+                <span class="single-opt pay-opt" id="singlePay">
+                    <input class="rad-inp" type="radio" style="width: 12%;">
+                    <div class="opt-label normal "></div>
+                </span>
+            </div>
+            <div class="cub" style="display:block"></div>
+
+        </div>
+        <div class="single open-member">
+            <div class="single-opt pay-opt been">
+                <input class="rad-inp" type="radio">
+                <div class="opt-label dibs"><span></span>开通会员</div>
+                <span class="open-right">会员权益</span>
+            </div>
+            <div class="years">
+                @foreach($memberrights as $memberright)
+                    <span class="pay-opt" memberId="{{$memberright->memberid}}">
+                        <input class="rad-inp" type="radio" >
+                        <div class="opt-label"><span></span>{{$memberright->termtime}}年&nbsp;&nbsp;￥{{$memberright->cost}}<em class="benifit">优惠次数 {{$memberright->eventcounts}} 次</em><em class="benifit">优惠时间 {{$memberright->consultcounts}} 分钟</em></div>
+                    </span>
+                @endforeach
+            </div>
+
+            <div class="cub"></div>
+        </div>
+        <div class="paytype payoff-way">
+                    <span class="pay-opt focus been">
+                        <input class="rad-inp" type="radio"  value="wx_pub_qr">
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lweixin.png')}}"><em class="way-cap">微信支付</em></div>
+                    </span>
+                    <span class="pay-opt">
+                        <input class="rad-inp" type="radio"  value="alipay_pc_direct">
+                        <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lzhifubao.png')}}"><em class="way-cap">支付宝支付</em></div>
+                    </span>
+        </div>
+        <div style="text-align: center;padding: 0 0 20px;"><button type="button" class="pop-btn vip" id="vip">付费</button></div>
     </div>
 </div>
 <script src="{{url('js/expert.js')}}" type="text/javascript"></script>
@@ -222,6 +233,82 @@
             //*********** 新增页面js/end ***********//
 
         })
+
+        $('.details-message .submit').on('click',function () {
+            var that = $(this);
+            var textarea = $(this).parent().siblings('textarea');
+            var expertIds = textarea.attr('id');
+            var describe = textarea.val();
+            var isAppoint = 1;
+            var domain = $.trim($('#message').text());
+            $(this).attr('disabled',"true");
+            if($.trim($('#message').text()) == '请选择'){
+                layer.msg('请选择办事问题分类',{'icon':0});
+                that.attr('disabled',false);
+                return false;
+            }
+
+            if(30 > describe.length || describe.length>500){
+                layer.msg('请输入办事描述内容且文字范围限制在30-500字');
+                that.attr('disabled',false);
+                return false;
+            }
+
+            $.ajax({
+                url:"{{asset('eventCharge')}}",
+                data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":0},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    var date = new Date();
+                    date.setTime(date.getTime() + (120 * 60 * 1000));
+                    if(res['icon'] == 1){
+                        layer.msg(res.msg,{'icon':6},function () {
+                            window.location = '{{url('uct_works')}}';
+                        });
+
+                    }else if(res['icon'] == 2){
+                        layer.alert(res.msg+' 申请失败,请重新申请', {
+                            btn: ['确定'] //按钮
+                        },function () {
+                            window.location.href=window.location.href;
+                        });
+                    }else if(res['icon'] == 0){
+                        layer.confirm(res.msg, {
+                            btn: ['确定','取消'] ,
+                            skin: 'layer-ext-moon',
+                            icon:0,
+                        }, function(index){
+                            window.location = res.url;
+                            return false;
+                        }, function(index){
+                            $(that).attr('disabled',false);
+                            $(that).html('请专家办事');
+                            layer.close(index);
+                        });
+                    }  else if(res['icon'] == 3){
+                        layer.confirm(res.msg, {
+                            btn: ['确定','取消'] ,
+                            skin: 'layer-ext-moon',
+                            icon:0,
+                        }, function(index){
+                            var str;
+                            if(res['code']==6){
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('EventMemberMoney')}}</b>/ 次 &nbsp;&nbsp;&nbsp;&nbsp;充值次数 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
+                            }else{
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('EventMoney')}}</b>/ 次";
+                            }
+                            pop(str);
+                            layer.close(index);
+                        }, function(index){
+                            $(that).attr('disabled',false);
+                            $(that).html('请专家办事');
+                            layer.close(index);
+                        });
+                    }
+                }
+            })
+        });
 
     /**
      * Created by admin on 2017/9/24.
@@ -344,6 +431,88 @@
         addEvent('focus', change);
         change();
     };
+
+
+        $("#vip").on("click",function(){
+            var payType;
+            var memberId;
+            var channel;
+            var amount;
+            var eventCount;
+            var urlType=window.location.href;
+            var res=$("#singlePay").hasClass("been");
+            if(res){
+                payType="payMoney";
+                var money=$("#singlePay").find(".money:first").text();
+                if(money=="{{env('EventMoney')}}"){
+                    eventCount=1;
+                    amount=money;
+                }else{
+                    eventCount=$("#singlePay").find(".times").val();
+                    if(eventCount<1){
+                        alert("请填写充值次数");
+                        return false;
+                    }
+                    amount=money*eventCount;
+                }
+                memberId=0;
+            }else{
+                payType="member";
+                $(".years").children().each(function(){
+                    if($(this).hasClass('juniorbe')){
+                        memberId=$(this).attr("memberId");
+                    }
+                })
+                amount=0;
+                eventCount=0;
+            }
+            $(".payoff-way").children().each(function(){
+                if($(this).hasClass('been')){
+                    channel=$(this).children(":first").attr("value");
+                }
+            });
+            $.ajax({
+                url:"{{url('charge')}}",
+                data:{"payType":payType,"memberId":memberId,"channel":channel,"amount":amount,"type":"event","eventCount":eventCount,"urlType":urlType},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    var charge =JSON.parse(res);
+                    console.log(charge);
+                    $('#code').empty();
+                    if(charge.credential.wx_pub_qr){
+                        var qrcode = new QRCode('code', {
+                            text: charge.credential.wx_pub_qr,
+                            width: 200,
+                            height: 200,
+                            colorDark : '#000000',
+                            colorLight : '#ffffff',
+                            correctLevel : QRCode.CorrectLevel.H
+                        });
+                        console.log(qrcode);
+                        if(channel=="wx_pub_qr"){
+                            $('.poplayer').show();
+                            $('.layer-pop').show();
+                            $(".weixinTips").show();
+                        }
+                        return;
+                    }
+                    pingpp.createPayment(charge, function(result, err){
+                        // console.log(result);
+                        // console.log(err.msg);
+                        // console.log(err.extra);
+                        if (result == "success") {
+                            // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+                        } else if (result == "fail") {
+                            // charge 不正确或者微信公众账号支付失败时会在此处返回
+                        } else if (result == "cancel") {
+                            // 微信公众账号支付取消支付
+                        }
+                    });
+                }
+            })
+
+        })
 
 </script>
 @endsection
