@@ -581,7 +581,7 @@ class MyEnterpriseController extends Controller
                     }
                 }
                 //获取所有的日程
-                $task = DB::table('t_e_eventtask')->whereIn('epid',$epids)->where('state','<>','2')->orderBy('etid','desc')->get();
+                $task = DB::table('t_e_eventtask')->where('eventid',$eventId)->where('state','<>','2')->orderBy('etid','desc')->get();
                 $remark = [];
                 foreach($epids as $v){
                     $data1 = DB::table('t_e_eventprocessremark')->where('epid',$v)->orderBy('id','desc')->paginate(5);
@@ -967,7 +967,7 @@ class MyEnterpriseController extends Controller
             if($eventuserid == session('userId') || (!empty($expertid->expertid) && $expertid->expertid == $eventexpertid)){
                 if(!$data['state'] && $eventuserid == session('userId') ){
                     $etid = DB::table('t_e_eventtask')->insertGetId([
-                        'epid' => $data['epid'],
+                        'eventid' => $data['eventid'],
                         'taskname' => $data['taskname'],
                         'createuserid' => session('userId'),
                         'addtime' => date('Y-m-d H:i:s',time()),
@@ -1967,11 +1967,12 @@ class MyEnterpriseController extends Controller
      * @return mixed
      */
     public function eventVideo($eventId){
+        return view('myenterprise.enevtVideo',compact('eventId'));
         $consulttime=DB::table("t_e_event")->where("eventid",$eventId)->pluck("consulttime");
         if(!empty($consulttime)){
             return view('myenterprise.enevtVideo',compact('eventId'));
         }else{
-            return redirect('uct_works/detail/'+$eventId);
+            return redirect('uct_works/detail/'.$eventId);
         }
 
     }
@@ -2055,6 +2056,9 @@ class MyEnterpriseController extends Controller
         $res=array();
         $userId=session('userId');
         $data=$_POST;
+        if(empty(session('userId'))){
+            return ['icon'=>0,'code' => 7,'msg' => '您还未登陆请登录','url' => url('login')];
+        }
         $enterprise=DB::table("t_u_enterprise")
             ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
             ->where("t_u_enterprise.userid",$userId)

@@ -115,5 +115,5 @@
         });
     </script>
     <script src="{{url('js/mysupply.js')}}" type="text/javascript"></script>
-    <script src="{{url('js/textareaautp.js')}}" type="text/javascript"></script>
+    <script src="{{url('js/textareaauto.js')}}" type="text/javascript"></script>
 @endsection
