@@ -191,8 +191,25 @@
             <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage() }}</strong>页</span>
         </div>
     </div>
+    <div class="pop-pay iknow">
+        <div class="payoff">
+            <div class="single">
+                <p>1.企业在“发起办事”中，联系机构与专家。</p>
+                <p>2.企业在视频交流中，邀请专家“一对一咨询”，专家接受邀请后即进行咨询。</p>
+                <p>3.企业视频系统中，针对某项重大议题，邀请2-3位专家参加研讨会议，专家接受邀请后即召开会议。</p>
+                <p>4.企业在咨询或召开会议时，可以“自行邀请专家”，也可以由“系统匹配专家”。</p>
+                <p>5.企业可以向平台发布商情信息，以便对方查看。</p>
+            </div>
+            <div style="text-align: center;padding: 0 0 20px;"><button type="button" class="pop-btn vip" id="vip">我知道了</button></div>
+        </div>
+    </div>
     <script src="pingppjs/dist/pingpp.js"></script>
     <script>
+        $(function(){
+            if($.cookie('register')){
+                $(".iknow").show();
+            }
+        })
         var select = new Array();
         // 提示申请服务内容
         var $html = '<h2>办事规则介绍</h2>根据用户提出的领域分类和描述系统可以匹配此类专家或者用户自选专家后按照办事流程开始办事<br />办事流程介绍：<p style="color:#000;font-weight: bolder    ;">办事申请→专家响应→选择专家→进入办事→办事完成</p>';
@@ -304,6 +321,10 @@
                 }
             })
 
+        })
+        $("#vip").on("click",function(){
+            $.cookie("register","",{path:'/',domain:'sw2025.com'});
+            $(".iknow").hide();
         })
     </script>
 @endsection

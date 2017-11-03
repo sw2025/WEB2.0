@@ -12,10 +12,12 @@
                     </div>
                     <div class="expert-certy">
                         <div class="expert-certy-state">
-                            <i class="iconfont icon-huiyuanquanyi"></i>
-                                <span class="expert-certy-blue">
-                                    <em>了解会员权益</em>FOR MEMBERSHIP RIGHTS
-                                </span>
+                            <div class="friendly">
+                                <p class="center">友好提示</p>
+                                <p>1.本平台为企业提供高端专家和重要资源。</p>
+                                <p>2.要求企业实名认证、上传有效证照，以便于专家、机构深度互动。</p>
+                                <p>3.企业简介中至少包括“主要产品与服务、成立日期、基本规模、行业优势”等内容。</p>
+                            </div>
                         </div>
                         <div class="datas datas-member-audit clearfix datas-vertical">
                             <div class="datas-lt">
@@ -110,11 +112,14 @@
                                         </span>
                                 </div>
                             </div>
-                            <div class="datas-rt">
+                            <div class="datas-rt mydata-new">
                                 <textarea placeholder="请输入企业简介（30-500字）" readonly="readonly" cols="30" rows="10">{{$data->brief}}</textarea>
+                                <div class="mybtn-wrapper">
+                                    <a href="{{url('updateEnterprise/'.$data->enterpriseid)}}" ><button class="mybtn" type="button">修改资料</button></a>
+                                </div>
                             </div>
                         </div>
-                        <div class="bottom-btn"><button class="test-btn renew-btn" type="button">续费</button></div>
+                       {{-- <div class="bottom-btn"><button class="test-btn renew-btn" type="button">续费</button></div>--}}
                     </div>
                 </div>
             </div>

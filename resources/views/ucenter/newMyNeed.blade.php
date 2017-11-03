@@ -6,7 +6,7 @@
     <div class="ucenter-con">
                 <!-- 选择start -->
                 <div class="v-myneed-top">
-                    <a href="javascript:;" class="v-release-btn" onclick="putneed()">发布需求</a>
+                    <a href="javascript:;" class="v-release-btn" onclick="putneed()">发布商情</a>
                     <div class="v-condition">
                         <a href="javascript:;" class="v-condition-link @if(!empty($action) && $action == '已发布')active @endif" index="myput">已发布<span class="v-count">{{$putcount}}</span></a>
                         <a href="javascript:;" class="v-condition-link v-c-link1 @if(!empty($action) && $action == '待审核')active @endif" index="waitverify">待审核<span class="v-count">{{$waitcount}}</span></a>
@@ -17,7 +17,7 @@
                 <div class="uct-list-filter">
                     <div class="uct-search">
                         <div class="uct-list-search">
-                            <input type="text" class="uct-list-search-inp placeholder" placeholder="请输入要搜索的需求信息关键字" value="{{$searchname or null}}">
+                            <input type="text" class="uct-list-search-inp placeholder" placeholder="请输入要搜索的商情信息关键字" value="{{$searchname or null}}">
                             <button type="button" class="uct-list-search-btn"><i class="iconfont icon-sousuo"></i></button>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                                     <span class="supp-list-time">{{date('Y-m-d',strtotime($v->needtime))}}</span>
                                     <div class="supp-list-brief">
                                         <span class="supp-list-name">【{{$v->needtype}}】@if($v->needtype == '专家'){{$v->expertname}} @else {{$v->enterprisename}}@endif</span>
-                                        <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
+                                        <span class="supp-list-category">商情分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
                                         <div class="supp-list-desc">
                                             {{$v->brief}}
                                         </div>

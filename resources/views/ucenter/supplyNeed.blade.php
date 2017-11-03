@@ -2,14 +2,14 @@
 @section("content")
     <div class="main">
         <!-- 发布需求 / start -->
-        <h3 class="main-top">发布需求</h3>
+        <h3 class="main-top">发布商情</h3>
         <div class="ucenter-con">
             <div class="main-right">
                 <div class="card-step">
-                    <span class="green-circle">1</span>提交需求
+                    <span class="green-circle">1</span>提交商情
                 </div>
                 <div class="publish-need">
-                    <div style="margin-top: 10px;"><p style="color: #007fff;">提示：当前您是以企业的身份发起的需求，请确定完成企业认证后发布。<a href="{{url('myneed/supplyNeed')}}">点此以专家身份发布需求</a></p>
+                    <div style="margin-top: 10px;"><p style="color: #007fff;">提示：当前您是以企业的身份发布的商情，请确定完成企业认证后发布。<a href="{{url('myneed/supplyNeed')}}">点此以专家身份发布商情</a></p>
                     </div>
                     @if(!empty($info))
                         <input type="hidden" id="refuseid" value="{{$info->needid}}">
@@ -17,7 +17,7 @@
                     @endif
                     <div class="publish-need-sel">
 
-                        <span class="publ-need-sel-cap">需求分类</span><a href="javascript:;" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
+                        <span class="publ-need-sel-cap">商情分类</span><a href="javascript:;" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
                         <ul class="publish-need-list">
                             @foreach($cate as $v)
                                 @if($v->level == 1)
@@ -36,7 +36,7 @@
                         </ul>
 
 
-                       <textarea   name="" id="content" class="publish-need-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入需求描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea>
+                       <textarea   name="" id="content" class="publish-need-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入商情描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea>
                     </div>
                     <div><button class="test-btn publish-submit" type="button">提交</button></div>
                 </div>
@@ -55,7 +55,7 @@
         }
     </style>
     <ul class="layer_notice" style="display: none;">
-        <li><a>近期，网监部门查敏感类信息比较严格，所以需求中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写需求。</a></li>
+        <li><a>近期，网监部门查敏感类信息比较严格，所以商情中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写商情。</a></li>
         <li><a>感谢您的合作</a></li>
         <li><a style="margin-left: 80%;">升维网</a></li>
     </ul>

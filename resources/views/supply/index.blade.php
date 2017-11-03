@@ -6,9 +6,9 @@
 <div class="section">
     <div class="container list-bg">
         <form action="" onsubmit="return false">
-            <div class="releaseNeed"><a href="javascript:;">发布需求</a></div>
+            <div class="releaseNeed"><a href="javascript:;">发布商情</a></div>
             <div class="list-search p15">
-                <input type="text" class="list-search-inp"  placeholder="请输入要搜索的需求信息关键字" value="{{$searchname or null}}"/>
+                <input type="text" class="list-search-inp"  placeholder="请输入要搜索的商情信息关键字" value="{{$searchname or null}}"/>
                 <button type="button" class="list-search-btn"><i class="iconfont icon-sousuo"></i></button>
             </div>
         </form>
@@ -29,7 +29,7 @@
         <a href="javascript:;" @if(isset($role) && $role == '企业') class=active @endif>企业</a>
     </div>
     <div class="serve-field filter-row clearfix">
-        <span class="left-cap">需求领域：</span>
+        <span class="left-cap">商情领域：</span>
         <a href="javascript:;" class="serve-all @if(empty($supply)) active @endif">全部</a>
         @foreach($cate as $big)
             @if($big->level == 1)
@@ -106,7 +106,7 @@
                     <span class="supp-list-time">{{$v->needtime}}</span>
                     <div class="supp-list-brief">
                         <span class="supp-list-name">【{{$v->needtype}}】@if($v->needtype=="专家") {{$v->expertname}} @else {{$v->enterprisename}} @endif</span>
-                        <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
+                        <span class="supp-list-category">商情分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
                         <div class="supp-list-desc">
                             {{$v->brief}}
                         </div>
@@ -170,8 +170,8 @@
             });
             return false;
         }
-        layer.confirm('请问您以什么身份发起需求？', {
-            btn: ['以企业身份发起','以专家身份发起','取消'], //按钮
+        layer.confirm('请问您以什么身份发布需求？', {
+            btn: ['以企业身份发布','以专家身份发布','取消'], //按钮
             yes: function(index, layero){
                 $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
                     if(data.type == 3 || data.type == 1){

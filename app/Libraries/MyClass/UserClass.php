@@ -223,15 +223,16 @@
                 $accid=DB::table('t_u_user')->where("userid",$userId->userid)->pluck("accid");
                 $accids[]=$accid;
             }
-            $tname="咨询讨论组";
-            $phone=DB::table("t_u_user")->where("userid",session('userId'))->pluck("accid");
+            $userID=DB::table("t_e_event")->where("eventid",$eventId)->pluck("userid");
+            $tname="办事讨论组";
+            $phone=DB::table("t_u_user")->where("userid",$userID)->pluck("accid");
             $AppKey = env('AppKey');
             $AppSecret = env('AppSecret');
             $serverApi = new \ServerApiClass($AppKey, $AppSecret);
             $msg="欢迎";
             $codes=$serverApi->createGroup($tname,$phone,$accids,'','',$msg,'0','0','0');
             $res=DB::table("t_s_im")->insert([
-                "userid"=>session('userId'),
+                "userid"=>$userID,
                 "tid"=>$codes['tid'],
                 "state"=>0,
                 "consultid"=>'',

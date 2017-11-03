@@ -182,8 +182,23 @@
                     <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
                 </div>
             </div>
+    <div class="pop-pay iknow" >
+        <div class="payoff">
+            <div class="single">
+                <p> 1.企业邀请专家咨询、参会、办事，专家接受邀请后，以文字、视频等方式与去也交流。</p>
+                <p> 2.专家可以主动联系企业。</p>
+                <p>3.专家可以通过升维网VIP精选商情，向特定行业企业群发自己的重要成果。</p>
+                <p>4.专家自行制定给企业提供咨询、参会的收费标准（按每30分钟多少钱）。</p>
+                <p>5.专家与企业自行协商线下项目的收费标准。</p>
+            </div>
+            <div style="text-align: center;padding: 0 0 20px;"><button type="button" class="pop-btn vip" id="vip">我知道了</button></div>
+        </div>
+    </div>
 <script type="text/javascript">
     $(function(){
+        if($.cookie('register')){
+                $(".iknow").show();
+        }
         $('.v-works-mlt-opt').click(function(event) {
             var $ind = $(this).index();
             $(this).addClass('active').siblings().removeClass('active');
@@ -261,5 +276,9 @@
             }
         })
     }
+    $("#vip").on("click",function(){
+        $.cookie("register","",{path:'/',domain:'sw2025.com'});
+        $(".iknow").hide();
+    })
 </script>
 @endsection

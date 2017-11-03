@@ -8,7 +8,7 @@
             <div class="details-top clearfix">
                 <div class="details-bg">
                     <span class="blue-circle"><i class="iconfont icon-jianjie1"></i></span>
-                    <span class="details-ch-tit">需求信息</span>
+                    <span class="details-ch-tit">商情信息</span>
                 </div>
                 <span class="details-en-tit">SUPPLY AND DEMAND INFORMATION</span>
             </div>
@@ -21,14 +21,14 @@
                         <a href="javascript:;" index="{{$datas->needid}}" class="collect-state @if(in_array($datas->needid,$collectids)) done @endif">@if(in_array($datas->needid,$collectids))已收藏 @else 收藏 @endif</a>
                         <span class="supp-details-time">发布时间：<em>{{$datas->needtime}}</em></span>
                         <span class="supp-details-zone">地<b class="wem2"></b>区：<em>{{$datas->address}}</em></span>
-                        <span class="supp-details-categary">需求分类：<em>{{$datas->domain1}} / {{$datas->domain2}}</em></span>
+                        <span class="supp-details-categary">商情分类：<em>{{$datas->domain1}} / {{$datas->domain2}}</em></span>
 
                     </div>
                 </div><a name="reply">
                 <div class="details-abs">
                     <div class="details-abs-tit">
                         <div class="details-graph"><span class="square"></span></div>
-                        <span class="details-tit-cap">需求详情</span>
+                        <span class="details-tit-cap">商情描述</span>
                     </div>
                     <textarea class="details-abs-desc" disabled id="textarea">{{trim($datas->brief)}}</textarea>
                 </div>
@@ -113,7 +113,7 @@
             <div class="aside-top">
                 <span class="aside-top-icon"><i class="iconfont icon-tuijian"></i></span>
                 <span class="width2"></span>
-                <span class="aside-top-tit">推荐需求信息</span>
+                <span class="aside-top-tit">推荐商情信息</span>
             </div>
             <div class="ad-box">
                 <span class="ad-cap">更多种类</span>
@@ -127,7 +127,7 @@
                             <img src="@if($v->needtype == '专家')) {{env('ImagePath').$v->extimg}} @else {{env('ImagePath').$v->entimg}}  @endif" class="supp-rec-img" />
                             <div class="supp-rec-com">
                                 <span class="supp-rec-name">【{{$v->needtype}}】@if(!empty($v->needtype == '专家')) {{$v->expertname}} @else {{$v->enterprisename}} @endif</span>
-                                <p class="supp-rec-category">需求分类：<span><em>{{$v->domain1}} / {{$v->domain2}}</em></span></p>
+                                <p class="supp-rec-category">商情分类：<span><em>{{$v->domain1}} / {{$v->domain2}}</em></span></p>
                             </div>
                         </div>
                         <span class="supp-rec-time">{{$v->needtime}}</span>
