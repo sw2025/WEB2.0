@@ -188,11 +188,9 @@ class MyEnterpriseController extends Controller
             $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
             if(!empty($info)){
                 $verify = DB::table('t_u_enterpriseverify')->where('enterpriseid',$info->enterpriseid)->orderBy('id','desc')->first();
-                if(!empty($verify) && $verify->configid != 2){
-                    return ['msg' => '提交失败，您已经认证过了','icon' => 2];
-                } elseif (empty($verify)){
+                if(empty($verify)){
                     $data['entid'] = $info->enterpriseid;
-                }
+                } 
             }
             /*$verifyname = DB::table('t_u_enterprise')->where('enterprisename',$data['enterprisename'])->first();
             if($verifyname){
@@ -1971,7 +1969,7 @@ class MyEnterpriseController extends Controller
         if(!empty($consulttime)){
             return view('myenterprise.enevtVideo',compact('eventId'));
         }else{
-            return redirect('uct_works/detail/'+$eventId);
+            return redirect('uct_works/detail/'.$eventId);
         }
 
     }
@@ -2107,6 +2105,9 @@ class MyEnterpriseController extends Controller
         }
     }
 
+    /**企业咨询判断
+     * @return array
+     */
     public function  consultCharge(){
         $res=array();
         $userId=session('userId');
@@ -2165,6 +2166,11 @@ class MyEnterpriseController extends Controller
             }
         }
     }
+
+public function updateEnterprise($enterpriseId){
+    $data=DB::table("t_u_enterprise")->where("enterpriseid",$enterpriseId)->first();
+    return view("myenterprise.updateEnterprise",compact('data'));
+}
 
 
    

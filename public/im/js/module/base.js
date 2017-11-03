@@ -108,7 +108,7 @@ YX.fn.cbInitLocalTeamInfo = function (err, data) {
             this.initUI()
         }
     }else{
-        alert("获取本地群组失败")
+      //  alert("获取本地群组失败")
     }
 }
 

@@ -4,10 +4,10 @@
     <script type="text/javascript" src="{{asset('js/list.js')}}"></script>
     <div class="main">
         <!-- 我的需求 / start -->
-        <h3 class="main-top">我的需求</h3>
+        <h3 class="main-top">我的商情</h3>
         <div class="ucenter-con">
             <div class="myrequire-bg">
-                <a href="{{asset('uct_myneed/supplyNeed')}}" class="need-publish-btn">发布需求</a>
+                <a href="{{asset('uct_myneed/supplyNeed')}}" class="need-publish-btn">发布商情</a>
                 <div class="publish-intro">
                     <span class="introduce-cap">发布介绍</span>
                     <div class="introduce-con">工作情况汇报关于小李同志本次任务工作情况汇报工作情况汇报关于小李同志本次任务工作情况汇报</div>
@@ -45,7 +45,7 @@
                         <a href="javascript:;" @if(isset($role) && $role == '企业') class=active @endif>企业</a>
                     </div>
                     <div class="serve-field filter-row clearfix">
-                        <span class="left-cap">需求领域：</span>
+                        <span class="left-cap">商情领域：</span>
                         <a href="javascript:;" class="serve-all @if(empty($supply)) active @endif">全部</a>
                         @foreach($cate as $big)
                             @if($big->level == 1)
@@ -115,7 +115,7 @@
             <!-- 排序 end -->
             <div class="myask-tabar">
 
-                <a class="myask-tabar-a @if(empty($who) || $who == 'other') active @endif" href="javascript:;" index="other">供求信息</a>
+                <a class="myask-tabar-a @if(empty($who) || $who == 'other') active @endif" href="javascript:;" index="other">商情信息</a>
                 <a class="myask-tabar-a @if(!empty($who) && $who == 'my') active @endif" href="javascript:;" index="my">我发布的</a>
 
             </div>
@@ -129,7 +129,7 @@
                                     <span class="supp-list-time">{{$v->needtime}}</span>
                                     <div class="supp-list-brief">
                                         <span class="supp-list-name">【{{$v->role}}】@if(!empty($v->expertname) && !empty($v->enterprisename)) {{$v->enterprisename.' / '.$v->expertname}} @else {{$v->expertname or $v->enterprisename}} @endif</span>
-                                        <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
+                                        <span class="supp-list-category">商情分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
                                         <div class="supp-list-desc">
                                             {{$v->brief}}
                                         </div>

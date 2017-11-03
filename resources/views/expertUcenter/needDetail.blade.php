@@ -4,7 +4,7 @@
 
     <div class="main">
             <!-- 我的需求 / start -->
-            <h3 class="main-top">我的需求</h3>
+            <h3 class="main-top">我的商情</h3>
             <div class="ucenter-con">
                 <div class="main-right">
                     <div class="myneed-com-name">
@@ -12,8 +12,8 @@
                     </div>
                     <div class="myneeds">
                         <div class="myneed-con">
-                            <span class="myneed-type">需求大类：{{$datas->domain1}} </span>
-                            <span class="myneed-type">需求小类：{{$datas->domain2}} </span>
+                            <span class="myneed-type">商情大类：{{$datas->domain1}} </span>
+                            <span class="myneed-type">商情小类：{{$datas->domain2}} </span>
                             <span class="myneed-time">发布时间：<em>{{$datas->needtime}}1</em></span>
                             @if($datas->userid == session('userId') && $configid->configid == 3)<div class="myneed-set"><button class="myneed-set-btn" index="{{$cryptid}}" supplyid="{{$datas->needid}}">设为已解决</button><span class="myneed-tips">提示：设为已解决后将不再展示</span></div>@endif
                             @if($datas->userid == session('userId') && $configid->configid == 4)<div class="myneed-set">已解决~ </div>@endif
@@ -22,7 +22,7 @@
                                 <a href="javascript:;" class="visitor"><i class="iconfont icon-yanjing"></i>{{$datas->looks or 0}}</a>
                             </div>
                             <div class="myneed-desc">
-                                <span class="myneed-desc-tit">需求描述</span>
+                                <span class="myneed-desc-tit">商情描述</span>
                                 <textarea class="myneed-desc-para" id="textarea" style="width: 85%;border:none;">{{$datas->brief}}</textarea>
                             </div>
                         </div>

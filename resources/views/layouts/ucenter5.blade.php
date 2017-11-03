@@ -67,7 +67,7 @@
                 <li id="index"><a href="{{asset('/')}}">首页</a></li>
                 <li id="service" ><a href="{{asset('service')}}">服务介绍</a></li>
                 <li id="expert" ><a href="{{asset('expert')}}">专家资源</a></li>
-                <li id="supply" ><a href="{{asset('supply')}}">需求信息</a></li>
+                <li id="supply" ><a href="{{asset('supply')}}">商情信息</a></li>
                 <li id="us" ><a href="{{asset('us')}}">关于我们</a></li>
             </ul>
         </div>
@@ -168,7 +168,7 @@
                             </a>
                             <a id="uct_myneed" href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
-                                需求信息
+                                商情信息
                             </a>
                         </div>
                         <div class="v-ucenter-nav-list  v-default">
@@ -182,7 +182,7 @@
                             </a>
                             <a id="myneed" href="{{asset('myneed')}}" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
-                                需求信息
+                                商情信息
                             </a>
                         </div>
                     </div>

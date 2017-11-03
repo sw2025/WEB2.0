@@ -30,12 +30,6 @@
                         <p> 2.机构介绍至少包括“机构业务范围、擅长领域 主要业绩”等内容。</p>
                     </div>
                     <br/>
-                    @if(!empty($result) && $result->configid==3)
-                        <span style="color:red">
-                            <em>审核失败</em>
-                            拒绝理由：{{$result->remark}}
-                        </span>
-                    @endif
                 </div>
                 <div class="datas">
                     <div class="datas-lt">
@@ -156,18 +150,12 @@
                     </div>
                     <div class="datas-rt htxt1">
                         <textarea  placeholder="请输入专家描述（最多1000字）" id="brief" cols="30"
-                                  rows="10">@if(!empty($result)){{$result->brief}}@endif</textarea>
+                                   rows="10">@if(!empty($result)){{$result->brief}}@endif</textarea>
                     </div>
                 </div>
-                @if(!empty($result) && $result->configid==3)
-                    <div class="bottom-btn">
-                        <button class="test-btn submit-audit" type="button">修改资料</button>
-                    </div>
-                @else
-                    <div class="bottom-btn">
-                        <button class="test-btn submit-audit" type="button">提交审核</button>
-                    </div>
-                @endif
+                <div class="bottom-btn">
+                    <button class="test-btn submit-audit" type="button">修改资料</button>
+                </div>
             </div>
         </div>
     </div>

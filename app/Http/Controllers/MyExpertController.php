@@ -117,14 +117,15 @@ class MyExpertController extends Controller
                         $expertid = $expertid->expertid;
                     }
                     if(!empty($expertid)){
+                       // $configid=DB::table("t_u_expertverify")->where("expertid",$expertid)->orderBy("ID",'desc')->first();
                         $result=DB::table("T_U_EXPERTVERIFY")
                             ->insert([
-                                "expertid"=>$expertid,
-                                "configid"=>1,
-                                "verifytime"=>date("Y-m-d H:i:s",time()),
-                                "updated_at"=>date("Y-m-d H:i:s",time())
-                            ]);
-                    }
+                                    "expertid"=>$expertid,
+                                    "configid"=>1,
+                                    "verifytime"=>date("Y-m-d H:i:s",time()),
+                                    "updated_at"=>date("Y-m-d H:i:s",time())
+                                ]);
+                        }
                     DB::commit();
                     return ['msg' => '添加专家认证成功,进入审核阶段','icon' => 1];
                 }catch(Exception $e){
@@ -642,6 +643,16 @@ class MyExpertController extends Controller
      */
     public function myEventVideo($eventId){
         return view('myenterprise.myEeventVideo',compact('eventId'));
+    }
+
+    /**专家认证修改
+     * @param $expertId
+     * @return mixed
+     */
+    public  function  updateExpert($expertId){
+        $result=DB::table("t_u_expert")->where("expertid",$expertId)->first();
+        $cate = DB::table('t_common_domaintype')->get();
+        return view("myexpert.updateExpert",compact('result','cate'));
     }
 
 

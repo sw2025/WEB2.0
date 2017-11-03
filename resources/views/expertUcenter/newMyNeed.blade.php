@@ -7,7 +7,7 @@
     <div class="ucenter-con">
         <!-- 选择start -->
         <div class="v-myneed-top">
-            <a href="javascript:;" class="v-release-btn" onclick="putneed()">发布需求</a>
+            <a href="javascript:;" class="v-release-btn" onclick="putneed()">发布商情</a>
             <div class="v-condition">
                 <a href="javascript:;" class="v-condition-link @if(!empty($action) && $action == '已发布')active @endif" index="myput">已发布<span class="v-count">{{$putcount}}</span></a>
                 <a href="javascript:;" class="v-condition-link v-c-link1 @if(!empty($action) && $action == '待审核')active @endif" index="waitverify">待审核<span class="v-count">{{$waitcount}}</span></a>
@@ -45,7 +45,7 @@
                     <a href="javascript:;" @if(isset($role) && $role == '企业') class=active @endif>企业</a>
                 </div>
                 <div class="serve-field filter-row clearfix">
-                    <span class="left-cap">需求领域：</span>
+                    <span class="left-cap">商情领域：</span>
                     <a href="javascript:;" class="serve-all @if(empty($supply)) active @endif">不限</a>
                     @foreach($cate as $big)
                         @if($big->level == 1)
@@ -114,7 +114,7 @@
                                 <span class="supp-list-time">{{date('Y-m-d',strtotime($v->needtime))}}</span>
                                 <div class="supp-list-brief">
                                     <span class="supp-list-name">@if(!empty($v->expertname) && !empty($v->enterprisename)) {{$v->enterprisename.' / '.$v->expertname}} @else {{$v->expertname or $v->enterprisename}} @endif</span>
-                                    <span class="supp-list-category">需求分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
+                                    <span class="supp-list-category">商情分类：<em>{{$v->domain1}} / {{$v->domain2}}</em></span>
                                     <div class="supp-list-desc">
                                         {{$v->brief}}
                                     </div>

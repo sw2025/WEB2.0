@@ -17,17 +17,31 @@
                             <span class="green-circle">3</span>认证成功
                         </div>
                         <div class="expert-certy">
-                            <div class="expert-certy-state success-state">
-                                <i class="iconfont icon-chenggong"></i>
-                                <span class="publish-need-blue">
-                                    <em>认证成功</em>AUTHENTICATION SUCCESS
-                                </span>
+                            <div class="expert-certy-state">
+                                <div class="friendly categoryExpert">
+                                    <p class="center">友好提示</p>
+                                    <p> 1.本平台为企业提供专家咨询和重要资源。</p>
+                                    <p> 2.请专家实名认证，上传有效证照以便与企业深度互动。</p>
+                                    <p> 3.专家介绍中至少包括“职称、任职、擅长、重要经历”等内容。</p>
+                                </div>
+                                <div class="friendly categoryNoExpert">
+                                    <p class="center">友好提示</p>
+                                    <p>1.请实名认证，上传有效证照。</p>
+                                    <p> 2.机构介绍至少包括“机构业务范围、擅长领域 主要业绩”等内容。</p>
+                                </div>
+                                <br/>
+                                @if(!empty($result) && $result->configid==3)
+                                    <span style="color:red">
+                            <em>审核失败</em>
+                            拒绝理由：{{$result->remark}}
+                        </span>
+                                @endif
                             </div>
                             <div class="datas datas-audit">
                                 <div class="datas-lt">
                                     <div class="datas-lt-enter">
                                         <div class="datas-sel zindex1">
-                                            <span class="datas-sel-cap">专家分类</span><a href="javascript:;" class="datas-sel-def verify-default">{{$data->category}}</a>
+                                            <span class="datas-sel-cap">专家分类</span><a href="javascript:;" class="datas-sel-def verify-default category">{{$data->category}}</a>
 
                                         </div>
                                         <div class="datas-sel">
@@ -63,13 +77,19 @@
                                             
                                         </div>
                                     </div>
+                                    <div class="expert-certy-state success-state tal nopt">
+                                        <i class="iconfont icon-chenggong"></i>
+                                        <span class="publish-need-blue">
+                                            <em>认证成功</em>AUTHENTICATION SUCCESS
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="datas-rt htxt1">
+                                <div class="datas-rt htxt1 vat mydata-new">
                                     <textarea placeholder="请输入专家描述" readonly="readonly" cols="30" rows="10">{{$data->brief}}</textarea>
+                                    <div class="mybtn-wrapper">
+                                        <a href="{{url('updateExpert/'.$data->expertid)}}" ><button class="mybtn" type="button">修改资料</button></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="bottom-btn">
-                                <button class="test-btn submit-audit" type="button">重新认证</button>
                             </div>
                         </div>
                     </div>
@@ -79,7 +99,13 @@
     </div>
     <!-- 专家认证3 / end -->
 <script>
-
+    if($(".category").text()=="专家" || $(".category").text()=="企业家" ){
+        $(".categoryExpert").show();
+        $(".categoryNoExpert").hide();
+    }else{
+        $(".categoryExpert").hide();
+        $(".categoryNoExpert").show();
+    }
 </script>
     <!-- 公共footer / end -->
 @endsection

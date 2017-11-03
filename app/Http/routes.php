@@ -183,6 +183,8 @@ Route::post('expertHaveCard', 'ExpertUcenterController@expertHaveCard');
     Route::get('uct_resource', 'MyEnterpriseController@resource');
 //会员认证1
     Route::get('uct_member', 'MyEnterpriseController@uct_member');
+//企业修改资料
+Route::get('updateEnterprise/{enterpriseId}', 'MyEnterpriseController@updateEnterprise');
 //处理会员认证
     Route::post('uct_member/entverify', 'MyEnterpriseController@entVerify');
 //会员认证2
@@ -271,6 +273,8 @@ Route::post('entMemberJudge','PublicController@entMemberJudge');
     /************************************我是专家*********************************************************/
 //专家认证
     Route::get('uct_expert', 'MyExpertController@expert');
+//专家认证修改
+Route::get('updateExpert/{expertId}', 'MyExpertController@updateExpert');
 //专家审核
     Route::get('uct_expert2', 'MyExpertController@expert2');
 //审核成功

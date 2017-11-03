@@ -17,12 +17,14 @@
                     </div>
                     <div class="expert-certy">
                         <div class="expert-certy-state">
-                            <i class="iconfont icon-huiyuanquanyi"></i>
-                                <span class="expert-certy-blue">
-                                    <em>了解会员权益</em>FOR MEMBERSHIP RIGHTS
-                                </span>
+                            <div class="friendly">
+                                <p class="center">友好提示</p>
+                                <p>1.本平台为企业提供高端专家和重要资源。</p>
+                                <p>2.要求企业实名认证、上传有效证照，以便于专家、机构深度互动。</p>
+                                <p>3.企业简介中至少包括“主要产品与服务、成立日期、基本规模、行业优势”等内容。</p>
+                            </div>
                             @if(!empty($data))
-                            <p style="color:red"><em>审核失败：{{$configids->remark}}</em> <br /> 请重新提交审核</p>
+                            <p class="justify-fail"><em>审核失败：{{$configids->remark}}</em> <br /></p>
                                 @endif
                         </div>
                         <div class="datas datas-member-audit clearfix">
@@ -125,13 +127,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="datas-rt">
+                            <div class="datas-rt  mydata-new">
 
                                 <textarea onkeyup="checkLength(this);"  placeholder="请输入企业简介（30-500字）" cols="30" rows="10" id="content">@if(!empty($data)){{$data->brief}}@endif</textarea>
 
                             </div>
                         </div>
-                        <div class="bottom-btn"><button class="test-btn submit-audit" type="button"  id="submit" ><a href="javascript:;"style="color:#fff;">@if(!empty($data)) 重新认证 @else 提交认证 @endif</a></button></div>
+                        <div class="bottom-btn"><button class="test-btn submit-audit nomt" type="button"  id="submit" ><a href="javascript:;"style="color:#fff;">@if(!empty($data)) 修改资料 @else 提交认证 @endif</a></button></div>
                     </div>
                 </div>
             </div>
