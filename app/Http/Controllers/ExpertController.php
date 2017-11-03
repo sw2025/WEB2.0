@@ -87,6 +87,7 @@ class ExpertController extends Controller
      * @return mixed
      */
     public  function detail($expertid){
+        $memberrights=DB::table("t_u_memberright")->where("memberid","<>",1)->get();
         $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
         $array = DB::table('t_u_expert as ext')
             ->leftJoin('t_u_expertfee as fee','ext.expertid' ,'=' ,'fee.expertid')
@@ -127,7 +128,7 @@ class ExpertController extends Controller
             $collectids = DB::table('t_u_collectexpert')->where(['userid' => session('userId'),'remark' => 1])->lists('expertid');
         }
         //查询留言的信息
-        $message = DB::table('t_u_messagetoexpert as msg')
+        /*$message = DB::table('t_u_messagetoexpert as msg')
             ->leftJoin('view_userrole as view','view.userid', '=','msg.userid')
             ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
             ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
@@ -143,8 +144,41 @@ class ExpertController extends Controller
         $msgcount = [];
         foreach ($getmsgcount as $k => $v) {
             $msgcount[$v->parentid] = $v->count;
+        }*/
+        $eventinfo = null;
+        $isexpert = false;
+        if(!empty(session('userId'))){
+            $expertinfo = DB::table('view_expertstatus')->where(['userid' => session('userId'),'expertid' => $expertid])->first();
+            if(!empty($expertinfo)){
+                $eventinfo = DB::table('t_e_eventresponse as res')
+                    ->leftJoin('t_e_event as event','event.eventid','=','res.eventid')
+                    ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
+                    ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
+                    ->select('res.*','event.domain1','event.domain2','event.brief','ent.showimage','event.eventtime','event.eventtime','ent.enterprisename as name','res.state')
+                    ->whereRaw('res.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`expertid`,eventid)')
+                    ->where(['res.expertid' => $expertid])
+                    ->whereIn('status.configid',[4,5,6,7,8,9])
+                    ->where('res.state','<>',5)
+                    ->orderBy('res.id','desc')
+                    ->get();
+                $eventinfo = \EventClass::handelObj2($eventinfo);
+                $isexpert = true;
+            } else {
+                $eventinfo = DB::table('t_e_eventresponse as res')
+                    ->leftJoin('t_e_event as event','event.eventid','=','res.eventid')
+                    ->leftJoin('t_u_enterprise as ent','event.userid','=','ent.userid')
+                    ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
+                    ->select('res.*','event.domain1','ent.showimage','event.domain2','event.brief','event.eventtime','event.eventtime','ent.enterprisename as name','res.state')
+                    ->whereRaw('res.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`expertid`,eventid)')
+                    ->where(['res.expertid' => $expertid,'event.userid' => session('userId')])
+                    ->whereIn('status.configid',[4,5,6,7,8,9])
+                    ->where('res.state','<>',5)
+                    ->orderBy('res.id','desc')
+                    ->get();
+                $eventinfo = \EventClass::handelObj2($eventinfo);
+            }
         }
-        return view("expert.detail",compact('datas','recommendNeed','domainselect','message','collectids','msgcount','cate'));
+        return view("expert.detail",compact('datas','recommendNeed','domainselect','message','collectids','msgcount','cate','memberrights','eventinfo','isexpert'));
     }
     //收藏专家
     public  function  collectExpert(){
