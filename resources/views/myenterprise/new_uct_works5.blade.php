@@ -43,7 +43,7 @@
                             <span class="green-circle">4</span>办事管理<span class="card-step-cap">&gt;</span>
                             <span class="green-circle">5</span>完成
                         </div>
-                        <input type="hidden" id="eventId" value="{{$datas->eventid}}" >
+                        <input type="hidden" id="eventVideo" value="{{$datas->eventid}}" >
                         <div class="uct-video-manage">
                             <div class="video-manage-top">
                                 <div class="vid-man-top-lt vid-man-top-main">

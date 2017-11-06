@@ -2,9 +2,30 @@
 @section("content")
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
     <script type="text/javascript" src="{{asset('js/list.js')}}"></script>
+    <style>
+        #showreply{
+            width:140px;
+            -webkit-border-radius:5px;
+            -moz-border-radius:5px;
+            height: 35px;
+            line-height: 35px;
+            background: #00a7ed;
+            color: #fff;
+            border:1px ;
+            border-radius: 4px;
+            margin-left:50px;
+        }
+        .badge{
+            border-radius: 50px;
+            background: #f10;
+            color: #fff;
+            padding:0 5px;
+        }
+    </style>
     <div class="ucenter-con">
                 <div class="uct-list-filter">
                     <div class="uct-search">
+                        <button  onclick="window.location='{{url('exttomymsg')}}'" id="showreply">专家给我的留言 <span class="badge"> {{$tomymsgcount}} </span></button>
                         <div class="uct-list-search">
                             <input type="text" class="uct-list-search-inp placeholder " placeholder="请输入专家姓名／机构名称／企业家姓名" value="{{$searchname or null}}">
                             <button type="button" class="uct-list-search-btn"><i class="iconfont icon-sousuo"></i></button>

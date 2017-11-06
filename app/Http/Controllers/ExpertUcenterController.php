@@ -130,8 +130,11 @@ class ExpertUcenterController extends Controller
         $waitcount= DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',1)->count();
         //用户拒审核的供求的数量
         $refusecount = DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',2)->count();
+        //商情的数量
+        $vipneedcount = DB::table('t_n_pushneed')->where('userid',session('userId'))->count();
         //判断是否为http请求
         if(!empty($get = $request->input())){
+            $levelwhere = ['need.level' => 0];
             //获取到get中的数据并处理
             $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
             $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
@@ -142,6 +145,7 @@ class ExpertUcenterController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
             $who = ( isset($get['who']) && $get['who'] != "null") ? $get['who'] : null;
+            $level = $get['level'];
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("needtype"=>$role):array();
             $supplywhere = !empty($supply)?array("need.domain1"=>$supply[0],'need.domain2' => $supply[1]):array();
@@ -160,6 +164,7 @@ class ExpertUcenterController extends Controller
                         $obj = $obj->where('need.userid',session('userId'))->where('status.configid',3);
                         $action  = '已发布';
                         $who = 'my';
+                        $levelwhere = [];
                         break;
                     case 'message':
                         $obj = $obj->whereRaw('need.needid in (select  needid from t_n_messagetoneed  where userid='.session('userId').' group by needid)');
@@ -198,6 +203,12 @@ class ExpertUcenterController extends Controller
                 $obj = $obj->where("need.brief","like","%".$searchname."%");
             }
 
+            if($level == 1){
+                $levelwhere = ['need.level' => 1];
+                $pushneedlist = DB::table('t_n_pushneed')->where('userid',session('userId'))->lists('needid');
+                $obj = $obj->whereIn("need.needid",$pushneedlist);
+            }
+
             //对三种排序进行判断
             if(!empty($ordertime)){
                 $obj = $obj->orderBy('need.needtime',$ordertime);
@@ -206,14 +217,15 @@ class ExpertUcenterController extends Controller
             } else {
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
-            $datas = $obj->paginate(4);
-            return view("expertUcenter.newMyNeed",compact('who','waitcount','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
+            $datas = $obj->where($levelwhere)->paginate(4);
+            return view("expertUcenter.newMyNeed",compact('vipneedcount','who','waitcount','level','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
         }
         $datas = $datas->where('status.configid',3)->where('need.userid','<>',session('userId'))
+            ->where('need.level',0)
             ->orderBy("need.needtime",'desc')
             ->paginate(4);
         $ordertime = 'desc';
-        return view("expertUcenter.newMyNeed",compact('waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
+        return view("expertUcenter.newMyNeed",compact('vipneedcount','waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
     }
     /**需求详情
      * @return mixed
@@ -498,5 +510,286 @@ class ExpertUcenterController extends Controller
             $res['code']='0';
         }
         return $res;
+    }
+
+
+    public function enterpriseRes(Request $request)
+    {
+        if(empty(session('userId'))){
+            return redirect('/login');
+        }
+        //获取板块信息
+        $datas = DB::table('t_u_enterprise as ext')
+            ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
+            ->leftJoin('view_enterprisecollectcount as coll','ext.enterpriseid' ,'=' ,'coll.entid')
+            ->leftJoin('view_enterprisemesscount as mess','ext.enterpriseid' ,'=' ,'mess.entid')
+            ->leftJoin('view_enterprisestatus as status','ext.enterpriseid' ,'=' ,'status.enterpriseid')
+            ->select('ext.*','user.phone','coll.count as collcount','mess.count as messcount')
+            ->where(['status.configid' => '3','ext.isshow' => 0]);
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_u_collectenterprise')->where(['userid' => session('userId'),'remark' => 1])->lists('enterpriseid');
+        }
+        //用户回复的数量
+        $msgcount = count(DB::table('t_u_messagetoenterprise')->where('userid',session('userId'))->groupBy('enterpriseid')->lists('enterpriseid'));
+        $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
+        $domainselect2 = ['投融资' => '找资金','科研技术' => '找技术', '战略管理' => '定战略', '市场资源' => '找市场'];
+        //判断是否为http请求
+        if(!empty($get = $request->input())){
+            //获取到get中的数据并处理
+            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            /*$role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
+            $supply=(isset($get['supply']) && $get['supply'] != "null") ? explode('/',$get['supply']) : null;*/
+            $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
+            $industry=(isset($get['industry']) && $get['industry'] != "null") ? $get['industry'] : null;
+            $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
+            $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
+            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
+            $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
+            //设置where条件生成where数组
+          /*  $rolewhere = !empty($role)?array("category"=>$role):array();*/
+            $addresswhere = !empty($address)?array("ext.address"=>$address):array();
+            $industrywhere = !empty($industry)?array("ext.industry"=>$industry):array();
+            /*if(!empty($supply)){
+                $supply[0] = $domainselect2[$supply[0]];
+                $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+                $supply[0] = $domainselect[$supply[0]];
+            } else {
+                $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
+            }*/
+            $obj = $datas->where($addresswhere)->where($industrywhere);
+            //判断是否有搜索的关键字
+            if(!empty($searchname)){
+                $obj = $obj->where("ext.expertname","like","%".$searchname."%");
+            }
+            if(!empty($action)){
+                switch($action){
+                    case 'collect':
+                        $obj = $obj->whereRaw('ext.enterpriseid in (select  enterpriseid from t_u_collectenterprise  where userid='.session('userId').' and remark=1)');
+                        $action = '已收藏';
+                        //$obj = $obj->where('colneed.userid',session('userId'))->where('colneed.remark',1);
+                        break;
+                    case 'message':
+                        $obj = $obj->whereRaw('ext.enterpriseid in (select  enterpriseid from t_u_messagetoenterprise  where userid='.session('userId').' group by enterpriseid)');
+                        $action = '已留言';
+                        break;
+                }
+            } else {
+                $obj = $obj->whereIn('status.configid',[3]);
+            }
+            //对三种排序进行判断
+            if(!empty($ordertime)){
+                $obj = $obj->orderBy('ext.enterpriseid',$ordertime);
+            } elseif(!empty($ordercollect)){
+                $obj = $obj->orderBy('coll.count',$ordercollect);
+            } else {
+                $obj = $obj->orderBy('mess.count',$ordermessage);
+            }
+            $datas = $obj->paginate(4);
+            return view("expertUcenter.enterpriseres",compact('cate','msgcount','domainselect','searchname','datas','collectids','industry','action','address','ordertime','ordercollect','ordermessage'));
+        }
+        $datas = $datas->orderBy("ext.enterpriseid",'desc')->paginate(4);
+        $ordertime = 'desc';
+        return view('expertUcenter.enterpriseres',compact('datas','domainselect','ordertime','collectids','msgcount'));
+    }
+
+
+    public function enterpriseDetail($enterpriseid)
+    {
+        $memberrights=DB::table("t_u_memberright")->where("memberid","<>",1)->get();
+        $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
+        $array = DB::table('t_u_enterprise as ext')
+            ->leftJoin('view_enterprisestatus as status','ext.enterpriseid' ,'=' ,'status.enterpriseid')
+            ->where('status.configid',3)
+            ->lists('ext.enterpriseid');
+        if(!in_array("$enterpriseid",$array)){
+            return redirect("/");
+        }
+        $cate = DB::table('t_common_domaintype')->get();
+        //取出指定的企业信息
+        $datas = DB::table('t_u_enterprise as ext')
+            ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
+            ->leftJoin('view_enterprisecollectcount as coll','ext.enterpriseid' ,'=' ,'coll.entid')
+            ->leftJoin('view_enterprisemesscount as mess','ext.enterpriseid' ,'=' ,'mess.entid')
+            ->leftJoin('view_enterprisestatus as state','state.enterpriseid','=','ext.enterpriseid')
+            ->where(['state.configid' => 3])
+            ->select('ext.*','user.phone');
+        $obj = clone $datas;
+        $datas = $datas->where('ext.enterpriseid',$enterpriseid)->first();
+        //取出同类下推荐的企业
+        $info = ['industry' => $datas->industry,'enterpriseid' => $enterpriseid];
+        $recommendNeed = $obj->where('ext.enterpriseid','<>',$info['enterpriseid'])->orderBy('ext.enterpriseid','desc');
+        $obj2 = clone $recommendNeed;
+        //取出相同二级类下面的供求
+        $recommendNeed = $recommendNeed->where(['ext.industry' => $info['industry']])->take(5)->get();
+
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_u_collectenterprise')->where(['userid' => session('userId'),'remark' => 1])->lists('enterpriseid');
+        }
+        //查询留言的信息
+        $message = DB::table('t_u_messagetoenterprise as msg')
+            ->leftJoin('view_userrole as view','view.userid', '=','msg.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->leftJoin('t_u_user as user','user.userid' ,'=' ,'msg.userid')
+            ->leftJoin('t_u_user as user2','user2.userid' ,'=' ,'msg.use_userid')
+            ->where('msg.enterpriseid',$enterpriseid)
+            ->where('msg.isdelete',0)
+            ->select('msg.*','ent.enterprisename','ext.expertname','user.avatar','user.nickname','user.phone','user2.nickname as nickname2','user2.phone as phone2')
+            ->orderBy('messagetime','desc')
+            ->get();
+        //分组取出每个回复的数量
+        $getmsgcount = DB::table('t_u_messagetoenterprise')->where('enterpriseid',$enterpriseid)->groupBy('parentid')->select(DB::raw('parentid ,count(*) as count'))->having('parentid','<>',0)->get();
+        $msgcount = [];
+        foreach ($getmsgcount as $k => $v) {
+            $msgcount[$v->parentid] = $v->count;
+        }
+        $isexpert = true;
+
+        return view("expertUcenter.enterprisedetail",compact('datas','recommendNeed','domainselect','message','collectids','msgcount','cate','memberrights','isexpert'));
+    }
+
+    /**处理收藏
+     * @param Request $request
+     * @return string
+     */
+    public function dealCollect (Request $request)
+    {
+        //判断是否登陆
+        if(!session('userId')) {
+            return 'nologin';
+        }
+        //判断是否为ajax请求
+        if($request->ajax()){
+            $data = $request->only('action', 'enterpriseid');
+            if(empty($data['enterpriseid'])){
+                return 'error';
+            }
+            $userid = session('userId');
+            $where = ['enterpriseid' => $data['enterpriseid'],'userid' => $userid];
+            if($data['action'] == 'collect'){
+                $is_insert =  DB::table('t_u_collectenterprise')->where($where)->first();
+                if($is_insert){
+                    $res = DB::table('t_u_collectenterprise')->where($where)->update(['remark' => 1]);
+                } else {
+                    $res = DB::table('t_u_collectenterprise')->insertGetId([
+                        'enterpriseid' => $data['enterpriseid'],
+                        'userid' => $userid,
+                        'collecttime' => date('Y-m-d H:i:s',time()),
+                        'remark' => 1,
+                        'updated_at' => date('Y-m-d H:i:s',time())
+                    ]);
+                }
+            } elseif ($data['action'] == 'cancel') {
+                $res = DB::table('t_u_collectenterprise')->where($where)->update(['remark' => 0]);
+            }
+            if($res){
+                return 'success';
+            } else {
+                return 'error';
+            }
+        }
+        return 'error';
+
+    }
+
+    /**回复留言
+     * @param Request $request
+     * @return string
+     */
+    public function replyMessage (Request $request)
+    {
+        if(empty(session('userId'))) {
+            return ['msg' => 'nologin','icon' => 5];
+        }
+        if($request->ajax()){
+            $data = $request->only('content', 'needid','parentid','use_userid');
+            $data['enterpriseid'] = $data['needid'];
+            if($data['use_userid'] == session('userId')){
+                return ['msg' => '亲,没必要自己回复自己','icon' => 0];
+            }
+            $expertuserid = DB::table('t_u_enterprise')->where('enterpriseid',$data['enterpriseid'])->first();
+            $userinfo = DB::table('t_u_user')->where('userid',session('userId'))->first();
+            if(empty($expertuserid) || empty($userinfo)){
+                return ['msg' => '企业不存在或用户不存在','icon' => 0];
+            }
+            $verifymember = DB::table('t_u_expert as ent')
+                ->leftJoin('t_u_expertverify as ver','ver.expertid','=','ent.expertid')
+                ->orderBy('ver.id','desc')
+                ->where('ent.userid',session('userId'))
+                ->first();
+            if($expertuserid->userid != session('userId') && (empty($verifymember) || $verifymember->configid != 2)){
+                return ['msg' => '不是认证专家或者本企业不能留言','icon' => 0];
+            }
+            if($verifymember->level == -1){
+                return ['msg' => '由于您违反了了升维⽹网给企业留留⾔言的规定，已禁⽌止您给企业留留⾔言，如要开启，请联系升维⽹网客服⼈员或拨打网页下方的联系电话','icon' => 0];
+            }
+            if($data['parentid'] != 0){
+                $msgcount = DB::table('t_u_messagetoenterprise')->where('parentid',$data['parentid'])->where('isdelete',0)->count();
+                if($msgcount >= 5){
+                    return ['msg' => '留言下的回复最多回复5次想详细交流可进行申请办事交流','icon' => 6];
+                }
+            }
+            $data['userid'] = session('userId');
+            $data['messagetime'] = date('Y-m-d H:i:s',time());
+            unset($data['needid']);
+            DB::beginTransaction();
+            try{
+                $res = DB::table('t_u_messagetoenterprise')->insert($data);
+                if($expertuserid->userid != session('userId') && !$data['parentid']){
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'] : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
+                    $msg = DB::table('t_m_systemmessage')->insert([
+                        'sendid' => 0,
+                        'receiveid' => $expertuserid->userid,
+                        'sendtime' => date('Y-m-d H:i:s',time()),
+                        'title' => '有用户给您留言了',
+                        'content' => $content,
+                        'expertid'=> $data['enterpriseid'],
+                        'state' => 0
+                    ]);
+                }
+                if($expertuserid->userid != session('userId') && $data['parentid'] && !$data['use_userid']){
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content']: '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
+                    $parid = DB::table('t_u_messagetoexpert')->where('id',$data['parentid'])->first();
+                    if(empty($parid)){
+                        return 'error';
+                    }
+                    if($parid->userid != session('userId')){
+                        $msg = DB::table('t_m_systemmessage')->insert([
+                            'sendid' => 0,
+                            'receiveid' => $parid->userid,
+                            'sendtime' => date('Y-m-d H:i:s',time()),
+                            'title' => '有用户给您留言了',
+                            'content' => $content,
+                            'expertid'=> $data['enterpriseid'],
+                            'state' => 0
+                        ]);
+                    }
+                }
+                if($expertuserid->userid != session('userId') && $data['parentid'] && $data['use_userid']){
+                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'] : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
+                    if($data['use_userid'] != session('userId')){
+                        $msg = DB::table('t_m_systemmessage')->insert([
+                            'sendid' => 0,
+                            'receiveid' => $data['use_userid'],
+                            'sendtime' => date('Y-m-d H:i:s',time()),
+                            'title' => '有用户给您留言了',
+                            'content' => $content,
+                            'expertid'=> $data['enterpriseid'],
+                            'state' => 0
+                        ]);
+                    }
+                }
+                DB::commit();
+                return ['msg' => '留言/回复成功','icon' => 1];
+            }catch (Exception $e){
+                DB::rollback();
+                return ['msg' => '留言失败请刷新重试','icon' => 0];
+            }
+        }
+        return ['msg' => '留言失败请刷新重试','icon' => 0];
     }
 }

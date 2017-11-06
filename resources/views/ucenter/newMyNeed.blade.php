@@ -1,5 +1,34 @@
 @extends('layouts.ucenter3')
 @section("content")
+    <style>
+        #showreply{
+            width:120px;
+            -webkit-border-radius:5px;
+            -moz-border-radius:5px;
+            height: 35px;
+            line-height: 35px;
+            background: #00a7ed;
+            color: #fff;
+            border:1px ;
+            border-radius: 4px;
+            margin-left:50px;
+        }
+        .badge{
+            border-radius: 50px;
+            background: #f10;
+            color: #fff;
+            padding:0 5px;
+        }
+        #vipshang{
+            margin-right: 20px;
+            font-size: 17px;
+            border: 1px solid #d06a6a;
+            padding: 5px;
+            border-radius: 5px;
+            color: #fff;
+            background: #F66;
+        }
+    </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
     <script type="text/javascript" src="{{asset('js/list.js')}}"></script>
     <script type="text/javascript" src="{{asset('iconfont/iconfont.js')}}"></script>
@@ -16,6 +45,7 @@
                 <!-- 选择  end -->
                 <div class="uct-list-filter">
                     <div class="uct-search">
+                        <button id="vipneed" index="{{$level}}"> VIP 商情 <span class="badge"> {{$vipneedcount}} </span></button>
                         <div class="uct-list-search">
                             <input type="text" class="uct-list-search-inp placeholder" placeholder="请输入要搜索的商情信息关键字" value="{{$searchname or null}}">
                             <button type="button" class="uct-list-search-btn"><i class="iconfont icon-sousuo"></i></button>
@@ -28,6 +58,7 @@
                             @if(isset($role))<a href="javascript:;" class="all-results-expert all-results-opt">{{$role}}</a>@endif
                             @if(isset($supply))<a href="javascript:;" class="all-results-field all-results-opt">{{$supply[0].'/'.$supply[1]}}</a>@endif
                             @if(isset($address))<a href="javascript:;" class="all-results-location all-results-opt">{{$address}}</a>@endif
+                            @if(!empty($level) && $level)<a href="javascript:;" class="all-results-vip all-results-opt">VIP商情</a>@endif
                         </div>
                         <div class="my-trace filter-row clearfix">
                             <span class="left-cap">我的足迹：</span>
@@ -119,6 +150,7 @@
                                     </div>
                                 </a>
                                 <div class="supp-list-icon">
+                                    @if($v->level) <span id="vipshang">VIP商情</span> @endif
                                     <a href="{{url('supply/detail',$v->needid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
                                     <a href="javascript:;" class="collect @if(in_array($v->needid,$collectids)) red @endif" index="{{$v->needid}}" title="@if(in_array($v->needid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> <span>{{$v->collcount}}</span></a>
                                 </div>
