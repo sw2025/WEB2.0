@@ -1,181 +1,103 @@
 @extends("layouts.ucenter4")
 @section("content")
-    <style>
-        @-webkit-keyframes waitPulse {
-            from { background-color: #bbb; -webkit-box-shadow: 0 0 9px #aaa; }
-            50% { background-color: #ccc; -webkit-box-shadow: 0 0 18px #ccc; }
-            to { background-color: #bbb; -webkit-box-shadow: 0 0 9px #aaa; }
-        }
-
-        @-webkit-keyframes followPulse {
-            from { background-color: #45b97c; -webkit-box-shadow: 0 0 9px #45b97c; }
-            50% { background-color: #60ad84; -webkit-box-shadow: 0 0 18px #333; }
-            to { background-color: #45b97c; -webkit-box-shadow: 0 0 9px #45b97c; }
-        }
-
-        @-webkit-keyframes faildPulse {
-            from { background-color: #bc330d; -webkit-box-shadow: 0 0 9px #ef4136; }
-            50% { background-color: #e33100; -webkit-box-shadow: 0 0 18px #e33100; }
-            to { background-color: #bc330d; -webkit-box-shadow: 0 0 9px #ef4136; }
-        }
-
-        @-webkit-keyframes responsePulse {
-            from { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #00a6ac; }
-            50% { background-color: #2daebf; -webkit-box-shadow: 0 0 18px #2daebf; }
-            to { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #00a6ac; }
-        }
-
-        @-webkit-keyframes putPulse {
-            from { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #78cdd1; }
-            50% { background-color: #2daebf; -webkit-box-shadow: 0 0 18px #2daebf; }
-            to { background-color: #007d9a; -webkit-box-shadow: 0 0 9px #78cdd1; }
-        }
-
-
-        @-webkit-keyframes ingPulse {
-            from { background-color: #1d953f; -webkit-box-shadow: 0 0 9px #ccc; }
-            50% { background-color: #4eb33c; -webkit-box-shadow: 0 0 18px #333; }
-            to { background-color: #1d953f; -webkit-box-shadow: 0 0 9px #ccc; }
-        }
-
-
-        @-webkit-keyframes endPulse {
-            from { background-color: #ff5c00; -webkit-box-shadow: 0 0 9px #5e7c85; }
-            50% { background-color: #e2754b; -webkit-box-shadow: 0 0 18px #ff5c00; }
-            to { background-color: #ff5c00; -webkit-box-shadow: 0 0 9px #5e7c85; }
-        }
-
-        @-webkit-keyframes yichangPulse {
-            from { background-color: #fc9200; -webkit-box-shadow: 0 0 9px #f36c21; }
-            50% { background-color: #ffb515; -webkit-box-shadow: 0 0 18px #ffb515; }
-            to { background-color: #fc9200; -webkit-box-shadow: 0 0 9px #f36c21; }
-        }
-
-
-        .response {
-            border-width: 0;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            line-height: normal;
-            text-decoration: none;
-            text-align: center;
-            display: inline-block;
-            padding-top: 0.5em;
-            padding-right: 0.5em;
-            padding-bottom: 0.5em;
-            padding-left: 0.5em;
-            font-size: 1em;
-            background-color: #adc708;
-            border-color: #829606;
-            color: white;
-            border-radius: 5px;
-        }
-
-        #eventwait{
-            -webkit-animation-name: waitPulse;
-            -webkit-animation-duration: 2s;
-            -webkit-animation-iteration-count: infinite;
-            border-style: solid;
-        }
-
-        #eventfollow{
-            -webkit-animation-name: followPulse;
-            -webkit-animation-duration: 2s;
-            -webkit-animation-iteration-count: infinite;
-            border-style: solid;
-        }
-
-        #response {
-            -webkit-animation-name: responsePulse;
-            -webkit-animation-duration: 2s;
-            -webkit-animation-iteration-count: infinite;
-            border-style: solid;
-        }
-
-        #eventput {
-            -webkit-animation-name: putPulse;
-            -webkit-animation-duration: 2s;
-            -webkit-animation-iteration-count: infinite;
-            border-style: solid;
-        }
-
-        #eventing{
-            -webkit-animation-name: ingPulse;
-            -webkit-animation-duration: 2s;
-            -webkit-animation-iteration-count: infinite;
-            border-style: solid;
-        }
-
-        #eventend{
-            -webkit-animation-name: endPulse;
-            -webkit-animation-duration: 2s;
-            -webkit-animation-iteration-count: infinite;
-            border-style: solid;
-        }
-
-        #eventdont{
-            -webkit-animation-name: faildPulse;
-            -webkit-animation-duration: 2s;
-            -webkit-animation-iteration-count: infinite;
-            border-style: solid;
-        }
-    </style>
-<div class="vmain-manage-list clearfix">
+    <div class="vmain-manage-list clearfix">
                 <div class="v-works-manage-list-top clearfix">
                     <div class="v-works-mlt-select">
-                        <a href="javascript:;" class="v-works-mlt-opt active" index="0" page="0">咨询请求</a>
-                        <a href="javascript:;" class="v-works-mlt-opt" index="1" page="0">我的咨询</a>
+                        <a href="javascript:;" class="v-works-mlt-opt  @if($index==0) active @endif" index="0" page="0">咨询请求</a>
+                        <a href="javascript:;" class="v-works-mlt-opt @if($index!=0) active @endif" index="1" page="0">我的咨询</a>
                     </div>
-                    <div class="v-feedback">
-                            <span class="v-feedback-span"><i class="iconfont icon-laba"></i>
-                            <span class="v-feedback-count">{{$count or 0}}</span>个企业向您发出咨询请求</span>
-                    </div>
+                   @if($index==0)
+                        <div class="v-feedback condition0">
+                                <span class="v-feedback-span"><i class="iconfont icon-laba"></i>
+                                <span class="v-feedback-count">{{$counts}}</span>个企业向您发出办事请求</span>
+                        </div>
+                   @else
+                        <div class="v-feedback condition1" >
+                            <div class="v-works-sel">
+                                <span class="allwork">全部办事</span>
+                                <a href="javascript:;" class="v-works-sel-def" id="domainType">{{$type or "不限"}}</a>
+                                <ul class="v-works-sel-list domainType"  >
+                                    <li @if($type && $type=="不限") class="active" @endif>不限</li>
+                                    @foreach($domains as $value)
+                                        <li @if($type && $type ==$value->domainname) active @endif>{{$value->domainname}}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div class="v-works-sel">
+                                <span class="allwork">全部状态</span>
+                                <a href="javascript:;" class="v-works-sel-def" id="configType">{{$configType or "不限"}}</a>
+                                <ul class="v-works-sel-list configType" >
+                                    <li class="active">不限</li>
+                                    <li>已响应</li>
+                                    <li>正在咨询</li>
+                                    <li>已完成</li>
+                                    <li>已评价</li>
+                                    <li>异常终止</li>
+                                </ul>
+                            </div>
+                        </div>
+                    @endif
                 </div>
+        @if($index==0)
                 <div class="v-m-list-box">
                     <ul class="v-manage-list-ul v-m-l-show clearfix">
                         @foreach($datas as $v)
                         <li>
                             <div class="v-manage-list-ul-link">
-                                <div class="v-manage-link-top">
-                                    <span class="{{$v->icon}}"></span>
-                                    <a href="{{url('uct_myask/askDetail',$v->consultid)}}" class="v-manage-link-tit">
-                                        <strong class="v-manage-link-sentit">{{$v->domain1}}</strong>
-                                        <span class="v-manage-link-juntit" title="{{$v->domain2}}">{{$v->domain2}}</span>
-                                    </a>
+                                <a href="{{url('uct_myask/askDetail',$v->consultid)}}" class="block-a">
+                                    <div class="v-manage-link-top">
+                                        <div class="v-manage-link-tit">
+                                            <strong class="v-manage-link-sentit exp-name-block">{{$v->enterprisename}}</strong>
+                                            <span class="biaoqian">{{$v->domain2}}</span>
+                                        </div>
+                                    </div>
+                                    <p class="v-manage-link-desc exp-paragraph">
+                                        {{$v->brief}}
+                                    </p>
+                                </a>
+                                <span class="accept" onclick="responseevent({{$v->consultid}},this)">接 受</span>
+                                <div class="v-manage-link-time">
+                                    <span><i class="iconfont icon-shijian2"></i>{{$v->starttime}} -- {{$v->endtime}}</span>
                                 </div>
-                                <p class="v-manage-link-desc">
-                                    {{$v->brief}}
-                                </p>
-                                <a href="javascript:;" class="accept" onclick="responseevent({{$v->consultid}},this)">接 受</a>
-                                <span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>2017-01-01</span>
                             </div>
                         </li>
                         @endforeach
                     </ul>
-                    <ul class="v-manage-list-ul clearfix">
-                        @foreach($datas2 as $v)
+                    @else
+                    <ul class="v-manage-list-ul v-m-l-show clearfix">
+                        @foreach($datas as $v)
                         <li>
-                            <div class="v-manage-list-ul-link">
+                            <a href="{{url('uct_myask/askDetail',$v->consultid)}}" class="v-manage-list-ul-link">
                                 <div class="v-manage-link-top">
-                                    <span class="{{$v->icon}}"></span>
-                                    <a href="{{url('uct_myask/askDetail',$v->consultid)}}" class="v-manage-link-tit">
-                                        <strong class="v-manage-link-sentit">{{$v->domain1}}</strong>
-                                        <span class="v-manage-link-juntit" title="{{$v->domain2}}">{{$v->domain2}}</span>
-                                    </a>
+                                    <div class="v-manage-link-tit">
+                                        <strong class="v-manage-link-sentit exp-name-block">{{$v->enterprisename}}</strong>
+                                        <span class="biaoqian">{{$v->domain2}}</span>
+                                    </div>
                                 </div>
-                                <p class="v-manage-link-desc">
+                                <p class="v-manage-link-desc exp-paragraph">
                                     {{$v->brief}}
                                 </p>
-                                <span class="v-manage-link-time2" style="position: absolute;font-size: 12px;bottom: 9px;right: 44px;"><i class="iconfont icon-shijian2" ></i>{{$v->consulttime}}</span>
-                                @if($v->configid == 7 || $v->configid == 8)
-                                <span class="chuo"></span>
-                                    @endif
-                                <p class="response" id="{{$v->btnicon}}" style=" position: absolute;top: 35px;right: 15px;">{{$v->status}}</p>
-                            </div>
+                                @if($v->configname=="已推送")
+                                    <span class="now-state state-ts">已推送</span>
+                                @elseif($v->configname=="已响应")
+                                    <span class="now-state state-ts">已响应</span>
+                                @elseif($v->configname=="正在咨询")
+                                    <span class="now-state state-jx">正在咨询</span>
+                                @elseif($v->configname=="已完成")
+                                    <span class="now-state state-wc">已完成</span>
+                                @elseif($v->configname=="已评价")
+                                    <span class="now-state state-wc">已评价</span>
+                                @else
+                                    <span class="now-state state-zz">异常终止</span>
+                                @endif
+                                <div class="v-manage-link-time">
+                                    <span><i class="iconfont icon-shijian2"></i>{{$v->starttime}} -- {{$v->endtime}}</span>
+                                </div>
+                            </a>
                         </li>
                         @endforeach
                     </ul>
+                        @endif
                 </div>
                 <div class="pages myinfo-page v-page">
                     <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
@@ -183,70 +105,71 @@
             </div>
 <script type="text/javascript">
     $(function(){
+        $(document).click(function () {
+            $('.v-works-sel-list').hide();
+        })
+        $('.v-works-sel .v-works-sel-def').click(function (event) {
+            event.stopPropagation();
+            $(this).next('ul').slideToggle();
+        });
+        $('.domainType li').click(function (event) {
+            event.stopPropagation();
+            var selHtml = $(this).html();
+            $(this).parent().prev('a').html(selHtml);
+            $(this).parent().hide();
+            var configType = $('#configType').text();
+            window.location.href = "?index=1&type=" + selHtml + "&configType=" + configType;
+        });
+
+        $('.configType li').click(function (event) {
+            event.stopPropagation();
+            var selHtml = $(this).html();
+            $(this).parent().prev('a').html(selHtml);
+            $(this).parent().hide();
+            var domain = $('#domainType').text();
+            window.location.href = "?index=1&type=" + domain + "&configType=" + selHtml;
+        });
+
         $('.v-works-mlt-opt').click(function(event) {
             var $ind = $(this).index();
             $(this).addClass('active').siblings().removeClass('active');
-            $('.v-manage-list-ul').eq($ind).addClass('v-m-l-show').siblings().removeClass('v-m-l-show');
-            var page = $(this).attr('page');
-            if($ind == 0){
-                $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':page});
-                $('.allPage').html('{{$datas->lastpage()}}');
-            } else if($ind == 1) {
-                $("#Pagination").pagination("{{$datas2->lastpage()}}",{'callback':pageselectCallback,'current_page':page});
-                $('.allPage').html('{{$datas2->lastpage()}}');
+            if ($ind == 0) {
+                $(".condition0").show();
+                $(".condition1").hide();
+                window.location.href = "?index=" + $ind;
+            } else {
+                $(".condition0").hide();
+                $(".condition1").show();
+                window.location.href = "?index=" + $ind + "&type=不限&configType=不限";
             }
         });
 
-        $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':{{$datas->currentPage()-1}}});
-
-        function pageselectCallback(page_index, jq){
+        var currentPage = parseInt("{{$datas->currentPage()}}") - 1;
+        $("#Pagination").pagination("{{$datas->lastpage()}}", {
+            'callback': pageselectCallback,
+            'current_page': currentPage
+        });
+        function pageselectCallback(page_index, jq) {
             // 从表单获取每页的显示的列表项数目
-            var current = parseInt(page_index)+1;
-            var divindex = $('.v-works-mlt-select').children('.active').attr('index');
-            var data = {'page':current,'action':divindex};
-
-            senddatato(data);
+            var current = parseInt(page_index) + 1;
+            var url = window.location.href;
+            url = url.replace(/(\?|\&)?page=\d+/, '');
+            var isexist = url.indexOf("?");
+            if (isexist == -1) {
+                url += '?page=' + current;
+            } else {
+                url += '&page=' + current;
+            }
+            window.location = url;
             //阻止单击事件
             return false;
         }
-
-        function senddatato (params){
-            var location = '{{url('/uct_myask')}}?page='+params.page;
-            $.get(location,{'action':params.action},function (data) {
-                if(params.action > 1){
-                    params.action = 1;
-                }
-                var obj = $('.v-manage-list-ul').eq(params.action);
-                obj.html('');
-                var ee = data.data;
-                var str = '';
-                for(var i=0;i<ee.length;i++){
-
-                    str += '<li><div class="v-manage-list-ul-link"><div class="v-manage-link-top">';
-                    str += '<span class="'+ee[i].icon+'"></span>';
-                    str += '<a href="{{url('uct_mywork/workDetail')}}'+'/'+ee[i].consultid+'" class="v-manage-link-tit">';
-                    str += '<strong class="v-manage-link-sentit">'+ee[i].domain1+'</strong>';
-                    str += '<span class="v-manage-link-juntit" title="'+ee[i].domain2+'">'+ee[i].domain2+'</span></a></div>';
-                    str += '<p class="v-manage-link-desc">'+ee[i].brief+'</p>';
-                    if(ee[i].state == 0 || ee[i].state == 1){
-                        str += '<a href="javascript:;" class="accept" onclick="responseevent('+ee[i].consultid+',this)">接 受</a>';
-                    }
-                    str += '<span class="v-manage-link-time"><i class="iconfont icon-shijian2"></i>'+ee[i].eventtime+'</span></div>';
-                }
-                obj.html(str);
-                $('.v-works-mlt-opt').eq(params.action).attr('page',data.current_page-1);
-                $("#Pagination").pagination(data.last_page,{'callback':pageselectCallback,'current_page':data.current_page-1});
-                $('.allPage').text(data.last_page);
-            });
-        }
-
-
     })
 
     function responseevent(consultid,obj){
         $(obj).attr('disabled',true);
         $(obj).html('正在响应');
-        $.post('{{url('uct_myask/responseconsult')}}',{'consultid':consultid,'token':'{{$token}}'}, function (data){
+        $.post('{{url('uct_myask/responseconsult')}}',{'consultid':consultid}, function (data){
             if(data.icon == 2){
                 layer.msg(data.msg,{'time':1000,'icon':data.icon},function ()  {
                     $(obj).attr('disabled',false);

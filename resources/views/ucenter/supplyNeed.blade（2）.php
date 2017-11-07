@@ -1,4 +1,4 @@
- @extends("layouts.ucenter4")
+ @extends("layouts.ucenter")
 @section("content")
     <div class="main">
         <!-- 发布需求 / start -->
@@ -9,13 +9,14 @@
                     <span class="green-circle">1</span>提交商情
                 </div>
                 <div class="publish-need">
-                    <div style="margin-top: 10px;"><p style="color: #007fff;">提示：当前您是以专家的身份发布的商情，请确定完成专家认证后发布。<a href="javascript:;" onclick="putneed('企业')">点此以企业身份发布商情</a></p>
+                    <div style="margin-top: 10px;"><p style="color: #007fff;">提示：当前您是以企业的身份发布的商情，请确定完成企业认证后发布。<a href="{{url('myneed/supplyNeed')}}">点此以专家身份发布商情</a></p>
                     </div>
                     @if(!empty($info))
                         <input type="hidden" id="refuseid" value="{{$info->needid}}">
                         <p class="wrong-reason" style="text-align:left;width:350px;margin:0 auto;padding-top:30px;"><span style="color: #e3643d">拒绝原因：</span><span style="color: #e3643d">{{$info->error}}</span></p>
                     @endif
                     <div class="publish-need-sel">
+
                         <span class="publ-need-sel-cap">商情分类</span><a href="javascript:;" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
                         <ul class="publish-need-list">
                             @foreach($cate as $v)
@@ -33,11 +34,11 @@
                                     </li>
                                     @endforeach
                         </ul>
+
+
+                       <textarea   name="" id="content" class="publish-need-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入商情描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea>
                     </div>
-                    <div>
-                        <textarea   name="" id="content" class="publish-need-txt new-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入商情描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea>
-                        <button class="test-btn publish-submit" type="button">提交</button>
-                    </div>
+                    <div><button class="test-btn publish-submit" type="button">提交</button></div>
                 </div>
             </div>
         </div>
@@ -58,8 +59,6 @@
         <li><a>感谢您的合作</a></li>
         <li><a style="margin-left: 80%;">升维网</a></li>
     </ul>
-
-
     <script type="text/javascript">
         $(function(){
             layer.open({
@@ -71,7 +70,6 @@
                     layer.msg('感谢您的配合，请文明书写', {time: 1000, icon:6});
                 }
             });
-
 
             $('.publ-need-sel-def').click(function() {
                 $(this).next('ul').stop().slideToggle();
@@ -104,7 +102,7 @@
                     layer.msg('请输入30-500字的需求描述');
                     return false;
                 }
-                $.post('{{url('uct_myneed/addNeed')}}',{'role':'专家','content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
+                $.post('{{url('uct_myneed/addNeed')}}',{'role':'企业','content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
                     if (data.icon == 1){
                         layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
                             window.location = '{{url('myneed')}}';
@@ -115,7 +113,7 @@
                             if(typeof(data.needid)=="undefined"){
                                 window.location = window.location.href;
                             } else {
-                                window.location = '{{url('myneed/supplyNeed')}}'+'/'+data.needid;
+                                window.location = '{{url('uct_myneed/supplyNeed')}}'+'/'+data.needid;
                             }
                         });
                     }
@@ -123,26 +121,5 @@
             });
 
         })
-        function putneed (type){
-            $.post('{{url('myneed/verifyputneed')}}',{'role':type},function (data) {
-                if(data.type == 3){
-                    layer.msg(data.msg,{'icon':data.icon});
-                } else if(data.type == 2){
-                    layer.confirm(data.msg, {
-                        btn: ['去认证','暂不需要'], //按钮
-                        skin:'layui-layer-molv'
-                    }, function(){
-                        window.location.href=data.url;
-                    }, function(){
-                        layer.close();
-                    });
-                } else if (data.type == 1){
-                    layer.alert(data.msg,{'icon':data.icon});
-                } else {
-                    window.location = '{{asset('myneed/supplyNeed')}}';
-                }
-            });
-
-        }
     </script>
 @endsection
