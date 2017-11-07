@@ -27,7 +27,7 @@ class SupplyController extends Controller
             ->leftJoin('view_needmesscount as mess','mess.needid' ,'=' ,'need.needid')
             ->leftJoin('view_needstatus as status','status.needid' ,'=' ,'need.needid')
             ->where('status.configid',3)
-            >where('need.level',0)
+            ->where('need.level',0)
             ->select('need.*','ent.enterprisename','view.role','ent.showimage as entimg','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
         //获得用户的收藏
         $collectids = [];
@@ -224,6 +224,9 @@ class SupplyController extends Controller
         }
         if($request->ajax()){
             $data = $request->only('content', 'needid','parentid','use_userid');
+            if($data['use_userid'] == session('userId')){
+                return ['msg' => '亲,没必要自己回复自己','icon' => 0];
+            }
             $expertuserid = DB::table('t_n_need')->where('needid',$data['needid'])->first();
             $userinfo = DB::table('t_u_user')->where('userid',session('userId'))->first();
             if(empty($expertuserid) || empty($userinfo)){
