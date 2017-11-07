@@ -40,6 +40,12 @@ $(document).ready(function(){
         $('.all-results-location').remove();
         $('.all-results').append('<a href="javascript:;" class="all-results-location all-results-opt">'+ cliHtml +'</a>');
     });
+
+    // 选择地区
+    $('#vipneed').on('click', function(event) {
+        $(this).attr('index',1);
+        $('.all-results').append('<a href="javascript:;" class="all-results-vip all-results-opt">'+ 'VIP商情' +'</a>');
+    });
     // 删除
     $('.all-results').on('click', '.all-results-opt', function(event) {
         $(this).remove();

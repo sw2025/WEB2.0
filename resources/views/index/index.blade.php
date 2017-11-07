@@ -48,16 +48,6 @@
                     </div>
                 </a></li>
             <li class="item col-md-3 col-xs-6"><a href="javascript:;">
-                    <div class="item-con dif-hexagon3">
-                        <span class="hexagon"></span>
-                        <h2 class="number">03</h2>
-                        <span class="item-tit">拓市场</span>
-                    </div>
-                    <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">寻求渠道与代理</span><br /><br /><br /><span style="font-size: 1.5em;">营销推广</span><br /><br /><br /><span style="font-size: 1.5em;">品牌建设</span><br /><br /></p>
-                    </div>
-                </a></li>
-            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
                     <div class="item-con dif-hexagon4">
                         <span class="hexagon"></span>
                         <h2 class="number">04</h2>
@@ -67,6 +57,17 @@
                         <p><br /><span style="font-size: 1.1em;">人工智能</span><br /><span style="font-size: 1.1em;">大数据</span><br /><span style="font-size: 1.1em;">物联网</span> <br /><span style="font-size: 1.1em;">生产自动化</span> <br /><span style="font-size: 1.1em;">智能制造</span><br /><span style="font-size: 1.1em;">生物技术</span><br /><span style="font-size: 1.1em;">节能环保</span> <br /><span style="font-size: 1.1em;">新材料</span> </p>
                     </div>
                 </a></li>
+            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
+                    <div class="item-con dif-hexagon3">
+                        <span class="hexagon"></span>
+                        <h2 class="number">03</h2>
+                        <span class="item-tit">拓市场</span>
+                    </div>
+                    <div class="item-con-hover">
+                        <p><br /><span style="font-size: 1.5em;">寻求渠道与代理</span><br /><br /><br /><span style="font-size: 1.5em;">营销推广</span><br /><br /><br /><span style="font-size: 1.5em;">品牌建设</span><br /><br /></p>
+                    </div>
+                </a></li>
+
         </ul>
         <div class="listbottom-link"><a href="javascript:;" class="become-expert homepage-link">入驻平台</a></div>
     </div>

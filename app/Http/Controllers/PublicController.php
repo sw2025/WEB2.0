@@ -496,7 +496,7 @@ class PublicController extends Controller
                 $needid = $data['needid'];
                 $needinfo = DB::table('t_n_need')->where('needid',$needid)->first();
                 if(empty($needinfo) || empty($needinfo->userid) || empty($needinfo->needtype)){
-                    $error =  ['msg' => '该需求不完整,已进入后台记录,请重新发起新的需求'];
+                    $error =  ['msg' => '该商情不完整,已进入后台记录,请重新发起新的商情'];
                 }
 
                 if (preg_match("/".self::$postfilter."/is",$needinfo->brief) == 1){
@@ -509,7 +509,7 @@ class PublicController extends Controller
                 }
 
                 if(mb_strlen($needinfo->brief) < 30 || mb_strlen($needinfo->brief) > 500){
-                    $error =  ['msg' => '需求描述超出30-500字数限制'];
+                    $error =  ['msg' => '商情描述超出30-500字数限制'];
                 }
 
                 $veruftdomain = DB::table('t_common_domaintype')->where(['domainname' => $needinfo->domain1])->first();
@@ -527,7 +527,11 @@ class PublicController extends Controller
                         'configid' => 3,
                         'verifytime' => date('Y-m-d H:i:s')
                     ]);
-                    $msg = ['msg' => '该需求已通过','icon' => 1];
+                    if($needinfo->level){
+                        $msg = ['msg' => '该VIP商情已通过,已为您提交到后台，请等待后台为您精准推送.','icon' => 1];
+                    } else {
+                        $msg = ['msg' => '该普通商情已通过,即将为您跳转至商情列表页','icon' => 1];
+                    }
                 } else {
                     $res = DB::table('t_n_needverify')->insert([
                         'needid' => $needid,
@@ -535,13 +539,13 @@ class PublicController extends Controller
                         'remark' => $error['msg'],
                         'verifytime' => date('Y-m-d H:i:s')
                     ]);
-                    $msg = [ 'msg' => '该需求未通过,原因:'.$error['msg'], 'icon' => 2,'needid' => $needid];
+                    $msg = [ 'msg' => '该商情未通过,原因:'.$error['msg'], 'icon' => 2,'needid' => $needid];
                 }
 
                 if($res){
                     return $msg;
                 } else {
-                    return ['msg' => '发布需求失败','icon' => 2];
+                    return ['msg' => '发布商情失败','icon' => 2];
                 }
 
                 break;
@@ -594,7 +598,7 @@ class PublicController extends Controller
                 if($res){
                     return $msg;
                 } else {
-                    return ['msg' => '发布需求失败','icon' => 2];
+                    return ['msg' => '发布商情失败','icon' => 2];
                 }
             break;
             case 'video':
@@ -677,7 +681,12 @@ class PublicController extends Controller
                 ->where('state.configid', 2)
                 ->where(['domain1' => $domain1])->count();
             if($expertcount){
-                return ['msg' => '<b style="font-size: 18px;">恭喜您,系统已为您检索到</b><br />【'.$data['domain'].'】 服务领域下有 <font color="red" size="5">'.$expertcount.'</font> 名专家<br />在【'.$domain1.'】 领域下共有 <font color="red" size="5">'.$expertcount2.'</font> 名专家','type' => 1];
+                if($expertcount >= 5){
+                    $pushnumber = 5;
+                }else {
+                    $pushnumber = $expertcount;
+                }
+                return ['msg' => '<b style="font-size: 18px;">恭喜您,系统已为您检索到</b><br />【'.$data['domain'].'】 服务领域下有 <font color="red" size="5">'.$expertcount.'</font> 名专家<br />在【'.$domain1.'】 领域下共有 <font color="red" size="5">'.$expertcount2.'</font> 名专家<br />系统将为您推送<font color="red" size="5">'.$pushnumber.'</font>位专家','type' => 1];
             } elseif (!$expertcount && $expertcount2){
                 return ['msg' => '<b style="font-size: 18px;">很抱歉</b><br />系统在 【'.$data['domain'].'】领域下并未找到专家<br />但是系统在 【'.$domain1.'】领域下检索到 <font color="red" size="5">'.$expertcount2.' </font>名专家,您是否继续操作','type' => 2];;
             } else {

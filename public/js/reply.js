@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('.reply-list').on('click', '.replybtn1', function(event) {
+    $('.reply-list').on('click', '.reply-btn', function(event) {
         var obj = $(this).closest('li').parent().siblings();
         obj.show();
         var name = $(this).closest('li').find('.floor-guest-name').html();

@@ -27,6 +27,7 @@ class SupplyController extends Controller
             ->leftJoin('view_needmesscount as mess','mess.needid' ,'=' ,'need.needid')
             ->leftJoin('view_needstatus as status','status.needid' ,'=' ,'need.needid')
             ->where('status.configid',3)
+            >where('need.level',0)
             ->select('need.*','ent.enterprisename','view.role','ent.showimage as entimg','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
         //获得用户的收藏
         $collectids = [];
