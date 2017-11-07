@@ -597,8 +597,6 @@ class MyEnterpriseController extends Controller
                     ->first();
                 $configId = 9;
                 break;
-
-
             case 6:
                 //当config为6正在办事的状态的时候
                 //获取到被选择的专家的信息
@@ -1892,27 +1890,18 @@ class MyEnterpriseController extends Controller
      */
     public function manage(){
         $userId=session('userId');
+        $type=isset($_GET['domain'])?$_GET['domain']:"不限";
+        $configTypeArray=array("已推送"=>4,"已响应"=>5,"正在办事"=>6,"已完成"=>7,"已评价"=>8,"异常终止"=>9);
+        $configType=isset($_GET['configType'])?$_GET['configType']:"不限";
+        $typeWhere = ($type=='不限')?[]:["t_e_event.domain1"=>$type];
+        $configTypeWhere = ($configType=='不限')?[]:["t_e_eventverify.configid"=>$configTypeArray[$configType]];
 
-        $type=isset($_GET['domain'])?$_GET['domain']:"全部办事";
-        /*if($type != '正常办事' && $type != '失效办事'){
-            $typeWhere = array("t_e_event.domain1"=>$type);
-            $configids = [4,5,6,7,8,9];
-        } else if($type == '失效办事'){
-            $typeWhere = ['t_e_eventverify.configid' => 9];
-            $configids = [4,5,6,7,8,9];
-
-        } else{
-            $typeWhere = [];
-            $configids = [4,5,6,7,8];
-        }*/
-        $typeWhere = ($type=='全部办事')?[]:["t_e_event.domain1"=>$type];
-        $configids = [4,5,6,7,8,9];
-            $result=DB::table("t_e_event")
+        $result=DB::table("t_e_event")
             ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
             ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
             ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
             ->where("t_e_event.userid",$userId)
-            ->whereIn('t_e_eventverify.configid',$configids)
+            ->where( $configTypeWhere)
             ->where($typeWhere);
         $count=clone $result;
         $datas=$result->orderBy("t_e_event.created_at","desc")->paginate(6);
@@ -1974,9 +1963,8 @@ class MyEnterpriseController extends Controller
                     break;
             }
         }
-        //dd($datas);
         $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
-        return view("myenterprise.newWorkManage",compact("datas","type","counts","domains"));
+        return view("myenterprise.newWorkManage",compact("datas","type","counts","domains","configType"));
     }
 
     /**新咨询
@@ -1985,22 +1973,25 @@ class MyEnterpriseController extends Controller
     public function manageVideo(){
 
         $userId=session('userId');
-        $type=isset($_GET['type'])?$_GET['type']:"全部";
-        $typeWhere=($type!="全部")?array("t_c_consult.domain1"=>$type):array();
+        $type=isset($_GET['type'])?$_GET['type']:"不限";
+        $configTypeArray=array("已推送"=>4,"已响应"=>5,"已完成"=>7,"已评价"=>8,"正在咨询"=>6,"异常终止"=>9);
+        $configType=isset($_GET['configType'])?$_GET['configType']:"不限";
+        $configTypeWhere = ($configType=='不限')?[]:["t_c_consultverify.configid"=>$configTypeArray[$configType]];
+        $typeWhere=($type!="不限")?array("t_c_consult.domain1"=>$type):array();
         $result=DB::table("t_c_consult")
             ->leftJoin("t_c_consultverify","t_c_consultverify.consultid","=","t_c_consult.consultid")
             ->select("t_c_consult.consultid",'t_c_consultverify.configid',"t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief")
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
             ->where("t_c_consult.userid",$userId)
-            ->whereIn('t_c_consultverify.configid',[4,5,6,7,8,9])
+            ->where($configTypeWhere)
             ->where($typeWhere);
         $count=clone $result;
         $datas=$result->orderBy("t_c_consult.created_at","desc")->paginate(6);
         $counts=$count->count();
         foreach ($datas as $data){
             $data->created_at=date("Y-m-d",strtotime($data->created_at));
-            $data->starttime=date("m月d日 H:i:s",strtotime($data->starttime));
-            $data->endtime=date("m月d日 H:i:s",strtotime($data->endtime));
+            $data->starttime=date("m月d日 H:i",strtotime($data->starttime));
+            $data->endtime=date("m月d日 H:i",strtotime($data->endtime));
             $totals=DB::table("t_c_consultresponse")->where("consultid",$data->consultid)->count();
             if($totals!=0){
                 $data->state="指定专家";
@@ -2057,7 +2048,7 @@ class MyEnterpriseController extends Controller
             }
         }
         $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
-        return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2','domains'));
+        return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2','domains','configType'));
     }
 
     /**办事管理视频
@@ -2271,6 +2262,10 @@ class MyEnterpriseController extends Controller
         }
     }
 
+    /**企业认证修改
+     * @param $enterpriseId
+     * @return mixed
+     */
 public function updateEnterprise($enterpriseId){
     $data=DB::table("t_u_enterprise")->where("enterpriseid",$enterpriseId)->first();
     return view("myenterprise.updateEnterprise",compact('data'));

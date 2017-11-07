@@ -1,0 +1,17 @@
+.bg_v2{background: rgba(255,255,255,0.7);padding-bottom: 160px;border-radius: 5px;}
+.invite-experts{padding: 0 20px;}
+.invite-expert-tit{padding:35px 0;line-height: 25px;font-size: 20px;}
+.invite-expert-tit .icon-shenhejujue{margin-right: 15px;font-size: 20px;color:#ffd815;}
+.invite-counts{padding:0 5px;color:#004981;}
+.invite-table{border: 1px solid #c8c8c8;width: 100%;box-sizing: border-box;background:#fff;border-collapse: collapse;}
+.invite-table td{padding:10px 0;border-bottom: 1px solid #e1e1e1;border-right: 1px solid #e1e1e1;vertical-align: top;}
+.invite-table td:first-child{text-align: right;padding-right: 18px;width: 95px;color:#666;}
+.invite-table td:nth-child(2){padding-left: 18px;}
+.select-wrapper{font-size: 0;}
+.select-expert{line-height: 25px;padding:0 24px;height: 25px;border-radius: 4px;background:#ddd;color:#333;display: inline-block;border: 1px solid #c8c8c8;margin-right: 16px;font-size: 14px;}
+.invite-table .active{color:#fff;background:#00a7ed;}
+.selected-experts{font-size: 0;}
+.expert-wrapper{display: inline-block;overflow: hidden;width: 104px;text-align: center;white-space: nowrap;text-overflow: ellipsis;color:#333;margin:0 10px 10px 0;}
+.expert-wrapper:hover .expert-avatar{border: 2px solid #1da8eb;}
+.expert-avatar{width: 100px;height: 100px;border: 2px solid #fff;}
+.expert-name{font-size: 14px;}

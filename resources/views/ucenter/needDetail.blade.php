@@ -15,8 +15,8 @@
                             <span class="myneed-type">商情大类：{{$datas->domain1}} </span>
                             <span class="myneed-type">商情小类：{{$datas->domain2}} </span>
                             <span class="myneed-time">发布时间：<em>{{$datas->needtime}}1</em></span>
-                            @if($datas->userid == session('userId') && $configid->configid == 3)<div class="myneed-set"><button class="myneed-set-btn" index="{{$cryptid}}" supplyid="{{$datas->needid}}">设为已解决</button><span class="myneed-tips">提示：设为已解决后将不再展示</span></div>@endif
-                            @if($datas->userid == session('userId') && $configid->configid == 4)<div class="myneed-set">已解决~ </div>@endif
+                            @if($datas->userid == session('userId') && $configid->configid == 3)<div class="myneed-set"><button class="myneed-set-btn" index="{{$cryptid}}" supplyid="{{$datas->needid}}">设为关闭</button><span class="myneed-tips">提示：设为关闭后将不在展示到升维平台</span></div>@endif
+                            @if($datas->userid == session('userId') && $configid->configid == 4)<div class="myneed-set">已关闭~ </div>@endif
                             <div class="myneed-icon">
                                 <a href="javascript:;" class="collect"><i class="iconfont icon-likeo"></i>{{$collcount}}</a>
                                 <a href="javascript:;" class="visitor"><i class="iconfont icon-yanjing"></i>{{$datas->looks or 0}}</a>
@@ -100,7 +100,7 @@
         $('.myneed-set-btn').on('click',function () {
             var mdid = $(this).attr('index');
             var supplyid = $(this).attr('supplyid');
-            layer.confirm('您确定此需求已解决？', {
+            layer.confirm('您确定要关闭此商情？', {
                 btn: ['确定','摁错了~'] //按钮
             }, function(){
                 $.post('{{url('uct_myneed/solveNeed')}}',{'mdid':mdid,'supplyid':supplyid},function (data) {

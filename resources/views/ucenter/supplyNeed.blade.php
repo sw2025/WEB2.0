@@ -90,6 +90,7 @@
     </ul>
     <script type="text/javascript">
         $(function(){
+
             // 点击级别
             $(document).click(function(){
                 $('.business-level-list').hide();
@@ -135,6 +136,7 @@
     </script>
     <script type="text/javascript">
         $(function(){
+
 
 
             layer.open({
@@ -216,6 +218,7 @@
                     layer.alert(data.msg,{'icon':data.icon});
                 } else {
                     window.location = '{{asset('myneed/supplyNeed')}}';
+
                 }
             });
 

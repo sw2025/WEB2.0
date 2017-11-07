@@ -22,8 +22,6 @@
             text-align: center;
             margin: 25px auto;
         }
-
-
     </style>
     <script type="text/javascript">
         jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
@@ -59,7 +57,7 @@
                                     <div class="vid-man-top-con">
                                         <div class="persons-lt">
                                             <div class="emcee">
-                                                <span class="light-color emcee-cap">企业：</span>
+                                                <span class="light-color emcee-cap">我：</span>
                                                 <span class="emceer-pers" title="企业名字"><img src="{{env('ImagePath').$datas->showimage}}" />{{$datas->enterprisename}}</span>
                                             </div>
                                             <div class="emcee-bottom">
@@ -592,7 +590,7 @@
 
             $eventId=$("#eventId").val();
             window.location.href="/uct_works/eventVideo/"+$eventId;
-            return false;
+           // return false;
             $.ajax({
                 url:"{{url('getEventVideoTime')}}",
                 data:{"eventId":$eventId},

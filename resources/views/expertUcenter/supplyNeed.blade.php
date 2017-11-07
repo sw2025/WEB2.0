@@ -215,6 +215,7 @@
                     layer.alert(data.msg,{'icon':data.icon});
                 } else {
                     window.location = '{{asset('uct_myneed/supplyNeed')}}';
+
                 }
             });
 

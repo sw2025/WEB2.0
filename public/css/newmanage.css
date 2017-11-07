@@ -1,0 +1,37 @@
+/*2017-11-05 add*/
+.v-manage-list-ul li{padding: 0 20px 0px;margin-bottom: 40px;}
+.block-a{display: block;color: #333;}
+.v-manage-list-ul-link{padding: 14px 15px 32px;}
+.v-manage-link-top{border-bottom: 1px solid #d0d0d0;}
+.v-manage-link-tit{margin-left: 0;margin-top: 0;padding-bottom: 10px;}
+.v-manage-link-desc{margin: 12px 0 18px;height: 96px;}
+.v-manage-link-time{left: 15px;bottom: 7px;top: auto;right: auto;}
+.v-manage-link-time i{vertical-align: -2px;}
+.biaoqian{border: 1px solid #00a7ed;border-radius: 4px;color: #00a7ed;font-size: 12px;padding: 0 3px;}
+.now-state{position: absolute;bottom: 10px;right: 15px;border-radius: 4px;padding: 0 3px;font-size: 12px;}
+.state-jx{background: #f2d9a4;}
+.state-ts{background: #d6f0a9;}
+.state-wc{background: #d4f8d8;}
+.state-zz{background: #ffcccc;}
+.v-supply-tip{height: 205px;background:#fff url(../img/role.png) no-repeat center 40px;min-width: 265px;}
+.v-supply-tip-top{margin: 0 0 0 16px;position: relative;z-index: 2;}
+.v-supply-tactic{position: relative;z-index: 2;margin-bottom: 2px;}
+.rules{font-size: 12px;text-align: justify;line-height: 16px;color:#333;}
+/*.nolength {margin: 0 auto;position: absolute;top: 20px;left: 50%;margin-left: -90px;z-index: 1;}*/
+.mygo{position: absolute;width: 100%;z-index: 2;bottom: 10px;left: 0;}
+.goto-work1{display: block;margin: 0 auto;width: 80%;}
+
+.v-works-sel{width: 190px;background: #fff;border-radius: 5px;float: none;margin:0 20px 0 0;}
+.allwork{position: absolute;left:16px;top:0px;color: #00a7ed;font-size: 12px;line-height: 30px;}
+.v-works-sel-def:after{content: '';}
+.v-works-sel-def{margin:6px 16px 6px 72px;width: 80px;border: 1px dashed #d0d0d0;border-radius: 3px;height: 16px;line-height: 16px;font-size: 12px;text-align: left;padding-left: 20px;color: #333;}
+.v-works-sel-def:before{font-size: 12px;color: #808080;}
+.v-works-sel-list{box-shadow: none;border: 1px dashed #d0d0d0;border-top: none;border-radius: 0 0 4px 4px;top: 23px;left: 72px;width: 100px;z-index: 20}
+.v-works-sel-list li{padding-left: 20px;font-size: 12px;height: 18px;line-height: 18px;border-bottom: 1px dashed #d0d0d0;}
+.v-works-sel-list li:last-child{border-bottom: none;}
+.v-works-sel-list li:hover,.v-works-sel-list li.active{background:#00a7ed;color: #fff;border-bottom: 1px solid #00a7ed;}
+.v-manage-list-ul{padding-bottom: 45px;}
+.accept{cursor: pointer;}
+
+.exp-paragraph{height: 72px;}
+.exp-name-block{display: block;}

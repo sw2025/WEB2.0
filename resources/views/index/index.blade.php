@@ -152,8 +152,6 @@
 <script>
 
     $(function(){
-
-
         var type=$("#knowExpert a:first-child").text();
         $("#knowExpert a:first-child").addClass("current")
         getType(type)
@@ -256,7 +254,7 @@
                 break;
             case "发布商情":
 
-                layer.confirm('请问您以什么身份发起需求？', {
+                layer.confirm('请问您以什么身份发起商情？', {
                     btn: ['以企业身份发起','以专家身份发起','取消'], //按钮
                     yes: function(index, layero){
                         $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
