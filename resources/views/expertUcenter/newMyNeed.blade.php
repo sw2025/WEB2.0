@@ -10,7 +10,7 @@
             <a href="javascript:;" class="v-release-btn" onclick="putneed()">发布商情</a>
             <div class="v-condition">
                 <a href="javascript:;" class="v-condition-link @if(!empty($action) && $action == '已发布')active @endif" index="myput">已发布<span class="v-count">{{$putcount}}</span></a>
-                <a href="javascript:;" class="v-condition-link v-c-link1 @if(!empty($action) && $action == '待审核')active @endif" index="waitverify">待审核<span class="v-count">{{$waitcount}}</span></a>
+             {{--   <a href="javascript:;" class="v-condition-link v-c-link1 @if(!empty($action) && $action == '待审核')active @endif" index="waitverify">待审核<span class="v-count">{{$waitcount}}</span></a>--}}
                 <a href="javascript:;" class="v-condition-link v-c-link2 @if(!empty($action) && $action == '审核失败')active @endif" index="refuseverify">审核失败<span class="v-count">{{$refusecount}}</span></a>
             </div>
         </div>

@@ -170,7 +170,7 @@
             });
             return false;
         }
-        layer.confirm('请问您以什么身份发布需求？', {
+        layer.confirm('请问您以什么身份发布商情？', {
             btn: ['以企业身份发布','以专家身份发布','取消'], //按钮
             yes: function(index, layero){
                 $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {

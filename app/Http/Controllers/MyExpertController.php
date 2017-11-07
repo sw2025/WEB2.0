@@ -142,7 +142,7 @@ class MyExpertController extends Controller
     /**我的办事
      * @return mixed
      */
-    public function mywork(Request $request){
+    public function myworks(Request $request){
         //获取到登陆用户的专家的id
         $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
         if(empty($expert)){
@@ -212,6 +212,112 @@ class MyExpertController extends Controller
             $token = Crypt::encrypt(session('userId'));
             return view("myexpert.newMyWork",compact('datas','datas2','responsecount','putcount','complatecount','token','waitcount'));
     }
+    
+    
+    /*8888888888888888888888888888888888888888*/
+    public function mywork(){
+        $userId=session('userId');
+        $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+        if(empty($expert)){
+            $expertid = 0;
+        } else {
+            $expertid = $expert->expertid;
+        }
+        if(!isset($_GET['index']) || $_GET['index']==0){
+            $configTypeWhere=["t_e_eventverify.configid"=>4];
+            $typeWhere=[];
+            $index=0;
+        }else{
+            $type=isset($_GET['domain'])?$_GET['domain']:"不限";
+            $configTypeArray=array("已响应"=>5,"正在办事"=>6,"已完成"=>7,"已评价"=>8,"异常终止"=>9);
+            $configType=isset($_GET['configType'])?$_GET['configType']:"不限";
+            $typeWhere = ($type=='不限')?[]:["t_e_event.domain1"=>$type];
+            $configTypeWhere = ($configType=='不限')?[]:["view_eventstatus.configid"=>$configTypeArray[$configType]];
+            $index=$_GET['index'];
+        }
+        $result=DB::table("t_e_eventresponse")
+            ->leftJoin('t_e_event','t_e_event.eventid','=','t_e_eventresponse.eventid')
+            ->leftJoin('t_u_enterprise','t_e_event.userid','=','t_u_enterprise.userid')
+            ->leftJoin('view_eventstatus','view_eventstatus.eventid','=','t_e_eventresponse.eventid')
+            ->select("t_e_event.eventid","t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief","t_e_event.eventtime","view_eventstatus.configid","t_u_enterprise.enterprisename")
+            ->whereRaw('t_e_eventresponse.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`eventid`)');
+        if($index==0){
+            $datas = $result
+                ->where('t_e_eventresponse.expertid',$expertid)
+                ->where('view_eventstatus.configid' ,4)
+                ->orderBy('t_e_eventresponse.id','desc')->paginate(6);
+            $counts = DB::table('t_e_eventresponse as res')
+                ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
+                ->whereRaw('res.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`eventid`)')
+                ->where(['res.expertid' => $expertid,'status.configid' => 4])
+                ->count();
+        }else{
+            if($configType=="不限"){
+                $datas=$result->where($typeWhere)->whereIn('view_eventstatus.configid',[5,6,7,8,9])->orderBy('t_e_eventresponse.id','desc')->paginate(6);
+            }else{
+                $datas=$result->where($typeWhere)->where($configTypeWhere)->orderBy('t_e_eventresponse.id','desc')->paginate(6);
+            }
+        }
+        foreach ($datas as $data){
+            $data->created_at=date("Y年m月d日",strtotime($data->created_at));
+            $totals=DB::table("t_e_eventresponse")->where("eventid",$data->eventid)->count();
+            if($totals!=0){
+                $data->state="指定专家";
+            }else{
+                $data->state="匹配专家";
+            }
+            switch($data->domain1){
+                case '找资金':
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+                case '找技术':
+                    $data->icon = 'v-manage-link-icon nature1';
+                    break;
+                case '定战略':
+                    $data->icon = 'v-manage-link-icon nature2';
+                    break;
+                case '找市场':
+                    $data->icon = 'v-manage-link-icon nature3';
+                    break;
+                default :
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+            }
+            $configname = DB::table('t_e_eventverifyconfig')->where('configid',$data->configid)->first()->name;
+            $data->configname = $configname;
+            switch($data->configid){
+                case 1:
+                    $data->btnicon = 'eventwait';
+                    break;
+                case 2:
+                    $data->btnicon = 'eventfollow';
+                    break;
+                case 3:
+                    $data->btnicon = 'eventdont';
+                    break;
+                case 4:
+                    $data->btnicon = 'eventput';
+                    break;
+                case 5:
+                    $data->btnicon = 'response';
+                    break;
+                case 6:
+                    $data->btnicon = 'eventing';
+                    break;
+                case 7:
+                    $data->btnicon = 'eventend';
+                    break;
+                case 8:
+                    $data->btnicon = 'eventend';
+                    break;
+                case 9:
+                    $data->btnicon = 'eventdont';
+                    break;
+            }
+        }
+        $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
+        return view("myexpert.newMyWork",compact("datas","type","counts","domains","configType","index"));
+    }
 
     /**我的办事详情
      * @return mixed
@@ -226,10 +332,10 @@ class MyExpertController extends Controller
             ->whereRaw('res.id in (select max(id) from t_e_eventresponse group by eventid,expertid)')
             ->select('event.*','ent.enterprisename','res.expertid','status.configid','res.state')
             ->first();
+
         $selExperts=DB::table("t_u_enterprise")
             ->where('userid',$datas->userid)
             ->first();
-
         if(!empty($datas) && $datas->configid != 9 && $datas->state == 5){
             $selExperts2=DB::table("t_e_eventresponse")
                 ->leftJoin("t_u_expert","t_e_eventresponse.expertid","=","t_u_expert.expertid")
@@ -260,8 +366,7 @@ class MyExpertController extends Controller
         if($request->ajax()){
             $data = $request->input();
             //对token进行验证
-            if(session('userId') == Crypt::decrypt($data['token'])){
-                //获取到该用户对应的专家的id
+            //获取到该用户对应的专家的id
                 $expertid = DB::table('t_u_expert')->where('userid',session('userId'))->first()->expertid;
                 $expertIds=explode(",",$expertid);
                 //$counts=DB::table("t_e_eventresponse")->where("eventid",$data['eventid'])->where('state',1)->count();
@@ -332,7 +437,7 @@ class MyExpertController extends Controller
                     DB::rollBack();
                     return ['msg' => '处理失败','icon' => 2];
                 }
-            }
+
         }
         return ['msg' => '非法操作','icon' => 2];
     }
@@ -340,7 +445,7 @@ class MyExpertController extends Controller
     /**我的咨询
      * @return mixed
      */
-    public function myask(Request $request){
+    public function myasks(Request $request){
 
         //获取到登陆用户的专家的id
         $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
@@ -407,6 +512,129 @@ class MyExpertController extends Controller
         $token = Crypt::encrypt(session('userId'));
 
         return view("myexpert.newMyAsk",compact('datas','datas2','responsecount','putcount','complatecount','token','count'));
+    }
+
+    /****************************************************/
+    public function myask(){
+        $userId=session('userId');
+        $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+        if(empty($expert)){
+            $expertid = 0;
+        } else {
+            $expertid = $expert->expertid;
+        }
+        if(!isset($_GET['index']) || $_GET['index']==0){
+            $typeWhere=[];
+            $configTypeWhere=[];
+            $index=0;
+        }else{
+            $type=isset($_GET['type'])?$_GET['type']:"不限";
+            $configTypeArray=array("已推送"=>4,"已响应"=>5,"已完成"=>7,"已评价"=>8,"正在咨询"=>6,"异常终止"=>9);
+            $configType=isset($_GET['configType'])?$_GET['configType']:"不限";
+            $configTypeWhere = ($configType=='不限')?[]:["view_consultstatus.configid"=>$configTypeArray[$configType]];
+            $typeWhere=($type!="不限")?array("t_c_consult.domain1"=>$type):array();
+            $index=1;
+        }
+
+       /* $datas = DB::table('t_c_consultresponse as res')
+            ->leftJoin('t_c_consult as consult','consult.consultid','=','res.consultid')
+            ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
+            //->whereRaw('res.id in (select max(id) from t_c_consultresponse group by consultid)')
+            ->whereRaw('res.id in (select max(`t_c_consultresponse`.`id`) from `t_c_consultresponse` group by `t_c_consultresponse`.`consultid`,expertid)')
+            ->select('res.*','consult.domain1','consult.domain2','consult.brief','status.configid','consult.consulttime','consult.starttime','consult.endtime','ent.enterprisename as name');*/
+
+        $result=DB::table("t_c_consultresponse")
+            ->leftJoin('t_c_consult','t_c_consult.consultid','=','t_c_consultresponse.consultid')
+            ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
+            ->leftJoin('view_consultstatus','view_consultstatus.consultid','=','t_c_consultresponse.consultid')
+            ->select("t_c_consult.consultid","t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief","t_c_consult.consulttime","view_consultstatus.configid",'t_c_consult.userid',"t_u_enterprise.enterprisename")
+            ->whereRaw('t_c_consultresponse.id in (select max(`t_c_consultresponse`.`id`) from `t_c_consultresponse` group by `t_c_consultresponse`.`consultid`)');
+           /* ->where('t_c_consultresponse.expertid',$expertid)
+            ->where('view_consultstatus.configid' ,4)
+            ->orderBy('t_c_consultresponse.id','desc')->paginate(6);*/
+
+        if($index==0){
+            $datas = $result
+                ->where('t_c_consultresponse.expertid',$expertid)
+                ->where('view_consultstatus.configid' ,4)
+                ->orderBy('t_c_consultresponse.id','desc')->paginate(6);
+           /* $counts = DB::table('view_consultstatus')
+                ->where(['view_consultstatus.userid' => $userId,'view_consultstatus.configid' => 4])
+                ->count();*/
+            $counts = DB::table('t_c_consultresponse as res')
+                ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
+                ->whereRaw('res.id in (select max(`t_c_consultresponse`.`id`) from `t_c_consultresponse` group by `t_c_consultresponse`.`consultid`)')
+                ->where(['res.expertid' => $expertid,'status.configid' => 4])
+                ->count();
+        }else{
+            if($configType=="不限"){
+                $datas=$result->where($typeWhere)->whereIn('view_consultstatus.configid',[5,6,7,8,9])->orderBy('t_c_consultresponse.id','desc')->paginate(6);
+            }else{
+                $datas=$result->where($typeWhere)->where($configTypeWhere)->orderBy('t_c_consultresponse.id','desc')->paginate(6);
+            }
+        }
+        foreach ($datas as $data){
+            $data->created_at=date("Y-m-d",strtotime($data->created_at));
+            $data->starttime=date("m月d日 H:i",strtotime($data->starttime));
+            $data->endtime=date("m月d日 H:i",strtotime($data->endtime));
+            $totals=DB::table("t_c_consultresponse")->where("consultid",$data->consultid)->count();
+           /* if($totals!=0){
+                $data->state="指定专家";
+            }else{
+                $data->state="匹配专家";
+            }
+            switch($data->domain1){
+                case '找资金':
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+                case '找技术':
+                    $data->icon = 'v-manage-link-icon nature1';
+                    break;
+                case '定战略':
+                    $data->icon = 'v-manage-link-icon nature2';
+                    break;
+                case '找市场':
+                    $data->icon = 'v-manage-link-icon nature3';
+                    break;
+                default :
+                    $data->icon = 'v-manage-link-icon';
+                    break;
+            }*/
+            $configname = DB::table('t_c_consultverifyconfig')->where('configid',$data->configid)->first()->name;
+            $data->configname = $configname;
+            switch($data->configid){
+                case 1:
+                    $data->btnicon = 'eventwait';
+                    break;
+                case 2:
+                    $data->btnicon = 'eventfollow';
+                    break;
+                case 3:
+                    $data->btnicon = 'eventdont';
+                    break;
+                case 4:
+                    $data->btnicon = 'eventput';
+                    break;
+                case 5:
+                    $data->btnicon = 'response';
+                    break;
+                case 6:
+                    $data->btnicon = 'eventing';
+                    break;
+                case 7:
+                    $data->btnicon = 'eventend';
+                    break;
+                case 8:
+                    $data->btnicon = 'eventend';
+                    break;
+                case 9:
+                    $data->btnicon = 'eventdont';
+                    break;
+            }
+        }
+        $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
+        return view("myexpert.newMyAsk",compact("datas","type","counts",'type2','domains','configType','index'));
     }
 
     /**我的咨询的详情
@@ -515,7 +743,6 @@ class MyExpertController extends Controller
         if($request->ajax()){
             $data = $request->input();
             //对token进行验证
-            if(session('userId') == Crypt::decrypt($data['token'])){
                 $startTime=DB::table('t_c_consult')->where('consultid',$data['consultid'])->pluck('starttime');
                 $endTime=DB::table('t_c_consult')->where('consultid',$data['consultid'])->pluck('endtime');
                 //获取到该用户对应的专家的id
@@ -568,7 +795,7 @@ class MyExpertController extends Controller
                     }
                 }
                 return ['msg' => '你在这个时间段已经有其他的咨询了,请合理安排时间','icon' => 2];
-            }
+
             return ['msg' => '非法操作FF000002','icon' => 2];
         }
         return ['msg' => '非法操作FF000001','icon' => 2];

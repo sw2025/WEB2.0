@@ -138,9 +138,9 @@
 .v-identity-list li:hover,.v-identity-list li.active{background:#7cd2f6;color:#fff;}
 .v-ucenter-nav-list{display: none;}
 .v-default{display: block;}
-.v-ucenter-nav-item{padding:20px 0;display: block;border-bottom: 1px solid #ccc;text-align: center;color:#333;}
+.v-ucenter-nav-item{padding:20px 0;display: block;border-bottom: 1px solid #ccc;text-align: center;color:#333;font-size:14px;}
 .v-ucenter-nav-item img{margin:0 auto 15px;}
-.v-ucenter-nav-item:hover,.v-ucenter-nav-list .active{background:#fff;}
+.v-ucenter-nav-item:hover,.v-ucenter-nav-list .active{background:#004981;color: #fff;}
 .vmain{margin-left: 148px;background:#fff;background:rgba(255,255,255,0.4);border-radius: 5px;}
 .goto-renzh{margin:0 auto;position: relative;}
 .goto-renzh i{position: absolute;bottom:-4px;right: 1px;color:#b5b5b5;}
