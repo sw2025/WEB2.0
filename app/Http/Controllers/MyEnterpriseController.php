@@ -38,10 +38,11 @@ class MyEnterpriseController extends Controller
         if(!empty(session('userId'))){
             $enterinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
             if(!empty($enterinfo)){
-                $tomymsgcount = DB::table('t_u_messagetoenterprise')->where('userid','<>',session('userId'))->where(['enterpriseid' => $enterinfo->enterpriseid,'state' => 0,'isdelete' => 0])->count();
+                $tomymsgcount = DB::table('t_u_messagetoenterprise')->whereRaw('(use_userid=0 or use_userid ='.session('userId').')')->where('userid','<>',session('userId'))->where(['enterpriseid' => $enterinfo->enterpriseid,'state' => 0,'isdelete' => 0])->count();
             }
 
         }
+
         //用户回复的数量
         $msgcount = count(DB::table('t_u_messagetoexpert')->where('userid',session('userId'))->groupBy('expertid')->lists('expertid'));
         $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
@@ -127,6 +128,7 @@ class MyEnterpriseController extends Controller
                 ->where('enterpriseid',$entinfo->enterpriseid)
                 ->where('isdelete',0)
                 ->whereRaw('(use_userid=0 or use_userid ='.session('userId').')')
+                ->where('userid','<>',session('userId'))
                 ->orderBy('id','desc')
                 ->paginate(10);
         foreach($datas as $k => $v){
@@ -536,6 +538,7 @@ class MyEnterpriseController extends Controller
                     ->get();
         $counts=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',1)->count();
         $counts2=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',0)->count();
+        DB::table('t_e_event')->where('eventid',$eventId)->update(['entislook' => 1]);
         foreach ($datas as $data){
            $configId=$data->configid;
             if(!$counts){
@@ -1465,7 +1468,7 @@ class MyEnterpriseController extends Controller
             $data->starttime=date("Y年m月d日 H:i:s",strtotime($data->starttime));
             $data->endtime=date("Y年m月d日 H:i:s",strtotime($data->endtime));
         }
-
+        DB::table('t_c_consult')->where('consultid',$consultId)->update(['entislook' => 1]);
         switch($configId){
             case 4:
                 $selExperts=DB::table("t_c_consultresponse")
@@ -1557,6 +1560,12 @@ class MyEnterpriseController extends Controller
         $userId=session("userId");
         $result=array();
         $domain=explode("/",$data['domain']);
+        if(strtotime($data['dateStart']) < time() || strtotime($data['dateEnd']) < time()){
+            return  ['msg' => '视频咨询开始时间或结束时间不能在今天以前','icon' => 2];
+        }
+        if(strtotime($data['dateStart']) > strtotime($data['dateEnd'])){
+            return   ['msg' => '视频咨询开始时间结束时间错误','icon' => 2];
+        }
         DB::beginTransaction();
         try{
             $consultId=DB::table("t_c_consult")->insertGetId([
@@ -1901,6 +1910,7 @@ class MyEnterpriseController extends Controller
             ->select("t_e_event.eventid",'t_e_eventverify.configid',"t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief")
             ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
             ->where("t_e_event.userid",$userId)
+            ->whereNotIn('t_e_eventverify.configid',[1,2,3])
             ->where( $configTypeWhere)
             ->where($typeWhere);
         $count=clone $result;
@@ -1971,22 +1981,47 @@ class MyEnterpriseController extends Controller
      * @return Redirect
      */
     public function manageVideo(){
-
         $userId=session('userId');
+        $singleArray=array();
+        $moneyArray=array();
         $type=isset($_GET['type'])?$_GET['type']:"不限";
         $configTypeArray=array("已推送"=>4,"已响应"=>5,"已完成"=>7,"已评价"=>8,"正在咨询"=>6,"异常终止"=>9);
         $configType=isset($_GET['configType'])?$_GET['configType']:"不限";
         $configTypeWhere = ($configType=='不限')?[]:["t_c_consultverify.configid"=>$configTypeArray[$configType]];
         $typeWhere=($type!="不限")?array("t_c_consult.domain1"=>$type):array();
+        $consultType=isset($_GET['consultType'])?$_GET['consultType']:"不限";
+        $consultIds=DB::table("view_consultstatus")->select('consultid')->where('configid',6)->where("userid",$userId)->get();
+       foreach($consultIds as $val){
+           $countExperts=DB::table("t_c_consultresponse")->where("consultid",$val->consultid)->where("state",3)->count();
+           if($countExperts>1){
+               $moneyArray[]=$val->consultid;
+           }else{
+               $singleArray[]=$val->consultid;
+           }
+       }
         $result=DB::table("t_c_consult")
             ->leftJoin("t_c_consultverify","t_c_consultverify.consultid","=","t_c_consult.consultid")
             ->select("t_c_consult.consultid",'t_c_consultverify.configid',"t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief")
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
             ->where("t_c_consult.userid",$userId)
+            ->whereNotIn('t_c_consultverify.configid',[1,2,3])
             ->where($configTypeWhere)
             ->where($typeWhere);
+        switch($consultType){
+            case "不限":
+                $datas=$result->orderBy("t_c_consult.created_at","desc")->paginate(6);
+            break;
+            case "单人":
+                $datas=$result->whereIn('t_c_consult.consultid',$singleArray)->orderBy("t_c_consult.created_at","desc")->paginate(6);
+                break;
+            case "多人":
+                $datas=$result->whereIn('t_c_consult.consultid',$moneyArray)->orderBy("t_c_consult.created_at","desc")->paginate(6);
+                break;
+            case "未知":
+                $datas=$result->whereIn('t_c_consultverify.configid',[4,5])->orderBy("t_c_consult.created_at","desc")->paginate(6);
+                break;
+        }
         $count=clone $result;
-        $datas=$result->orderBy("t_c_consult.created_at","desc")->paginate(6);
         $counts=$count->count();
         foreach ($datas as $data){
             $data->created_at=date("Y-m-d",strtotime($data->created_at));
@@ -2048,7 +2083,7 @@ class MyEnterpriseController extends Controller
             }
         }
         $domains=DB::table("T_COMMON_DOMAINTYPE")->select('domainname')->where("level",1)->get();
-        return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2','domains','configType'));
+        return view("myenterprise.newVideoManage",compact("datas","type","counts",'type2','domains','configType','consultType'));
     }
 
     /**办事管理视频

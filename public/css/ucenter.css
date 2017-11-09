@@ -365,7 +365,7 @@
 .mywork-det-txt{border: 1px solid #ccc;border-radius: 3px;min-height: 195px;width: 330px;display: inline-block;padding:10px;text-align: left;max-height: 500px;}
 .mywork-det-tit{display: block;color:#333;}
 .mywork-det-desc-para{color:#333;text-align: justify;word-break: break-all;}
-.respond-btn-box{padding-top: 16px;}
+.respond-btn-box{padding-top: 16px;text-align: center;}
 .respond-btn{display: inline-block;width: 250px;height: 40px;line-height: 40px;text-align: center;color:#fff;border-radius: 3px;border: none;font-size: 16px;margin-top: 24px;}
 .unrespond{background:#00a7ed;}
 .unrespond:hover{box-shadow: 0 1px 3px #999;}
@@ -455,12 +455,12 @@
 .video-manage-frame{padding:35px 0 25px;border-top: 1px dashed #ccc;}
 .emcee,.emcee-bottom{overflow: hidden;}
 .emcee span,.emceer-pers{display: block;float: left;text-align: center;}
-.emcee-cap{line-height: 28px;}
+.emcee-cap{line-height: 28px;display: inline-block;width: 3em;}
 .emceer-pers i{display: block;font-size: 28px;color:#00a7ed;margin-bottom: -5px;margin-top: -5px;}
 .emcee-bottom{padding-top: 20px;position: relative;}
 .emcee-members{overflow: hidden;padding-left: 3em;}
 .emcee-bot-cap{position: absolute;top: 30px;left:0;}
-.emcee-members .emceer-pers{margin:0 1em 10px;}
+.emcee-members .emceer-pers{margin:0 1em 10px 0;}
 .myask-invite .vid-man-top-cat{margin-bottom: 3px;}
 .myask-invite .vid-man-top-con{padding:12px;}
 .light-color{color:#666;}

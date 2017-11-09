@@ -1,93 +1,66 @@
 @extends("layouts.ucenter")
 @section("content")
-    <link rel="stylesheet" href="{{asset('css/events.css')}}">
     <script type="text/javascript" src="{{asset('js/laydate/laydate.js')}}"></script>
     <div class="main">
-        <!-- 专家视频咨询 / start -->
-        <h3 class="main-top">专家视频咨询</h3>
+        <!-- 企业办事服务 / start -->
+        <h3 class="main-top">企业办事服务</h3>
         <div class="ucenter-con">
             <div class="main-right">
                 <div class="card-step works-step">
-                    <span class="green-circle">1</span>会议申请<span class="card-step-cap">&gt;</span>
+                    <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
                     <span class="gray-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
                     <span class="gray-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">4</span>会议管理<span class="card-step-cap">&gt;</span>
+                    <span class="gray-circle">4</span>办事管理<span class="card-step-cap">&gt;</span>
                     <span class="gray-circle">5</span>完成
                 </div>
-                <div class="invite-experts apply-video-wrapper">
-                    <table class="invite-table">
-                        <tr>
-                            <td>问题分类</td>
-                            <td>
-                                <div class="publish-need-sel zindex4">
-                                    <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
-                                    <ul class="publish-need-list" style="display: none;">
-                                        @foreach($cate as $v)
-                                            @if($v->level == 1)
-                                                <li>
-                                                    <a href="javascript:;">{{$v->domainname}}</a>
-                                                    <ul class="publ-sub-list">
-                                                        @foreach($cate as $small)
-                                                            @if($small->parentid == $v->domainid && $small->level == 2)
-                                                                <li>{{$small->domainname}}</li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>会议议题</td>
-                            <td>
-                                <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入会议议题"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>起止时间</td>
-                            <td>
-                                <div class="calendar">
-                                    <div class="calendar-start clearfix">
-                                        <span>开始时间</span><span class="calendar-date laydate-icon start" id="start"></span>
-                                    </div>
-                                    <div class="calendar-end clearfix">
-                                        <span>结束时间</span><span class="calendar-date laydate-icon end " id="end"></span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>专家</td>
-                            <td>
-                                <div class="uct-works-exp">
-                                    <a href="javascript:;" class="system-btn uct-works-btn active" id="random" style="padding:0 10px;">系统分配专家</a>
-                                    <a href="javascript:;" class="uct-works-btn" id="appoint">指定专家</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>专家头像</td>
-                            <td>
-                                <ul class="uct-works-expava">
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
+                <div class="publish-need uct-works">
+                    <div class="expert-certy-state">
+                        <span class="uct-works-icon"><i class="iconfont icon-shenqing"></i></span>
+                                <span class="expert-certy-blue">
+                                    <em>办事申请</em>IS APPLYING
+                                </span>
+                    </div>
+                    <div class="publish-need-sel zindex3" style="margin-top: 20px;">
+                        <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
+                        <ul class="publish-need-list" style="display: none;">
+                            @foreach($cate as $v)
+                                @if($v->level == 1)
+                                    <li>
+                                        <a href="javascript:;">{{$v->domainname}}</a>
+                                        <ul class="publ-sub-list">
+                                            @foreach($cate as $small)
+                                                @if($small->parentid == $v->domainid && $small->level == 2)
+                                                    <li>{{$small->domainname}}</li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
+
+                    <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述（30-500字之间）" ></textarea>
+                    <div class="uct-works-exp">
+                        <span>专家</span>
+                        <a href="javascript:;" class="system-btn uct-works-btn" id="random" style="padding:0 10px;">系统分配专家</a>
+                        <a href="javascript:;" class="uct-works-btn" id="appoint">指定专家</a>
+                    </div>
+                    <div class="uct-works-expava">
+                    </div>
                     <div class="uct-works-tips">
                         <b>提示</b><br />
                         尊敬的用户您好
                         <p class="uct-works-tips-para light-color">近期，网监部门查敏感类信息比较严格，所以内容中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写办事内容。</p>
                     </div>
                     <div class="uct-works-con">
-                        <button class="test-btn submit-audit" type="button">请专家开会</button>
+                        <button class="test-btn submit-audit" type="button">提交审核</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <style>
         .layer_notice {
             float: left;
@@ -119,9 +92,7 @@
         .layer_image span {
             color:#fff;
         }
-        .changeWeixin img{
-            margin:0 auto;
-        }
+        .popWeixin img{margin:0 auto;}
     </style>
     <ul class="layer_notice" style="display: none;">
         <li><a>近期，网监部门查敏感类信息比较严格，所以内容中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写办事内容。</a></li>
@@ -129,13 +100,12 @@
         <li><a style="margin-left: 80%;">升维网</a></li>
     </ul>
     <ul class="layer_image" style="display: none;">
-        <p style="color: #fff;padding: 5px 20px;"></p>
         <li>
         </li>
     </ul>
     <div class="pop-pay">
         <div class="payoff">
-            <span class="pay-close"  title="关闭"><i class="iconfont icon-chahao"></i></span>
+            <span class="pay-close" title="关闭"><i class="iconfont icon-chahao"></i></span>
             <div class="single">
                 <div class="single-two">
                 <span class="single-opt pay-opt" id="singlePay">
@@ -154,7 +124,7 @@
                 </div>
                 <div class="years">
                     @foreach($memberrights as $memberright)
-                        <span class="pay-opt" memberId="{{$memberright->memberid}}">
+                    <span class="pay-opt" memberId="{{$memberright->memberid}}">
                         <input class="rad-inp" type="radio" >
                         <div class="opt-label"><span></span>{{$memberright->termtime}}年&nbsp;&nbsp;￥{{$memberright->cost}}<em class="benifit">优惠次数 {{$memberright->eventcounts}} 次</em><em class="benifit">优惠时间 {{$memberright->consultcounts}} 分钟</em></div>
                     </span>
@@ -196,7 +166,7 @@
                 $(this).closest('.layer-pop').hide();
                 $('.pop-pay').hide();
                 $(".submit-audit").attr('disabled',false);
-                $(".submit-audit").html('请专家开会');
+                $(".submit-audit").html('提交审核');
             })
             $('.datas-sel-def').click(function () {
                 $(this).next('ul').stop().slideToggle();
@@ -207,21 +177,18 @@
                 $(this).parent().prev('.datas-sel-def').html(publishHtml);
                 $(this).parent().hide();
             });
-            if($.cookie("videodomain") != "请选择" && $.cookie("videodomain") != ""){
-                $(".publ-need-sel-def").text($.cookie("videodomain"));
+            if($.cookie("domain")!="请选择" && $.cookie("domain") != ''){
+                $(".publ-need-sel-def").text($.cookie("domain"));
             }
-            if($.cookie("videodescribe")){
-                $(".uct-works-txt").val($.cookie("videodescribe"));
+            /*if($.cookie("industry")!="请选择" && $.cookie("industry") != ''){
+                $("#industrys").text($.cookie("industry"));
+            }*/
+            if($.cookie("describe")){
+                $(".uct-works-txt").val($.cookie("describe"));
             }
-            if($.cookie("videodateStart")){
-                $("#start").text($.cookie("videodateStart"));
-            }
-            if($.cookie("videodateEnd")){
-                $("#end").text($.cookie("videodateEnd"));
-            }
-            if($.cookie("videoreselect")){
+            if($.cookie("reselect")){
                 $(".uct-works-expava").show();
-                var expertChecked=$.cookie('videoreselect').split(",");
+                var expertChecked=$.cookie('reselect').split(",");
                 for(var i=0; i<expertChecked.length; i++) {
                     var checked=expertChecked[i];
                     var end=checked.indexOf("/");
@@ -263,15 +230,10 @@
                     layer.msg('请选择问题分类');
                     return false;
                 }
-                $(this).addClass('active').siblings().removeClass('active');
-                var domain=$(".publ-need-sel-def").text();
-                var describe=$(".uct-works-txt").val();
-                /*var industry=$("#industrys").text();*/
-                var dateStart=$('#start').text();
-                var dateEnd=$("#end").text();
-                var text=$(this).text().trim();
                 var date = new Date();
                 date.setTime(date.getTime() + (120 * 60 * 1000));
+                $(this).addClass('active').siblings().removeClass('active');
+                var text=$(this).text().trim();
                 if(text=="系统分配专家"){
                     layer.msg('系统为您检索专家中', {
                         icon: 16
@@ -296,36 +258,42 @@
                                 area: ['500px', '260px'],
                                 shadeClose: false, //开启遮罩关闭
                                 content: '<div style="padding:10px;">'+data.msg+'</div>',
-                                btn: ['自选专家','继续操作','重新咨询'],
+                                btn: ['自选专家','继续操作','重新办事'],
                                 yes: function(index, layero){
-                                    if($.cookie('videoreselect')){
-                                        var selected=$.cookie('videoreselect').split(",");
+                                    if($.cookie('reselect')){
+                                        var selected=$.cookie('reselect').split(",");
                                         if(selected.length==5){
                                             $(".uct-works-expava").show();
                                         }else{
-                                            $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
-                                            $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
-                                            $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
-                                            $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                            window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
+                                            var domains=$(".publ-need-sel-def").text().trim();
+                                            var describes=$(".uct-works-txt").val();
+                                            $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                                            $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                                            window.location.href="{{asset('uct_works/reselect')}}"
                                         }
                                     }else{
-                                        $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                        window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
+                                        var domains=$(".publ-need-sel-def").text().trim();
+                                        var describes=$(".uct-works-txt").val();
+                                        $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                                        $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                                        window.location.href="{{asset('uct_works/reselect')}}";
                                     }
                                 },btn2: function(index, layero){
                                     $(".submit-audit").attr('disabled',false);
                                     $(".submit-audit").css('background-color','#ed0021');
                                     layer.close(index);
+
+                                    //按钮【按钮三】的回调
                                 },btn3: function(index, layero){
-                                    $.cookie("videoreselect","",{expires:date,path:'/',domain:'sw2025.com'});
-                                    $.cookie("videodomain","",{expires:date,path:'/',domain:'sw2025.com'});
-                                    $.cookie("videodescribe","",{expires:date,path:'/',domain:'sw2025.com'});
-                                    $.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});
-                                    window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
+                                    $(".submit-audit").attr('disabled',false);
+                                    $(".submit-audit").css('background-color','#ed0021');
+                                    layer.close(index);
+
+                                    //按钮【按钮二】的回调},btn3: function(index, layero){
+                                    $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                                    $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                                    $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
+                                    window.location.href="{{url('uct_works/applyWork')}}";
                                 }
                             });
 
@@ -333,80 +301,64 @@
                             layer.confirm(data.msg, {
                                 btn: ['自选专家','取消该办事'] //按钮
                             }, function(){
-                                if($.cookie('videoreselect')){
-                                    var selected=$.cookie('videoreselect').split(",");
+                                if($.cookie('reselect')){
+                                    var selected=$.cookie('reselect').split(",");
                                     if(selected.length==5){
                                         $(".uct-works-expava").show();
                                     }else{
-                                        $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
-                                        $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                        window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
+                                        var domains=$(".publ-need-sel-def").text().trim();
+                                        var describes=$(".uct-works-txt").val();
+                                        $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                                        $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                                        window.location.href="{{asset('uct_works/reselect')}}"
+                                        return false;
                                     }
                                 }else{
-                                    $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
-                                    $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
-                                    $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
-                                    $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                                    window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
+                                    var domains=$(".publ-need-sel-def").text().trim();
+                                    var describes=$(".uct-works-txt").val();
+                                    $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                                    $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                                    window.location.href="{{asset('uct_works/reselect')}}"  ;
+                                    return false;
                                 }
                             }, function(){
-                                $.cookie("videoreselect","",{expires:date,path:'/',domain:'sw2025.com'});
-                                $.cookie("videodomain","",{expires:date,path:'/',domain:'sw2025.com'});
-                                $.cookie("videodescribe","",{expires:date,path:'/',domain:'sw2025.com'});
-                                $.cookie("videodateStart","",{expires:date,path:'/',domain:'sw2025.com'});
-                                $.cookie("videodateEnd","",{expires:date,path:'/',domain:'sw2025.com'});
-                                /*$.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});*/
-                                window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd;
+                                $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
+                                $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
+                                window.location.href="{{url('uct_works/applyWork')}}"
                                 return false;
 
                             });
                         }
                     });
                 }else{
-                    if($.cookie('videoreselect')){
-                        var selected=$.cookie('videoreselect').split(",");
+                    if($.cookie('reselect')){
+                        var selected=$.cookie('reselect').split(",");
                         if(selected.length==5){
                             $(".uct-works-expava").show();
                         }else{
-                            $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
-                            $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                            /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
-                            window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
+                            var domains=$(".publ-need-sel-def").text().trim();
+                            var describes=$(".uct-works-txt").val();
+                            $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                            $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                            window.location.href="{{asset('uct_works/reselect')}}"
                         }
                     }else{
-                        $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-                        /*$.cookie("videoindustry",industry,{expires:date,path:'/',domain:'sw2025.com'});*/
-                        window.location.href="/uct_video/videoSelect?start="+dateStart+"&end="+dateEnd
+                        var domains=$(".publ-need-sel-def").text().trim();
+                        var describes=$(".uct-works-txt").val();
+                        $.cookie("domain",domains,{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("describe",describes,{expires:date,path:'/',domain:'sw2025.com'});
+                        window.location.href="{{asset('uct_works/reselect')}}"
                     }
                 }
-
             });
         })
-
         $(".submit-audit").on("click",function(){
             var that=this;
             var domain=$(".publ-need-sel-def").text().trim();
             var describe=$(".uct-works-txt").val();
-            /*var industry=$("#industrys").text().trim();*/
-            var dateStart=$('#start').text().trim();
-            var dateEnd=$("#end").text().trim();
-            var isAppoint=($.cookie("videoisAppoint"))?$.cookie("videoisAppoint"):1;
+            var isAppoint=($.cookie("isAppoint"))?$.cookie("isAppoint"):1;
             var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
-           // console.log(expertIds);
-            if(describe.length>30 && describe.length<500){
-            }else{
-                $(this).attr('disabled',false);
-                $(this).html('请专家开会');
-                layer.msg('企业简介字数不符',{'icon':5});
-                return false;
-            }
             if($("#random").hasClass('active')){
                 var state=1;
             }else{
@@ -421,24 +373,18 @@
             }
 
             if(!describe){
-                layer.tips("会议议题不能为空", '.uct-works-txt', {
+                layer.tips("办事描述不能为空", '.uct-works-txt', {
                     tips: [2, '#00a7ed'],
                     time: 4000
                 });
                 return false;
             }
-            if(!dateStart){
-                layer.tips("开始时间必填", '.start', {
-                    tips: [2, '#00a7ed'],
-                    time: 4000
-                });
-                return false;
-            }
-            if(!dateEnd){
-                layer.tips("结束时间必填", '.end ',{
-                    tips: [2, '#00a7ed'],
-                    time: 4000
-                });
+
+            if(describe.length>30 && describe.length<500){
+            }else{
+                $(this).attr('disabled',false);
+                $(this).html('提交认证');
+                layer.msg('办事描述应在30到500字之间',{'icon':5});
                 return false;
             }
             if(!$('.uct-works-exp a').hasClass('active')){
@@ -450,47 +396,28 @@
             }
             var date = new Date();
             date.setTime(date.getTime() + (120 * 60 * 1000));
-            $.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
-            $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
-            $.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
-            $.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-            $.cookie("videoreselect",expertIds,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("domain",domain,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("describe",describe,{expires:date,path:'/',domain:'sw2025.com'});
             $.cookie("state",state,{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("expertIds",expertIds,{expires:date,path:'/',domain:'sw2025.com'});
             $(this).attr('disabled',true);
             $(this).html('正在提交');
             $.ajax({
-                url:"{{asset('consultCharge')}}",
-                data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state,"dateStart":dateStart,"dateEnd":dateEnd},
+                url:"{{asset('eventCharge')}}",
+                data:{"domain":domain,"describe":describe,"isAppoint":isAppoint,"expertIds":expertIds,"state":state},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
                     var date = new Date();
                     date.setTime(date.getTime() + (120 * 60 * 1000));
                     if(res['icon'] == 1){
-                        $.cookie("videoreselect","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodomain","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodescribe","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodateStart","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodateEnd","",{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("reselect","",{expires:date,path:'/',domain:'sw2025.com'});
+                        $.cookie("domain","",{expires:date,path:'/',domain:'sw2025.com'});
                         $.cookie("state","",{expires:date,path:'/',domain:'sw2025.com'});
-                        /*$.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});*/
+                        $.cookie("describe","",{expires:date,path:'/',domain:'sw2025.com'});
                         if(state == 0){
-                            /*layer.msg(res.msg,{'icon':6,'time':5000},function () {
-                                window.location = '{{url('uct_video')}}';
-                            });*/
-                            layer.open({
-                                type: 1,
-                                shade: 0.6,
-                                title: '已为您推送到指定专家,30秒后自动跳转', //不显示标题
-                                content: '<div style=padding:10px;background:#5FB878;color:#fff;>'+res.msg+'</div>', //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                time:30000,
-                                cancel: function(index,layero){
-                                    window.location = '{{url('uct_video')}}';
-                                },
-                                end:function () {
-                                    window.location = '{{url('uct_video')}}';
-                                }
-
+                            layer.msg(res.msg,{'icon':6},function () {
+                                window.location = '{{url('uct_works')}}';
                             });
                         } else {
                             var str = '';
@@ -499,73 +426,70 @@
                                 str += '<a href={{url("expert/detail")}}/'+obj[i]['expertid']+' target="_blank"><img src="{{env('ImagePath')}}'+obj[i]['showimage']+'"><span>'+obj[i]['expertname']+'</span></a>';
                             }
                             $('.layer_image li').append(str);
-                            $('.layer_image p').append(res.msg);
                             layer.open({
                                 type: 1,
                                 shade: false,
-                                area: ['695px', '240px'], //宽高
-                                title: '恭喜您，以为您推送到专家，以下的是专家的相关信息', //不显示标题
+                                area: ['695px', '210px'], //宽高
+                                title: res.msg+',以下的是专家的相关信息', //不显示标题
                                 content: $('.layer_image'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                                 cancel: function(){
-                                    window.location.href="{{asset('uct_video')}}";
+                                    window.location = '{{url('uct_works')}}';
                                 }
                             });
                         }
                     }else if(res['icon'] == 2){
                         $(".publ-need-sel-def").text(domain);
                         $(".uct-works-txt").val(describe);
-                        $("#start").text(dateStart);
-                        $("#end").text(dateEnd);
-                        layer.confirm(res.msg+'申请失败,请重新申请', {
+                        layer.alert(res.msg+' 申请失败,请重新申请', {
                             btn: ['确定'] //按钮
+                        },function () {
+                            window.location.href=window.location.href;
                         });
-                        $(that).removeAttr('disabled');
-                        $(that).html('请专家开会');
-                    }else if(res['icon'] == 3){
+                    } else if(res['icon'] == 3){
                         layer.confirm(res.msg, {
                             btn: ['确定','取消'] ,
                             skin: 'layer-ext-moon',
                             icon:0,
                         }, function(index){
                             var str;
-                            if(res['code']==2){
-                                window.location.href="/"+res['url'];
-                            }
                             if(res['code']==6){
-                                str="<span></span>单次缴费：￥<b class='money'>{{env('consultMemberMoney')}}</b>/{{env('Time')}}分钟 &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('EventMemberMoney')}}</b>/ 次 &nbsp;&nbsp;&nbsp;&nbsp;充值次数 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
                             }else{
-                                str="<span></span>单次缴费：￥<b class='money'>{{env('Money')}}</b>/{{env('Time')}}分钟 &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
+                                str="<span></span>单次缴费：￥<b class='money'>{{env('EventMoney')}}</b>/ 次";
                             }
                             pop(str);
                             layer.close(index);
                         }, function(index){
                             $(that).attr('disabled',false);
-                            $(that).html('请专家开会');
+                            $(that).html('提交审核');
                             layer.close(index);
                         });
                     }
                 }
             })
         })
-
         $("#vip").on("click",function(){
             var payType;
             var memberId;
             var channel;
             var amount;
-            var consultCount;
+            var eventCount;
             var urlType=window.location.href;
             var res=$("#singlePay").hasClass("been");
             if(res){
                 payType="payMoney";
                 var money=$("#singlePay").find(".money:first").text();
-                consultCount=$("#singlePay").find(".times").val();
-                if(consultCount<1){
-                    alert("请填写充值时间");
-                    return false;
+                if(money=="{{env('EventMoney')}}"){
+                    eventCount=1;
+                    amount=money;
+                }else{
+                    eventCount=$("#singlePay").find(".times").val();
+                    if(eventCount<1){
+                        alert("请填写充值次数");
+                        return false;
+                    }
+                    amount=money*eventCount;
                 }
-                amounts=money*100/{{env('Time')}};
-                amount=amounts*consultCount;
                 memberId=0;
             }else{
                 payType="member";
@@ -575,7 +499,7 @@
                     }
                 })
                 amount=0;
-                consultCount=0;
+                eventCount=0;
             }
             $(".payoff-way").children().each(function(){
                 if($(this).hasClass('been')){
@@ -584,7 +508,7 @@
             });
             $.ajax({
                 url:"{{url('charge')}}",
-                data:{"payType":payType,"memberId":memberId,"channel":channel,"amount":amount,"type":"consult","consultCount":consultCount,"urlType":urlType},
+                data:{"payType":payType,"memberId":memberId,"channel":channel,"amount":amount,"type":"event","eventCount":eventCount,"urlType":urlType},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
@@ -600,7 +524,7 @@
                             colorLight : '#ffffff',
                             correctLevel : QRCode.CorrectLevel.H
                         });
-                        console.log(qrcode);
+                      console.log(qrcode);
                         if(channel=="wx_pub_qr"){
                             $('.poplayer').show();
                             $('.layer-pop').show();
@@ -624,36 +548,6 @@
             })
 
         })
-        // =========日期插件使用方法======>start
-        !function(){
-            laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
-        }();
-        //日期范围限制
-        var start = {
-            elem: '#start',
-            format: 'YYYY/MM/DD hh:mm',
-            min: '{{date('Y-m-d H:i')}}', //设定最小日期为当前日期
-            max: '2066-12-31 23:59', //最大日期
-            istime: true,
-            istoday: false,
-            choose: function(datas){
-               // end.min = datas; //开始日选好后，重置结束日的最小日期
-               // end.start = datas //将结束日的初始值设定为开始日
-            }
-        };
-        var end = {
-            elem: '#end',
-            format: 'YYYY/MM/DD hh:mm',
-            min: '{{date('Y-m-d H:i')}}',
-            max: '2066-12-31 23:59',
-            istime: true,
-            istoday: false,
-            choose: function(datas){
-                start.max = datas; //结束日选好后，充值开始日的最大日期
-            }
-        };
-        laydate(start);
-        laydate(end);
-        // ========日期插件使用方法======>end
+
     </script>
 @endsection

@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/list.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/workmanage.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/newmanage.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset('css/events.css')}}" />
     <!-- js / start -->
     <script src="{{asset('im/3rd/jquery-1.11.3.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jquery.cookie.js')}}"></script>
@@ -131,7 +132,7 @@
                                 我的咨询
                             </a>
                             <a id="uct_entres" href="{{asset('uct_entres')}}" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon03.png')}}" alt="企业资源" />
+                                <img src="{{asset('img/enterpriseicon.png')}}" alt="企业资源" />
                                 企业资源
                             </a>
                             <a id="myneed" href="{{asset('myneed')}}" class="v-ucenter-nav-item">
@@ -354,3 +355,6 @@
 </script>
 </body>
 </html>
+
+<script src="{{asset('js/notification.js')}}"></script>
+<script>createNotification('type')</script>

@@ -12,6 +12,30 @@
 .invite-table .active{color:#fff;background:#00a7ed;}
 .selected-experts{font-size: 0;}
 .expert-wrapper{display: inline-block;overflow: hidden;width: 104px;text-align: center;white-space: nowrap;text-overflow: ellipsis;color:#333;margin:0 10px 10px 0;}
+.selected-experts li a{display: inline-block;color:#333;}
+.selected-experts .current a{position: relative;}
+.selected-experts .current a:before{font-family: "iconfont";content:'\e651';top:40px;right:1px;position: absolute;color:#00ea7a;font-size: 20px;}
 .expert-wrapper:hover .expert-avatar{border: 2px solid #1da8eb;}
 .expert-avatar{width: 100px;height: 100px;border: 2px solid #fff;}
 .expert-name{font-size: 14px;}
+.center-btn{text-align: center;padding-top: 20px;}
+.center-btn .test-btn{display: inline-block;}
+
+.apply-video-wrapper{
+    padding-top: 20px;
+}
+.apply-video-wrapper .invite-table td{
+    vertical-align: middle;
+}
+.apply-video-wrapper .publish-need-sel{
+    margin-top:0;
+}
+.apply-video-wrapper .publish-need-txt,.apply-video-wrapper .uct-works-txt{
+    margin:0;
+    width: 75%;
+    height: 100px;
+    min-height: initial;
+}
+.apply-video-wrapper .calendar{
+    margin:0;
+}

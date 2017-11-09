@@ -25,6 +25,16 @@
                     <li>异常终止</li>
                 </ul>
             </div>
+            <div class="v-works-sel">
+                <span class="allwork">咨询模式</span>
+                <a href="javascript:;" class="v-works-sel-def" id="consultType">{{$consultType or "不限"}}</a>
+                <ul class="v-works-sel-list consultType" style="display: none;">
+                    <li class="active">不限</li>
+                    <li>单人</li>
+                    <li>多人</li>
+                    <li>未知</li>
+                </ul>
+            </div>
             <div class="v-supply-con" style="display: none;">
                 <h2>办事规则介绍</h2>根据用户提出的领域分类和描述系统可以匹配此类专家或者用户自选专家后按照办事流程开始办事<br>办事流程介绍：
                 <p style="color:#000;font-weight: bold;">办事申请→专家响应→选择专家→进入办事→办事完成</p>
@@ -83,66 +93,9 @@
             @endif
         </ul>
         <div class="pages myinfo-page v-page">
-            <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">15</strong>页</span>
+            <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
         </div>
-                {{--<div class="v-works-manage-list-top clearfix">
-                    <div class="v-works-mlt-select">
-                        <a href="javascript:;" class="v-works-mlt-opt @if($type == '全部') active @endif">全部</a>
-                        @foreach($domains as $value)
-                            <a href="javascript:;" class="v-works-mlt-opt @if($type && $type ==$value->domainname) active @endif">{{$value->domainname}}</a>
-                        @endforeach
-                    </div>
-                    <div class="v-supply-con"></div>
-                    <a href="javascript:;" class="goto-work" id="applyVideo"><i class="iconfont icon-woyaobanshi"></i>我要咨询</a>
-                </div>
-                <ul class="v-manage-list-ul clearfix">
-                    @if($datas->lastpage())
-
-                        @foreach($datas as $data)
-                            <li>
-                        <a href="{{asset('uct_video/detail/'.$data->consultid)}}" class="v-manage-list-ul-link" style="padding-bottom: 42px;">
-                            <div class="v-manage-link-top">
-                                <span class="{{$data->icon}}"></span>
-                                <div class="v-manage-link-tit">
-                                    <strong class="v-manage-link-sentit">{{$data->domain1}}</strong>
-                                    <span class="v-manage-link-juntit" title="">{{$data->domain2}}</span>
-                                </div>
-                            </div>
-                            <p class="v-manage-link-desc">
-                                {{$data->brief}}
-                            </p>
-                            <div class="v-manage-link-rate5">
-                                <span class="vprogress vprog1 @if($data->configid >= 1) vping @endif" title="咨询审核"></span>
-                                <span class="vprogress vprog2 @if($data->configid >=4) vping @endif" title="邀请专家"></span>
-                                <span class="vprogress vprog3 @if($data->configid >= 5) vping @endif" title="专家响应"></span>
-                                <span class="vprogress vprog4 @if($data->configid >= 6) vping @endif"  title="咨询管理"></span>
-                                <span class="vprogress vprog5 @if($data->configid >= 7) vping @endif " title="完成"></span>
-                            </div>
-
-                            <span style="position: absolute;bottom: 3px;left: 10px;"><i class="iconfont icon-shijian2"></i>{{$data->starttime}}&nbsp;--</span>
-                            <span style="position: absolute;bottom: 3px;right: 10px;"><i class="iconfont icon-shijian2"></i>{{$data->endtime}}</span>
-                            <p class="response" id="{{$data->btnicon}}" style=" position: absolute;top: 15px;right: 15px;">{{$data->configname}}</p>
-                            @if($data->configid==7 || $data->configid==8)
-                                <span class="chuo"></span>
-                            @endif
-                        </a>
-                    </li>
-                        @endforeach
-                    @else
-                        <li>
-                            <div class="v-supply-tip">
-                            <span class="v-supply-tip-top"><strong>升维网</strong>为<strong>企业</strong></span>
-                            <div class="v-supply-tactic"><span>找资金</span><span>找技术</span><span>找市场</span><span>定战略</span></div>
-                            <img src="{{asset('img/nolength.png')}}" class="nolength" />
-                            <a href="javascript:;" class="goto-work1" id="applyVideo1"><i class="iconfont icon-woyaobanshi"></i>我要咨询</a>
-                        </div>
-                    </li>
-                    @endif
-                </ul>--}}
-                <div class="pages myinfo-page v-page">
-                    <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
-                </div>
-            </div>
+</div>
 <!-- 公共footer / end -->
 <script type="text/javascript">
     $(function(){
@@ -170,8 +123,8 @@
             $(this).parent().prev('a').html(selHtml);
             $(this).parent().hide();
             var configType=$('#configType').text();
-            alert(configType);
-            window.location.href="?type="+selHtml+"&configType="+configType;
+            var consultType=$('#consultType').text();
+            window.location.href="?type="+selHtml+"&configType="+configType+"&consultType="+consultType;
         });
 
         $('.configType li').click(function(event) {
@@ -180,7 +133,17 @@
             $(this).parent().prev('a').html(selHtml);
             $(this).parent().hide();
             var domain=$('#domainType').text();
-            window.location.href="?type="+domain+"&configType="+selHtml;
+            var consultType=$('#consultType').text();
+            window.location.href="?type="+domain+"&configType="+selHtml+"&consultType="+consultType;
+        });
+        $('.consultType li').click(function(event) {
+            event.stopPropagation();
+            var selHtml = $(this).html();
+            $(this).parent().prev('a').html(selHtml);
+            $(this).parent().hide();
+            var domain=$('#domainType').text();
+            var configType=$('#configType').text();
+            window.location.href="?type="+domain+"&configType="+configType+"&consultType="+selHtml;
         });
         var currentPage=parseInt("{{$datas->currentPage()}}")-1;
         $("#Pagination").pagination("{{$datas->lastpage()}}",{'callback':pageselectCallback,'current_page':currentPage});

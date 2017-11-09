@@ -36,7 +36,7 @@
                             <div class="myinfo-row-details">
 
                                 <p class="myinfo-row-det-con">{{$v->content}}</p>
-                                <p class="myinfo-come"><a href="{{url('/uct_entres/detail',$entinfo->enterpriseid)}}#reply" >查看此留言</a> &ensp;|&ensp; <a href="javascript:;" onclick="replythis({{$v->parentid or $v->id}},{{$v->enterpriseid}})">回复</a>  &ensp;|&ensp; <a href="javascript:;" onclick="selectexpertjoinevent({{$v->expertid}},'{{$v->expertimg}}')">邀请专家[办事/视频咨询]</a> </p>
+                                <p class="myinfo-come"><a href="{{url('/uct_entres/detail',$entinfo->enterpriseid)}}#reply" >查看此留言</a> &ensp;|&ensp; <a href="javascript:;" onclick="replythis(@if(empty($v->parentid)) {{$v->id}} @else {{$v->parentid}} @endif,{{$v->enterpriseid}})">回复</a>  &ensp;|&ensp; <a href="javascript:;" onclick="selectexpertjoinevent({{$v->expertid}},'{{$v->expertimg}}')">邀请专家[办事/视频咨询]</a> </p>
                             </div>
                         </li>
                         @endforeach

@@ -17,12 +17,12 @@
             <table class="invite-table">
                 @foreach($datas as $data)
                 <tr>
-                    <td>需求分析</td>
+                    <td>办事分类</td>
                     <td>{{$data->domain1.'/'.$data->domain2}}</td>
                 </tr>
 
                 <tr>
-                    <td>描述</td>
+                    <td>办事描述</td>
                     <td>{{$data->brief}}</td>
                 </tr>
                 <tr>

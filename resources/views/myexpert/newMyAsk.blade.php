@@ -9,7 +9,7 @@
                    @if($index==0)
                         <div class="v-feedback condition0">
                                 <span class="v-feedback-span"><i class="iconfont icon-laba"></i>
-                                <span class="v-feedback-count">{{$counts}}</span>个企业向您发出办事请求</span>
+                                <span class="v-feedback-count">{{$counts}}</span>个企业向您发出咨询请求</span>
                         </div>
                    @else
                         <div class="v-feedback condition1" >
