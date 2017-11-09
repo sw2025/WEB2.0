@@ -131,7 +131,7 @@
                                 我的咨询
                             </a>
                             <a id="uct_entres" href="{{asset('uct_entres')}}" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon03.png')}}" alt="企业资源" />
+                                <img src="{{asset('img/enterpriseicon.png')}}" alt="企业资源" />
                                 企业资源
                             </a>
                             <a id="myneed" href="{{asset('myneed')}}" class="v-ucenter-nav-item">
@@ -354,3 +354,6 @@
 </script>
 </body>
 </html>
+
+<script src="{{asset('js/notification.js')}}"></script>
+<script>createNotification('type')</script>
