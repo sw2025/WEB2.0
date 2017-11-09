@@ -240,7 +240,7 @@ class MyExpertController extends Controller
             ->leftJoin('t_u_enterprise','t_e_event.userid','=','t_u_enterprise.userid')
             ->leftJoin('view_eventstatus','view_eventstatus.eventid','=','t_e_eventresponse.eventid')
             ->select("t_e_event.eventid","t_e_event.domain1","t_e_event.domain2","t_e_event.created_at","t_e_event.brief","t_e_event.eventtime","view_eventstatus.configid","t_u_enterprise.enterprisename")
-            ->whereRaw('t_e_eventresponse.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`eventid`)');
+            ->whereRaw('t_e_eventresponse.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`expertid`,eventid)');
         if($index==0){
             $datas = $result
                 ->where('t_e_eventresponse.expertid',$expertid)
@@ -248,14 +248,14 @@ class MyExpertController extends Controller
                 ->orderBy('t_e_eventresponse.id','desc')->paginate(6);
             $counts = DB::table('t_e_eventresponse as res')
                 ->leftJoin('view_eventstatus as status','status.eventid','=','res.eventid')
-                ->whereRaw('res.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`eventid`)')
+                ->whereRaw('res.id in (select max(`t_e_eventresponse`.`id`) from `t_e_eventresponse` group by `t_e_eventresponse`.`expertid`,eventid)')
                 ->where(['res.expertid' => $expertid,'status.configid' => 4])
                 ->count();
         }else{
             if($configType=="不限"){
-                $datas=$result->where($typeWhere)->whereIn('view_eventstatus.configid',[5,6,7,8,9])->orderBy('t_e_eventresponse.id','desc')->paginate(6);
+                $datas=$result ->where('t_e_eventresponse.expertid',$expertid)->where($typeWhere)->whereIn('view_eventstatus.configid',[5,6,7,8,9])->orderBy('t_e_eventresponse.id','desc')->paginate(6);
             }else{
-                $datas=$result->where($typeWhere)->where($configTypeWhere)->orderBy('t_e_eventresponse.id','desc')->paginate(6);
+                $datas=$result ->where('t_e_eventresponse.expertid',$expertid)->where($typeWhere)->where($configTypeWhere)->orderBy('t_e_eventresponse.id','desc')->paginate(6);
             }
         }
         foreach ($datas as $data){
@@ -535,43 +535,27 @@ class MyExpertController extends Controller
             $typeWhere=($type!="不限")?array("t_c_consult.domain1"=>$type):array();
             $index=1;
         }
-
-       /* $datas = DB::table('t_c_consultresponse as res')
-            ->leftJoin('t_c_consult as consult','consult.consultid','=','res.consultid')
-            ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
-            ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
-            //->whereRaw('res.id in (select max(id) from t_c_consultresponse group by consultid)')
-            ->whereRaw('res.id in (select max(`t_c_consultresponse`.`id`) from `t_c_consultresponse` group by `t_c_consultresponse`.`consultid`,expertid)')
-            ->select('res.*','consult.domain1','consult.domain2','consult.brief','status.configid','consult.consulttime','consult.starttime','consult.endtime','ent.enterprisename as name');*/
-
         $result=DB::table("t_c_consultresponse")
             ->leftJoin('t_c_consult','t_c_consult.consultid','=','t_c_consultresponse.consultid')
             ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
             ->leftJoin('view_consultstatus','view_consultstatus.consultid','=','t_c_consultresponse.consultid')
             ->select("t_c_consult.consultid","t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief","t_c_consult.consulttime","view_consultstatus.configid",'t_c_consult.userid',"t_u_enterprise.enterprisename")
-            ->whereRaw('t_c_consultresponse.id in (select max(`t_c_consultresponse`.`id`) from `t_c_consultresponse` group by `t_c_consultresponse`.`consultid`)');
-           /* ->where('t_c_consultresponse.expertid',$expertid)
-            ->where('view_consultstatus.configid' ,4)
-            ->orderBy('t_c_consultresponse.id','desc')->paginate(6);*/
-
+            ->whereRaw('t_c_consultresponse.id in (select max(`t_c_consultresponse`.`id`) from `t_c_consultresponse` group by `t_c_consultresponse`.`consultid`,expertid)');
         if($index==0){
             $datas = $result
                 ->where('t_c_consultresponse.expertid',$expertid)
                 ->where('view_consultstatus.configid' ,4)
                 ->orderBy('t_c_consultresponse.id','desc')->paginate(6);
-           /* $counts = DB::table('view_consultstatus')
-                ->where(['view_consultstatus.userid' => $userId,'view_consultstatus.configid' => 4])
-                ->count();*/
             $counts = DB::table('t_c_consultresponse as res')
                 ->leftJoin('view_consultstatus as status','status.consultid','=','res.consultid')
-                ->whereRaw('res.id in (select max(`t_c_consultresponse`.`id`) from `t_c_consultresponse` group by `t_c_consultresponse`.`consultid`)')
+                ->whereRaw('res.id in (select max(`t_c_consultresponse`.`id`) from `t_c_consultresponse` group by `t_c_consultresponse`.`consultid`,expertid)')
                 ->where(['res.expertid' => $expertid,'status.configid' => 4])
                 ->count();
         }else{
             if($configType=="不限"){
-                $datas=$result->where($typeWhere)->whereIn('view_consultstatus.configid',[5,6,7,8,9])->orderBy('t_c_consultresponse.id','desc')->paginate(6);
+                $datas=$result ->where('t_c_consultresponse.expertid',$expertid)->where($typeWhere)->whereIn('view_consultstatus.configid',[5,6,7,8,9])->orderBy('t_c_consultresponse.id','desc')->paginate(6);
             }else{
-                $datas=$result->where($typeWhere)->where($configTypeWhere)->orderBy('t_c_consultresponse.id','desc')->paginate(6);
+                $datas=$result  ->where('t_c_consultresponse.expertid',$expertid)->where($typeWhere)->where($configTypeWhere)->orderBy('t_c_consultresponse.id','desc')->paginate(6);
             }
         }
         foreach ($datas as $data){
@@ -579,28 +563,6 @@ class MyExpertController extends Controller
             $data->starttime=date("m月d日 H:i",strtotime($data->starttime));
             $data->endtime=date("m月d日 H:i",strtotime($data->endtime));
             $totals=DB::table("t_c_consultresponse")->where("consultid",$data->consultid)->count();
-           /* if($totals!=0){
-                $data->state="指定专家";
-            }else{
-                $data->state="匹配专家";
-            }
-            switch($data->domain1){
-                case '找资金':
-                    $data->icon = 'v-manage-link-icon';
-                    break;
-                case '找技术':
-                    $data->icon = 'v-manage-link-icon nature1';
-                    break;
-                case '定战略':
-                    $data->icon = 'v-manage-link-icon nature2';
-                    break;
-                case '找市场':
-                    $data->icon = 'v-manage-link-icon nature3';
-                    break;
-                default :
-                    $data->icon = 'v-manage-link-icon';
-                    break;
-            }*/
             $configname = DB::table('t_c_consultverifyconfig')->where('configid',$data->configid)->first()->name;
             $data->configname = $configname;
             switch($data->configid){

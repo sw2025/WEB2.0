@@ -64,7 +64,7 @@
         @else
             <li>
                 <div class="v-supply-tip">
-                    <span class="v-supply-tip-top"><strong>升维网</strong>海量专家提供问题办事</span>
+                    <span class="v-supply-tip-top"><strong>升维网</strong>海量专家提供办事服务</span>
                     <div class="v-supply-tactic"><span>找资金</span><span>找技术</span><span>找市场</span><span>定战略</span></div>
                     <div class="rules">
                         <h2>办事规则介绍</h2>
