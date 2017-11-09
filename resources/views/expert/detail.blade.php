@@ -312,19 +312,19 @@
             })
         });
 
-        /**
-         * Created by admin on 2017/9/24.
-         */
-        function selectexpertjoinevent(obj){
-            if(!$.cookie('userId')){
-                layer.confirm('您还未登陆是否去登陆？', {
-                    btn: ['去登陆','暂不需要'], //按钮
-                    skin:'layui-layer-molv'
-                }, function(){
-                    window.location.href='/login';
-                }, function(){
-                    layer.close();
-                });
+    /**
+     * Created by admin on 2017/9/24.
+     */
+    function selectexpertjoinevent(obj){
+        if(!$.cookie('userId')){
+            layer.confirm('您还未登录是否去登录？', {
+                btn: ['去登录','暂不需要'], //按钮
+                skin:'layui-layer-molv'
+            }, function(){
+                window.location.href='/login';
+            }, function(){
+                layer.close();
+            });
                 return false;
             }
             if(obj != null){
@@ -361,6 +361,7 @@
                 },btn3: function (index, layero){
                     layer.close(index);
                 }
+
             });
         }
 

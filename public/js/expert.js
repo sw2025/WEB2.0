@@ -173,7 +173,7 @@ $(function(){
 function fnc_collect (supplyid,action,obj) {
     $.post('/dealextcollect',{'supplyid':supplyid,'action':action},function (data) {
         if(data == 'nologin'){
-            layer.confirm('您还未登陆是否去登录？', {
+            layer.confirm('您还未登录是否去登录？', {
                 btn: ['去登录','暂不需要'], //按钮
                 skin:'layui-layer-molv'
             }, function(){
