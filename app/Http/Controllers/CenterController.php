@@ -242,8 +242,11 @@ class CenterController extends Controller
         $waitcount= DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',1)->count();
         //用户拒审核的供求的数量
         $refusecount = DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',2)->count();
+        //商情的数量
+        $vipneedcount = DB::table('t_n_pushneed')->where('userid',session('userId'))->count();
         //判断是否为http请求
         if(!empty($get = $request->input())){
+            $levelwhere = ['need.level' => 0];
             //获取到get中的数据并处理
             $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
             $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
@@ -254,9 +257,11 @@ class CenterController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
             $who = ( isset($get['who']) && $get['who'] != "null") ? $get['who'] : null;
+            $level = (isset($get['level']) && $get['level'] != "null") ? $get['level'] : 0;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("needtype"=>$role):array();
             $supplywhere = !empty($supply)?array("need.domain1"=>$supply[0],'need.domain2' => $supply[1]):array();
+
 
             $obj = $datas->where($rolewhere)->where($supplywhere);
             if(!empty($address)){
@@ -273,6 +278,7 @@ class CenterController extends Controller
                         $obj = $obj->where('need.userid',session('userId'))->where('status.configid',3);
                         $action  = '已发布';
                         $who = 'my';
+                        $levelwhere = [];
                         break;
                     case 'message':
                         $obj = $obj->whereRaw('need.needid in (select  needid from t_n_messagetoneed  where userid='.session('userId').' group by needid)');
@@ -306,6 +312,13 @@ class CenterController extends Controller
                 $obj = $obj->where('need.userid','<>',session('userId'));
             }
 
+
+            if($level == 1){
+                $levelwhere = ['need.level' => 1];
+                $pushneedlist = DB::table('t_n_pushneed')->where('userid',session('userId'))->lists('needid');
+                $obj = $obj->whereIn("need.needid",$pushneedlist);
+            }
+
             //判断是否有搜索的关键字
             if(!empty($searchname)){
                 $obj = $obj->where("need.brief","like","%".$searchname."%");
@@ -319,14 +332,15 @@ class CenterController extends Controller
             } else {
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
-            $datas = $obj->paginate(4);
-            return view("ucenter.newMyNeed",compact('who','waitcount','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
+            $datas = $obj->where($levelwhere)->paginate(4);
+            return view("ucenter.newMyNeed",compact('vipneedcount','level','who','waitcount','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
         }
-        $datas = $datas->where('status.configid',3)->where('need.userid','<>',session('userId'))
+        $datas = $datas->where('need.level',0)->where('status.configid',3)->where('need.userid','<>',session('userId'))
             ->orderBy("need.needtime",'desc')
             ->paginate(4);
+        $level = 0;
         $ordertime = 'desc';
-        return view("ucenter.newMyNeed",compact('waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
+        return view("ucenter.newMyNeed",compact('level','vipneedcount','waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
     }
 
     /**需求详情
@@ -461,6 +475,7 @@ class CenterController extends Controller
             //判断是否登陆
             if(!empty(session('userId'))){
                 $data = $request->input();
+                $level = trim($data['needlevel']) == '普通' ? 0 : 1;
                 $domain1 = trim(explode('/',$data['domain'])[0]);
                 $domain2 = trim(explode('/',$data['domain'])[1]);
                 if($data['role'] == '企业'){
@@ -527,6 +542,7 @@ class CenterController extends Controller
                         'userid' => session('userId'),
                         'domain1' => $domain1,
                         'domain2' => $domain2,
+                        'level' => $level,
                         'brief' => $data['content'],
                         'needtime' => date('Y-m-d H:i:s',time()),
                         'needtype' => $data['role'],

@@ -63,6 +63,10 @@ Route::post('replymessage','SupplyController@replyMessage');
 Route::post('dealextcollect','ExpertController@dealCollect');
 //专家留言
 Route::post('replyextmessage','ExpertController@replyMessage');
+//企业收藏
+Route::post('dealentcollect','ExpertUcenterController@dealCollect');
+//企业留言
+Route::post('replyentmessage','ExpertUcenterController@replyMessage');
 
 /**************************************个人中心公共的路由***********************************************/
 /*Route::group(['middleware' => ['auth']], function () {*/
@@ -106,6 +110,10 @@ Route::post('expertHaveCard', 'ExpertUcenterController@expertHaveCard');
     Route::post('getRecord', 'CenterController@getRecord');
 //消息标记已读
     Route::post('uct_flagread', 'CenterController@flagRead');
+//专家给我的留言标记已读
+Route::post('uct_flagreadmsg', 'MyEnterpriseController@flagRead');
+//在专家给我的留言里回复
+Route::post('exttomymsg/reply','MyEnterpriseController@msgReply');
 //新增需求
     Route::post('uct_myneed/addNeed', 'CenterController@addNeed');
 //解决需求
@@ -177,10 +185,16 @@ Route::post('expertHaveCard', 'ExpertUcenterController@expertHaveCard');
     Route::get('myneed/examineNeed/{needid?}', 'ExpertUcenterController@examineNeed');
 //我的办事详情
     Route::get('uct_mywork/workDetails/{eventid}', 'ExpertUcenterController@workDetail');
+//企业资源
+    Route::get('uct_entres','ExpertUcenterController@enterpriseRes');
+    //企业资源详情
+    Route::get('uct_entres/detail/{enterid}','ExpertUcenterController@enterpriseDetail');
 
     /************************************我是企业*********************************************************/
 //专家资源
     Route::get('uct_resource', 'MyEnterpriseController@resource');
+//专家给我的留言
+    Route::get('exttomymsg','MyEnterpriseController@showMyReply');
 //会员认证1
     Route::get('uct_member', 'MyEnterpriseController@uct_member');
 //企业修改资料
@@ -306,6 +320,10 @@ Route::get('uct_mywork/myEventVideo/{eventid}', 'MyExpertController@myEventVideo
 Route::post('ifeventtrue','PublicController@getEventNewState');
 //定是请求是否有薪的资料上传
 Route::post('ifeventupload','PublicController@getEventNewUpload');
+//定时请求是否有新的通知状态
+Route::post('realTimeGetInfo','PublicController@realTimeGetInfo');
+//更改状态
+Route::post('dealLookAction','PublicController@dealLookAction');
 
 //创建群组
 Route::get('creatGroup','PublicController@createGroups');

@@ -155,8 +155,8 @@
 
     $(".releaseNeed").on('click',function () {
         if(!$.cookie('userId')){
-            layer.confirm('您还未登陆是否去登陆？', {
-                btn: ['去登陆','暂不需要'], //按钮
+            layer.confirm('您还未登录是否去登录？', {
+                btn: ['去登录','暂不需要'], //按钮
                 skin:'layui-layer-molv'
             }, function(){
                 window.location.href='/login';

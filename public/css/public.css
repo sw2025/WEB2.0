@@ -39,8 +39,9 @@
 /***********footer start***********/
 .footer{background:#535661;width:100%;padding: 60px 0;}
 .two-pic{border-right: 1px dashed #fff;overflow: hidden;}
-.weixin,.app{float: left;margin-top: 6px;text-align: center;font-size: 18px;color:#fff;}
-.weixin{margin-right: 14%;}
+.weixin,.app,.aapp{float: left;margin-top: 6px;text-align: center;font-size: 18px;color:#fff;}
+.weixin{margin-right: 6%;}
+.app{margin-right: 6%;}
 .two-code{display: block;padding:7px;background:#Fff;margin-bottom: 18px;}
 .two-code img{width:100%;}
 .contacts{padding:15px 30px;color:#fff;}

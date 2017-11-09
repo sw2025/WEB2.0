@@ -496,7 +496,7 @@ class PublicController extends Controller
                 $needid = $data['needid'];
                 $needinfo = DB::table('t_n_need')->where('needid',$needid)->first();
                 if(empty($needinfo) || empty($needinfo->userid) || empty($needinfo->needtype)){
-                    $error =  ['msg' => '该需求不完整,已进入后台记录,请重新发起新的需求'];
+                    $error =  ['msg' => '该商情不完整,已进入后台记录,请重新发起新的商情'];
                 }
 
                 if (preg_match("/".self::$postfilter."/is",$needinfo->brief) == 1){
@@ -509,7 +509,7 @@ class PublicController extends Controller
                 }
 
                 if(mb_strlen($needinfo->brief) < 30 || mb_strlen($needinfo->brief) > 500){
-                    $error =  ['msg' => '需求描述超出30-500字数限制'];
+                    $error =  ['msg' => '商情描述超出30-500字数限制'];
                 }
 
                 $veruftdomain = DB::table('t_common_domaintype')->where(['domainname' => $needinfo->domain1])->first();
@@ -527,7 +527,11 @@ class PublicController extends Controller
                         'configid' => 3,
                         'verifytime' => date('Y-m-d H:i:s')
                     ]);
-                    $msg = ['msg' => '该需求已通过','icon' => 1];
+                    if($needinfo->level){
+                        $msg = ['msg' => '该VIP商情已通过,已为您提交到后台，请等待后台为您精准推送.','icon' => 1];
+                    } else {
+                        $msg = ['msg' => '该普通商情已通过,即将为您跳转至商情列表页','icon' => 1];
+                    }
                 } else {
                     $res = DB::table('t_n_needverify')->insert([
                         'needid' => $needid,
@@ -535,13 +539,13 @@ class PublicController extends Controller
                         'remark' => $error['msg'],
                         'verifytime' => date('Y-m-d H:i:s')
                     ]);
-                    $msg = [ 'msg' => '该需求未通过,原因:'.$error['msg'], 'icon' => 2,'needid' => $needid];
+                    $msg = [ 'msg' => '该商情未通过,原因:'.$error['msg'], 'icon' => 2,'needid' => $needid];
                 }
 
                 if($res){
                     return $msg;
                 } else {
-                    return ['msg' => '发布需求失败','icon' => 2];
+                    return ['msg' => '发布商情失败','icon' => 2];
                 }
 
                 break;
@@ -594,7 +598,7 @@ class PublicController extends Controller
                 if($res){
                     return $msg;
                 } else {
-                    return ['msg' => '发布需求失败','icon' => 2];
+                    return ['msg' => '发布商情失败','icon' => 2];
                 }
             break;
             case 'video':
@@ -677,7 +681,12 @@ class PublicController extends Controller
                 ->where('state.configid', 2)
                 ->where(['domain1' => $domain1])->count();
             if($expertcount){
-                return ['msg' => '<b style="font-size: 18px;">恭喜您,系统已为您检索到</b><br />【'.$data['domain'].'】 服务领域下有 <font color="red" size="5">'.$expertcount.'</font> 名专家<br />在【'.$domain1.'】 领域下共有 <font color="red" size="5">'.$expertcount2.'</font> 名专家','type' => 1];
+                if($expertcount >= 5){
+                    $pushnumber = 5;
+                }else {
+                    $pushnumber = $expertcount;
+                }
+                return ['msg' => '<b style="font-size: 18px;">恭喜您,系统已为您检索到</b><br />【'.$data['domain'].'】 服务领域下有 <font color="red" size="5">'.$expertcount.'</font> 名专家<br />在【'.$domain1.'】 领域下共有 <font color="red" size="5">'.$expertcount2.'</font> 名专家<br />系统将为您推送<font color="red" size="5">'.$pushnumber.'</font>位专家','type' => 1];
             } elseif (!$expertcount && $expertcount2){
                 return ['msg' => '<b style="font-size: 18px;">很抱歉</b><br />系统在 【'.$data['domain'].'】领域下并未找到专家<br />但是系统在 【'.$domain1.'】领域下检索到 <font color="red" size="5">'.$expertcount2.' </font>名专家,您是否继续操作','type' => 2];;
             } else {
@@ -1076,5 +1085,146 @@ class PublicController extends Controller
             ]) ;
     }
 
+    /**
+     * 定时获取到响应的状态
+     */
+    public function realTimeGetInfo(Request $request)
+    {
+        if(empty(session('userId'))){
+            return [['code' => 100,'msg' => '尊敬的用户您好,您暂未登录是否登陆（此消息只提示一次）','url' => url('login')]];
+        }
+        $userid = session('userId');
+        $userinfo = DB::table('t_u_user')->where('userid',$userid)->first();
+        $expertinfo = DB::table('t_u_expert as ext')
+            ->leftJoin('view_expertstatus as status','status.userid','=','ext.userid')
+            ->where('ext.userid',$userid)
+            ->first();
+        $enterptiseinfo = DB::table('t_u_enterprise as ext')
+            ->leftJoin('view_enterprisestatus as status','status.userid','=','ext.userid')
+            ->where('ext.userid',$userid)
+            ->first();
+        if(empty($userinfo)){
+            return [['code' => 101,'msg' => '用户不存在','url' => '?']];
+        }
+        if((empty($expertinfo) || $expertinfo->configid != 2) && (empty($enterptiseinfo) || $enterptiseinfo->configid != 3)){
+            return [['code' => 102,'msg' => '您还未认证成用户或认证专家,是否认证？','url1' => '?','url2' => '?']];
+        }
+        if(!empty($expertinfo) &&  $expertinfo->configid == 2 && !empty($enterptiseinfo) && $enterptiseinfo->configid == 3){
+            $expertstatus = self::expertaction($expertinfo);
+            $enterprisestatus = self::enterpriseaction($enterptiseinfo);
+            $res = array_merge($expertstatus,$enterprisestatus);
+        } elseif(!empty($expertinfo) &&  $expertinfo->configid == 2 && (empty($enterptiseinfo) || $enterptiseinfo->configid != 3)){
+            $res = self::expertaction($expertinfo);
+        } else {
+            $res = self::enterpriseaction($enterptiseinfo);
+        }
+        return $res;
+    }
+
+    /**获取到专家身份的实时动作请求
+     * @param $info
+     */
+    static private function expertaction ($info){
+        $res = [];
+        $eventstate = DB::table('t_e_event as event')
+            ->leftJoin('view_eventstatus as status','status.eventid','=','event.eventid')
+            ->leftJoin('t_e_eventresponse as res','res.eventid','=','event.eventid')
+            ->whereIn('res.state',[0,1])
+            ->where(['status.configid' => 4,'event.extislook' => 0,'res.expertid' => $info->expertid])
+            ->lists('event.eventid');
+        $consultstate = DB::table('t_c_consult as consult')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','consult.consultid')
+            ->leftJoin('t_c_consultresponse as res','res.consultid','=','consult.consultid')
+            ->whereIn('res.state',[0,1])
+            ->where(['status.configid' => 4,'consult.extislook' => 0,'res.expertid' => $info->expertid])
+            ->lists('consult.consultid');
+        $consulttime = DB::table('t_c_consult as consult')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','consult.consultid')
+            ->leftJoin('t_c_consultresponse as res','res.consultid','=','consult.consultid')
+            ->where('res.state',3)
+            ->whereRaw("consult.starttime between '".date('Y-m-d H:i:s',time())."' and '".date('Y-m-d H:i:s',time()+60*5)."'")
+            ->where(['status.configid' => 6,'res.expertid' => $info->expertid])
+            ->orderBy('consult.consultid','desc')
+            ->first();
+        if(count($eventstate)){
+            //专家有办事待响应
+            $res[] = ['code' => 200,'msg' => '您有待响应的办事需要您处理，点击查看待响应办事','url' => url('/uct_mywork'),'data' => ['ids' => $eventstate,'type' => 'event','look' => 'extislook']];
+        }
+        if(count($consultstate)){
+            //专家有咨询待响应
+            $res[] = ['code' => 201,'msg' => '您有待响应的视频咨询需要您处理，点击查看待响应视频咨询','url' => url('/uct_myask'),'data' => ['ids' => $consultstate,'type' => 'consult','look' => 'extislook']];
+        }
+        if($consulttime){
+            //有会议待进入
+            $res[] = ['code' => 202,'msg' => '您好您在十分钟内有会议即将开始,是否进入视频会议','url' => url('/uct_myask/askDetail',$consulttime->consultid)];
+        }
+        return $res;
+    }
+
+    /**获取到用户身份的实时动作请求
+     * @param $info
+     */
+    static private  function enterpriseaction ($info) {
+        $res = [];
+        $eventstate = DB::table('t_e_event as event')
+            ->leftJoin('view_eventstatus as status','status.eventid','=','event.eventid')
+            ->leftJoin('t_e_eventresponse as res','res.eventid','=','event.eventid')
+            ->whereIn('res.state',[2,3])
+            ->whereIn('status.configid',[5,6])
+           /* ->whereRaw('(res.state=2 and status.configid=5)or(res.state=3 and status.configid=6)')*/
+            ->where(['event.userid' => $info->userid,'event.entislook' => 0])
+            ->lists('event.eventid');
+        $consultstate = DB::table('t_c_consult as consult')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','consult.consultid')
+            ->leftJoin('t_c_consultresponse as res','res.consultid','=','consult.consultid')
+            ->whereIn('res.state',[2,3])
+            ->whereIn('status.configid',[5,6])
+            ->where(['consult.userid' => $info->userid,'consult.entislook' => 0])
+            ->lists('consult.consultid');
+        $consulttime = DB::table('t_c_consult as consult')
+            ->leftJoin('view_consultstatus as status','status.consultid','=','consult.consultid')
+            ->leftJoin('t_c_consultresponse as res','res.consultid','=','consult.consultid')
+            ->where('res.state',3)
+            ->whereRaw("consult.starttime between '".date('Y-m-d H:i:s',time())."' and '".date('Y-m-d H:i:s',time()+60*10)."'")
+            ->where(['consult.userid' => $info->userid,'status.configid' => 6])
+            ->orderBy('consult.consultid','desc')
+            ->first();
+        if(count($eventstate)){
+            //专家有办事待响应
+            $res[] = ['code' => 300,'msg' => '您有'.count($eventstate).'个办事有了新的进展，专家已经响应了您的办事，点击查看办事','url' => url('/uct_works'),'data' => ['ids' => $eventstate,'type' => 'event','look' => 'entislook']];
+        }
+        if(count($consultstate)){
+            //专家有咨询待响应
+            $res[] = ['code' => 301,'msg' => '您有'.count($consultstate).'个视频咨询有了新的进展，专家已经响应了您的视频咨询，点击查看视频咨询','url' => url('/uct_video'),'data' => ['ids' => $consultstate,'type' => 'consult','look' => 'extislook']];
+        }
+        if($consulttime){
+            //有会议待进入
+            $res[] = ['code' => 302,'msg' => '您好您在十分钟内有会议即将开始,是否进入视频会议','url' => url('/uct_video/detail',$consulttime->consultid)];
+        }
+        return $res;
+    }
+
+    public function dealLookAction(Request $request)
+    {
+        $data = $request->input();
+        $res = 0;
+        if($data['look'] == 'extislook' || $data['look'] == 'entislook'){
+            switch($data['type']){
+
+                case 'event':
+                    $res =  DB::table('t_e_event')->whereIn('eventid',$data['ids'])->update([$data['look'] => 1]);
+                    break;
+                case 'consult':
+                    $res =  DB::table('t_c_consult')->whereIn('consultid',$data['ids'])->update([$data['look'] => 1]);
+                    break;
+            }
+        }
+        if($res){
+            return 'success';
+        } else {
+            return 'error';
+        }
+
+    }
 
 }

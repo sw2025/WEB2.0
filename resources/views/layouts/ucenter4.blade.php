@@ -131,6 +131,10 @@
                                 <img src="{{asset('img/vicon03.png')}}" alt="我的咨询" />
                                 我的咨询
                             </a>
+                            <a id="uct_entres" href="{{asset('uct_entres')}}" class="v-ucenter-nav-item">
+                                <img src="{{asset('img/enterpriseicon.png')}}" alt="企业资源" />
+                                企业资源
+                            </a>
                             <a id="myneed" href="{{asset('myneed')}}" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
                                 商情信息
@@ -155,15 +159,16 @@
         <!-- <div class="row"> -->
         <div class="col-md-6 two-pic">
             <!-- <div class="container-fluid"> -->
-            <div class="weixin"><span class="two-code"><img src="{{asset('img/weixin.jpg')}}" /></span>关注升维公众号</div>
-            <div class="app"><span class="two-code"><img src="{{asset('img/app.jpg')}}"  /></span>下载升维APP</div>
+            <div class="weixin"><span class="two-code"><img src="{{asset('img/weixin.jpg')}}" style="width: 140px;height: 150px;"/></span>关注升维公众号</div>
+            <div class="app"><span class="two-code"><img src="{{asset('img/android.png')}}"  style="width: 140px;height: 150px;"/></span>升维APP(安卓)</div>
+            <div class="aapp"><span class="two-code"><img src="{{asset('img/ios.png')}}"  style="width: 140px;height: 150px;"/></span>升维APP（IOS）</div>
             <!-- </div> -->
         </div>
         <div class="col-md-6 contacts">
             <p class="footer-title">联系升维</p>
-            <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：010-64430881</p>
+            <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：010-64430881&nbsp;&nbsp;/&nbsp;&nbsp;68985908</p>
             <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>E-Mail：shengwei2025@163.com</p>
-            <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市朝阳区安贞里街道浙江大厦1601</p>
+            <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市朝阳区安贞里街道浙江大厦</p>
             <p class="copyright">京ICP备17053834号<span></span>copyright &copy; 2017 sw2025.com</p>
         </div>
         <!-- </div> -->
@@ -350,3 +355,6 @@
 </script>
 </body>
 </html>
+
+<script src="{{asset('js/notification.js')}}"></script>
+<script>createNotification('type')</script>

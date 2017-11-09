@@ -1,5 +1,17 @@
  @extends("layouts.ucenter")
 @section("content")
+    <style type="text/css">
+
+        .business-level-wrapper{width: 352px;margin: 10px auto 0;font-size: 0;text-align: left;position: relative;}
+        .business-level{display: inline-block;vertical-align: top;position: relative;width: 280px;font-size: 14px;border: 1px solid #ccc;border-radius: 3px;height: 34px;line-height: 34px;}
+        .business-level-wrapper .icon-wenhao2{display: inline-block;vertical-align: top;font-size: 26px;cursor: pointer;margin-left: 3px;color:#00a7ed;width: 48px;overflow: hidden;}
+        .business-select{position: relative;display: block;position: relative;margin-left: 108px;color: #666;text-decoration: none;}
+        .business-select:before{position: absolute;right: 10px;top: 2px;content:"\ea81";font-family: 'iconfont';}
+        .business-level-list{background: #fff;position: absolute;top: 36px;left: 0;text-align: center;width: 100%;box-shadow: 0 0 8px #ccc;border: 1px solid rgba(0, 0, 0, 0.15);display: none;}
+        .business-level-list li:hover{cursor: pointer;background:#f8f8f8;}
+        .info-show-content{position: absolute;right: -165px;top: 40px;width:385px;line-height: 16px;font-size: 12px;width: 180px;display: none;color:#ed1600;}
+        .business-btn-wrapper{padding-top: 30px;}
+    </style>
     <div class="main">
         <!-- 发布需求 / start -->
         <h3 class="main-top">发布商情</h3>
@@ -32,13 +44,30 @@
                                         </ul>
                                         @endif
                                     </li>
-                                    @endforeach
+
+                            @endforeach
                         </ul>
 
 
                        <textarea   name="" id="content" class="publish-need-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入商情描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea>
                     </div>
-                    <div><button class="test-btn publish-submit" type="button">提交</button></div>
+                    <div class="business-level-wrapper">
+                        <div class="business-level">
+                            <span class="publ-need-sel-cap">商情级别</span>
+                            <a href="javascript:;" class="business-select">普通</a>
+                            <ul class="business-level-list">
+                                <li>普通</li>
+                                <li>VIP</li>
+                            </ul>
+                        </div>
+                        <i class="iconfont icon-wenhao2 info-show"></i>
+                        <div class="info-show-content">
+                            普通：<br />发布后商情展示到升维网平台，所有升维网用户可以查看<br />
+                            VIP: <br />发布后商情发送到升维网后台，升维网筛选后精准对接到平台用户
+                        </div>
+                    </div>
+                    {{--<div><button class="test-btn publish-submit" type="button">提交</button></div>--}}
+                    <div class="business-btn-wrapper"><button class="test-btn publish-submit" type="button">提交</button></div>
                 </div>
             </div>
         </div>
@@ -61,6 +90,53 @@
     </ul>
     <script type="text/javascript">
         $(function(){
+
+            // 点击级别
+            $(document).click(function(){
+                $('.business-level-list').hide();
+            })
+            $('.business-select').click(function(event) {
+                event.stopPropagation();
+                $(this).next('ul').slideToggle();
+            });
+            $('.business-level-list li').click(function(event) {
+                event.stopPropagation();
+                var selHtml = $(this).html();
+                $(this).parent().prev('a').html(selHtml);
+                $(this).parent().hide();
+            });
+            var infoHtml1 = '发布后商情展示到升维网平台，所有升维网用户可查看';
+            var infoHtml2 = '发布后商情发送到升维网后台，升维网筛选后精准对接到平台用户';
+            $('.info-show').hover(function() {
+                /*if($('.business-select').html() === '普通'){
+                    $('.info-show-content').html(infoHtml1).stop().fadeToggle();
+                }else{
+                    $('.info-show-content').html(infoHtml2).stop().fadeToggle();
+                }*/
+                $('.info-show-content').stop().fadeToggle();
+            });
+
+
+
+            /*$('.publ-need-sel-def').click(function() {
+                $(this).next('ul').stop().slideToggle();
+            });*/
+            $('.publish-need-list li').hover(function() {
+                $(this).children('ul').stop().show();
+            }, function() {
+                $(this).children('ul').stop().hide();
+            });
+
+            $('.publ-sub-list li').click(function() {
+                var publishHtml = $(this).html();
+                $('.publ-need-sel-def').html(publishHtml);
+                $('.publish-need-list').hide();
+            });
+        })
+    </script>
+    <script type="text/javascript">
+        $(function(){
+
 
 
             layer.open({
@@ -92,8 +168,9 @@
             $('.publish-submit').on('click',function () {
                 $obj =  $(this);
                 $obj.attr('disabled',true);
+                var needlevel = $('.business-select').text();
                 var content = $('#content').val();
-                var domain =  $('.publ-need-sel-def').text();
+                var domain = $.trim($('.publ-need-sel-def').text());
                 if(content == '' || domain == '请选择'){
                     $obj.attr('disabled',false);
                     layer.msg('请填写完整的需求描述');
@@ -104,10 +181,10 @@
                     layer.msg('请输入30-500字的需求描述');
                     return false;
                 }
-                $.post('{{url('uct_myneed/addNeed')}}',{'role':'企业','content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
+                $.post('{{url('uct_myneed/addNeed')}}',{'needlevel':needlevel,'role':'企业','content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {
                     if (data.icon == 1){
                         layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
-                            window.location = '{{url('myneed')}}';
+                            window.location = '{{url('uct_myneed')}}';
                         });
                     } else {
                         //$obj.attr('disabled',false);
@@ -140,7 +217,8 @@
                 } else if (data.type == 1){
                     layer.alert(data.msg,{'icon':data.icon});
                 } else {
-                    window.location = '{{asset('uct_myneed/supplyNeed')}}';
+                    window.location = '{{asset('myneed/supplyNeed')}}';
+
                 }
             });
 

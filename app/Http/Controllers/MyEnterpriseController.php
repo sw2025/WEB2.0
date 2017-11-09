@@ -30,9 +30,19 @@ class MyEnterpriseController extends Controller
             ->where('status.configid','2');
         //获得用户的收藏
         $collectids = [];
-        if(session('userId')){
+        if(!empty(session('userId'))){
             $collectids = DB::table('t_u_collectexpert')->where(['userid' => session('userId'),'remark' => 1])->lists('expertid');
         }
+        //获取到专家给用户留言的数量
+        $tomymsgcount = 0;
+        if(!empty(session('userId'))){
+            $enterinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
+            if(!empty($enterinfo)){
+                $tomymsgcount = DB::table('t_u_messagetoenterprise')->whereRaw('(use_userid=0 or use_userid ='.session('userId').')')->where('userid','<>',session('userId'))->where(['enterpriseid' => $enterinfo->enterpriseid,'state' => 0,'isdelete' => 0])->count();
+            }
+
+        }
+
         //用户回复的数量
         $msgcount = count(DB::table('t_u_messagetoexpert')->where('userid',session('userId'))->groupBy('expertid')->lists('expertid'));
         $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
@@ -94,11 +104,103 @@ class MyEnterpriseController extends Controller
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);
-            return view("myenterprise.newExResource",compact('cate','msgcount','domainselect','searchname','datas','role','collectids','consult','action','supply','address','ordertime','ordercollect','ordermessage'));
+            return view("myenterprise.newExResource",compact('cate','msgcount','domainselect','searchname','datas','role','tomymsgcount','collectids','consult','action','supply','address','ordertime','ordercollect','ordermessage'));
         }
         $datas = $datas->orderBy("ext.expertid",'desc')->paginate(4);
         $ordertime = 'desc';
-        return view("myenterprise.newExResource",compact('cate','datas','domainselect','ordertime','collectids','msgcount'));
+        return view("myenterprise.newExResource",compact('cate','datas','domainselect','ordertime','collectids','msgcount','tomymsgcount'));
+    }
+
+    /**展示用户的留言
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|Redirect|\Illuminate\View\View
+     */
+    public function showMyReply(Request $request)
+    {
+        if(empty(session('userId'))){
+            return redirect('/uct_resource');
+        }
+        $entinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
+        if(empty($entinfo)){
+            return redirect('/uct_resource');
+        }
+        $datas = DB::table('t_u_messagetoenterprise')
+                ->where('enterpriseid',$entinfo->enterpriseid)
+                ->where('isdelete',0)
+                ->whereRaw('(use_userid=0 or use_userid ='.session('userId').')')
+                ->where('userid','<>',session('userId'))
+                ->orderBy('id','desc')
+                ->paginate(10);
+        foreach($datas as $k => $v){
+            $expert = DB::table('t_u_expert')->where('userid',$v->userid)->first();
+            $v->expertname = $expert->expertname;
+            $v->expertid = $expert->expertid;
+            $v->expertimg = $expert->showimage;
+        }
+        if($request->ajax()){
+            return $datas;
+        }
+
+        return view('myenterprise.myreply',compact('datas','entinfo'));
+    }
+
+    /**标记留言已读
+     * @param Request $request
+     * @return array
+     */
+    public function flagRead (Request $request) {
+        if($request->ajax()){
+            $data = $request->input('data');
+            $state = $request->input('state');
+            $userId = session('userId');
+            $enterpriseid = DB::table('t_u_enterprise')->where('userid',$userId)->pluck('enterpriseid');
+            if($state != 2){
+                $where = [ 'state' => $state];
+            } else {
+                $where = ['isdelete' => 1];
+            }
+            $res = DB::table('t_u_messagetoenterprise')
+                ->whereIn('id',$data)
+                ->where('enterpriseid',$enterpriseid)
+                ->update($where);
+            if($state == 1){
+                return ['msg' => '已标记留言为已读','icon' => 1];
+            } elseif ($state == 2){
+                return ['msg' => '删除留言成功','icon' => 1];
+            }
+
+        }
+        return ['msg' => '非法请求','icon' => 2];
+    }
+
+    /** 给用户回复留言
+     * @param Request $request
+     */
+    public function msgReply(Request $request)
+    {
+        if($request->ajax()){
+            $data = $request->input();
+            if(empty(session('userId'))){
+                return ['msg' => '未登录','icon' => 2];
+            }
+            $userid = session('userId');
+            $res = DB::table('t_u_messagetoenterprise')->insert([
+                'userid' => $userid,
+                'state' => 0,
+                'enterpriseid' => $data['entid'],
+                'content' => $data['content'],
+                'messagetime' => date('Y-m-d H:i:s',time()),
+                'isdelete' => 0,
+                'parentid' => $data['id'],
+                'created_at' => date('Y-m-d H:i:s',time()),
+                'updated_at' => date('Y-m-d H:i:s',time())
+            ]);
+            if($res){
+                return ['msg' => '回复成功','icon' => 1];
+            } else {
+                return ['msg' => '回复失败','icon' => 2];
+            }
+        }
     }
 
     /**专家资源详情
@@ -436,6 +538,7 @@ class MyEnterpriseController extends Controller
                     ->get();
         $counts=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',1)->count();
         $counts2=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',0)->count();
+        DB::table('t_e_event')->where('eventid',$eventId)->update(['entislook' => 1]);
         foreach ($datas as $data){
            $configId=$data->configid;
             if(!$counts){
@@ -1365,7 +1468,7 @@ class MyEnterpriseController extends Controller
             $data->starttime=date("Y年m月d日 H:i:s",strtotime($data->starttime));
             $data->endtime=date("Y年m月d日 H:i:s",strtotime($data->endtime));
         }
-
+        DB::table('t_c_consult')->where('consultid',$consultId)->update(['entislook' => 1]);
         switch($configId){
             case 4:
                 $selExperts=DB::table("t_c_consultresponse")
@@ -1457,6 +1560,12 @@ class MyEnterpriseController extends Controller
         $userId=session("userId");
         $result=array();
         $domain=explode("/",$data['domain']);
+        if(strtotime($data['dateStart']) < time() || strtotime($data['dateEnd']) < time()){
+            return  ['msg' => '视频咨询开始时间或结束时间不能在今天以前','icon' => 2];
+        }
+        if(strtotime($data['dateStart']) > strtotime($data['dateEnd'])){
+            return   ['msg' => '视频咨询开始时间结束时间错误','icon' => 2];
+        }
         DB::beginTransaction();
         try{
             $consultId=DB::table("t_c_consult")->insertGetId([

@@ -16,18 +16,15 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Cache;
 use DB;
-/*define('APP_ID', "app_0Oyfn5SOevHO1qnX");   //配置应用id
 
-define('APP_KEY', "sk_test_8uTifL8KmvDGqTiHKG5ebvzL");  //配置应用秘钥(test)
-//define('APP_KEY', "sk_live_e1uzr1vX5uPG8OebnD0qLGOC");  //配置应用秘钥(live)*/
 class PingpayController extends Controller
 {
     public  function charge(){
         require(base_path().'/vendor/pingplusplus/pingpp-php/init.php');
         // api_key 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Secret Key
-        $api_key = 'sk_live_e1uzr1vX5uPG8OebnD0qLGOC';
+        $api_key = env('Pingapikey');
         // app_id 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击你创建的应用->应用首页->应用 ID(App ID)
-        $app_id = 'app_0Oyfn5SOevHO1qnX';
+        $app_id = env('Pingappid');
 
         // 此处为 Content-Type 是 application/json 时获取 POST 参数的示例
         $payload=$_POST;
