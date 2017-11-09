@@ -2,11 +2,11 @@
 @section("content")
     <div class="bg_v2">
         <div class="card-step works-step">
-            <span class="green-circle">1</span>办事申请<span class="card-step-cap">&gt;</span>
-            <span class="green-circle">2</span>办事审核<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">1</span>咨询申请<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">2</span>咨询审核<span class="card-step-cap">&gt;</span>
             <span class="green-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
             <span class="gray-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-            <span class="gray-circle">5</span>办事管理<span class="card-step-cap">&gt;</span>
+            <span class="gray-circle">5</span>咨询管理<span class="card-step-cap">&gt;</span>
             <span class="gray-circle">6</span>完成
         </div>
         <div class="invite-experts">
@@ -17,7 +17,7 @@
             <table class="invite-table">
                 @foreach($datas as $data)
                     <tr>
-                        <td>需求分析</td>
+                        <td>咨询分类</td>
                         <td>{{$data->domain1.'/'.$data->domain2}}</td>
                     </tr>
                     <tr>
@@ -30,7 +30,7 @@
                     </tr>
 
                     <tr>
-                        <td>描述</td>
+                        <td>咨询描述</td>
                         <td>{{$data->brief}}</td>
                     </tr>
                     <tr>

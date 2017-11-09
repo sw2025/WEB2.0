@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/list.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/workmanage.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/newmanage.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset('css/events.css')}}" />
     <!-- js / start -->
     <script src="{{asset('im/3rd/jquery-1.11.3.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jquery.cookie.js')}}"></script>

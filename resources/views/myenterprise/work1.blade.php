@@ -1,9 +1,10 @@
 @extends("layouts.ucenter")
 @section("content")
+    <link rel="stylesheet" href="{{asset('css/events.css')}}">
     <script type="text/javascript" src="{{asset('js/laydate/laydate.js')}}"></script>
     <div class="main">
-        <!-- 企业办事服务 / start -->
-        <h3 class="main-top">企业办事服务</h3>
+        <!-- 专家视频咨询 / start -->
+        <h3 class="main-top">专家视频咨询</h3>
         <div class="ucenter-con">
             <div class="main-right">
                 <div class="card-step works-step">
@@ -13,48 +14,62 @@
                     <span class="gray-circle">4</span>办事管理<span class="card-step-cap">&gt;</span>
                     <span class="gray-circle">5</span>完成
                 </div>
-                <div class="publish-need uct-works">
-                    <div class="expert-certy-state">
-                        <span class="uct-works-icon"><i class="iconfont icon-shenqing"></i></span>
-                                <span class="expert-certy-blue">
-                                    <em>办事申请</em>IS APPLYING
-                                </span>
-                    </div>
-                    <div class="publish-need-sel zindex3" style="margin-top: 20px;">
-                        <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
-                        <ul class="publish-need-list" style="display: none;">
-                            @foreach($cate as $v)
-                                @if($v->level == 1)
-                                    <li>
-                                        <a href="javascript:;">{{$v->domainname}}</a>
-                                        <ul class="publ-sub-list">
-                                            @foreach($cate as $small)
-                                                @if($small->parentid == $v->domainid && $small->level == 2)
-                                                    <li>{{$small->domainname}}</li>
-                                                @endif
-                                            @endforeach
-                                        </ul>
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ul>
-                    </div>
-
-                    <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="请输入办事描述（30-500字之间）" ></textarea>
-                    <div class="uct-works-exp">
-                        <span>专家</span>
-                        <a href="javascript:;" class="system-btn uct-works-btn" id="random" style="padding:0 10px;">系统分配专家</a>
-                        <a href="javascript:;" class="uct-works-btn" id="appoint">指定专家</a>
-                    </div>
-                    <div class="uct-works-expava">
-                    </div>
+                <div class="invite-experts apply-video-wrapper">
+                    <table class="invite-table">
+                        <tr>
+                            <td>问题分类</td>
+                            <td>
+                                <div class="publish-need-sel zindex4">
+                                    <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
+                                    <ul class="publish-need-list" style="display: none;">
+                                        @foreach($cate as $v)
+                                            @if($v->level == 1)
+                                                <li>
+                                                    <a href="javascript:;">{{$v->domainname}}</a>
+                                                    <ul class="publ-sub-list">
+                                                        @foreach($cate as $small)
+                                                            @if($small->parentid == $v->domainid && $small->level == 2)
+                                                                <li>{{$small->domainname}}</li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>办事描述</td>
+                            <td>
+                                <textarea name="" class="publish-need-txt uct-works-txt" cols="30" rows="10" placeholder="办事描述"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>专家</td>
+                            <td>
+                                <div class="uct-works-exp">
+                                    <a href="javascript:;" class="system-btn uct-works-btn active" id="random" style="padding:0 10px;">系统分配专家</a>
+                                    <a href="javascript:;" class="uct-works-btn" id="appoint">指定专家</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>专家头像</td>
+                            <td>
+                                <ul class="uct-works-expava">
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
                     <div class="uct-works-tips">
                         <b>提示</b><br />
                         尊敬的用户您好
                         <p class="uct-works-tips-para light-color">近期，网监部门查敏感类信息比较严格，所以内容中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写办事内容。</p>
                     </div>
                     <div class="uct-works-con">
-                        <button class="test-btn submit-audit" type="button">提交审核</button>
+                        <button class="test-btn submit-audit" type="button">请专家办事</button>
                     </div>
                 </div>
             </div>
@@ -166,7 +181,7 @@
                 $(this).closest('.layer-pop').hide();
                 $('.pop-pay').hide();
                 $(".submit-audit").attr('disabled',false);
-                $(".submit-audit").html('提交审核');
+                $(".submit-audit").html('请专家办事');
             })
             $('.datas-sel-def').click(function () {
                 $(this).next('ul').stop().slideToggle();
@@ -383,7 +398,7 @@
             if(describe.length>30 && describe.length<500){
             }else{
                 $(this).attr('disabled',false);
-                $(this).html('提交认证');
+                $(this).html('请专家办事');
                 layer.msg('办事描述应在30到500字之间',{'icon':5});
                 return false;
             }
@@ -461,7 +476,7 @@
                             layer.close(index);
                         }, function(index){
                             $(that).attr('disabled',false);
-                            $(that).html('提交审核');
+                            $(that).html('请专家办事');
                             layer.close(index);
                         });
                     }

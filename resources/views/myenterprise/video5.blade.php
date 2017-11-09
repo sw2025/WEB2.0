@@ -3,48 +3,55 @@
     <style>
         .changeWeixin img{margin:0 auto;}
     </style>
-    <div class="main">
-        <!-- 专家视频咨询 / start -->
-        <h3 class="main-top">专家视频咨询</h3>
-        <div class="ucenter-con">
-            <div class="main-right">
-                <div class="card-step works-step">
-                    <span class="green-circle">1</span>会议申请<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
-                    <span class="green-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">4</span>咨询管理<span class="card-step-cap">&gt;</span>
-                    <span class="gray-circle">5</span>完成
-                </div>
-                <input type="hidden" id="consult" name="consult" value="{{$consultId}}">
-                <div class="publish-need uct-works default-result">
-                    <div class="expert-certy-state">
-                        <span class="uct-works-icon icon1"></span>
-                                <span class="publish-need-blue">
-                                    <em>专家响应</em>EXPERTS RESPONSE
-                                </span>
-                    </div>
-                    <div class="system-invite light-color">已经响应<span class="invite-count">{{$selected}}人</span></div>
-                    @foreach($datas as $data)
-                    <div class="mywork-det-txt uct-works-known">
-                        <span class="mywork-det-tit"><em class="light-color">分类：</em>{{$data->domain1.'/'.$data->domain2}}</span>
-                        <span class="mywork-det-tit"><em class="light-color">开始时间：</em>{{$data->starttime}}</span>
-                        <span class="mywork-det-tit"><em class="light-color">结束时间：</em>{{$data->endtime}}</span>
-                        <div class="mywork-det-desc">
-                            <em class="light-color">描述：</em>
-                            <p class="mywork-det-desc-para">{{$data->brief}}</p>
-                        </div>
-                    </div>
-                    @endforeach
-                    <div class="uct-works-exps">
-                        <ul class="uct-works-exps-list">
-                            @foreach($selExperts as $selExpert)
-                                <li id="{{$selExpert->expertid}}" fee="{{$selExpert->fee  or 0}}" state="{{$selExpert->state}}"><a href="javascript:;" target="_bank"><img src="{{env('ImagePath').$selExpert->showimage}}" alt="">{{$selExpert->expertname}}</a></li>
-                            @endforeach
-                        </ul>
-                        <button type="button" class="test-btn">确认</button>
-                    </div>
-                </div>
+    <div class="bg_v2">
+        <div class="card-step works-step">
+            <span class="green-circle">1</span>咨询申请<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">2</span>咨询审核<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
+            <span class="gray-circle">5</span>咨询管理<span class="card-step-cap">&gt;</span>
+            <span class="gray-circle">6</span>完成
+        </div>
+        <div class="invite-experts">
+            <div class="invite-expert-tit">
+                <i class="iconfont icon-shenhejujue"></i><span>已响应<b class="invite-counts">{{$selected}}</b>人</span>
             </div>
+
+            <table class="invite-table">
+                <input type="hidden" id="consult" name="consult" value="{{$consultId}}">
+                @foreach($datas as $data)
+                    <tr>
+                        <td>咨询分类</td>
+                        <td>{{$data->domain1.'/'.$data->domain2}}</td>
+                    </tr>
+                    <tr>
+                        <td>开始时间</td>
+                        <td>{{$data->starttime}}</td>
+                    </tr>
+                    <tr>
+                        <td>结束时间</td>
+                        <td>{{$data->endtime}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>咨询描述</td>
+                        <td>{{$data->brief}}</td>
+                    </tr>
+                    <tr>
+                        <td>专家头像</td>
+                        <td>
+                            <ul class="selected-experts">
+                                @foreach($selExperts as $selExpert)
+                                    <li id="{{$selExpert->expertid}}"><a href="javascript:;" class="expert-wrapper"><img src="{{env('ImagePath').$selExpert->showimage}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;"><span class="expert-name">{{$selExpert->expertname}}</span></a></li>
+                                @endforeach
+                            </ul>
+                        </td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+        <div class="center-btn">
+            <button type="button" class="test-btn">选择专家</button>
         </div>
     </div>
     <div class="pop-pay">
@@ -88,6 +95,12 @@
     <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
     <script type="text/javascript">
         $(function(){
+            $('.closePop').click(function () {
+                $(this).closest('.layer-pop').hide();
+                $('.pop-pay').hide();
+                $(".test-btn").attr('disabled',false);
+                $(".test-btn").html('选择专家');
+            })
             var expertIds=new Array();
             if($.cookie("selected")){
                 var selected=$.cookie("selected").split(',');
@@ -101,7 +114,7 @@
                 $(this).closest('.layer-pop').hide();
                 $('.pop-pay').hide();
             })
-            $('.uct-works-exps-list li').click(function(event) {
+            $('.selected-experts li').click(function(event) {
                 var expertId=$(this).attr("id");
                 var state=$(this).attr("state");
                 var fee=$(this).attr("fee");
@@ -111,7 +124,7 @@
                     fee="0";
                     expertId=expertId+"/"+fee;
                 }
-                if(expertIds.length!=5){
+                if(expertIds.length!=2){
                     if(!$(this).hasClass("current")){
                         expertIds.push(expertId);
                     }else{
@@ -121,7 +134,7 @@
                     if($.inArray(expertId,expertIds)>=0){
                         deleteArray(expertIds,expertId);
                     }else{
-                        layer.confirm('您已经选定5位专家', {
+                        layer.confirm('您已经选定2位专家', {
                             btn: ['确定'] //按钮
                         });
                         return false;
@@ -140,8 +153,11 @@
             }
             //处理反选的专家
             $(".test-btn").on("click",function(){
+                $(this).attr('disabled',true);
+                $(this).html('正在处理');
                 var consultId=$("#consult").val();
                 var totalCount=0;
+                var _that=this;
                 var date = new Date();
                 date.setTime(date.getTime() + (120 * 60 * 1000));
                 $.cookie("selected",expertIds,{expires:date,path:'/',domain:'sw2025.com'});
@@ -166,6 +182,8 @@
                                 break;
                                 case "error":
                                     layer.msg("网络异常");
+                                    $(_that).attr('disabled',false);
+                                    $(_that).html('选择专家');
                                 break;
                             }
                         }
@@ -174,6 +192,8 @@
                     layer.confirm('请您至少选定1位专家', {
                         btn: ['确定'] //按钮
                     });
+                    $(_that).attr('disabled',false);
+                    $(_that).html('选择专家');
                     return false;
                 }
             })

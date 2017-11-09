@@ -16,10 +16,7 @@
                 <input type="hidden" id="consult" name="consult" value="{{$consultId}}">
                 <div class="publish-need uct-works-final">
                     <div class="expert-certy-state">
-                        <i class="iconfont icon-chenggong"></i>
-                                <span class="expert-certy-blue">
-                                    <em>完成</em>COMPLETE
-                                </span>
+                        
                     </div>
                     @foreach($selExperts as $selExpert)
                         <div class="rate">
