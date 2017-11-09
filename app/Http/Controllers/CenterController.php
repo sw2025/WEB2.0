@@ -257,7 +257,7 @@ class CenterController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
             $who = ( isset($get['who']) && $get['who'] != "null") ? $get['who'] : null;
-            $level = $get['level'];
+            $level = (isset($get['level']) && $get['level'] != "null") ? $get['level'] : 0;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("needtype"=>$role):array();
             $supplywhere = !empty($supply)?array("need.domain1"=>$supply[0],'need.domain2' => $supply[1]):array();

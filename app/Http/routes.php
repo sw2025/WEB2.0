@@ -320,6 +320,10 @@ Route::get('uct_mywork/myEventVideo/{eventid}', 'MyExpertController@myEventVideo
 Route::post('ifeventtrue','PublicController@getEventNewState');
 //定是请求是否有薪的资料上传
 Route::post('ifeventupload','PublicController@getEventNewUpload');
+//定时请求是否有新的通知状态
+Route::post('realTimeGetInfo','PublicController@realTimeGetInfo');
+//更改状态
+Route::post('dealLookAction','PublicController@dealLookAction');
 
 //创建群组
 Route::get('creatGroup','PublicController@createGroups');

@@ -60,8 +60,8 @@
                             </div>
                             <i class="iconfont icon-wenhao2 info-show"></i>
                             <div class="info-show-content">
-                                普通：发布后商情展示到升维网平台，所有升维网用户可以查看<br />
-                                VIP: 发布后商情发送到升维网后台，升维网筛选后精准对接到平台用户
+                                普通：<br />发布后商情展示到升维网平台，所有升维网用户可以查看<br />
+                                VIP: <br />发布后商情发送到升维网后台，升维网筛选后精准对接到平台用户
                             </div>
                         </div>
                         <div class="business-btn-wrapper"><button class="test-btn publish-submit" type="button">提交</button></div>

@@ -145,7 +145,7 @@ class ExpertUcenterController extends Controller
             $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
             $who = ( isset($get['who']) && $get['who'] != "null") ? $get['who'] : null;
-            $level = $get['level'];
+            $level = (isset($get['level']) && $get['level'] != "null") ? $get['level'] : 0;
             //设置where条件生成where数组
             $rolewhere = !empty($role)?array("needtype"=>$role):array();
             $supplywhere = !empty($supply)?array("need.domain1"=>$supply[0],'need.domain2' => $supply[1]):array();
@@ -225,7 +225,8 @@ class ExpertUcenterController extends Controller
             ->orderBy("need.needtime",'desc')
             ->paginate(4);
         $ordertime = 'desc';
-        return view("expertUcenter.newMyNeed",compact('vipneedcount','waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
+        $level =0;
+        return view("expertUcenter.newMyNeed",compact('level','vipneedcount','waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
     }
     /**需求详情
      * @return mixed
@@ -324,6 +325,7 @@ class ExpertUcenterController extends Controller
         if(empty($eventexpertid) || empty($expertid) || $expertid->expertid != $eventexpertid->expertid){
             return redirect('/');
         }
+        DB::table("t_e_event")->where('eventid',$eventId)->update(['extislook' => 1]);
         $datas=DB::table("t_e_event")
             ->leftJoin("t_e_eventverify","t_e_eventverify.eventid","=","t_e_event.eventid")
             ->where("t_e_event.eventid",$eventId)
@@ -724,7 +726,7 @@ class ExpertUcenterController extends Controller
             if($expertuserid->userid != session('userId') && (empty($verifymember) || $verifymember->configid != 2)){
                 return ['msg' => '不是认证专家或者本企业不能留言','icon' => 0];
             }
-            if($verifymember->level == -1){
+            if(!empty($verifymember) && $verifymember->level == -1){
                 return ['msg' => '由于您违反了了升维⽹网给企业留留⾔言的规定，已禁⽌止您给企业留留⾔言，如要开启，请联系升维⽹网客服⼈员或拨打网页下方的联系电话','icon' => 0];
             }
             if($data['parentid'] != 0){
@@ -735,11 +737,14 @@ class ExpertUcenterController extends Controller
             }
             $data['userid'] = session('userId');
             $data['messagetime'] = date('Y-m-d H:i:s',time());
+            if(!$data['use_userid']){
+                $data['use_userid'] = 0;
+            }
             unset($data['needid']);
             DB::beginTransaction();
             try{
                 $res = DB::table('t_u_messagetoenterprise')->insert($data);
-                if($expertuserid->userid != session('userId') && !$data['parentid']){
+                /*if($expertuserid->userid != session('userId') && !$data['parentid']){
                     $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'] : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
                     $msg = DB::table('t_m_systemmessage')->insert([
                         'sendid' => 0,
@@ -753,10 +758,8 @@ class ExpertUcenterController extends Controller
                 }
                 if($expertuserid->userid != session('userId') && $data['parentid'] && !$data['use_userid']){
                     $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content']: '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
-                    $parid = DB::table('t_u_messagetoexpert')->where('id',$data['parentid'])->first();
-                    if(empty($parid)){
-                        return 'error';
-                    }
+                    $parid = DB::table('t_u_messagetoenterprise')->where('id',$data['parentid'])->first();
+
                     if($parid->userid != session('userId')){
                         $msg = DB::table('t_m_systemmessage')->insert([
                             'sendid' => 0,
@@ -782,7 +785,7 @@ class ExpertUcenterController extends Controller
                             'state' => 0
                         ]);
                     }
-                }
+                }*/
                 DB::commit();
                 return ['msg' => '留言/回复成功','icon' => 1];
             }catch (Exception $e){

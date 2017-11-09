@@ -169,4 +169,7 @@
             window.location.href="{{asset('uct_basic')}}"
         }
     })
+
 </script>
+<script src="{{asset('js/notification.js')}}"></script>
+<script>createNotification('type')</script>

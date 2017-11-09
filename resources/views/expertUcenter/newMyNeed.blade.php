@@ -2,7 +2,7 @@
 @extends('layouts.ucenter4')
 @section("content")
     <style>
-        #showreply{
+        #vipneed{
             width:120px;
             -webkit-border-radius:5px;
             -moz-border-radius:5px;
@@ -13,6 +13,7 @@
             border:1px ;
             border-radius: 4px;
             margin-left:50px;
+            position: absolute;
         }
         .badge{
             border-radius: 50px;

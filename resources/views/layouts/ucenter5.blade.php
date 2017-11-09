@@ -387,3 +387,6 @@
 </script>
 </body>
 </html>
+
+<script src="{{asset('js/notification.js')}}"></script>
+<script>createNotification('type')</script>

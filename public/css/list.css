@@ -108,3 +108,8 @@ body{background: #f8f8f8;}
     font-size: 16px;
     text-align: center;
 }
+
+.industry-province{overflow:hidden;}
+.industry-province a{float:left; margin-right:20px; color:#333;}
+.industry-province a:hover{color:#00a7ed;}
+.exps-enterprise{margin-top:26px;}

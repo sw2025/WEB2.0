@@ -38,10 +38,11 @@ class MyEnterpriseController extends Controller
         if(!empty(session('userId'))){
             $enterinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
             if(!empty($enterinfo)){
-                $tomymsgcount = DB::table('t_u_messagetoenterprise')->where('userid','<>',session('userId'))->where(['enterpriseid' => $enterinfo->enterpriseid,'state' => 0,'isdelete' => 0])->count();
+                $tomymsgcount = DB::table('t_u_messagetoenterprise')->whereRaw('(use_userid=0 or use_userid ='.session('userId').')')->where('userid','<>',session('userId'))->where(['enterpriseid' => $enterinfo->enterpriseid,'state' => 0,'isdelete' => 0])->count();
             }
 
         }
+
         //用户回复的数量
         $msgcount = count(DB::table('t_u_messagetoexpert')->where('userid',session('userId'))->groupBy('expertid')->lists('expertid'));
         $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
@@ -127,6 +128,7 @@ class MyEnterpriseController extends Controller
                 ->where('enterpriseid',$entinfo->enterpriseid)
                 ->where('isdelete',0)
                 ->whereRaw('(use_userid=0 or use_userid ='.session('userId').')')
+                ->where('userid','<>',session('userId'))
                 ->orderBy('id','desc')
                 ->paginate(10);
         foreach($datas as $k => $v){
@@ -536,6 +538,7 @@ class MyEnterpriseController extends Controller
                     ->get();
         $counts=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',1)->count();
         $counts2=DB::table("t_e_eventresponse")->where("eventid",$eventId)->where('state',0)->count();
+        DB::table('t_e_event')->where('eventid',$eventId)->update(['entislook' => 1]);
         foreach ($datas as $data){
            $configId=$data->configid;
             if(!$counts){
@@ -1465,7 +1468,7 @@ class MyEnterpriseController extends Controller
             $data->starttime=date("Y年m月d日 H:i:s",strtotime($data->starttime));
             $data->endtime=date("Y年m月d日 H:i:s",strtotime($data->endtime));
         }
-
+        DB::table('t_c_consult')->where('consultid',$consultId)->update(['entislook' => 1]);
         switch($configId){
             case 4:
                 $selExperts=DB::table("t_c_consultresponse")
@@ -1557,6 +1560,12 @@ class MyEnterpriseController extends Controller
         $userId=session("userId");
         $result=array();
         $domain=explode("/",$data['domain']);
+        if(strtotime($data['dateStart']) < time() || strtotime($data['dateEnd']) < time()){
+            return  ['msg' => '视频咨询开始时间或结束时间不能在今天以前','icon' => 2];
+        }
+        if(strtotime($data['dateStart']) > strtotime($data['dateEnd'])){
+            return   ['msg' => '视频咨询开始时间结束时间错误','icon' => 2];
+        }
         DB::beginTransaction();
         try{
             $consultId=DB::table("t_c_consult")->insertGetId([

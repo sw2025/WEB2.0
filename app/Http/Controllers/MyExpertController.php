@@ -609,6 +609,7 @@ class MyExpertController extends Controller
         if(empty(session('userId')) || empty($expertid->expertid)){
             return redirect('login');
         }
+        DB::table("t_c_consult")->where('consultid',$consultId)->update(['extislook' => 1]);
         /*$datas = DB::table('t_c_consult as consult')
             ->leftJoin('t_c_consultresponse as res','consult.consultid','=','res.consultid')
             ->leftJoin('t_u_enterprise as ent','consult.userid','=','ent.userid')
