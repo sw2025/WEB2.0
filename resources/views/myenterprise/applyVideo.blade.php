@@ -544,7 +544,6 @@
                     alert("请填写充值时间");
                     return false;
                 }
-                amounts=money*100/{{env('Time')}};
                 amount=amounts*consultCount;
                 memberId=0;
             }else{
