@@ -23,7 +23,7 @@
                             </div>
                             <div class="myneed-desc">
                                 <span class="myneed-desc-tit">商情描述</span>
-                                <textarea class="myneed-desc-para" id="textarea" style="width: 85%;border:none;">{{$datas->brief}}</textarea>
+                                <textarea class="myneed-desc-para" id="textarea" style="width: 100%;overflow-y:auto;border:none;">{{$datas->brief}}</textarea>
                             </div>
                         </div>
                         <div class="message-list">

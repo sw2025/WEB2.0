@@ -1,5 +1,7 @@
 @extends("layouts.ucenter4")
 @section("content")
+    <link rel="stylesheet" type="text/css" href="{{asset('css/recharge.css')}}" />
+
     <!-- 充值提现 / start -->
     <div class="main">
         <h3 class="main-top">充值提现</h3>
@@ -21,7 +23,7 @@
                 <div class="upload-bankcard">
                     <!-- 已上传银行卡start -->
 
-                    <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: block"@else style="display: none" @endif>
+                    <div class="uploaded-img" @if($state==0||$state==2||$state==3||$state==4)style="display: inline-block"@else style="display: none" @endif>
                         <div class="bankcard-img" ><em>卡号@if($state==3)(审核失败)@elseif($state==2)(待审核)@elseif($state==4)(待验证)@endif</em>{{$bankcard}}
                             @if($state==4)<a class="gototest" href="{{asset('uct_recharge/card2')}}"><button type="button">去验证</button></a>@endif
                         </div>
@@ -29,7 +31,7 @@
                     </div>
                     <!-- 已上传银行卡end -->
                     <!-- 未上传银行卡start -->
-                    <div class="card-upload" @if(empty($bankcard) || $state==1)style="display:block" @else style="display: none" @endif>
+                    <div class="card-upload" @if(empty($bankcard) || $state==1)style="display:inline-block" @else style="display: none" @endif>
                         <div class="card-span fileinput-button">
                             <span class="card-upload-tip" ><a href="{{asset('uct_recharge/card')}}"><i class="iconfont icon-add"></i>添加银行卡</a></span>
                         </div>

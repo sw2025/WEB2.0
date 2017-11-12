@@ -1,6 +1,8 @@
 @extends("layouts.ucenter4")
 @section("content")
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset('css/newexp_res.css')}}" />
+
     <script type="text/javascript" src="js/list.js"></script>
             <!-- 企业资源 / start -->
             <div class="ucenter-con">

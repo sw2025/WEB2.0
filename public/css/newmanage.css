@@ -21,7 +21,7 @@
 .mygo{position: absolute;width: 100%;z-index: 2;bottom: 10px;left: 0;}
 .goto-work1{display: block;margin: 0 auto;width: 80%;}
 
-.v-works-sel{width: 190px;background: #fff;border-radius: 5px;float: none;margin:0 20px 0 0;}
+.v-works-sel{width: 190px;background: #fff;border-radius: 5px;float: none;margin:0 20px 10px 0;}
 .allwork{position: absolute;left:16px;top:0px;color: #00a7ed;font-size: 12px;line-height: 30px;}
 .v-works-sel-def:after{content: '';}
 .v-works-sel-def{margin:6px 16px 6px 72px;width: 80px;border: 1px dashed #d0d0d0;border-radius: 3px;height: 16px;line-height: 16px;font-size: 12px;text-align: left;padding-left: 20px;color: #333;}
@@ -35,3 +35,12 @@
 
 .exp-paragraph{height: 72px;}
 .exp-name-block{display: block;}
+.v-feedback{overflow: hidden;}
+/*适配*/
+.v-works-manage-list-top{padding: 22px 25px 12px;}
+@media (max-width: 750px){
+	.v-manage-list-ul li{width: 50%;}
+}
+@media (max-width: 640px){
+	.v-manage-list-ul li{width: 100%;}
+}

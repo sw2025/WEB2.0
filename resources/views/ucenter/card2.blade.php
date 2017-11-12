@@ -1,6 +1,8 @@
 @extends("layouts.ucenter")
 @section("content")
-        <div class="main">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/uctcard.css')}}" />
+
+    <div class="main">
             <!-- 绑定银行卡 / start -->
             <h3 class="main-top">绑定银行卡</h3>
             <div class="ucenter-con">

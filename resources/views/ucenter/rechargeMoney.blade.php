@@ -1,5 +1,6 @@
 @extends("layouts.ucenter")
 @section("content")
+    <link rel="stylesheet" type="text/css" href="{{asset('css/recharge.css')}}" />
     <style>
         .changeWeixin img{margin:0 auto;}
     </style>

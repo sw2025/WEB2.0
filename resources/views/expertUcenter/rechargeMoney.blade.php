@@ -1,6 +1,8 @@
 @extends("layouts.ucenter4")
 @section("content")
-        <div class="main">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/recharge.css')}}" />
+
+    <div class="main">
             <h3 class="main-top">充值金额</h3>
             <!-- 充值 / start -->
             <div class="ucenter-con">

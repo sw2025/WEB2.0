@@ -1,5 +1,6 @@
 @extends("layouts.ucenter")
 @section("content")
+    <link rel="stylesheet" type="text/css" href="{{asset('css/uctexperts.css')}}" />
     <script src="{{asset('./FileUpload/js/vendor/jquery.ui.widget.js')}}"></script>
     <script src="{{asset('./FileUpload/js/jquery.fileupload.js')}}"></script>
     <script src="{{asset('./FileUpload/js/jquery.iframe-transport.js')}}"></script>
