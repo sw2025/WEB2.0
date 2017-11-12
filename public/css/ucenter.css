@@ -31,7 +31,7 @@
 .change-tel-get{float: right;height: 36px;line-height: 36px;width: 96px;text-align: center;background: #00a7ed;color: #fff;border-radius: 3px;}
 /***********更换手机号 end***********/
 /***********绑定银行卡 start***********/
-.card-step,.myneed-com-name{border-bottom: 2px solid #dcdcdc;font-size: 16px;color:#333;text-align: center;padding: 14px 0;margin:0 20px;line-height: 28px;}
+.card-step,.myneed-com-name{/*border-bottom: 2px solid #dcdcdc;*/font-size: 16px;color:#333;text-align: center;padding: 14px 0;margin:0 20px;line-height: 28px;}
 .green-circle,.gray-circle{font-weight: bold;color:#fff;width: 28px;height: 28px;display: inline-block;background:#2fd887;border-radius: 20px;text-align: center;line-height: 28px;margin-right: 14px;}
 .gray-circle{background: #d4d4d4;}
 .card-step-cap{margin:0 30px;}

@@ -32,7 +32,6 @@
                     <li class="active">不限</li>
                     <li>单人</li>
                     <li>多人</li>
-                    <li>未知</li>
                 </ul>
             </div>
             <div class="v-supply-con" style="display: none;">

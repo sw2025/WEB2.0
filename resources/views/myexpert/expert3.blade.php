@@ -1,5 +1,7 @@
 @extends("layouts.ucenter4")
 @section("content")
+    <link rel="stylesheet" type="text/css" href="{{asset('css/uctexperts.css')}}" />
+
     <!-- 公共header / end -->
     <script src="{{asset('./FileUpload/js/vendor/jquery.ui.widget.js')}}"></script>
     <script src="{{asset('./FileUpload/js/jquery.fileupload.js')}}"></script>

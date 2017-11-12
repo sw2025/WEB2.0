@@ -1,0 +1,22 @@
+.remaining{border-right: none;}
+.upload-bankcard{border-left: 2px solid #e2e2e2;}
+.remain-bottom{padding: 0 0 8px 0;text-align: center;}
+.recharge-money{margin-right: 0;}
+.recharge-money,.cash{margin:20px 10px 0;}
+.reduce{float: left;padding: 0 0 0 15px;line-height: 36px;}
+.money-category{padding: 15px 0;}
+.money-cate-fr{width: 200px;margin-right: 5px;}
+.upload-bankcard{text-align: center;margin: 10px 0;}
+.uploaded-img{display: inline-block;margin: 0;vertical-align: top;}
+.card-upload{display: inline-block;vertical-align: top;}
+.recharge-opt{margin:0 10px;}
+@media (max-width: 640px) {
+	.remaining{float: none;width: 100%;box-sizing: border-box;}
+	.upload-bankcard{float: none;width: 100%;box-sizing: border-box;border-left: none;border-top: 2px solid #e2e2e2;}
+}
+@media (max-width: 560px) {
+	.open-member-add{width:100%;}
+}
+@media (max-width: 420px){
+	.channel{display: block;}
+}

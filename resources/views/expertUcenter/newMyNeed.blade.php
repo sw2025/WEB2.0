@@ -1,36 +1,8 @@
 
 @extends('layouts.ucenter4')
 @section("content")
-    <style>
-        #vipneed{
-            width:120px;
-            -webkit-border-radius:5px;
-            -moz-border-radius:5px;
-            height: 35px;
-            line-height: 35px;
-            background: #00a7ed;
-            color: #fff;
-            border:1px ;
-            border-radius: 4px;
-            margin-left:50px;
-            position: absolute;
-        }
-        .badge{
-            border-radius: 50px;
-            background: #f10;
-            color: #fff;
-            padding:0 5px;
-        }
-        #vipshang{
-            margin-right: 20px;
-            font-size: 17px;
-            border: 1px solid #d06a6a;
-            padding: 5px;
-            border-radius: 5px;
-            color: #fff;
-            background: #F66;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{asset('css/newmyneed.css')}}" />
+
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
     <script type="text/javascript" src="{{asset('js/list.js')}}"></script>
     <script type="text/javascript" src="{{asset('iconfont/iconfont.js')}}"></script>
@@ -38,7 +10,7 @@
         <!-- 选择start -->
         <div class="v-myneed-top">
             <a href="javascript:;" class="v-release-btn" onclick="putneed()">发布商情</a>
-            <div class="v-condition">
+            <div class="v-condition clearfix">
                 <a href="javascript:;" class="v-condition-link @if(!empty($action) && $action == '已发布')active @endif" index="myput">已发布<span class="v-count">{{$putcount}}</span></a>
              {{--   <a href="javascript:;" class="v-condition-link v-c-link1 @if(!empty($action) && $action == '待审核')active @endif" index="waitverify">待审核<span class="v-count">{{$waitcount}}</span></a>--}}
                 <a href="javascript:;" class="v-condition-link v-c-link2 @if(!empty($action) && $action == '审核失败')active @endif" index="refuseverify">审核失败<span class="v-count">{{$refusecount}}</span></a>

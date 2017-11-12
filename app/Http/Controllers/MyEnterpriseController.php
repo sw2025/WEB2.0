@@ -1572,6 +1572,7 @@ class MyEnterpriseController extends Controller
                 "userid"=>$userId,
                 "domain1"=>$domain[0],
                 "domain2"=>$domain[1],
+                "videotype"=>$data['videoType'],
                 "brief"=>$data['describe'],
                 "isRandom"=>$data['isAppoint'],
                 "starttime"=>$data['dateStart'],
@@ -1990,7 +1991,7 @@ class MyEnterpriseController extends Controller
         $configTypeWhere = ($configType=='不限')?[]:["t_c_consultverify.configid"=>$configTypeArray[$configType]];
         $typeWhere=($type!="不限")?array("t_c_consult.domain1"=>$type):array();
         $consultType=isset($_GET['consultType'])?$_GET['consultType']:"不限";
-        $consultIds=DB::table("view_consultstatus")->select('consultid')->where('configid',6)->where("userid",$userId)->get();
+       /* $consultIds=DB::table("view_consultstatus")->select('consultid')->where('configid',6)->where("userid",$userId)->get();
        foreach($consultIds as $val){
            $countExperts=DB::table("t_c_consultresponse")->where("consultid",$val->consultid)->where("state",3)->count();
            if($countExperts>1){
@@ -1998,7 +1999,7 @@ class MyEnterpriseController extends Controller
            }else{
                $singleArray[]=$val->consultid;
            }
-       }
+       }*/
         $result=DB::table("t_c_consult")
             ->leftJoin("t_c_consultverify","t_c_consultverify.consultid","=","t_c_consult.consultid")
             ->select("t_c_consult.consultid",'t_c_consultverify.configid',"t_c_consult.domain1","t_c_consult.domain2","t_c_consult.created_at","t_c_consult.starttime","t_c_consult.endtime","t_c_consult.brief")
@@ -2012,14 +2013,14 @@ class MyEnterpriseController extends Controller
                 $datas=$result->orderBy("t_c_consult.created_at","desc")->paginate(6);
             break;
             case "单人":
-                $datas=$result->whereIn('t_c_consult.consultid',$singleArray)->orderBy("t_c_consult.created_at","desc")->paginate(6);
+                $datas=$result->where('t_c_consult.videotype',"like","%".$consultType."%")->orderBy("t_c_consult.created_at","desc")->paginate(6);
                 break;
             case "多人":
-                $datas=$result->whereIn('t_c_consult.consultid',$moneyArray)->orderBy("t_c_consult.created_at","desc")->paginate(6);
+                $datas=$result->where('t_c_consult.videotype',"like","%".$consultType."%")->orderBy("t_c_consult.created_at","desc")->paginate(6);
                 break;
-            case "未知":
+           /* case "未知":
                 $datas=$result->whereIn('t_c_consultverify.configid',[4,5])->orderBy("t_c_consult.created_at","desc")->paginate(6);
-                break;
+                break;*/
         }
         $count=clone $result;
         $counts=$count->count();

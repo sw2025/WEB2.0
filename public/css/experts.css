@@ -13,7 +13,7 @@
 .supp-list-img{border-radius: 3px;}
 .v-myneed-top{position: relative;padding-top: 24px;}
 .v-release-btn{display: block;position: absolute;left:22px;top: 24px;width: 102px;text-align: center;height:28px;line-height: 28px;background:#00a7ed;color:#fff;border-radius: 4px;}
-.v-condition{margin-left: 150px;height: 28px;overflow: hidden;}
+.v-condition{margin-left: 150px;height: 28px;}
 .v-condition-link{padding-left: 25px;background:url(../img/vicon_state.png) no-repeat 0 1px;display: block;float: left;color:#333;font-size: 12px;margin-top: 4px;margin-right: 25px;}
 .v-condition-link:hover,.v-condition .active{color:#fff;}
 .v-c-link1{background-position: 0 -22px;}

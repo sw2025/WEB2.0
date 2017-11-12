@@ -1,6 +1,7 @@
 @extends("layouts.ucenter2")
 @section("content")
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset('css/newexp_res.css')}}" />
     <script type="text/javascript" src="{{asset('js/list.js')}}"></script>
     <style>
         #showreply{
