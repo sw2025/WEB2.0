@@ -45,6 +45,14 @@
             var $money = $('.cash-num').val();
             var $leftNum = $('.avai-money-sum').html();
             if($money){
+               if($money<0){
+                   layer.confirm('请您正确填写提现金额', {
+                       btn: ['确定'] //按钮
+                   });
+                   $(this).attr('disabled',false);
+                   $(this).html('提交申请');
+                   return false;
+               }
                 var $num = parseFloat($money).toFixed(2);
                 var surplusMoney=parseFloat($leftNum - $num).toFixed(2);
                 if(surplusMoney < 0) {

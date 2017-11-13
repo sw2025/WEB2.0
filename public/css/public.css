@@ -1,5 +1,5 @@
 /***********header start***********/
-.header{position: fixed;top: 0;width: 100%;z-index: 10;box-sizing: border-box;height: 60px;background:#004981;min-width: 560px;} 
+.header{position: fixed;top: 0;width: 100%;z-index: 10;box-sizing: border-box;height: 60px;background:#004981;min-width: 320px;} 
 .header .container{position: relative;padding-left: 0;padding-right: 0;}
 .navbar-header{float: left;}
 .navbar-brand{float: left;margin-top: 8px;}
@@ -145,7 +145,6 @@
 .goto-renzh{margin:0 auto;position: relative;}
 .goto-renzh i{position: absolute;bottom:-4px;right: 1px;color:#b5b5b5;}
 .goto-renzh .havevip{color:#f78903;}
-
 .iamexpert .v-money,.iamexpert .v-info{width:33.333333%;}
 .iamexpert .v-new-info-tip{right: 10px;}
 .border2{border-left: 1px solid #ccc;}
@@ -195,6 +194,11 @@
 .mt20 .datas-sel-def{margin-left:108px;}
 .datas-list li{height: 28px;line-height:28px;}
 /*适配*/
+
+.ucenter{min-width: auto;}
+.wrap{min-width: auto;}
+
+
 @media (max-width: 750px){
     .navbar-link{display: none;}
     .navbar-toggle{margin-left: 10px;}
@@ -203,7 +207,15 @@
     .tab-list li{width:100%;float: none;margin-top: 10px;}
     .tab-leftbtn,.tab-rightbtn{display: none!important;}
     .banner ol{bottom:6px;}
+    .v-aside{position: relative;width: 100%;padding-bottom: 20px;border: none;}
+    .vmain{margin-left: 0;}
+    .match-fl{border-right: 1px solid #ccc;padding-right: 5px;width: 40%;}
+    .v-identity{padding-left: 5px;width: 60%;}
+    .match-fl,.v-identity{float: left;box-sizing: border-box;}
+    .v-ucenter-nav-item{border-bottom: none;padding: 5px 0;}
+    .v-ucenter-nav-item img{display: none;}
+
 }
 @media (max-width: 540px){
-    .bars{right: 240px;}
+    .bars{right: 0px;}
 }

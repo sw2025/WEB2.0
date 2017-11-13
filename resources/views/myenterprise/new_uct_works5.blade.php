@@ -11,22 +11,11 @@
     <link rel="stylesheet" href="{{asset('im/css/uiKit.css')}}"/>
     <link rel="stylesheet" href="{{asset('im/css/CEmojiEngine.css')}}"/>
     <link rel="stylesheet" href="{{asset('im/css/rangeslider.css')}}"/>
-    <style>
-        #stop{
-            display: block;
-            height: 34px;
-            line-height: 34px;
-            background: #fa0;
-            color: #fff;
-            border-radius: 5px;
-            text-align: center;
-            margin: 25px auto;
-        }
-    </style>
     <script type="text/javascript">
         jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
     </script>
     <link rel="stylesheet" type="text/css" href="{{asset('css/works.css')}}" />
+    <link rel="stylesheet" href="{{asset('css/videoconsult.css')}}">
 
 
             <!-- 侧边栏公共部分/end -->
@@ -258,8 +247,10 @@
                                 </div>
                             </div>
 
-                            <a href="javascript:;" class="datum-btn" id="stop" style="width: 115px;background: #f10;">终止合作</a>
-                            <button class="stop red-finish" id="finish" type="button">完成</button>
+                            <div class="new-btns-box">
+                                <a href="javascript:;" class="datum-btn" id="stop" style="width: 115px;background: #f10;">终止合作</a>
+                                <button class="stop red-finish" id="finish" type="button">完成</button>
+                            </div>
 
                         </div>
 

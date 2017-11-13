@@ -60,6 +60,9 @@ $(function(){
         }else if ($(this).hasClass('all-results-video')) {
             select[0] = 'consult';
             select[1] = null;
+        }else if ($(this).hasClass('all-results-trace')) {
+            select[0] = 'action';
+            select[1] = null;
         }
         getCondition(select);
     })
@@ -145,7 +148,7 @@ $(function(){
                     ordertime=Condition[1];
                     break;
                 case "action":
-                    action=(Condition[1]!="不限")?Condition[1]:null;
+                    action=(Condition[1]!="全部")?Condition[1]:null;
                     break;
                 case "ordercollect":
                     ordercollect=Condition[1];

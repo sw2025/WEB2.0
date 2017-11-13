@@ -1,17 +1,7 @@
- @extends("layouts.ucenter")
+@extends("layouts.ucenter")
 @section("content")
-    <style type="text/css">
-
-        .business-level-wrapper{width: 352px;margin: 10px auto 0;font-size: 0;text-align: left;position: relative;}
-        .business-level{display: inline-block;vertical-align: top;position: relative;width: 280px;font-size: 14px;border: 1px solid #ccc;border-radius: 3px;height: 34px;line-height: 34px;}
-        .business-level-wrapper .icon-wenhao2{display: inline-block;vertical-align: top;font-size: 26px;cursor: pointer;margin-left: 3px;color:#00a7ed;width: 48px;overflow: hidden;}
-        .business-select{position: relative;display: block;position: relative;margin-left: 108px;color: #666;text-decoration: none;}
-        .business-select:before{position: absolute;right: 10px;top: 2px;content:"\ea81";font-family: 'iconfont';}
-        .business-level-list{background: #fff;position: absolute;top: 36px;left: 0;text-align: center;width: 100%;box-shadow: 0 0 8px #ccc;border: 1px solid rgba(0, 0, 0, 0.15);display: none;}
-        .business-level-list li:hover{cursor: pointer;background:#f8f8f8;}
-        .info-show-content{position: absolute;right: -165px;top: 40px;width:385px;line-height: 16px;font-size: 12px;width: 180px;display: none;color:#ed1600;}
-        .business-btn-wrapper{padding-top: 30px;}
-    </style>
+    <link rel="stylesheet" href="{{asset('css/events.css')}}">
+    <link rel="stylesheet" href="{{asset('css/publishneed.css')}}">
     <div class="main">
         <!-- 发布需求 / start -->
         <h3 class="main-top">发布商情</h3>
@@ -21,52 +11,61 @@
                     <span class="green-circle">1</span>提交商情
                 </div>
                 <div class="publish-need">
-                    <div style="margin-top: 10px;"><p style="color: #007fff;">提示：当前您是以企业的身份发布的商情，请确定完成企业认证后发布。<a href="javascript:;" onclick="putneed('专家')">点此以专家身份发布商情</a></p>
+                    <div class="publish-tips"><p style="color: #007fff;">提示：当前您是以企业的身份发布的商情，请确定完成企业认证后发布。<a href="javascript:;" onclick="putneed('专家')">点此以专家身份发布商情</a></p>
                     </div>
-                    @if(!empty($info))
+                @if(!empty($info))
                         <input type="hidden" id="refuseid" value="{{$info->needid}}">
-                        <p class="wrong-reason" style="text-align:left;width:350px;margin:0 auto;padding-top:30px;"><span style="color: #e3643d">拒绝原因：</span><span style="color: #e3643d">{{$info->error}}</span></p>
+                        <p class="wrong-reason"><span class="wrong-reason-col">拒绝原因：</span><span class="wrong-reason-col">{{$info->error}}</span></p>
                     @endif
-                    <div class="publish-need-sel">
+                    <table class="invite-table">
+                        <tr>
+                            <td>商情分类</td>
+                            <td>
+                                <div class="publish-need-sel">
+                                    {{--  <span class="publ-need-sel-cap">商情分类</span>--}}<a href="javascript:;" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
+                                    <ul class="publish-need-list">
+                                        @foreach($cate as $v)
+                                            @if($v->level == 1)
+                                                <li>
+                                                    <a href="javascript:;">{{$v->domainname}}</a>
+                                                    <ul class="publ-sub-list">
+                                                        @foreach($cate as $small)
+                                                            @if($small->parentid == $v->domainid && $small->level == 2)
+                                                                <li>{{$small->domainname}}</li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ul>
+                                                    @endif
+                                                </li>
 
-                        <span class="publ-need-sel-cap">商情分类</span><a href="javascript:;" class="publ-need-sel-def">@if(!empty($info)) {{$info->domain1}}/{{$info->domain2}} @else 请选择 @endif</a>
-                        <ul class="publish-need-list">
-                            @foreach($cate as $v)
-                                @if($v->level == 1)
-                                    <li>
-                                        <a href="javascript:;">{{$v->domainname}}</a>
-                                        <ul class="publ-sub-list">
-                                            @foreach($cate as $small)
-                                                @if($small->parentid == $v->domainid && $small->level == 2)
-                                                    <li>{{$small->domainname}}</li>
-                                                @endif
-                                            @endforeach
+                                                @endforeach
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>商情描述</td>
+                            <td> <textarea   name="" id="content" class="publish-need-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入商情描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea></td>
+                        </tr>
+                        <tr>
+                            <td>商情级别</td>
+                            <td><div class="business-level-wrapper">
+                                    <div class="business-level">
+                                        <a href="javascript:;" class="business-select">普通</a>
+                                        <ul class="business-level-list">
+                                            <li>普通</li>
+                                            <li>VIP</li>
                                         </ul>
-                                        @endif
-                                    </li>
-
-                            @endforeach
-                        </ul>
-
-
-                       <textarea   name="" id="content" class="publish-need-txt" cols="30" rows="10" minlength="30" maxlength="500"  placeholder="请输入商情描述30-500字">@if(!empty($info)) {{$info->brief}} @endif</textarea>
-                    </div>
-                    <div class="business-level-wrapper">
-                        <div class="business-level">
-                            <span class="publ-need-sel-cap">商情级别</span>
-                            <a href="javascript:;" class="business-select">普通</a>
-                            <ul class="business-level-list">
-                                <li>普通</li>
-                                <li>VIP</li>
-                            </ul>
-                        </div>
-                        <i class="iconfont icon-wenhao2 info-show"></i>
-                        <div class="info-show-content">
-                            普通：发布后商情展示到升维网平台，所有升维网用户可以查看<br />
-                            VIP: 发布后商情发送到升维网后台，升维网筛选后精准对接到平台用户
-                        </div>
-                    </div>
-                    {{--<div><button class="test-btn publish-submit" type="button">提交</button></div>--}}
+                                    </div>
+                                    <i class="iconfont icon-wenhao2 info-show"></i>
+                                    <div class="info-show-content">
+                                        普通：<br />发布后商情展示到升维网平台，所有升维网用户可以查看<br />
+                                        VIP: <br />发布后商情发送到升维网后台，升维网筛选后精准对接到平台用户
+                                    </div>
+                                </div></td>
+                        </tr>
+                        {{--<div><button class="test-btn publish-submit" type="button">提交</button></div>--}}
+                    </table>
                     <div class="business-btn-wrapper"><button class="test-btn publish-submit" type="button">提交</button></div>
                 </div>
             </div>
@@ -109,18 +108,18 @@
             var infoHtml2 = '发布后商情发送到升维网后台，升维网筛选后精准对接到平台用户';
             $('.info-show').hover(function() {
                 /*if($('.business-select').html() === '普通'){
-                    $('.info-show-content').html(infoHtml1).stop().fadeToggle();
-                }else{
-                    $('.info-show-content').html(infoHtml2).stop().fadeToggle();
-                }*/
+                 $('.info-show-content').html(infoHtml1).stop().fadeToggle();
+                 }else{
+                 $('.info-show-content').html(infoHtml2).stop().fadeToggle();
+                 }*/
                 $('.info-show-content').stop().fadeToggle();
             });
 
 
 
             /*$('.publ-need-sel-def').click(function() {
-                $(this).next('ul').stop().slideToggle();
-            });*/
+             $(this).next('ul').stop().slideToggle();
+             });*/
             $('.publish-need-list li').hover(function() {
                 $(this).children('ul').stop().show();
             }, function() {
@@ -167,18 +166,27 @@
 
             $('.publish-submit').on('click',function () {
                 $obj =  $(this);
+                $obj.html("正在提交");
                 $obj.attr('disabled',true);
                 var needlevel = $('.business-select').text();
                 var content = $('#content').val();
                 var domain = $.trim($('.publ-need-sel-def').text());
-                if(content == '' || domain == '请选择'){
+                if(domain=='请选择'){
+                    $obj.html("提交");
                     $obj.attr('disabled',false);
-                    layer.msg('请填写完整的需求描述');
+                    layer.msg('请填写商情分类');
+                    return false;
+                }
+                if(content == ''){
+                    $obj.html("提交");
+                    $obj.attr('disabled',false);
+                    layer.msg('请填写完整的商情描述');
                     return false;
                 }
                 if(content.length <= 30 || content.length >= 500){
                     $obj.attr('disabled',false);
-                    layer.msg('请输入30-500字的需求描述');
+                    $obj.html("提交");
+                    layer.msg('请输入30-500字的提交描述');
                     return false;
                 }
                 $.post('{{url('uct_myneed/addNeed')}}',{'needlevel':needlevel,'role':'企业','content':content,'domain':domain,'needid':$('#refuseid').val()},function (data) {

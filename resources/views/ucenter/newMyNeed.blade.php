@@ -1,35 +1,7 @@
 @extends('layouts.ucenter3')
 @section("content")
-    <style>
-        #showreply{
-            width:120px;
-            -webkit-border-radius:5px;
-            -moz-border-radius:5px;
-            height: 35px;
-            line-height: 35px;
-            background: #00a7ed;
-            color: #fff;
-            border:1px ;
-            border-radius: 4px;
-            margin-left:50px;
-        }
-        .badge{
-            border-radius: 50px;
-            background: #f10;
-            color: #fff;
-            padding:0 5px;
-        }
-        #vipshang{
-            margin-right: 20px;
-            font-size: 17px;
-            border: 1px solid #d06a6a;
-            padding: 5px;
-            border-radius: 5px;
-            color: #fff;
-            background: #F66;
-        }
-    </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset('css/newmyneed.css')}}" />
     <script type="text/javascript" src="{{asset('js/list.js')}}"></script>
     <script type="text/javascript" src="{{asset('iconfont/iconfont.js')}}"></script>
     <div class="ucenter-con">
@@ -62,7 +34,7 @@
                         </div>
                         <div class="my-trace filter-row clearfix">
                             <span class="left-cap">我的足迹：</span>
-                            <a href="javascript:;" {{$action or 'class=active'}} index="">不限</a>
+                            <a href="javascript:;" {{$action or 'class=active'}} index="不限">不限</a>
                             <a href="javascript:;" @if(isset($action) && $action == '已收藏') class=active @endif index="collect">已收藏</a>
                             <a href="javascript:;" @if(isset($action) && $action == '已留言') class=active @endif index="message">已留言</a>
                         </div>

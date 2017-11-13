@@ -34,7 +34,7 @@
                     </ul>
                 </div>
                 <span id="reMark" class="hover-info"><i class="iconfont icon-wenhao2"></i></span>
-                <div class="hover-info-show">企业用户可在平台寻找专家解决自己的企业各类问题<br/>专家用户可帮助企业解决问题或向企业推广自己的成果</div>
+                <div class="hover-info-show">角色说明:<br/>企业用户可在平台寻找专家解决自己企业的各类问题<br/>专家用户可帮助企业解决问题或向企业推广自己的成果</div>
             </div>
             <button type="button" class="login-btn">注 册</button>
             <div class="login-bottom">

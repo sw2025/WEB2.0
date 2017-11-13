@@ -1,6 +1,8 @@
 @extends("layouts.ucenter4")
 @section("content")
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset('css/newexp_res.css')}}" />
+
     <script type="text/javascript" src="js/list.js"></script>
             <!-- 企业资源 / start -->
             <div class="ucenter-con">
@@ -24,7 +26,7 @@
                         </div>
                         <div class="my-trace filter-row clearfix">
                             <span class="left-cap">我的足迹：</span>
-                            <a href="javascript:;"  @if(empty($action)) class="active" @endif>全部</a>
+                            <a href="javascript:;"  @if(empty($action)) class="active" @endif index="全部">全部</a>
                             <a href="javascript:;" @if(isset($action) && $action == '已收藏') class=active @endif index="collect">已收藏</a>
                             <a href="javascript:;" @if(isset($action) && $action == '已留言') class=active @endif index="message">已留言</a>
                         </div>
@@ -118,7 +120,7 @@
                         <li class="col-md-6">
                             <a href="{{url('uct_entres/detail',$v->enterpriseid)}}" class="expert-list-link">
                                 <div class="exp-list-top">
-                                    <span class="exp-list-img"><img src="{{asset($v->showimage)}}" /></span>
+                                    <span class="exp-list-img"><img src="{{env('ImagePath').$v->showimage}}" /></span>
                                     <div class="exp-list-brief">
                                         <span class="exp-list-name">{{$v->enterprisename}}</span>
                                         <span class="exp-list-video"><i class="iconfont icon-shipin"></i>所在行业：<em>{{$v->industry}}</em></span>
@@ -126,12 +128,12 @@
                                     </div>
 
                                 </div>
-                                <div class="exp-list-desc">
+                                <div class="exp-list-desc exps-enterprise">
                                     {{$v->brief}}
                                 </div>
                             </a>
                             <div class="exp-list-icon">
-                                <a href="{{url('expert/detail',$v->enterpriseid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
+                                <a href="{{url('uct_entres/detail',$v->enterpriseid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i> {{$v->messcount}}</a>
                                 <a href="javascript:;" class="collect @if(in_array($v->enterpriseid,$collectids)) red @endif" index="{{$v->enterpriseid}}" title="@if(in_array($v->enterpriseid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> <span>{{$v->collcount}}</span></a>
                             </div>
                         </li>

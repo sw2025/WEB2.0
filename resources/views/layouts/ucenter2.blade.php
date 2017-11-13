@@ -24,6 +24,17 @@
     <script type="text/javascript" src="{{asset('js/utils/html5shiv.js?1401441990')}}"></script>
     <script type="text/javascript" src="{{asset('js/utils/respond.min.js?1401441990')}}"></script>
     <![endif]-->
+    <style>
+        #expertmsgtome{
+            position: absolute;
+            right: 10px;
+            margin-top: -10px;
+            color: #fff;
+            background: #f10;
+            border-radius: 40px;
+            padding: 0 5px;
+        }
+    </style>
 </head>
 <body>
 <!-- 公共header / start -->
@@ -78,15 +89,17 @@
 <div class="ucenter v-bg3">
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
-        <div class="v-aside">
-            <a href="{{asset('uct_member')}}" class="goto-renzh v-personal" title="去认证"><img  class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip novip" title="未认证"></i></a>
-            <a href="{{asset('uct_basic')}}" class="v-personal" title="个人中心">
-                <span class="v-nick"></span>
-            </a>
-            <!-- 我是企业时 -->
-            <div class="v-money-info ">
-                <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
-                <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
+        <div class="v-aside clearfix">
+            <div class="match-fl">
+                <a href="{{asset('uct_member')}}" class="goto-renzh v-personal" title="去认证"><img  class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip novip" title="未认证"></i></a>
+                <a href="{{asset('uct_basic')}}" class="v-personal" title="个人中心">
+                    <span class="v-nick"></span>
+                </a>
+                <!-- 我是企业时 -->
+                <div class="v-money-info ">
+                    <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
+                    <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
+                </div>
             </div>
            {{-- <!-- 我是专家时 -->
             <div class="v-money-info iamexpert">
@@ -103,34 +116,34 @@
                     </ul>
                     <div class="v-ucenter-nav">
                         <div class="v-ucenter-nav-list v-default">
-                            <a id="uct_works" href="{{asset('uct_works')}}" class="v-ucenter-nav-item ">
+                            <a id="uct_works" href="{{asset('uct_works')}}"  title="新增我的办事请求，管理办事" class="v-ucenter-nav-item ">
                                 <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
                                 办事管理
                             </a>
-                            <a id="uct_video" href="{{asset('uct_video')}}" class="v-ucenter-nav-item">
+                            <a id="uct_video" href="{{asset('uct_video')}}" title="新增我的会议请求，管理会议" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
                                 视频会议
                             </a>
-                            <a id="uct_resource" href="{{asset('uct_resource')}}" class="v-ucenter-nav-item">
+                            <a id="uct_resource" href="{{asset('uct_resource')}}" title="搜索专家，给专家留言" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
                                 专家资源
                             </a>
-                            <a id="uct_myneed" href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
+                            <a id="uct_myneed" href="{{asset('uct_myneed')}}"  title="发布你的商情，搜索你需要的商情" class="v-ucenter-nav-item">
+                                <img src="{{asset('img/vicon04.png')}}" alt="商情信息" />
                                 商情信息
                             </a>
                         </div>
                         <div class="v-ucenter-nav-list">
-                            <a id="uct_mywork" href="{{asset('uct_mywork')}}" class="v-ucenter-nav-item">
+                            <a id="uct_mywork" href="{{asset('uct_mywork')}}" title="查看企业的办事请求，管理办事" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon02.png')}}" alt="我的办事" />
                                 我的办事
                             </a>
-                            <a id="uct_myask" href="{{asset('uct_myask')}}" class="v-ucenter-nav-item">
+                            <a id="uct_myask" href="{{asset('uct_myask')}}" title="查看企业的会议请求，管理会议" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon03.png')}}" alt="我的咨询" />
                                 我的咨询
                             </a>
-                            <a id="uct_myneed" href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
+                            <a id="uct_myneed" href="{{asset('uct_myneed')}}" title="搜索企业，给企业留言" class="v-ucenter-nav-item">
+                                <img src="{{asset('img/vicon04.png')}}" alt="商情信息" />
                                 商情信息
                             </a>
                         </div>
@@ -225,6 +238,13 @@
     if(typeof($.cookie('userId'))=="undefined"){
         window.location.href="{{url('login')}}";
     }
+    $('#expertmsgtome').on('click',function () {
+        window.location = '{{url('/exttomymsg')}}';
+        return false;
+    });
+    $('#expertmsgtome').mouseover(function () {
+        layer.tips('查看专家给我的留言', '#expertmsgtome');
+    });
     $(function(){
         var str=window.location.pathname;
         var num1=str.indexOf('/');
@@ -292,6 +312,18 @@
                 }
             }
         })
+        $.ajax({
+            url:"{{url('getExpertMsgToMe')}}",
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res.code=="success"){
+                    $("#expertmsgtome").text(res.number)
+                }else{
+                    layer.msg('获取专家留言信息失败');
+                }
+            }
+        })
     })
     $(".quit").on("click",function(){
         $.ajax({
@@ -335,3 +367,6 @@
 </script>
 </body>
 </html>
+
+<script src="{{asset('js/notification.js')}}"></script>
+<script>createNotification('type')</script>

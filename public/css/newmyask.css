@@ -1,0 +1,7 @@
+@media (max-width: 750px){
+	.v-manage-list-ul li{width: 50%;}
+	.v-works-manage-list-top{overflow: hidden;}
+}
+@media (max-width: 414px){
+	.v-manage-list-ul li{width: 100%;}
+}

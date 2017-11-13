@@ -320,6 +320,10 @@ Route::get('uct_mywork/myEventVideo/{eventid}', 'MyExpertController@myEventVideo
 Route::post('ifeventtrue','PublicController@getEventNewState');
 //定是请求是否有薪的资料上传
 Route::post('ifeventupload','PublicController@getEventNewUpload');
+//定时请求是否有新的通知状态
+Route::post('realTimeGetInfo','PublicController@realTimeGetInfo');
+//更改状态
+Route::post('dealLookAction','PublicController@dealLookAction');
 
 //创建群组
 Route::get('creatGroup','PublicController@createGroups');
@@ -330,6 +334,7 @@ Route::post('getTeamId','PublicController@getTeamId');
 //获取个人中心头像
 Route::post('getAvatar','PublicController@getAvatar');
 
+Route::post('getExpertMsgToMe','PublicController@getExpertMsgToMe');
 
 /**************************************支付*****************************/
 Route::post('initpay','PingpayController@initPay');

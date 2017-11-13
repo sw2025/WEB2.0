@@ -1,6 +1,52 @@
 @extends("layouts.ucenter4")
 @section("content")
-    <div class="main">
+    <div class="bg_v2">
+        <div class="card-step works-step">
+            <span class="green-circle">1</span>咨询申请<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">2</span>咨询审核<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
+            <span class="gray-circle">5</span>咨询管理<span class="card-step-cap">&gt;</span>
+            <span class="gray-circle">6</span>完成
+        </div>
+        <div class="invite-experts">
+            <table class="invite-table">
+                <tr>
+                    <td>企业名称</td>
+                    <td>{{$datas->enterprisename}}</td>
+                </tr>
+                <tr>
+                    <td>办事分类</td>
+                    <td>{{$datas->domain1.'/'.$datas->domain2}}</td>
+                </tr>
+                <tr>
+                    <td>企业行业</td>
+                    <td>{{$datas->industry}}</td>
+                </tr>
+                <tr>
+                    <td>咨询时间</td>
+                    <td>{{$datas->consulttime}}</td>
+                </tr>
+                <tr>
+                    <td>咨询描述</td>
+                    <td>{{$datas->brief}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="respond-btn-box">
+            <!-- 状态按钮根据实际状态只展示一个 -->
+            @if($datas->configid == 4)
+                <button type="button" class="unrespond respond-btn" onclick="responseevent({{$datas->eventid}},this)">响应</button>
+            @elseif($datas->configid == 5)
+                <button type="button" class="responded respond-btn">已响应</button>
+            @elseif($datas->configid == 7)
+                <span class="respond-tips">已完成</span>
+            @else
+                <span class="respond-tips">请等待企业邀请，未获企业邀请</span>
+            @endif
+        </div>
+    </div>
+   {{-- <div class="main">
         <!-- 我的视频咨询 / start -->
         <h3 class="main-top">我的视频咨询</h3>
         <div class="ucenter-con">
@@ -31,7 +77,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--}}
     <script type="text/javascript">
         $(function(){
             $('.bank-card').keyup(function(){

@@ -16,10 +16,9 @@
                 <input type="hidden" id="event" name="event" value="{{$eventId}}">
                 <div class="publish-need uct-works-final">
                     <div class="expert-certy-state">
-                        <i class="iconfont icon-chenggong"></i>
-                                <span class="expert-certy-blue">
-                                    <em>@if(!empty($selExperts[0]->comment)) 完成 @else 请给为您办事的专家做出评价 @endif</em>COMPLETE
-                                </span>
+                        <span class="expert-certy-blue">
+                            <em>@if(!empty($selExperts[0]->comment)) 完成 @else 请给为您办事的专家做出评价 @endif</em>
+                        </span>
                     </div>
                     @foreach($selExperts as $selExpert)
                     <div class="rate">
