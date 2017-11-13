@@ -63,7 +63,7 @@
                         </div>
                         <div class="my-trace filter-row clearfix">
                             <span class="left-cap">我的足迹：</span>
-                            <a href="javascript:;" {{$action or 'class=active'}} index="">不限</a>
+                            <a href="javascript:;" {{$action or 'class=active'}} index="不限">不限</a>
                             <a href="javascript:;" @if(isset($action) && $action == '已收藏') class=active @endif index="collect">已收藏</a>
                             <a href="javascript:;" @if(isset($action) && $action == '已留言') class=active @endif index="message">已留言</a>
                         </div>
