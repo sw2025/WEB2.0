@@ -1227,4 +1227,18 @@ class PublicController extends Controller
 
     }
 
+    public function getExpertMsgToMe(Request $request)
+    {
+        if(empty(session('userId'))){
+            return ['code' => 'msg'];
+        }
+        $tomymsgcount = 0;
+        $enterinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
+        if(!empty($enterinfo)){
+            $tomymsgcount = DB::table('t_u_messagetoenterprise')->whereRaw('(use_userid=0 or use_userid ='.session('userId').')')->where('userid','<>',session('userId'))->where(['enterpriseid' => $enterinfo->enterpriseid,'state' => 0,'isdelete' => 0])->count();
+        }
+        return ['code' => 'success','number' => $tomymsgcount];
+
+    }
+
 }

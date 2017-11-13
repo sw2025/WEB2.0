@@ -334,6 +334,7 @@ Route::post('getTeamId','PublicController@getTeamId');
 //获取个人中心头像
 Route::post('getAvatar','PublicController@getAvatar');
 
+Route::post('getExpertMsgToMe','PublicController@getExpertMsgToMe');
 
 /**************************************支付*****************************/
 Route::post('initpay','PingpayController@initPay');
