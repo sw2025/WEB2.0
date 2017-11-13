@@ -176,6 +176,7 @@
                     case "success":
                         $.cookie("videodomain",'',{path:'/',domain:'sw2025.com'});
                         $.cookie("videodescribe",'',{path:'/',domain:'sw2025.com'});
+                        $.cookie("videoType",'',{path:'/',domain:'sw2025.com'});
                         $.cookie("videodateStart",'',{path:'/',domain:'sw2025.com'});
                         $.cookie("videodateEnd",'',{path:'/',domain:'sw2025.com'});
                         $.cookie("videoindustry",'',{epath:'/',domain:'sw2025.com'});
