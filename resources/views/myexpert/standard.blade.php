@@ -1,5 +1,7 @@
 @extends("layouts.ucenter4")
 @section("content")
+    <link rel="stylesheet" type="text/css" href="{{asset('css/standard.css')}}" />
+
     <!-- 公共header / start -->
             <div class="main">
                 <h3 class="main-top">收费标准</h3>

@@ -184,12 +184,17 @@
                 reselect=[];
                 $.cookie("videoreselect",reselect,{expires:date,path:'/',domain:'sw2025.com'});
             }
-            if(reselect.length==5){
+            if($.cookie("videoType") && $.cookie("videoType")=="单人"){
+                var videoPeople=1;
+            }else{
+                var videoPeople=2;
+            }
+            if(reselect.length==videoPeople){
                 if($.inArray(value,reselect)>=0){
                     deleteArray(reselect,value);
                     $.cookie("videoreselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
                 }else{
-                    layer.confirm('您已经指定5位专家', {
+                    layer.confirm('您已经指定'+videoPeople+'位专家', {
                         btn: ['确定'] //按钮
                     });
                     return false;

@@ -57,7 +57,7 @@
                             <div class="details-graph"><span class="square"></span></div>
                             <span class="details-tit-cap">专家介绍</span>
                         </div>
-                        <textarea id="textarea" class="details-abs-desc" readonly>{{$datas->brief}}</textarea><a name="reply"></a>
+                        <textarea id="textarea" style="overflow-y: auto;" class="details-abs-desc" readonly>{{$datas->brief}}</textarea><a name="reply"></a>
                     </div>
                 </div>
                 <div class="details-top clearfix">

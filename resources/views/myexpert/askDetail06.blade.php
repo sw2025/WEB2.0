@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="{{asset('im/css/uiKit.css')}}"/>
     <link rel="stylesheet" href="{{asset('im/css/CEmojiEngine.css')}}"/>
     <link rel="stylesheet" href="{{asset('im/css/rangeslider.css')}}"/>
+
+    <link rel="stylesheet" href="{{asset('css/videoconsult.css')}}">
+
     <script type="text/javascript">
         jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
     </script>

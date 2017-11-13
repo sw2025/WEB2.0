@@ -97,6 +97,7 @@ body{background:#f8f8f8;}
     .exp-details-img,.supp-details-img{position: relative;top: 0;left: 0;}
     .exp-details-brief,.supp-details-brief{margin-left: 0;}
     .ad-box{font-size: 14px;}
+    .details-message .publish-need-sel{width: 245px;}
 }
 
 .details-message .publish-need-sel{margin-top: 0;margin-bottom: 20px;}

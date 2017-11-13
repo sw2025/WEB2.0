@@ -1,6 +1,8 @@
 @extends("layouts.ucenter")
 @section("content")
-<div class="main">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/uctexperts.css')}}" />
+
+    <div class="main">
             <!-- 会员认证1 / start -->
             <h3 class="main-top">企业认证</h3>
             <div class="ucenter-con">

@@ -1,0 +1,15 @@
+.invite-table td:first-child{vertical-align: middle;}
+.myneed-com-name{text-align: left;border-bottom: none;padding: 0;margin: 0;}
+.myask-detail-need{margin: 0;padding-left: 10px;width: 220px;}
+.myask-detail-time{margin: 0;width: 220px;padding: 0;}
+.mywork-det-txt{width: 70%;}
+.respond-btn-box{padding: 0;}
+.respond-btn{margin-top: 0;display: block;width: 220px;}
+.respond-tips{margin-top: 0;padding: 20px 0;text-align: center;}
+.mywork-det-desc-para{padding-right: 5px;}
+@media (max-width: 640px) {
+	.mywork-det-txt{width: 90%;}
+	.invite-table td:first-child{padding-right: 5px;text-align: center;}
+	.invite-table td:nth-child(2){padding-left: 5px;}
+
+}

@@ -20,7 +20,7 @@
                             <td>问题分类</td>
                             <td>
                                 <div class="publish-need-sel zindex4">
-                                    <span class="publ-need-sel-cap">问题分类</span><a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
+                                   {{-- <span class="publ-need-sel-cap">问题分类</span>--}}<a href="javascript:;" class="publ-need-sel-def" id="select1">请选择</a>
                                     <ul class="publish-need-list" style="display: none;">
                                         @foreach($cate as $v)
                                             @if($v->level == 1)

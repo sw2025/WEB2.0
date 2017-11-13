@@ -8,7 +8,7 @@
 .invite-table td:first-child{text-align: right;padding-right: 18px;width: 95px;color:#666;}
 .invite-table td:nth-child(2){padding-left: 18px;}
 .select-wrapper{font-size: 0;}
-.select-expert{line-height: 25px;padding:0 24px;height: 25px;border-radius: 4px;background:#ddd;color:#333;display: inline-block;border: 1px solid #c8c8c8;margin-right: 16px;font-size: 14px;}
+.select-expert{line-height: 25px;padding:0 20px;height: 25px;border-radius: 4px;background:#ddd;color:#333;display: inline-block;border: 1px solid #c8c8c8;margin-right: 16px;font-size: 14px;}
 .invite-table .active{color:#fff;background:#00a7ed;}
 .selected-experts{font-size: 0;}
 .expert-wrapper{display: inline-block;overflow: hidden;width: 104px;text-align: center;white-space: nowrap;text-overflow: ellipsis;color:#333;margin:0 10px 10px 0;}
@@ -39,3 +39,39 @@
 .apply-video-wrapper .calendar{
     margin:0;
 }
+
+
+/*2017-11-11*/
+.modals{position: relative;width: 100px;}
+.modal-choose{margin-left: 0;padding-left: 2em;text-align: left;color: #666;position: relative;display: block;}
+.modal-choose:before{    font-family: "iconfont";
+    content: '\e618';
+    width: 34px;
+    height: 34px;
+    text-align: center;
+    line-height: 34px;
+    color: #fff;
+    background: #72b0fc;
+    border-radius: 2px;
+    position: absolute;
+    right: 0;
+    top: 0;}
+.modals-list{    background: #fff;
+    position: absolute;
+    top: 36px;
+    left: 0;
+    text-align: center;box-shadow: 0 0 8px #ccc;
+    display: none;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    width: 100%;}
+.modals-list li{cursor: pointer;margin-top: 2px;border-bottom: 1px solid #eee;padding: 2px 0;}
+.modals-list li:hover{color: #00a7ed;}
+
+
+
+
+
+
+
+
+

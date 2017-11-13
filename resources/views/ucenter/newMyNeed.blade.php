@@ -1,36 +1,7 @@
 @extends('layouts.ucenter3')
 @section("content")
-    <style>
-        #vipneed{
-            width:120px;
-            -webkit-border-radius:5px;
-            -moz-border-radius:5px;
-            height: 35px;
-            line-height: 35px;
-            background: #00a7ed;
-            color: #fff;
-            border:1px ;
-            border-radius: 4px;
-            margin-left:50px;
-            position: absolute;
-        }
-        .badge{
-            border-radius: 50px;
-            background: #f10;
-            color: #fff;
-            padding:0 5px;
-        }
-        #vipshang{
-            margin-right: 20px;
-            font-size: 17px;
-            border: 1px solid #d06a6a;
-            padding: 5px;
-            border-radius: 5px;
-            color: #fff;
-            background: #F66;
-        }
-    </style>
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset('css/newmyneed.css')}}" />
     <script type="text/javascript" src="{{asset('js/list.js')}}"></script>
     <script type="text/javascript" src="{{asset('iconfont/iconfont.js')}}"></script>
     <div class="ucenter-con">

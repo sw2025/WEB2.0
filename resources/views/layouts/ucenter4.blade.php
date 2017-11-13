@@ -81,21 +81,23 @@
     <div class="wrap clearfix">
         <!-- 侧边栏公共部分/start -->
         <div class="v-aside beexpert">
-            <a href="{{asset('uct_expert')}}" class="goto-renzh v-personal" title="去认证"><img  class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip novip" title="未认证"></i></a>
-            <a href="{{asset('basic')}}" class="v-personal" title="个人中心">
-                <span class="v-nick"></span>
-            </a>
-           {{-- <!-- 我是企业时 -->
-            <div class="v-money-info iamenter">
-                <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
-                <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
-            </div>--}}
-            <!-- 我是专家时 -->
-            <div class="v-money-info iamexpert">
-                <a href="{{asset('recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
-                <a href="{{asset('uct_standard')}}" class="v-info border2" title="收费标准"><i class="iconfont icon-shenjia"></i></a>
-                <a href="{{asset('myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
-            </div>
+           <div class="match-fl">
+                <a href="{{asset('uct_expert')}}" class="goto-renzh v-personal" title="去认证"><img  class="v-avatar" /><i class="iconfont icon-vip havevip" title="已认证"></i><i class="iconfont icon-vip novip" title="未认证"></i></a>
+                <a href="{{asset('basic')}}" class="v-personal" title="个人中心">
+                    <span class="v-nick"></span>
+                </a>
+               {{-- <!-- 我是企业时 -->
+                <div class="v-money-info iamenter">
+                    <a href="{{asset('uct_recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
+                    <a href="{{asset('uct_myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
+                </div>--}}
+                <!-- 我是专家时 -->
+                <div class="v-money-info iamexpert">
+                    <a href="{{asset('recharge')}}" class="v-money" title="充值提现"><i class="iconfont icon-chongzhihetixian"></i></a>
+                    <a href="{{asset('uct_standard')}}" class="v-info border2" title="收费标准"><i class="iconfont icon-shenjia"></i></a>
+                    <a href="{{asset('myinfo')}}" class="v-info" title="我的消息"><i class="iconfont icon-xiaoxi"></i><span class="v-new-info-tip"></span></a>
+                </div>
+        </div>
             <div class="v-identity">
                 <div class="v-identity-sel">
                     <a href="javascript:;" class="v-identity-default"><span class="v-identity-cap">我是专家</span></a>
@@ -105,37 +107,37 @@
                     </ul>
                     <div class="v-ucenter-nav">
                         <div class="v-ucenter-nav-list">
-                            <a id="uct_works" href="{{asset('uct_works')}}" class="v-ucenter-nav-item ">
+                            <a id="uct_works" href="{{asset('uct_works')}}" title="新增我的办事请求，管理办事" class="v-ucenter-nav-item ">
                                 <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
                                 办事管理
                             </a>
-                            <a id="uct_video" href="{{asset('uct_video')}}" class="v-ucenter-nav-item">
+                            <a id="uct_video" href="{{asset('uct_video')}}" title="新增我的会议请求，管理会议" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
                                 视频会议
                             </a>
-                            <a id="uct_resource" href="{{asset('uct_resource')}}" class="v-ucenter-nav-item">
+                            <a id="uct_resource" href="{{asset('uct_resource')}}" title="搜索专家，给专家留言" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
                                 专家资源
                             </a>
-                            <a id="uct_myneed" href="{{asset('uct_myneed')}}" class="v-ucenter-nav-item">
+                            <a id="uct_myneed" href="{{asset('uct_myneed')}}"  title="发布你的商情，搜索你需要的商情" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
                                 商情信息
                             </a>
                         </div>
                         <div class="v-ucenter-nav-list  v-default">
-                            <a id="uct_mywork" href="{{asset('uct_mywork')}}" class="v-ucenter-nav-item">
+                            <a id="uct_mywork" href="{{asset('uct_mywork')}}" title="查看企业的办事请求，管理办事" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon02.png')}}" alt="我的办事" />
                                 我的办事
                             </a>
-                            <a id="uct_myask" href="{{asset('uct_myask')}}" class="v-ucenter-nav-item">
+                            <a id="uct_myask" href="{{asset('uct_myask')}}" title="查看企业的会议请求，管理会议" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon03.png')}}" alt="我的咨询" />
                                 我的咨询
                             </a>
-                            <a id="uct_entres" href="{{asset('uct_entres')}}" class="v-ucenter-nav-item">
+                            <a id="uct_entres" href="{{asset('uct_entres')}}" title="搜索企业，给企业留言" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/enterpriseicon.png')}}" alt="企业资源" />
                                 企业资源
                             </a>
-                            <a id="myneed" href="{{asset('myneed')}}" class="v-ucenter-nav-item">
+                            <a id="myneed" href="{{asset('myneed')}}" title="发布你的商情，搜索你需要的商情" class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
                                 商情信息
                             </a>
