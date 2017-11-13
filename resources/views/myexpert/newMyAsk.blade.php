@@ -14,7 +14,7 @@
                    @else
                         <div class="v-feedback condition1" >
                             <div class="v-works-sel">
-                                <span class="allwork">全部办事</span>
+                                <span class="allwork">全部咨询</span>
                                 <a href="javascript:;" class="v-works-sel-def" id="domainType">{{$type or "不限"}}</a>
                                 <ul class="v-works-sel-list domainType"  >
                                     <li @if($type && $type=="不限") class="active" @endif>不限</li>
