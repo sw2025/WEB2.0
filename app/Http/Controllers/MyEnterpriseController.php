@@ -2013,10 +2013,10 @@ class MyEnterpriseController extends Controller
                 $datas=$result->orderBy("t_c_consult.created_at","desc")->paginate(6);
             break;
             case "单人":
-                $datas=$result->where('t_c_consult.videotype',"like","%".$consultType."%")->orderBy("t_c_consult.created_at","desc")->paginate(6);
+                $datas=$result->where('t_c_consult.videotype',0)->orderBy("t_c_consult.created_at","desc")->paginate(6);
                 break;
             case "多人":
-                $datas=$result->where('t_c_consult.videotype',"like","%".$consultType."%")->orderBy("t_c_consult.created_at","desc")->paginate(6);
+                $datas=$result->where('t_c_consult.videotype',1)->orderBy("t_c_consult.created_at","desc")->paginate(6);
                 break;
            /* case "未知":
                 $datas=$result->whereIn('t_c_consultverify.configid',[4,5])->orderBy("t_c_consult.created_at","desc")->paginate(6);
