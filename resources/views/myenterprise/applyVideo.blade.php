@@ -435,6 +435,11 @@
             var isAppoint=($.cookie("videoisAppoint"))?$.cookie("videoisAppoint"):1;
             var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
             var videoType=$("#videoType").text();
+            if(videoType=="单人"){
+                videoType="0";
+            }else{
+                videoType="1";
+            }
             // console.log(expertIds);
             if(describe.length>30 && describe.length<500){
             }else{

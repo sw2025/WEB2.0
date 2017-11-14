@@ -25,6 +25,10 @@
                         <td>{{$data->domain1.'/'.$data->domain2}}</td>
                     </tr>
                     <tr>
+                        <td>咨询模式</td>
+                        <td id="videoType">@if($data->videotype=="0")单人@else多人@endif</td>
+                    </tr>
+                    <tr>
                         <td>开始时间</td>
                         <td>{{$data->starttime}}</td>
                     </tr>
@@ -42,7 +46,7 @@
                         <td>
                             <ul class="selected-experts">
                                 @foreach($selExperts as $selExpert)
-                                    <li id="{{$selExpert->expertid}}"><a href="javascript:;" class="expert-wrapper"><img src="{{env('ImagePath').$selExpert->showimage}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;"><span class="expert-name">{{$selExpert->expertname}}</span></a></li>
+                                    <li id="{{$selExpert->expertid}}" style="width:80px;float: left;padding-left: 30px"><a href="javascript:;" class="expert-wrapper"><img src="{{env('ImagePath').$selExpert->showimage}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;"><span class="expert-name">{{$selExpert->expertname}}</span></a></li>
                                 @endforeach
                             </ul>
                         </td>
@@ -124,7 +128,13 @@
                     fee="0";
                     expertId=expertId+"/"+fee;
                 }
-                if(expertIds.length!=2){
+                var videoType=$("#videoType").text();
+                if(videoType=="单人"){
+                    videoTypePeople=1
+                }else{
+                    videoTypePeople=2;
+                }
+                if(expertIds.length!=videoTypePeople){
                     if(!$(this).hasClass("current")){
                         expertIds.push(expertId);
                     }else{
@@ -134,7 +144,7 @@
                     if($.inArray(expertId,expertIds)>=0){
                         deleteArray(expertIds,expertId);
                     }else{
-                        layer.confirm('您已经选定2位专家', {
+                        layer.confirm('您已经选定'+videoTypePeople+'位专家', {
                             btn: ['确定'] //按钮
                         });
                         return false;
