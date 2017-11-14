@@ -23,6 +23,17 @@
     <script type="text/javascript" src="{{asset('js/utils/html5shiv.js?1401441990')}}"></script>
     <script type="text/javascript" src="{{asset('js/utils/respond.min.js?1401441990')}}"></script>
     <![endif]-->
+    <style>
+        #expertmsgtome{
+            position: absolute;
+            right: 10px;
+            margin-top: -10px;
+            color: #fff;
+            background: #f10;
+            border-radius: 40px;
+            padding: 0 5px;
+        }
+    </style>
 </head>
 <body>
 <!-- 公共header / start -->
@@ -113,6 +124,7 @@
                                 视频会议
                             </a>
                             <a id="uct_resource" href="{{asset('uct_resource')}}"  title="搜索专家，给专家留言" class="v-ucenter-nav-item">
+                                <span id="expertmsgtome">0</span>
                                 <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
                                 专家资源
                             </a>
@@ -226,6 +238,13 @@
     if(typeof($.cookie('userId'))=="undefined"){
         window.location.href="{{url('login')}}";
     }
+    $('#expertmsgtome').on('click',function () {
+        window.location = '{{url('/exttomymsg')}}';
+        return false;
+    });
+    $('#expertmsgtome').mouseover(function () {
+        layer.tips('查看专家给我的留言', '#expertmsgtome');
+    });
     $(function(){
         var str=window.location.pathname;
         var num1=str.indexOf('/');
@@ -290,6 +309,18 @@
                     $(".v-new-info-tip").hide()
                 }else{
                     $(".v-new-info-tip").show()
+                }
+            }
+        })
+        $.ajax({
+            url:"{{url('getExpertMsgToMe')}}",
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res.code=="success"){
+                    $("#expertmsgtome").text(res.number)
+                }else{
+                    layer.msg('获取专家留言信息失败');
                 }
             }
         })

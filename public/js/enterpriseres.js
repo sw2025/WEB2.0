@@ -110,7 +110,7 @@ $(function(){
        // supply=(supply)?supply:null;
         address=(address)?address:null;
         industry=(industry)?industry:null;
-        action=(action)?action:null;
+        action=(action != '全部')?action:null;
         if( $(".sort").children('a').hasClass('active')){
             var ordername = $('.sort .active ').text();
             var firsticon = ($('.sort .active span .icon-triangle-copy').hasClass('blue-color'))?'desc':'asc';

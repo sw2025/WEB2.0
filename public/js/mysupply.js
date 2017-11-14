@@ -179,7 +179,7 @@ $(function() {
         who=(who)?who:null;
         supply=(supply)?supply:null;
         address=(address)?address:null;
-        action=(action)?action:null;
+        action=(action != '不限')?action:null;
         if( $(".sort").children('a').hasClass('active')){
             var ordername = $('.sort .active ').text();
             var firsticon = ($('.sort .active span .icon-triangle-copy').hasClass('blue-color'))?'desc':'asc';

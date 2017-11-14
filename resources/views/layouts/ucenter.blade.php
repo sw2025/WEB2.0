@@ -128,6 +128,7 @@
                                 视频会议
                             </a>
                             <a id="uct_resource" href="{{asset('uct_resource')}}" title="搜索专家，给专家留言" class="v-ucenter-nav-item">
+                                <span id="expertmsgtome">0</span>
                                 <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
                                 专家资源
                             </a>

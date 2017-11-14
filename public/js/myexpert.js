@@ -134,7 +134,7 @@ $(function() {
         role=(role)?role:null;
         supply=(supply)?supply:null;
         address=(address)?address:null;
-        action=(action)?action:null;
+        action=(action != '不限')?action:null;
         consult=(consult)?consult:null;
         if( $(".sort").children('a').hasClass('active')){
             var ordername = $('.sort .active ').text();
