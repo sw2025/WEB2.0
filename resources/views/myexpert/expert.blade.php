@@ -56,7 +56,7 @@
                                 <span class="datas-sel-cap">输入姓名</span>
                                 <input class="datas-sel-name" type="text" placeholder="" value="@if(!empty($result)){{$result->expertname}}@else @endif" style="color:#666;margin-left:50px;"/>
                             </div>
-                            <div class="publish-need-sel datas-newchange zindex2"  style="overflow: hidden;">
+                            <div class="publish-need-sel datas-newchange zindex2">
                                 <span class="datas-sel-cap">擅长领域</span>
                                 <a href="javascript:;" id="industry" class="publ-need-sel-def" style="margin-left:93px;" index="@if(!empty($result->domain1)){{$result->domain1}}-{{join('/',explode(',',$result->domain2))}}/@else 请选择 @endif">
                                     @if(!empty($result->domain1))
@@ -208,13 +208,13 @@
         });
 
         $('.publish-need-list li').hover(function () {
-            $(this).children('ul').stop().show();        }, function () {
+            $(this).children('ul').stop().show();}, function () {
             $(this).children('ul').stop().hide();
         });
         $('.publish-need-list li a').click(function (e) {
             e.stopPropagation();
             if ($(this).next('ul').children('li').length == 0) {
-                var m = $(this).html()
+                var m = $(this).html();
                 $(this).closest('.publish-need-list').prev().html(m);
             }
         })
