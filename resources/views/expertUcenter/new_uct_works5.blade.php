@@ -547,7 +547,7 @@
                             layer.msg(data.msg,{'icon':2});
                         } else {
                             layer.msg(data.msg,{'icon':1,'time':1500},function () {
-                                window.location = '{{url('/uct_works')}}';
+                                window.location = '{{url('/uct_mywork')}}';
                             });
                         }
                     });
