@@ -403,8 +403,8 @@
 .system-btn{margin-right: 50px;}
 .special-btn{color:#333;margin-right: 20px;cursor: default;}
 .system-btn2{cursor: default;margin-bottom: 40px;}
-.uct-works-tips{color:#ed0021;}
-.uct-works-tips-para{text-align: justify;}
+.uct-works-tips{color:#ed0021;margin-top: 20px;    font-size: 12px;;}
+.uct-works-tips-para{text-align: justify;font-size: 12px;}
 .uct-works-con{text-align: center;}
 .uct-works-icon{display: inline-block;width: 38px;height: 38px;line-height: 38px;background:#00a7ed;border-radius: 30px;vertical-align: 8px;}
 .uct-works-icon i{font-size: 18px;color:#fff;-webkit-text-stroke-width: 0;}
