@@ -52,6 +52,7 @@
             }
         });
     });
+
     var date = new Date();
     date.setTime(date.getTime() + (120 * 60 * 1000));
     var nickName=$("#nickName").val();
@@ -70,16 +71,16 @@
             type:"POST",
             success:function(res){
                 $(that).removeAttr('disabled');
-                $(that).html('修改');
+                $(that).html('保存');
                 if(res['code']=="success"){
                     $(".after-login").children(":last").text(nickName);
                     layer.msg("修改成功")
+                    location.reload();
                 }else{
-                    layer.msg("修改失败")
+                    layer.msg("修改失败");
                 }
             }
         })
     })
 </script>
-
 @endsection("content")
