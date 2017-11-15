@@ -6,11 +6,10 @@
     <div class="bg_v2">
         <div class="card-step works-step">
             <span class="green-circle">1</span>咨询申请<span class="card-step-cap">&gt;</span>
-            <span class="green-circle">2</span>咨询审核<span class="card-step-cap">&gt;</span>
-            <span class="green-circle">3</span>邀请专家<span class="card-step-cap">&gt;</span>
-            <span class="green-circle">4</span>专家响应<span class="card-step-cap">&gt;</span>
-            <span class="gray-circle">5</span>咨询管理<span class="card-step-cap">&gt;</span>
-            <span class="gray-circle">6</span>完成
+            <span class="green-circle">2</span>邀请专家<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">3</span>专家响应<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">4</span>咨询管理<span class="card-step-cap">&gt;</span>
+            <span class="green-circle">5</span>完成
         </div>
         <div class="invite-experts">
             <div class="invite-expert-tit">

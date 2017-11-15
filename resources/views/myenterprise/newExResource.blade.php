@@ -28,7 +28,7 @@
         <div class="uct-list-filter">
             <div class="uct-search">
                 <button  onclick="window.location='{{url('exttomymsg')}}'" id="showreply">专家给我的留言 <span class="badge"> {{$tomymsgcount}} </span></button>
-                <div class="uct-list-search">
+                <div class="uct-list-search" style="width:55%">
                     <input type="text" class="uct-list-search-inp placeholder " placeholder="请输入专家姓名／机构名称／企业家姓名" value="{{$searchname or null}}">
                     <button type="button" class="uct-list-search-btn"><i class="iconfont icon-sousuo"></i></button>
                 </div>

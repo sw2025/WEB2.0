@@ -20,6 +20,7 @@ class IndexController extends Controller
             ->select("T_N_NEED.needid","T_N_NEED.created_at","T_N_NEED.brief")
             ->whereRaw('T_N_NEEDVERIFY.id in (select max(id) from T_N_NEEDVERIFY group by  T_N_NEEDVERIFY.needid)')
             ->where("configid",3)
+            ->where('t_n_need.level',0)
             ->orderBy("T_N_NEED.created_at","desc");
         $work=clone $invest;
         $product=clone $invest;
@@ -62,7 +63,7 @@ class IndexController extends Controller
                 ->where("category",$expertType)
                 ->whereIn("T_U_EXPERTVERIFY.configid",[2,4])
                 ->whereRaw("T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by T_U_EXPERTVERIFY.expertid)")
-                ->take(15)
+                ->take(12)
                 ->orderBy("T_U_EXPERT.order","asc")
                 ->orderBy("T_U_EXPERT.expertid","desc")
                 ->get();
