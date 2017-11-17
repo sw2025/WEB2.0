@@ -1107,7 +1107,7 @@ class PublicController extends Controller
             return [['code' => 101,'msg' => '用户不存在','url' => '?']];
         }
         if((empty($expertinfo) || $expertinfo->configid != 2) && (empty($enterptiseinfo) || $enterptiseinfo->configid != 3)){
-            return [['code' => 102,'msg' => '您还未认证成用户或认证专家,是否认证？','url1' => '?','url2' => '?']];
+            return [['code' => 102,'msg' => '您还未认证成用户或认证专家,是否认证？','url1' => url('uct_member'),'url2' => url('uct_expert')]];
         }
         if(!empty($expertinfo) &&  $expertinfo->configid == 2 && !empty($enterptiseinfo) && $enterptiseinfo->configid == 3){
             $expertstatus = self::expertaction($expertinfo);
@@ -1177,8 +1177,8 @@ class PublicController extends Controller
         $consultstate = DB::table('t_c_consult as consult')
             ->leftJoin('view_consultstatus as status','status.consultid','=','consult.consultid')
             ->leftJoin('t_c_consultresponse as res','res.consultid','=','consult.consultid')
-            ->whereIn('res.state',[2,3])
-            ->whereIn('status.configid',[5,6])
+            ->where('res.state',2)
+            ->where('status.configid',5)
             ->where(['consult.userid' => $info->userid,'consult.entislook' => 0])
             ->lists('consult.consultid');
         $consulttime = DB::table('t_c_consult as consult')

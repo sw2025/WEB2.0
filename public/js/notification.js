@@ -6,13 +6,13 @@ var urlpath = window.location.pathname;
 var urlarr = ['/login','/register'];
 function createNotification (type){
     //判断浏览器是否支持桌面通知
-    console.log($.inArray(urlpath,urlarr) === -1);
+    //console.log($.inArray(urlpath,urlarr) === -1);
     if($.inArray(urlpath,urlarr) !== -1){
         return false;
     }
     if (window.Notification) {
         var notification = window.Notification;
-        var mynotify;
+
         if (notification.permission == "granted") {
             //创建通知
             realTimeGetInfo(type);
@@ -38,21 +38,21 @@ function createNotification (type){
 }
 
 function realTimeGetInfo(type){
-
     if($.cookie('userId')){
         var timeout;
+        var mynotify = null;
         timeout = window.setInterval(function () {
             $.post('/realTimeGetInfo',{'type':type},function (data) {
                 for(var i in data){
-                    console.log(data[i]);
-                    dealAllStatus(data[i],timeout);
+                    //console.log(data[i]);
+                    dealAllStatus(data[i],timeout,mynotify);
                 }
             });
-        },10000);
+        },6000);
     }
 }
 
-function dealAllStatus(data,timeout){
+function dealAllStatus(data,timeout,mynotify){
     if(data.code == 100 && !$.cookie('isnotice')){
         mynotify = new Notification("升维网提示", {
             body: data.msg,
@@ -74,7 +74,14 @@ function dealAllStatus(data,timeout){
         });
         mynotify.onclick = function() {
             mynotify.close();
-            window.location.href=data.url;
+            layer.confirm('请选择企业认证还是专家认证', {
+                btn: ['企业认证','专家认证'], //按钮
+                skin:'layui-layer-molv'
+            }, function(){
+                window.location.href=data.url1;
+            }, function(){
+                window.location.href=data.url2;
+            });
         }
         window.clearInterval(timeout);
     } else if(data.code == 201 || data.code == 202 || data.code == 200 || data.code == 300 || data.code == 301 || data.code == 302){
