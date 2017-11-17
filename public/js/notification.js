@@ -48,7 +48,7 @@ function realTimeGetInfo(type){
                     dealAllStatus(data[i],timeout,mynotify);
                 }
             });
-        },6000);
+        },60000);
     }
 }
 
