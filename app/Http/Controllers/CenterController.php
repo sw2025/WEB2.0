@@ -342,6 +342,134 @@ class CenterController extends Controller
         $ordertime = 'desc';
         return view("ucenter.newMyNeed",compact('level','vipneedcount','waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
     }
+    /**我的需求
+     * @return mixed
+     */
+    public function  myNeed2(Request $request){
+        //获取板块信息
+        $cate = DB::table('t_common_domaintype')->get();
+        $datas = DB::table('t_n_need as need')
+            ->leftJoin('view_userrole as view','view.userid', '=','need.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_user as user','need.userid' ,'=' ,'user.userid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->leftJoin('view_needcollectcount as coll','coll.needid' ,'=' ,'need.needid')
+            ->leftJoin('view_needmesscount as mess','mess.needid' ,'=' ,'need.needid')
+            ->leftJoin('view_needstatus as status','status.needid' ,'=' ,'need.needid')
+            ->select('need.*','view.role','ent.enterprisename','ent.showimage as entimg','status.configid as flag','coll.count as collcount','mess.count as messcount','ext.showimage as extimg','ext.expertname');
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_n_collectneed')->where(['userid' => session('userId'),'remark' => 1])->lists('needid');
+        }
+        //用户发布的数量
+        $putcount = DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',3)->count();
+        //用户回复的数量
+        $msgcount = count(DB::table('t_n_messagetoneed as need')->where('userid',session('userId'))->groupBy('needid')->lists('needid'));
+        //用户待审核的供求的数量
+        $waitcount= DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',1)->count();
+        //用户拒审核的供求的数量
+        $refusecount = DB::table('view_needstatus as need')->where('userid',session('userId'))->where('need.configid',2)->count();
+        //商情的数量
+        $vipneedcount = DB::table('t_n_pushneed')->where('userid',session('userId'))->count();
+        //判断是否为http请求
+        if(!empty($get = $request->input())){
+            $levelwhere = ['need.level' => 0];
+            //获取到get中的数据并处理
+            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
+            $supply=(isset($get['supply']) && $get['supply'] != "null") ? explode('/',$get['supply']) : null;
+            $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
+            $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
+            $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
+            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
+            $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
+            $who = ( isset($get['who']) && $get['who'] != "null") ? $get['who'] : null;
+            $level = (isset($get['level']) && $get['level'] != "null") ? $get['level'] : 0;
+            //设置where条件生成where数组
+            $rolewhere = !empty($role)?array("needtype"=>$role):array();
+            $supplywhere = !empty($supply)?array("need.domain1"=>$supply[0],'need.domain2' => $supply[1]):array();
+
+
+            $obj = $datas->where($rolewhere)->where($supplywhere);
+            if(!empty($address)){
+                $obj = $obj->whereRaw('ext.address ="'.$address.'" or ent.address = "'.$address.'"');
+            }
+            if(!empty($action)){
+                switch($action){
+                    case 'collect':
+                        $obj = $obj->whereRaw('need.needid in (select needid from t_n_collectneed  where userid='.session('userId').' and remark=1)');
+                        //$obj = $obj->where('colneed.userid',session('userId'))->where('colneed.remark',1);
+                        $action  = '已收藏';
+                        break;
+                    case 'myput':
+                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',3);
+                        $action  = '已发布';
+                        $who = 'my';
+                        $levelwhere = [];
+                        break;
+                    case 'message':
+                        $obj = $obj->whereRaw('need.needid in (select  needid from t_n_messagetoneed  where userid='.session('userId').' group by needid)');
+                        $action = '已留言';
+                        break;
+                    case 'waitverify':
+                        $action  = '待审核';
+                        $who = 'my';
+                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',1);
+                        break;
+                    case 'refuseverify':
+                        $action  = '审核失败';
+                        $who = 'my';
+                        $obj = $obj->where('need.userid',session('userId'))->where('status.configid',2);
+                        break;
+                }
+            } else {
+                $obj = $obj->where('status.configid',3);
+            }
+
+            if(!empty($who)){
+                switch($who){
+                    case 'my':
+                        $obj = $obj->where('need.userid',session('userId'));
+                        break;
+                    case 'other':
+                        $obj = $obj->where('need.userid','<>',session('userId'));
+                        break;
+                }
+            } else {
+                $obj = $obj->where('need.userid','<>',session('userId'));
+            }
+
+
+            if($level == 1){
+                $levelwhere = ['need.level' => 1];
+                $pushneedlist = DB::table('t_n_pushneed')->where('userid',session('userId'))->lists('needid');
+                $obj = $obj->whereIn("need.needid",$pushneedlist);
+            }
+
+            //判断是否有搜索的关键字
+            if(!empty($searchname)){
+                $obj = $obj->where("need.brief","like","%".$searchname."%");
+            }
+
+            //对三种排序进行判断
+            if(!empty($ordertime)){
+                $obj = $obj->orderBy('need.needtime',$ordertime);
+            } elseif(!empty($ordercollect)){
+                $obj = $obj->orderBy('coll.count',$ordercollect);
+            } else {
+                $obj = $obj->orderBy('mess.count',$ordermessage);
+            }
+            $datas = $obj->where($levelwhere)->paginate(4);
+            return view("ucenter.newMyNeed",compact('vipneedcount','level','who','waitcount','refusecount','cate','searchname','msgcount','datas','role','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
+        }
+        $datas = $datas->where('need.level',0)->where('status.configid',3)->where('need.userid','<>',session('userId'))
+            ->orderBy("need.needtime",'desc')
+            ->paginate(4);
+        $level = 0;
+        $ordertime = 'desc';
+        return view("ucenter.newMyNeed",compact('level','vipneedcount','waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
+    }
 
     /**需求详情
      * @return mixed
