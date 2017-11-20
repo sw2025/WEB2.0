@@ -36,7 +36,7 @@
         <div class="respond-btn-box">
             <!-- 状态按钮根据实际状态只展示一个 -->
             @if($datas->configid == 4)
-                <button type="button" class="unrespond respond-btn" onclick="responseevent({{$datas->eventid}},this)">响应</button>
+                <button type="button" class="unrespond respond-btn" onclick="responseevent({{$datas->consultid}},this)">响应</button>
             @elseif($datas->configid == 5)
                 <button type="button" class="responded respond-btn">已响应</button>
             @elseif($datas->configid == 7)
