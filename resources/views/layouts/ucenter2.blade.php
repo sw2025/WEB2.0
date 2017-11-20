@@ -220,7 +220,7 @@
             <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：010-64430881&nbsp;&nbsp;/&nbsp;&nbsp;68985908</p>
             <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>E-Mail：shengwei2025@163.com</p>
             <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市朝阳区安贞里街道浙江大厦</p>
-            <p class="copyright">京ICP备17053834号<span></span>copyright &copy; 2017 sw2025.com</p>
+            <p class="copyright">京ICP备17053834号<span></span>copyright &copy; 2017 swchina.com</p>
         </div>
         <!-- </div> -->
     </div>
@@ -287,7 +287,7 @@
         return false;
     });
     $('#expertmsgtome').mouseover(function () {
-        layer.tips('查看专家给我的留言', '#expertmsgtome');
+        layer.tips('查看专家给我的留言', '#expertmsgtome',{tips: [1, '#666']});
     });
     $(function(){
         var str=window.location.pathname;
