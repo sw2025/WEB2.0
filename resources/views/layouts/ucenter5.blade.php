@@ -158,7 +158,7 @@
                         <div class="v-ucenter-nav-list">
 
                             <div class="mainmenu">
-                                <a id="uct_works" href="{{asset('uct_works')}}"  title="新增我的办事请求，管理办事" class="v-ucenter-nav-item ">
+                                <a id="uct_works" href="{{asset('uct_works')}}"  class="v-ucenter-nav-item ">
                                     <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
                                     办事管理
                                 </a>
@@ -170,7 +170,7 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_video" href="{{asset('uct_video')}}" title="新增我的会议请求，管理会议" class="v-ucenter-nav-item">
+                                <a id="uct_video" href="{{asset('uct_video')}}" class="v-ucenter-nav-item">
                                     <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
                                     视频会议
                                 </a>
@@ -182,7 +182,7 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_resource" href="{{asset('uct_resource')}}" title="搜索专家，给专家留言" class="v-ucenter-nav-item">
+                                <a id="uct_resource" href="{{asset('uct_resource')}}"  class="v-ucenter-nav-item">
                                     <span id="expertmsgtome">0</span>
                                     <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
                                     专家资源
@@ -194,7 +194,7 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_myneed" href="{{asset('uct_myneed')}}"  title="发布你的商情，搜索你需要的商情" class="v-ucenter-nav-item">
+                                <a id="uct_myneed" href="{{asset('uct_myneed')}}"   class="v-ucenter-nav-item">
                                     <img src="{{asset('img/vicon04.png')}}" alt="普通商情" />
                                     普通商情
                                 </a>
@@ -204,7 +204,7 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_myneed2" href="{{asset('uct_myneed2')}}"  title="平台推送给您的VIP商情" class="v-ucenter-nav-item ">
+                                <a id="uct_myneed2" href="{{asset('uct_myneed2')}}"   class="v-ucenter-nav-item ">
                                     <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
                                     VIP商情
                                 </a>
@@ -219,7 +219,7 @@
                         </div>
                         <div class="v-ucenter-nav-list  v-default">
                             <div class="mainmenu">
-                                <a id="uct_mywork" href="{{asset('uct_mywork')}}" title="查看企业的办事请求，管理办事" class="v-ucenter-nav-item">
+                                <a id="uct_mywork" href="{{asset('uct_mywork')}}"  class="v-ucenter-nav-item">
                                     <img src="{{asset('img/vicon02.png')}}" alt="我的办事" />
                                     我的办事
                                 </a>
@@ -231,7 +231,7 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_myask" href="{{asset('uct_myask')}}" title="查看企业的会议请求，管理会议" class="v-ucenter-nav-item">
+                                <a id="uct_myask" href="{{asset('uct_myask')}}"  class="v-ucenter-nav-item">
                                     <img src="{{asset('img/vicon03.png')}}" alt="我的咨询" />
                                     我的咨询
                                 </a>
@@ -241,7 +241,7 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_entres" href="{{asset('uct_entres')}}" title="搜索企业，给企业留言" class="v-ucenter-nav-item">
+                                <a id="uct_entres" href="{{asset('uct_entres')}}"  class="v-ucenter-nav-item">
                                     <img src="{{asset('img/enterpriseicon.png')}}" alt="企业资源" />
                                     企业资源
                                 </a>
@@ -262,7 +262,7 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="myneed2" href="{{asset('myneed2')}}?level=1"  title="平台推送给您的VIP商情" class="v-ucenter-nav-item ">
+                                <a id="myneed2" href="{{asset('myneed2')}}?level=1"  " class="v-ucenter-nav-item ">
                                     <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
                                     VIP商情
                                 </a>
@@ -499,3 +499,4 @@
 
 <script src="{{asset('js/notification.js')}}"></script>
 <script>createNotification('type')</script>
+
