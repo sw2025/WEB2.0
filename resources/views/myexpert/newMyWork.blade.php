@@ -19,7 +19,7 @@
                                 <ul class="v-works-sel-list domainType"  >
                                     <li @if($type && $type=="不限") class="active" @endif>不限</li>
                                     @foreach($domains as $value)
-                                        <li @if($type && $type ==$value->domainname) active @endif>{{$value->domainname}}</li>
+                                        <li @if($type && $type ==$value->domainname)class="active" @endif>{{$value->domainname}}</li>
                                     @endforeach
                                 </ul>
                             </div>

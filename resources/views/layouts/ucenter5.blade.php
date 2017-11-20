@@ -156,22 +156,66 @@
                     </ul>
                     <div class="v-ucenter-nav">
                         <div class="v-ucenter-nav-list">
-                            <a id="uct_works" href="{{asset('uct_works')}}" title="新增我的办事请求，管理办事" class="v-ucenter-nav-item ">
-                                <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
-                                办事管理
-                            </a>
-                            <a id="uct_video" href="{{asset('uct_video')}}" title="新增我的会议请求，管理会议" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
-                                视频会议
-                            </a>
-                            <a id="uct_resource" href="{{asset('uct_resource')}}" title="搜索专家，给专家留言" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
-                                专家资源
-                            </a>
-                            <a id="uct_myneed" href="{{asset('uct_myneed')}}"  title="发布你的商情，搜索你需要的商情" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
-                                商情信息
-                            </a>
+
+                            <div class="mainmenu">
+                                <a id="uct_works" href="{{asset('uct_works')}}"  title="新增我的办事请求，管理办事" class="v-ucenter-nav-item ">
+                                    <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
+                                    办事管理
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="{{url('uct_works').'?domain=找资金'}}">找资金</a></li>
+                                    <li><a href="{{url('uct_works').'?domain=找技术'}}">找技术</a></li>
+                                    <li><a href="{{url('uct_works').'?domain=定战略'}}">定战略</a></li>
+                                    <li><a href="{{url('uct_works').'?domain=找市场'}}">找市场</a></li>
+                                </ul>
+                            </div>
+                            <div class="mainmenu">
+                                <a id="uct_video" href="{{asset('uct_video')}}" title="新增我的会议请求，管理会议" class="v-ucenter-nav-item">
+                                    <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
+                                    视频会议
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="{{url('/uct_video/applyVideo')}}">发起一对一视频</a></li>
+                                    <li><a href="{{url('/uct_video/applyVideo')}}">发起多人会议</a></li>
+                                    <li><a href="{{asset('uct_video').'?consultType=单人'}}">查看一对一视频</a></li>
+                                    <li><a href="{{asset('uct_video').'?consultType=多人'}}">查看多人会议</a></li>
+                                </ul>
+                            </div>
+                            <div class="mainmenu">
+                                <a id="uct_resource" href="{{asset('uct_resource')}}" title="搜索专家，给专家留言" class="v-ucenter-nav-item">
+                                    <span id="expertmsgtome">0</span>
+                                    <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
+                                    专家资源
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="{{url('/uct_resource').'?action=collect'}}">已收藏的专家</a></li>
+                                    <li><a href="{{url('/uct_resource').'?action=message'}}">已留言的专家</a></li>
+                                    <li><a href="{{url('/exttomymsg')}}">专家给我的留言</a></li>
+                                </ul>
+                            </div>
+                            <div class="mainmenu">
+                                <a id="uct_myneed" href="{{asset('uct_myneed')}}"  title="发布你的商情，搜索你需要的商情" class="v-ucenter-nav-item">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="普通商情" />
+                                    普通商情
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="javascript:;" onclick="putneed()">发布商情</a></li>
+                                    <li><a href="{{url('/uct_myneed')}}">查看商情</a></li>
+                                </ul>
+                            </div>
+                            <div class="mainmenu">
+                                <a id="uct_myneed2" href="{{asset('uct_myneed2')}}"  title="平台推送给您的VIP商情" class="v-ucenter-nav-item ">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
+                                    VIP商情
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="javascript:;" onclick="putneed()">发布商情</a></li>
+                                    <li><a href="{{url('/uct_myneed2').'?level=1'}}">查看商情</a></li>
+                                </ul>
+                            </div>
+
+
+
                         </div>
                         <div class="v-ucenter-nav-list  v-default">
                             <a id="uct_mywork" href="{{asset('uct_mywork')}}" title="查看企业的办事请求，管理办事" class="v-ucenter-nav-item">

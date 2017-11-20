@@ -4,7 +4,7 @@
     <script type="text/javascript" src="{{asset('js/laydate/laydate.js')}}"></script>
     <div class="main">
         <!-- 专家视频咨询 / start -->
-        <h3 class="main-top">专家视频咨询</h3>
+        <h3 class="main-top">企业办事服务</h3>
         <div class="ucenter-con">
             <div class="main-right">
                 <div class="card-step works-step">
