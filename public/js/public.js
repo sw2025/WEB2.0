@@ -1,4 +1,28 @@
 $(function(){
+    $('.mainmenu').hover(function() {
+        $(this).children('.submenu').stop().toggle(500).siblings().children('.submenu').hide();
+    })
+    function putneed (){
+        $.post('/myneed/verifyputneed',{'role':'企业'},function (data) {
+            if(data.type == 3){
+                layer.msg(data.msg,{'icon':data.icon});
+            } else if(data.type == 2){
+                layer.confirm(data.msg, {
+                    btn: ['去认证','暂不需要'], //按钮
+                    skin:'layui-layer-molv'
+                }, function(){
+                    window.location.href=data.url;
+                }, function(){
+                    layer.close();
+                });
+            } else if (data.type == 1){
+                layer.alert(data.msg,{'icon':data.icon});
+            } else {
+                window.location = 'uct_myneed/supplyNeed';
+            }
+        });
+
+    }
     // $('input, textarea').placeholder();
     var xx = $('.v-manage-link-rate a').length - 1;
     var wid = xx * 30 +10;

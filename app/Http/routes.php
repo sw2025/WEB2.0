@@ -146,6 +146,7 @@ Route::post('exttomymsg/reply','MyEnterpriseController@msgReply');
     Route::get('uct_myinfo', 'CenterController@myinfo');
 //我的需求
     Route::get('uct_myneed', 'CenterController@myNeed');
+    Route::get('uct_myneed2', 'CenterController@myNeed2');
 //需求详情
     Route::get('uct_myneed/needDetail/{needid}', 'CenterController@needDetail');
 //发布需求

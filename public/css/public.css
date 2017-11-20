@@ -110,7 +110,7 @@
 /*.main{float: right;width:80.83333%;overflow-x:hidden;}*/
 .main-top{padding: 18px;color:#333;font-size: 16px;}
 /***********v2==>>侧边栏 start***********/
-.ucenter{padding:95px 0 35px;min-height: 686px;}
+.ucenter{padding:95px 0 35px;min-height: 800px;}
 .wrap{min-width: 970px;max-width: 1200px;margin:0 auto;position: relative;}
 .v-work-manage{background:url(../img/bg01.jpg) no-repeat;background-attachment: fixed;}
 .v-video-manage{background:url(../img/bg02.jpg) no-repeat;background-attachment: fixed;}
@@ -219,3 +219,13 @@
 @media (max-width: 540px){
     .bars{right: 0px;}
 }
+
+
+/*cebianlan*/
+.v-aside{overflow: inherit;}
+.mainmenu{position: relative;}
+.submenu{position: absolute;z-index: 10;top: 0;left: 100%;width: 100px;background: rgba(0,73,129,0.7);padding: 5px 10px 10px;border-radius: 5px;display: none;}
+.submenu a{line-height: 30px;display: block;width: 100px;text-align: center;color: #fff;}
+.submenu li{border-bottom: 1px solid #b9cddc;padding: 5px 0;}
+.submenu a:hover{background: #ffaa03;border-radius: 3px;}
+.v-identity-list{z-index: 20;}
