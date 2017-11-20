@@ -25,6 +25,17 @@
     <script type="text/javascript" src="{{asset('js/utils/html5shiv.js?1401441990')}}"></script>
     <script type="text/javascript" src="{{asset('js/utils/respond.min.js?1401441990')}}"></script>
     <![endif]-->
+    <style>
+        #expertmsgtome{
+            position: absolute;
+            right: 10px;
+            margin-top: -10px;
+            color: #fff;
+            background: #f10;
+            border-radius: 40px;
+            padding: 0 5px;
+        }
+    </style>
 </head>
 <body>
 <!-- 公共header / start -->
@@ -106,33 +117,73 @@
                     </ul>
                     <div class="v-ucenter-nav">
                         <div class="v-ucenter-nav-list v-default">
-                            <a id="uct_works" href="{{asset('uct_works')}}"  title="新增我的办事请求，管理办事" class="v-ucenter-nav-item ">
-                                <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
-                                办事管理
-                            </a>
-                            <a id="uct_video" href="{{asset('uct_video')}}" title="新增我的会议请求，管理会议" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
-                                视频会议
-                            </a>
-                            <a id="uct_resource" href="{{asset('uct_resource')}}" title="搜索专家，给专家留言" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
-                                专家资源
-                            </a>
-                            <a id="uct_myneed" href="{{asset('uct_myneed')}}"  title="发布你的商情，搜索你需要的商情" class="v-ucenter-nav-item">
-                                <img src="{{asset('img/vicon04.png')}}" alt="商情信息" />
-                                商情信息
-                            </a>
+                            <div class="mainmenu">
+                                <a id="uct_works" href="{{asset('uct_works')}}"   class="v-ucenter-nav-item ">
+                                    <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
+                                    办事管理
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="{{url('uct_works').'?domain=找资金'}}">找资金</a></li>
+                                    <li><a href="{{url('uct_works').'?domain=找技术'}}">找技术</a></li>
+                                    <li><a href="{{url('uct_works').'?domain=定战略'}}">定战略</a></li>
+                                    <li><a href="{{url('uct_works').'?domain=找市场'}}">找市场</a></li>
+                                </ul>
+                            </div>
+                            <div class="mainmenu">
+                                <a id="uct_video" href="{{asset('uct_video')}}" class="v-ucenter-nav-item">
+                                    <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
+                                    视频会议
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="{{url('/uct_video/applyVideo')}}">发起一对一视频</a></li>
+                                    <li><a href="{{url('/uct_video/applyVideo')}}">发起多人会议</a></li>
+                                    <li><a href="{{asset('uct_video').'?consultType=单人'}}">查看一对一视频</a></li>
+                                    <li><a href="{{asset('uct_video').'?consultType=多人'}}">查看多人会议</a></li>
+                                </ul>
+                            </div>
+                            <div class="mainmenu">
+                                <a id="uct_resource" href="{{asset('uct_resource')}}"  class="v-ucenter-nav-item">
+                                    <span id="expertmsgtome">0</span>
+                                    <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
+                                    专家资源
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="{{url('/uct_resource').'?action=collect'}}">已收藏的专家</a></li>
+                                    <li><a href="{{url('/uct_resource').'?action=message'}}">已留言的专家</a></li>
+                                    <li><a href="{{url('/exttomymsg')}}">专家给我的留言</a></li>
+                                </ul>
+                            </div>
+                            <div class="mainmenu">
+                                <a id="uct_myneed" href="{{asset('uct_myneed')}}"   class="v-ucenter-nav-item">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="普通商情" />
+                                    普通商情
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="javascript:;" onclick="putneed()">发布商情</a></li>
+                                    <li><a href="{{url('/uct_myneed')}}">查看商情</a></li>
+                                </ul>
+                            </div>
+                            <div class="mainmenu">
+                                <a id="uct_myneed2" href="{{asset('uct_myneed2')}}"   class="v-ucenter-nav-item ">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
+                                    VIP商情
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="javascript:;" onclick="putneed()">发布商情</a></li>
+                                    <li><a href="{{url('/uct_myneed2').'?level=1'}}">查看商情</a></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="v-ucenter-nav-list">
-                            <a id="uct_mywork" href="{{asset('uct_mywork')}}" title="查看企业的办事请求，管理办事" class="v-ucenter-nav-item">
+                            <a id="uct_mywork" href="{{asset('uct_mywork')}}"  class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon02.png')}}" alt="我的办事" />
                                 我的办事
                             </a>
-                            <a id="uct_myask" href="{{asset('uct_myask')}}" title="查看企业的会议请求，管理会议" class="v-ucenter-nav-item">
+                            <a id="uct_myask" href="{{asset('uct_myask')}}"  class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon03.png')}}" alt="我的咨询" />
                                 我的咨询
                             </a>
-                            <a id="uct_myneed" href="{{asset('uct_myneed')}}" title="搜索企业，给企业留言" class="v-ucenter-nav-item">
+                            <a id="uct_myneed" href="{{asset('uct_myneed')}}"  class="v-ucenter-nav-item">
                                 <img src="{{asset('img/vicon04.png')}}" alt="商情信息" />
                                 商情信息
                             </a>
@@ -166,7 +217,7 @@
             <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：010-64430881&nbsp;&nbsp;/&nbsp;&nbsp;68985908</p>
             <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>E-Mail：shengwei2025@163.com</p>
             <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市朝阳区安贞里街道浙江大厦</p>
-            <p class="copyright">京ICP备17053834号<span></span>copyright &copy; 2017 sw2025.com</p>
+            <p class="copyright">京ICP备17053834号<span></span>copyright &copy; 2017 swchina.com</p>
         </div>
         <!-- </div> -->
     </div>
@@ -237,6 +288,9 @@
     if(typeof($.cookie('userId'))=="undefined"){
         window.location.href="{{url('login')}}";
     }
+    $('#expertmsgtome').mouseover(function () {
+        layer.tips('查看专家给我的留言', '#expertmsgtome',{tips: [1, '#666']});
+    });
     $(function(){
         var str=window.location.pathname;
         var num1=str.indexOf('/');
@@ -304,6 +358,19 @@
                 }
             }
         })
+
+        $.ajax({
+            url:"{{url('getExpertMsgToMe')}}",
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res.code=="success"){
+                    $("#expertmsgtome").text(res.number)
+                }else{
+                    layer.msg('获取专家留言信息失败');
+                }
+            }
+        })
     })
     $(".quit").on("click",function(){
         $.ajax({
@@ -344,6 +411,27 @@
             window.location.href="{{asset('uct_basic')}}"
         }
     })
+    function putneed (){
+        $.post('/myneed/verifyputneed',{'role':'企业'},function (data) {
+            if(data.type == 3){
+                layer.msg(data.msg,{'icon':data.icon});
+            } else if(data.type == 2){
+                layer.confirm(data.msg, {
+                    btn: ['去认证','暂不需要'], //按钮
+                    skin:'layui-layer-molv'
+                }, function(){
+                    window.location.href=data.url;
+                }, function(){
+                    layer.close();
+                });
+            } else if (data.type == 1){
+                layer.alert(data.msg,{'icon':data.icon});
+            } else {
+                window.location = 'uct_myneed/supplyNeed';
+            }
+        });
+
+    }
 </script>
 </body>
 </html>
