@@ -178,6 +178,7 @@ Route::post('exttomymsg/reply','MyEnterpriseController@msgReply');
     Route::get('myinfo', 'ExpertUcenterController@myinfo');
 //我的需求
     Route::get('myneed', 'ExpertUcenterController@myNeed');
+    Route::get('myneed2', 'ExpertUcenterController@myNeed2');
 //需求详情
     Route::get('myneed/needDetail/{needid}', 'ExpertUcenterController@needDetail');
 //发布需求

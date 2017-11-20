@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="Keywords" content="2025,升维网,升维,对接资源,转型升级,投融资,企业服务,管理咨询">
     <meta name="description" content="升维网是一个为广大中小型企业与外部专家资源对接提供服务的大型平台。这里汇聚了国际国内大量优秀的专家和资源，通过升维网平台，企业可以向行业专家咨询在经营过程中遇到的相关问题，专家为企业提供最专业的指导服务。"/>
-    <meta name="author" content="www.sw2025.com">
+    <meta name="author" content="www.swchina.com">
     <title>升维网-企业对接高端资源的平台</title>
     <link rel="stylesheet" type="text/css" href="{{asset('iconfont/iconfont.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/global.css')}}" />
@@ -97,7 +97,7 @@
             <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：<span style="font-size: 25px">010-64430881</span>&nbsp;&nbsp;/&nbsp;&nbsp;<span style="font-size: 25px">68985908</span></p>
             <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>E-Mail：shengwei2025@163.com</p>
             <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市朝阳区安贞里街道浙江大厦</p>
-            <p class="copyright">京ICP备17053834号<span></span>copyright &copy; 2017 sw2025.com</p>
+            <p class="copyright">京ICP备17053834号<span></span>copyright &copy; 2017 swchina.com</p>
         </div>
         <!-- </div> -->
     </div>
