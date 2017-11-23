@@ -58,7 +58,7 @@
                                         </div>
                                         <div class="camera-comunicate">
                                             <span class="camera"><img src="{{asset('img/camera.png')}}" /></span>
-                                            <a href="javascript:;" class="video-comu" id="eventVideo">视频沟通</a>
+                                            <a href="javascript:;" class="video-comu" id="videoLink">视频沟通</a>
                                         </div>
                                     </div>
                                 </div>
@@ -331,13 +331,14 @@
                 success:function(res){
                     if(res['code']=="error"){
                         $("#netcallMeetingBox").find('.hangupButton').trigger('click');
+                        $("#showNetcallVideoLink").hide();
+                        $("#videoLink").hide();
                         clearInterval(time);
                     }
                 }
             })
         },300000);
     </script>
-
     <script type="text/javascript">
         $(function () {
 
@@ -577,8 +578,7 @@
                 content: '//fly.layui.com/'
             });*/
         });
-        $("#eventVideo").on("click",function(){
-
+       /* $("#eventVideo").on("click",function(){
             $eventId=$("#eventId").val();
             window.location.href="/uct_works/eventVideo/"+$eventId;
            // return false;
@@ -599,7 +599,7 @@
                     }
                 }
             })
-        })
+        })*/
 
     </script>
     <!-- 修改意见/end -->

@@ -20,9 +20,11 @@ function putneed (){
 
 }
 $(function(){
-    $('.mainmenu').hover(function() {
+   /* $('.mainmenu').hover(function() {
         $(this).children('.submenu').stop().toggle(500).siblings().children('.submenu').hide();
+
     })
+
 
     // $('input, textarea').placeholder();
     var xx = $('.v-manage-link-rate a').length - 1;
