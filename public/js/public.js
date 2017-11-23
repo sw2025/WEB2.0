@@ -23,7 +23,7 @@ $(function(){
    /* $('.mainmenu').hover(function() {
         $(this).children('.submenu').stop().toggle(500).siblings().children('.submenu').hide();
 
-    })
+    })*/
 
 
     // $('input, textarea').placeholder();
