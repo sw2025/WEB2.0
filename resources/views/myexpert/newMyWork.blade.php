@@ -7,7 +7,7 @@
                         <a href="javascript:;" class="v-works-mlt-opt @if($index!=0) active @endif"   index="1" page="0">我的办事</a>
                     </div>
                    @if($index==0)
-                        <div class="v-feedback condition0">
+                        <div class="v-feedback condition0" style="overflow: hidden">
                                 <span class="v-feedback-span"><i class="iconfont icon-laba"></i>
                                 <span class="v-feedback-count">{{$counts}}</span>个企业向您发出办事请求</span>
                         </div>
