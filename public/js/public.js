@@ -1,7 +1,7 @@
 $(function(){
-    $('.mainmenu').hover(function() {
+   /* $('.mainmenu').hover(function() {
         $(this).children('.submenu').stop().toggle(500).siblings().children('.submenu').hide();
-    })
+    })*/
     function putneed (){
         $.post('/myneed/verifyputneed',{'role':'企业'},function (data) {
             if(data.type == 3){

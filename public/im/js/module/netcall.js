@@ -9,6 +9,7 @@ function NetcallBridge(yx) {
     this.$msgInput = $("#messageText");
     this.$netcallAudioLink = $("#showNetcallAudioLink");
     this.$netcallVideoLink = $("#showNetcallVideoLink");
+    this.$ldsVideoLink = $("#videoLink");
     this.$netcallBox = $("#netcallBox");
     this.$chatBox = $("#chatBox");
     this.$callingHangupButton = $("#callingHangupButton"); // 呼叫对方时，挂断按钮
@@ -107,6 +108,7 @@ fn.initEvent = function () {
     this.$netcallAudioLink.on("click", this.onClickNetcallLink.bind(this, Netcall.NETCALL_TYPE_AUDIO));
     // 点击发起视频通话按钮
     this.$netcallVideoLink.on("click", this.onClickNetcallLink.bind(this, Netcall.NETCALL_TYPE_VIDEO));
+    this.$ldsVideoLink.on("click", this.onClickNetcallLink.bind(this, Netcall.NETCALL_TYPE_VIDEO));
     // 呼叫中挂断
     this.$callingHangupButton.on("click", this.cancelCalling.bind(this, true));
     // 被呼叫中接受

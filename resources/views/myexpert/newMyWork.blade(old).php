@@ -128,7 +128,7 @@
                         <a href="javascript:;" class="v-works-mlt-opt active" index="0" page="0">办事请求</a>
                         <a href="javascript:;" class="v-works-mlt-opt" index="1" page="0">我的办事</a>
                     </div>
-                    <div class="v-feedback">
+                    <div class="v-feedback" style="overflow: hidden">
                             <span class="v-feedback-span"><i class="iconfont icon-laba"></i>
                             <span class="v-feedback-count">{{$waitcount}}</span>个企业向您发出办事请求</span>
                     </div>
