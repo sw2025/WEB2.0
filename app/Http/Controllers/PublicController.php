@@ -1208,6 +1208,9 @@ class PublicController extends Controller
     {
         $data = $request->input();
         $res = 0;
+        if(!is_array($data['ids'])){
+            $data['ids'] = [$data['ids']];
+        }
         if($data['look'] == 'extislook' || $data['look'] == 'entislook'){
             switch($data['type']){
 

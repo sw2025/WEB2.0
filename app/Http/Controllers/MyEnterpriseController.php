@@ -715,7 +715,7 @@ class MyEnterpriseController extends Controller
                 ->where('t_e_event.eventid',$data['eventid'])
                 ->first();
             if(empty($eventinfo) || $eventinfo->configid != 6){
-                return ['msg' => '找不到此办事或此办事状态不正确','icon' => 2];
+                return ['msg' => '办事异常或者办事已经完成','icon' => 2];
             }
             $eventexpert = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first();
             $nowexpert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
