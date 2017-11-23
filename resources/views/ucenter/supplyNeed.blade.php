@@ -11,7 +11,7 @@
                     <span class="green-circle">1</span>提交商情
                 </div>
                 <div class="publish-need">
-                    <div class="publish-tips"><p style="color: #007fff;">提示：当前您是以企业的身份发布的商情，请确定完成企业认证后发布。<a href="javascript:;" onclick="putneed('专家')">点此以专家身份发布商情</a></p>
+                    <div class="publish-tips"><p style="color: #007fff;">提示：当前您是以企业的身份发布的商情，请确定完成企业认证后发布。<a href="javascript:;" onclick="putneed2('专家')">点此以专家身份发布商情</a></p>
                     </div>
                 @if(!empty($info))
                         <input type="hidden" id="refuseid" value="{{$info->needid}}">
@@ -209,7 +209,7 @@
 
         })
 
-        function putneed (type){
+        function putneed2 (type){
             $.post('{{url('myneed/verifyputneed')}}',{'role':type},function (data) {
                 if(data.type == 3){
                     layer.msg(data.msg,{'icon':data.icon});
