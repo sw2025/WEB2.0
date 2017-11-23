@@ -331,7 +331,7 @@
             } else if (data.type == 1){
                 layer.alert(data.msg,{'icon':data.icon});
             } else {
-                window.location = 'myneed/supplyNeed';
+                window.location = '/myneed/supplyNeed';
             }
         });
 
