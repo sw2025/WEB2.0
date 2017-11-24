@@ -7,7 +7,7 @@
 .respond-btn{margin-top: 0;display: block;width: 220px;}
 .respond-tips{margin-top: 0;padding: 20px 0;text-align: center;}
 .mywork-det-desc-para{padding-right: 5px;}
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
 	.mywork-det-txt{width: 90%;}
 	.invite-table td:first-child{padding-right: 5px;text-align: center;}
 	.invite-table td:nth-child(2){padding-left: 5px;}

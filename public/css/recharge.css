@@ -10,13 +10,13 @@
 .uploaded-img{display: inline-block;margin: 0;vertical-align: top;}
 .card-upload{display: inline-block;vertical-align: top;}
 .recharge-opt{margin:0 10px;}
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
 	.remaining{float: none;width: 100%;box-sizing: border-box;}
 	.upload-bankcard{float: none;width: 100%;box-sizing: border-box;border-left: none;border-top: 2px solid #e2e2e2;}
 }
-@media (max-width: 560px) {
+@media screen and (max-width: 560px) {
 	.open-member-add{width:100%;}
 }
-@media (max-width: 420px){
+@media screen and (max-width: 420px){
 	.channel{display: block;}
 }

@@ -93,7 +93,7 @@ body{background:#f8f8f8;}
 .supp-rec-brief{color:#333;font-size: 12px;text-indent: 2em;line-height: 1.6;max-height: 96px;overflow: hidden;text-align: justify;}
 .supp-rec-icon{right: 20px;bottom:10px;}
 .supp-rec-time{position: absolute;top: 0;right: 0;color:#888;font-size: 12px;}
-@media (max-width:540px){
+@media screen and (max-width:540px){
     .exp-details-img,.supp-details-img{position: relative;top: 0;left: 0;}
     .exp-details-brief,.supp-details-brief{margin-left: 0;}
     .ad-box{font-size: 14px;}

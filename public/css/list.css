@@ -82,7 +82,7 @@ body{background: #f8f8f8;}
 .list-search-inp{width:100%;}
 .list-search-btn{}
 .oh{overflow: hidden;}
-@media (max-width:750px){
+@media screen and (max-width:750px){
     .list-search{width:100%;}
     .list-search-inp{font-size: 12px;}
     .supp-list-img{width:100px;height: 100px;}
