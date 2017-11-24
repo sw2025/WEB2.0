@@ -64,18 +64,18 @@ body{background:#fff;}
 .serve2-line{padding-left: 45px;background:url(../img/squre.jpg) no-repeat left center;}
 .serve2-bgthree{text-align: left;}
 .serve2-banner img{width:100%;max-width: 100%;}
-@media (max-width: 1199px) {
+@media screen and (max-width: 1199px) {
     .core-item{width:138.5px;}
     .serve2-banner{height:220px;background: url(../img/pbanner_ser.jpg) no-repeat center top;}
 }
-@media (max-width:767px){
+@media screen and (max-width:767px){
     .serve2-banner{height:136px;background: url(../img/mbanner_ser.jpg) no-repeat center top;}
 }
-@media (max-width:970px){
+@media screen and (max-width:970px){
     .serve2-bg{width:auto;}
     .serve2-bold{padding:0 0 20px;}
 }
-@media (max-width:750px){
+@media screen and (max-width:750px){
     .serve2-li{width:50%;}
     .serve2-stage{padding:0 0 25px;}
 }

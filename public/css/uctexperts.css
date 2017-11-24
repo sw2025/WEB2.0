@@ -1,17 +1,17 @@
 .datas-member-audit{width: auto;margin: 0;text-align: center;}
 .datas-member-audit .datas-lt{float: none;vertical-align: top;display: inline-block;}
 .datas-member-audit .datas-rt{float: none;vertical-align: top;display: inline-block;}
-@media (max-width: 830px) {
+@media screen and (max-width: 830px) {
 	.friendly{width: 350px;}
 }
-@media (max-width: 540px) {
+@media screen and (max-width: 540px) {
 	.datas-lt{margin-right: 0;}
 	.datas-sel{width: 310px;}
 	.friendly{width: 305px;}
 	.datas-sel-name{width: 188px;}
 	.enterprise-inp{width: 288px;}
 }
-@media (max-width: 320px) {
+@media screen and (max-width: 320px) {
 	.datas-upload-lt{float: none;width: 160px;margin: 0 auto;}
 	.datas-upload-rt{float: none;width: 160px;margin: 10px auto;}
 }

@@ -174,7 +174,7 @@ body{overflow-x: hidden;}
     0%   {width:0;margin-left:0;}
     100% {width: 3em;margin-left: -1.5em;}
 }
-@media (max-width: 1199px){
+@media screen and (max-width: 1199px){
     .ex-res-img{width: 118px;height: 118px;}
     .ex-res-img img{width: 104px;height: 104px;}
     @-ms-keyframes circle
@@ -218,19 +218,19 @@ body{overflow-x: hidden;}
 .demands-list .icon-jiantou{font-size: 14px;color:#00a7ed;margin-right: 12px;float: left;}
 /*.short-line{height:3px;}*/
 /***********section3/end***********/
-@media (max-width:1199px){
+@media screen and (max-width:1199px){
     .banner,.banner ul,.banner ul li{height:220px;}
     .img01{background: url(../img/pbanner1.jpg) no-repeat center top;}
     .img02{background: url(../img/pbanner2.jpg) no-repeat center top;}
     .img03{background: url(../img/pbanner3.jpg) no-repeat center top;}
 }
-@media (max-width:767px){
+@media screen and (max-width:767px){
     .banner,.banner ul,.banner ul li{height:136px;}
     .img01{background: url(../img/mbanner1.jpg) no-repeat center top;}
     .img02{background: url(../img/mbanner2.jpg) no-repeat center top;}
     .img03{background: url(../img/mbanner3.jpg) no-repeat center top;}
 }
-@media (max-width: 750px){
+@media screen and (max-width: 750px){
     .tab-list{width:100%;}
     .tab-list li{width:100%;float: none;margin-top: 10px;}
     .tab-leftbtn,.tab-rightbtn{display: none!important;}

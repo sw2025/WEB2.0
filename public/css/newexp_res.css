@@ -5,7 +5,7 @@
 
 .uct-search{margin-top: 0;}
 .ucenter-con{padding-top: 20px;}
-@media (max-width: 750px){
+@media screen and (max-width: 750px){
 	.uct-list-search-inp{font-size: 10px;}
 	.left-cap{margin-right: 0;}
 

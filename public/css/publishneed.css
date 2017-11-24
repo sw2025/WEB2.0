@@ -26,7 +26,7 @@
 .publish-tips{padding-bottom:10px;}
 .wrong-reason{text-align:left;padding:0 0 10px;}
 .wrong-reason-col{color: #e3643d;}
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
 	.publish-need-txt{width: 90%;}
 	.card-step{font-size: 14px;}
 	.invite-table td:first-child{padding-right: 5px;text-align: center;}
