@@ -24,8 +24,12 @@
                     <td>{{$datas->industry}}</td>
                 </tr>
                 <tr>
-                    <td>咨询时间</td>
-                    <td>{{$datas->consulttime}}</td>
+                    <td>咨询开始时间</td>
+                    <td>{{$datas->starttime}}</td>
+                </tr>
+                <tr>
+                    <td>咨询结束时间</td>
+                    <td>{{$datas->endtime}}</td>
                 </tr>
                 <tr>
                     <td>咨询描述</td>
