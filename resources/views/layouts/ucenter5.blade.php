@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0">--}}
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta name="Keywords" content="2025,升维网,升维,对接资源,转型升级,投融资,企业服务,管理咨询">
     <meta name="description" content="升维网是一个为广大中小型企业与外部专家资源对接提供服务的大型平台。这里汇聚了国际国内大量优秀的专家和资源，通过升维网平台，企业可以向行业专家咨询在经营过程中遇到的相关问题，专家为企业提供最专业的指导服务。"/>
     <meta name="author" content="www.sw2025.com">
@@ -156,12 +157,15 @@
                     </ul>
                     <div class="v-ucenter-nav">
                         <div class="v-ucenter-nav-list">
-
                             <div class="mainmenu">
-                                <a id="uct_works" href="{{asset('uct_works')}}"  class="v-ucenter-nav-item ">
+                                <a id="uct_works" href="{{asset('uct_works')}}"  class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
                                     办事管理
                                 </a>
+                                <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon01.png')}}" alt="办事管理" />
+                                    办事管理
+                                 </span>
                                 <ul class="submenu">
                                     <li><a href="{{url('uct_works').'?domain=找资金'}}">找资金</a></li>
                                     <li><a href="{{url('uct_works').'?domain=找技术'}}">找技术</a></li>
@@ -170,10 +174,14 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_video" href="{{asset('uct_video')}}" class="v-ucenter-nav-item">
+                                <a id="uct_video" href="{{asset('uct_video')}}" class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
                                     视频会议
                                 </a>
+                                <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon02.png')}}" alt="视频会议" />
+                                    视频会议
+                                </span>
                                 <ul class="submenu">
                                     <li><a href="{{url('/uct_video/applyVideo')}}">发起一对一视频</a></li>
                                     <li><a href="{{url('/uct_video/applyVideo')}}">发起多人会议</a></li>
@@ -182,11 +190,15 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_resource" href="{{asset('uct_resource')}}"  class="v-ucenter-nav-item">
+                                <a id="uct_resource" href="{{asset('uct_resource')}}"  class="v-ucenter-nav-item aa">
                                     <span id="expertmsgtome">0</span>
                                     <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
                                     专家资源
                                 </a>
+                                <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon03.png')}}" alt="专家资源" />
+                                    专家资源
+                                 </span>
                                 <ul class="submenu">
                                     <li><a href="{{url('/uct_resource').'?action=collect'}}">已收藏的专家</a></li>
                                     <li><a href="{{url('/uct_resource').'?action=message'}}">已留言的专家</a></li>
@@ -194,20 +206,28 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_myneed" href="{{asset('uct_myneed')}}"   class="v-ucenter-nav-item">
+                                <a id="uct_myneed" href="{{asset('uct_myneed')}}"   class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon04.png')}}" alt="普通商情" />
                                     普通商情
                                 </a>
+                                 <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="普通商情" />
+                                    普通商情
+                                 </span>
                                 <ul class="submenu">
                                     <li><a href="javascript:;" onclick="putneed()">发布商情</a></li>
                                     <li><a href="{{url('/uct_myneed')}}">查看商情</a></li>
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_myneed2" href="{{asset('uct_myneed2')}}"   class="v-ucenter-nav-item ">
+                                <a id="uct_myneed2" href="{{asset('uct_myneed2')}}"   class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
                                     VIP商情
                                 </a>
+                                 <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
+                                    VIP商情
+                                 </span>
                                 <ul class="submenu">
                                     <li><a href="javascript:;" onclick="putneed()">发布商情</a></li>
                                     <li><a href="{{url('/uct_myneed2').'?level=1'}}">查看商情</a></li>
@@ -219,10 +239,14 @@
                         </div>
                         <div class="v-ucenter-nav-list  v-default">
                             <div class="mainmenu">
-                                <a id="uct_mywork" href="{{asset('uct_mywork')}}"  class="v-ucenter-nav-item">
+                                <a id="uct_mywork" href="{{asset('uct_mywork')}}"  class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon02.png')}}" alt="我的办事" />
                                     我的办事
                                 </a>
+                                <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon02.png')}}" alt="我的办事" />
+                                    我的办事
+                                 </span>
                                 <ul class="submenu">
                                     <li><a href="{{url('uct_mywork').'?index=1&domain=找资金'}}">找资金</a></li>
                                     <li><a href="{{url('uct_mywork').'?index=1&domain=找技术'}}">找技术</a></li>
@@ -231,41 +255,56 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_myask" href="{{asset('uct_myask')}}"  class="v-ucenter-nav-item">
+                                <a id="uct_myask" href="{{asset('uct_myask')}}"  class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon03.png')}}" alt="我的咨询" />
                                     我的咨询
                                 </a>
+                                <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon03.png')}}" alt="我的咨询" />
+                                    我的咨询
+                                 </span>
                                 <ul class="submenu">
                                     <li><a href="{{url('/uct_myask').'?index=0'}}">待响应的咨询</a></li>
                                     <li><a href="{{url('/uct_myask').'?index=1'}}">查看全部咨询</a></li>
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_entres" href="{{asset('uct_entres')}}"  class="v-ucenter-nav-item">
+                                <a id="uct_entres" href="{{asset('uct_entres')}}"  class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/enterpriseicon.png')}}" alt="企业资源" />
                                     企业资源
                                 </a>
+                                <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/enterpriseicon.png')}}" alt="企业资源" />
+                                    企业资源
+                                 </span>
                                 <ul class="submenu">
-                                    <li><a href="{{url('/uct_entres').'?action=collect'}}">已收藏的企业</a></li>
-                                    <li><a href="{{url('/uct_entres').'?action=message'}}">已留言的企业</a></li>
-                                    {{--<li><a href="{{url('/exttomymsg')}}">专家给我的留言</a></li>--}}
+                                    <li><a href="{{url('/uct_entres')}}">已认证企业</a></li>
+                                    <li><a href="{{url('/uct_entres/uct_entres2')}}">已注册企业</a></li>
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="myneed" href="{{asset('myneed')}}" {{--title="发布你的商情，搜索你需要的商情"--}} class="v-ucenter-nav-item">
+                                <a id="myneed" href="{{asset('myneed')}}" {{--title="发布你的商情，搜索你需要的商情"--}} class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon04.png')}}" alt="需求信息" />
                                     商情信息
                                 </a>
+                                 <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="商情信息" />
+                                    商情信息
+                                 </span>
                                 <ul class="submenu">
                                     <li><a href="javascript:;" onclick="putneed2()">发布商情</a></li>
                                     <li><a href="{{url('/myneed')}}">查看商情</a></li>
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="myneed2" href="{{asset('myneed2')}}?level=1"  " class="v-ucenter-nav-item ">
+                                <a id="myneed2" href="{{asset('myneed2')}}?level=1"  class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
                                     VIP商情
                                 </a>
+                                 <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
+                                    VIP商情
+                                 </span>
                                 <ul class="submenu">
                                     <li><a href="javascript:;" onclick="putneed2()">发布商情</a></li>
                                     <li><a href="{{url('/myneed2').'?level=1'}}">查看商情</a></li>
@@ -381,7 +420,7 @@
             } else if (data.type == 1){
                 layer.alert(data.msg,{'icon':data.icon});
             } else {
-                window.location = 'myneed/supplyNeed';
+                window.location = '/myneed/supplyNeed';
             }
         });
 
@@ -405,7 +444,7 @@
         }else{
             var string=str.substring(num1+1);
         }
-        $("#"+string).addClass('active');
+        $("#"+string).parent().addClass('active');
         if($.cookie('userId')){
             var name=$.cookie("name");
             $(".before-login").hide();
@@ -415,7 +454,18 @@
             $(".before-login").show();
             $(".after-login").hide();
         }
-
+        if($(window).width() > 750){
+            $('.mainmenu').hover(function() {
+                $(this).children('.submenu').stop().toggle(500).siblings().children('.submenu').hide();
+            })
+        }else{
+            $('.mainmenu').click(function() {
+                $('.mainmenu').css('width','42%');
+                $(this).addClass('active').siblings().removeClass('active');
+                $(this).children('.submenu').stop().show(500);
+                $(this).siblings().children('.submenu').hide();
+            })
+        }
         $.ajax({
             url:"{{asset('getAvatar')}}",
             data:{userId:$.cookie('userId'),type:"expert"},

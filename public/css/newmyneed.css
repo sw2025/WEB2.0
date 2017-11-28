@@ -31,11 +31,11 @@
 .uct-list-search{width: 70%;float: left;}
 .uct-list-search-inp{width: 100%;}
 .v-condition{overflow: inherit;}
-@media(max-width: 750px){
+@media screen and(max-width: 750px){
     .uct-list-search-inp{font-size: 10px;padding-left: 5px;}
 
 }
-@media(max-width: 640px){
+@media screen and(max-width: 640px){
     .uct-list-search-inp{font-size: 10px;}
     #vipneed{float: none;margin: 0 auto 10px;display: block;width: 30%;}
     .uct-list-search{float: none;width: 80%;margin: 0 auto;}

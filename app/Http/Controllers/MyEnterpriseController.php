@@ -715,7 +715,7 @@ class MyEnterpriseController extends Controller
                 ->where('t_e_event.eventid',$data['eventid'])
                 ->first();
             if(empty($eventinfo) || $eventinfo->configid != 6){
-                return ['msg' => '找不到此办事或此办事状态不正确','icon' => 2];
+                return ['msg' => '办事异常或者办事已经完成','icon' => 2];
             }
             $eventexpert = DB::table('t_e_eventresponse')->where(['eventid' => $data['eventid'],'state' => 3])->first();
             $nowexpert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
@@ -1199,7 +1199,8 @@ class MyEnterpriseController extends Controller
         $domainselect2 = ['投融资' => '找资金','科研技术' => '找技术', '战略管理' => '定战略', '市场资源' => '找市场'];
         //判断是否为http请求
         if(!empty($get = $request->input())){
-            //获取到get中的数据并处理            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            //获取到get中的数据并处理
+            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
             $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
             $supply=(isset($get['supply']) && $get['supply'] != "null") ? explode('/',$get['supply']) : null;
             $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
@@ -1226,7 +1227,8 @@ class MyEnterpriseController extends Controller
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
             }            //判断是否有搜索的关键字
             if(!empty($searchname)){
-                $obj = $obj->where("ext.expertname","like","%".$searchname."%");            }
+                $obj = $obj->where("ext.expertname","like","%".$searchname."%");
+            }
             //对三种排序进行判断
             if(!empty($ordertime)){
                 $obj = $obj->orderBy('ext.expertid',$ordertime);

@@ -60,7 +60,7 @@
                             </div>
                             <div class="camera-comunicate">
                                 <span class="camera"><img src="{{asset('img/camera.png')}}" /></span>
-                                <a href="javascript:;" class="video-comu" id="eventVideo">视频沟通</a>
+                                <a href="javascript:;" class="video-comu" id="videoLink">视频沟通</a>
                             </div>
                         </div>
                     </div>
@@ -331,6 +331,8 @@
                 success:function(res){
                     if(res['code']=="error"){
                         $("#netcallMeetingBox").find('.hangupButton').trigger('click');
+                        $("#showNetcallVideoLink").hide();
+                        $("#videoLink").hide();
                         clearInterval(time);
                     }
                 }
@@ -527,12 +529,9 @@
     <script type="text/javascript">
 
         $(function(){
-
-
             layer.config({
                 extend: '/extend/layer.ext.js'
             });
-
 
             $('#stop').on('click',function () {
                 layer.prompt({title: '请输入终止合作原因', formType: 2}, function(pass, index){
@@ -577,11 +576,11 @@
              content: '//fly.layui.com/'
              });*/
         });
-        $("#eventVideo").on("click",function(){
+      /*  $("#videoLink").on("click",function(){
 
             $eventId=$("#eventId").val();
-            window.location.href="/uct_works/eventVideo/"+$eventId;
-            return false;
+           /!* window.location.href="/uct_works/eventVideo/"+$eventId;
+            return false;*!/
             $.ajax({
                 url:"{{url('getEventVideoTime')}}",
                 data:{"eventId":$eventId},
@@ -599,8 +598,7 @@
                     }
                 }
             })
-        })
-
+        })*/
     </script>
     <!-- 修改意见/end -->
 

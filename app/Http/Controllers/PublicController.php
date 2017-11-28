@@ -61,7 +61,8 @@ class PublicController extends Controller
 
     public function download ()
     {
-        $filepath = Crypt::decrypt($_GET['path']);
+        //$filepath = Crypt::decrypt($_GET['path']);
+        $filepath = $_GET['path'];
         $filepath = '../../swUpload/'.str_replace('../../swUpload/','',trim($filepath,'/'));
         $filepath = str_replace('\\','/',$filepath);
         $filepath = iconv('utf-8','GB2312', $filepath);
@@ -1208,6 +1209,9 @@ class PublicController extends Controller
     {
         $data = $request->input();
         $res = 0;
+        if(!is_array($data['ids'])){
+            $data['ids'] = [$data['ids']];
+        }
         if($data['look'] == 'extislook' || $data['look'] == 'entislook'){
             switch($data['type']){
 

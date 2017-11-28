@@ -99,10 +99,14 @@ function dealAllStatus(data,timeout,mynotify){
                     if(res == 'success'){
                         window.location.href=data.url;
                         return false;
+                    } else {
+                        layer.msg('处理失败');
                     }
                 });
+            } else {
+                window.location.href=data.url;
             }
-            window.location.href=data.url;
+
 
         }
     }

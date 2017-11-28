@@ -189,6 +189,7 @@ Route::post('exttomymsg/reply','MyEnterpriseController@msgReply');
     Route::get('uct_mywork/workDetails/{eventid}', 'ExpertUcenterController@workDetail');
 //企业资源
     Route::get('uct_entres','ExpertUcenterController@enterpriseRes');
+    Route::get('uct_entres/uct_entres2','ExpertUcenterController@enterpriseRes2');
     //企业资源详情
     Route::get('uct_entres/detail/{enterid}','ExpertUcenterController@enterpriseDetail');
 

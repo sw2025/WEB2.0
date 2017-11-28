@@ -1,5 +1,5 @@
 /***********header start***********/
-.header{position: fixed;top: 0;width: 100%;z-index: 10;box-sizing: border-box;height: 60px;background:#004981;min-width: 320px;} 
+.header{position: fixed;top: 0;width: 100%;z-index: 10;box-sizing: border-box;height: 60px;background:#004981;min-width: 320px;}
 .header .container{position: relative;padding-left: 0;padding-right: 0;}
 .navbar-header{float: left;}
 .navbar-brand{float: left;margin-top: 8px;}
@@ -50,14 +50,14 @@
 .contact-pub i{margin-right: 10px;-webkit-text-stroke-width: 0;}
 .copyright span{padding:0 12px;}
 /***********footer end***********/
-@media (min-width: 992px){
+@media screen and (min-width: 992px){
     .navbar-toggle{display: none;}
 }
-@media (max-width: 1199px){
+@media screen and (max-width: 1199px){
     .navbar-nav{margin-left: 4%;}
     .nav a{padding:6px 11px;}
 }
-@media (max-width: 991px){
+@media screen and (max-width: 991px){
     .navbar-nav{display: none;float: none;margin-left: 0;}
     .nav{width:100%;padding-top: 0;position: absolute;background: #004981;z-index: 22;top: 50px;}
     .nav li{float:none;}
@@ -65,30 +65,30 @@
     .two-pic{border-bottom: 1px dashed #fff;border-right: none;}
 }
 /*分页*/
-.pages {overflow: hidden;/*padding:0 0 10px 25px;*/text-align: center;} 
-.pages #Pagination1 {float: left;overflow: hidden;} 
-.pages #Pagination1 .pagination {height: 32px;text-align: right;font-family: \u5b8b\u4f53,Arial;} 
-.pages #Pagination1 .pagination a, .pages #Pagination1 .pagination span {float: left;display: inline;padding: 7px 15px;border: 1px solid #e6e6e6;border-right: none;background: #f6f6f6;color: #666666;font-family: \u5b8b\u4f53,Arial;font-size: 14px;cursor: pointer;} 
-.pages #Pagination1 .pagination .current {background: #269edc;color: #fff;} 
-.pages #Pagination1 .pagination .prev, .pages #Pagination1 .pagination .next {float: left;padding: 7px 15px;border: 1px solid #e6e6e6;background: #f6f6f6;color: #666666;cursor: pointer;} 
-.pages #Pagination1 .pagination .prev i, .pages #Pagination1 .pagination .next i {display: inline-block;width: 4px;height: 11px;margin-right: 5px;background: url(../images/icon.fw.png) no-repeat;} 
-.pages #Pagination1 .pagination .prev {border-right: none;} 
-.pages #Pagination1 .pagination .pagination-break {padding: 3px 5px;border: none;border-left: 1px solid #e6e6e6;background: none;cursor: default;} 
+.pages {overflow: hidden;/*padding:0 0 10px 25px;*/text-align: center;}
+.pages #Pagination1 {float: left;overflow: hidden;}
+.pages #Pagination1 .pagination {height: 32px;text-align: right;font-family: \u5b8b\u4f53,Arial;}
+.pages #Pagination1 .pagination a, .pages #Pagination1 .pagination span {float: left;display: inline;padding: 7px 15px;border: 1px solid #e6e6e6;border-right: none;background: #f6f6f6;color: #666666;font-family: \u5b8b\u4f53,Arial;font-size: 14px;cursor: pointer;}
+.pages #Pagination1 .pagination .current {background: #269edc;color: #fff;}
+.pages #Pagination1 .pagination .prev, .pages #Pagination1 .pagination .next {float: left;padding: 7px 15px;border: 1px solid #e6e6e6;background: #f6f6f6;color: #666666;cursor: pointer;}
+.pages #Pagination1 .pagination .prev i, .pages #Pagination1 .pagination .next i {display: inline-block;width: 4px;height: 11px;margin-right: 5px;background: url(../images/icon.fw.png) no-repeat;}
+.pages #Pagination1 .pagination .prev {border-right: none;}
+.pages #Pagination1 .pagination .pagination-break {padding: 3px 5px;border: none;border-left: 1px solid #e6e6e6;background: none;cursor: default;}
 .topPages .pages #Pagination1 .pagination .prev, .topPages .pages #Pagination1 .pagination .next{display: block!important;}
-.pages #Pagination {/*float: left;*/overflow: hidden;display: inline-block;} 
-.pages #Pagination .pagination {text-align: right;font-family: \u5b8b\u4f53,Arial;overflow: hidden;} 
-.pages #Pagination .pagination a, .pages #Pagination .pagination span {float: left;display: inline;padding: 7px 15px;border: 1px solid #e6e6e6;/*border-right: none;*/ background: #f6f6f6;color: #666666;font-family: \u5b8b\u4f53,Arial;font-size: 14px;cursor: pointer;} 
-.pages #Pagination .pagination .current {background: #269edc;color: #fff;} 
-.pages #Pagination .pagination .prev, .pages #Pagination .pagination .next {float: left;padding: 7px 15px;border: 1px solid #e6e6e6;background: #f6f6f6;color: #666666;cursor: pointer;} 
-.pages #Pagination .pagination .prev i, .pages #Pagination .pagination .next i {display: inline-block;width: 4px;height: 11px;margin-right: 5px;background: url(../images/icon.fw.png) no-repeat;} 
+.pages #Pagination {/*float: left;*/overflow: hidden;display: inline-block;}
+.pages #Pagination .pagination {text-align: right;font-family: \u5b8b\u4f53,Arial;overflow: hidden;}
+.pages #Pagination .pagination a, .pages #Pagination .pagination span {float: left;display: inline;padding: 7px 15px;border: 1px solid #e6e6e6;/*border-right: none;*/ background: #f6f6f6;color: #666666;font-family: \u5b8b\u4f53,Arial;font-size: 14px;cursor: pointer;}
+.pages #Pagination .pagination .current {background: #269edc;color: #fff;}
+.pages #Pagination .pagination .prev, .pages #Pagination .pagination .next {float: left;padding: 7px 15px;border: 1px solid #e6e6e6;background: #f6f6f6;color: #666666;cursor: pointer;}
+.pages #Pagination .pagination .prev i, .pages #Pagination .pagination .next i {display: inline-block;width: 4px;height: 11px;margin-right: 5px;background: url(../images/icon.fw.png) no-repeat;}
 /*.pages #Pagination .pagination .prev {border-right: none;} */
-.pages #Pagination .pagination .pagination-break {padding: 3px 5px;border: none;/*border-left: 1px solid #e6e6e6;*/ background: none;cursor: default;} 
+.pages #Pagination .pagination .pagination-break {padding: 3px 5px;border: none;/*border-left: 1px solid #e6e6e6;*/ background: none;cursor: default;}
 
-.pages .searchPage {float: left;margin-top: 3px;} 
-.pages .searchPage .page-sum {padding: 11px 13px;color: #999999;font-family: \u5b8b\u4f53,Arial;font-size: 14px;} 
-.pages .searchPage .page-go {padding: 8px 0;color: #999999;font-family: \u5b8b\u4f53,Arial;font-size: 14px;padding: 10px 0\9;*padding: 6px 0;} 
-.pages .searchPage .page-go input {width: 21px;height: 20px;margin: 0 5px;padding-left: 5px;border: 1px solid #e4e4e4;} 
-.pages .searchPage .page-btn {margin: 9px 0 5px 5px;padding: 2px 5px;background: #269edc;border-radius: 2px;color: #ffffff;font-family: Arial, 'Microsoft YaHei';font-size: 14px;text-decoration: none;} 
+.pages .searchPage {float: left;margin-top: 3px;}
+.pages .searchPage .page-sum {padding: 11px 13px;color: #999999;font-family: \u5b8b\u4f53,Arial;font-size: 14px;}
+.pages .searchPage .page-go {padding: 8px 0;color: #999999;font-family: \u5b8b\u4f53,Arial;font-size: 14px;padding: 10px 0\9;*padding: 6px 0;}
+.pages .searchPage .page-go input {width: 21px;height: 20px;margin: 0 5px;padding-left: 5px;border: 1px solid #e4e4e4;}
+.pages .searchPage .page-btn {margin: 9px 0 5px 5px;padding: 2px 5px;background: #269edc;border-radius: 2px;color: #ffffff;font-family: Arial, 'Microsoft YaHei';font-size: 14px;text-decoration: none;}
 .pages .page-sum{/*float: left;*/margin-top: 2px;margin-left: 20px;color:#666;display: inline-block;vertical-align: 12px;}
 .allPage{font-weight: normal;}
 /*my add pages*/
@@ -140,6 +140,9 @@
 .v-default{display: block;}
 .v-ucenter-nav-item{padding:20px 0;display: block;border-bottom: 1px solid #ccc;text-align: center;color:#333;font-size:14px;}
 .v-ucenter-nav-item img{margin:0 auto 15px;}
+/***************11-23*********************/
+.v-ucenter-nav-item:hover,.v-ucenter-nav-list .active .v-ucenter-nav-item{background:#004981;color: #fff;}
+/***************11-23*********************/
 .v-ucenter-nav-item:hover,.v-ucenter-nav-list .active{background:#004981;color: #fff;}
 .vmain{margin-left: 148px;background:#fff;background:rgba(255,255,255,0.4);border-radius: 5px;}
 .goto-renzh{margin:0 auto;position: relative;}
@@ -193,13 +196,23 @@
 .mt20{margin-top:20px;}
 .mt20 .datas-sel-def{margin-left:108px;}
 .datas-list li{height: 28px;line-height:28px;}
+
+
+/*cebianlan*/
+.v-aside{overflow: inherit;}
+.mainmenu{position: relative;}
+.submenu{position: absolute;z-index: 10;top: 0;left: 100%;width: 100px;background: rgba(0,73,129,0.7);padding: 5px 10px 10px;border-radius: 5px;display: none;}
+.submenu a{line-height: 30px;display: block;width: 100px;text-align: center;color: #fff;}
+.submenu li{border-bottom: 1px solid #b9cddc;padding: 5px 0;}
+.submenu a:hover{background: #ffaa03;border-radius: 3px;}
+.v-identity-list{z-index: 20;}
 /*适配*/
 
-.ucenter{min-width: auto;}
+.ucenter{min-width: auto;width: 100%;}
 .wrap{min-width: auto;}
 
-
-@media (max-width: 750px){
+.phone{display: none;}
+@media screen and (max-width: 540px){
     .navbar-link{display: none;}
     .navbar-toggle{margin-left: 10px;}
     .search-text{width: 88px;}
@@ -214,18 +227,13 @@
     .match-fl,.v-identity{float: left;box-sizing: border-box;}
     .v-ucenter-nav-item{border-bottom: none;padding: 5px 0;}
     .v-ucenter-nav-item img{display: none;}
+    /*2017-11-22====start*/
+    .aa{display: none;}
+    .phone{display: block;}
+    .submenu,.submenu a{width: 80px;white-space: nowrap;font-size: 10px;line-height: 24px;}
+    /*2017-11-22====end*/
 
 }
-@media (max-width: 540px){
+@media screen and (max-width: 540px){
     .bars{right: 0px;}
 }
-
-
-/*cebianlan*/
-.v-aside{overflow: inherit;}
-.mainmenu{position: relative;}
-.submenu{position: absolute;z-index: 10;top: 0;left: 100%;width: 100px;background: rgba(0,73,129,0.7);padding: 5px 10px 10px;border-radius: 5px;display: none;}
-.submenu a{line-height: 30px;display: block;width: 100px;text-align: center;color: #fff;}
-.submenu li{border-bottom: 1px solid #b9cddc;padding: 5px 0;}
-.submenu a:hover{background: #ffaa03;border-radius: 3px;}
-.v-identity-list{z-index: 20;}
