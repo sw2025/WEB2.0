@@ -637,6 +637,81 @@ class ExpertUcenterController extends Controller
         return $res;
     }
 
+    public function enterpriseRes2(Request $request)
+    {
+        if(empty(session('userId'))){
+            return redirect('/login');
+        }
+        //获取板块信息
+        $datas = DB::table('enterpriseuser as ext');
+
+        //获得用户的收藏
+        $collectids = [];
+        if(session('userId')){
+            $collectids = DB::table('t_u_collectenterprise')->where(['userid' => session('userId'),'remark' => 1])->lists('enterpriseid');
+        }
+        //用户回复的数量
+        $msgcount =0;
+        $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
+        $domainselect2 = ['投融资' => '找资金','科研技术' => '找技术', '战略管理' => '定战略', '市场资源' => '找市场'];
+        //判断是否为http请求
+        if(!empty($get = $request->input())){
+            //获取到get中的数据并处理
+            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            /*$role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
+            $supply=(isset($get['supply']) && $get['supply'] != "null") ? explode('/',$get['supply']) : null;*/
+            $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
+            $industry=(isset($get['industry']) && $get['industry'] != "null") ? $get['industry'] : null;
+            $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
+            $ordercollect=( isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
+            $ordermessage=( isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
+            $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
+            //设置where条件生成where数组
+            /*  $rolewhere = !empty($role)?array("category"=>$role):array();*/
+            $addresswhere = !empty($address)?array("ext.address"=>$address):array();
+            $industrywhere = !empty($industry)?array("ext.industry"=>$industry):array();
+            /*if(!empty($supply)){
+                $supply[0] = $domainselect2[$supply[0]];
+                $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+                $supply[0] = $domainselect[$supply[0]];
+            } else {
+                $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
+            }*/
+            $obj = $datas->where($addresswhere)->where($industrywhere);
+            //判断是否有搜索的关键字
+            if(!empty($searchname)){
+                $obj = $obj->where("ext.enterprisename","like","%".$searchname."%");
+            }
+            if(!empty($action)){
+                switch($action){
+                    case 'collect':
+                        $obj = $obj->whereRaw('ext.enterpriseid in (select  enterpriseid from t_u_collectenterprise  where userid='.session('userId').' and remark=1)');
+                        $action = '已收藏';
+                        //$obj = $obj->where('colneed.userid',session('userId'))->where('colneed.remark',1);
+                        break;
+                    case 'message':
+                        $obj = $obj->whereRaw('ext.enterpriseid in (select  enterpriseid from t_u_messagetoenterprise  where userid='.session('userId').' group by enterpriseid)');
+                        $action = '已留言';
+                        break;
+                }
+            } else {
+                $action='';
+            }
+            //对三种排序进行判断
+            if(!empty($ordertime)){
+                $obj = $obj->orderBy('ext.id',$ordertime);
+            } elseif(!empty($ordercollect)){
+                $obj = $obj->orderBy('coll.count',$ordercollect);
+            } else {
+
+            }
+            $datas = $obj->paginate(4);
+            return view("expertUcenter.enterpriseres2",compact('cate','msgcount','domainselect','searchname','datas','collectids','industry','action','address','ordertime','ordercollect','ordermessage'));
+        }
+        $datas = $datas->paginate(4);
+        $ordertime = 'desc';
+        return view('expertUcenter.enterpriseres2',compact('datas','domainselect','ordertime','collectids','msgcount'));
+    }
 
     public function enterpriseRes(Request $request)
     {
@@ -714,10 +789,14 @@ class ExpertUcenterController extends Controller
             $datas = $obj->paginate(4);
             return view("expertUcenter.enterpriseres",compact('cate','msgcount','domainselect','searchname','datas','collectids','industry','action','address','ordertime','ordercollect','ordermessage'));
         }
-        $datas = $datas->orderBy("ext.enterpriseid",'desc')->paginate(4);
+        $first123 = DB::table('enterpriseuser');
+        $datas = $datas
+            ->orderBy("ext.enterpriseid",'desc')->paginate(4);
         $ordertime = 'desc';
         return view('expertUcenter.enterpriseres',compact('datas','domainselect','ordertime','collectids','msgcount'));
     }
+
+
 
 
     public function enterpriseDetail($enterpriseid)

@@ -33,7 +33,7 @@
                     <!-- 未上传银行卡start -->
                     <div class="card-upload" @if(empty($bankcard) || $state==1)style="display:inline-block" @else style="display: none" @endif>
                         <div class="card-span fileinput-button">
-                            <span class="card-upload-tip" ><a href="{{asset('uct_recharge/card')}}"><i class="iconfont icon-add"></i>添加银行卡</a></span>
+                            <span class="card-upload-tip" ><a href="{{asset('recharge/card')}}"><i class="iconfont icon-add"></i>添加银行卡</a></span>
                         </div>
                     </div>
 
