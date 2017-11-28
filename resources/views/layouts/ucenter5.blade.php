@@ -278,9 +278,8 @@
                                     企业资源
                                  </span>
                                 <ul class="submenu">
-                                    <li><a href="{{url('/uct_entres').'?action=collect'}}">已收藏的企业</a></li>
-                                    <li><a href="{{url('/uct_entres').'?action=message'}}">已留言的企业</a></li>
-                                    {{--<li><a href="{{url('/exttomymsg')}}">专家给我的留言</a></li>--}}
+                                    <li><a href="{{url('/uct_entres')}}">已认证企业</a></li>
+                                    <li><a href="{{url('/uct_entres/uct_entres2')}}">已注册企业</a></li>
                                 </ul>
                             </div>
                             <div class="mainmenu">
