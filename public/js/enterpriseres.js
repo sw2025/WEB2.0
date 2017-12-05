@@ -28,7 +28,7 @@ $(function(){
     });
 
     //搜索
-    $('.list-search .list-search-btn').on('click',function () {
+    $('.uct-list-search .uct-list-search-btn').on('click',function () {
         var searchName = $(this).siblings().val();
 
         select[0] = 'serveName';
@@ -58,7 +58,7 @@ $(function(){
             select[0] = 'address';
             select[1] = null;
         }else if ($(this).hasClass('all-results-video')) {
-            select[0] = 'consult';
+            select[0] = 'industry';
             select[1] = null;
         }else if ($(this).hasClass('all-results-trace')) {
             select[0] = 'action';
