@@ -1,6 +1,25 @@
 @extends("layouts.master")
 @section("content")
 <script type="text/javascript" src="{{asset('js/reply.js')}}"></script>
+<style>
+    #selectexpert{
+        float: right;
+        border: 1px solid #000;
+        padding: 4px;
+        background: #fff;
+        border-radius: 5px;
+        margin-top: 24%;
+    }
+    #selectexpert:hover{
+        background: #3daff3;
+        color: #fff;
+    }
+    .textareaspan{
+        width:99%;
+        font-size: 15px;
+        border:none;
+    }
+</style>
 <link rel="stylesheet" type="text/css" href="{{asset('css/details.css')}}" />
 <div class="container section">
     <div class="row clearfix">
@@ -15,6 +34,8 @@
 
             <div class="supp-details-con">
                 <div class="supp-det-con-top">
+                    @if(!empty($datas->documenturl))<button id="selectexpert" style="font-size: 15px;" onclick="window.open('{{url("/showfile").'?path='.$datas->documenturl}}')">点击查看详细PDF</button>@endif
+
                     <img src="@if(empty($datas->entimg)) {{env('ImagePath').$datas->extimg}} @else {{env('ImagePath').$datas->entimg}}  @endif" class="supp-details-img" />
                     <div class="supp-details-brief">
                         <span class="supp-details-name"><i class="iconfont icon-gongsi"></i>【{{$datas->needtype}}】@if($datas->needtype=="专家") {{$datas->expertname}} @else {{$datas->enterprisename}} @endif</span>
@@ -30,7 +51,7 @@
                         <div class="details-graph"><span class="square"></span></div>
                         <span class="details-tit-cap">商情描述</span>
                     </div>
-                    <textarea class="details-abs-desc" disabled id="textarea">{{trim($datas->brief)}}</textarea>
+                    <textarea class="details-abs-desc" disabled id="textarea" style="font-size: 15px;">{{trim($datas->brief)}}</textarea>
                 </div>
             </div>
 
@@ -61,7 +82,7 @@
                                     <img src="@if(empty($v->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$v->avatar}}@endif" class="floor-host-ava" />
                                     <div class="floor-host-desc">
                                         <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->enterprisename or $v->expertname}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
-                                        <span class="floor-host-words">{{$v->content}}</span>
+                                        <textarea class="floor-host-words textareaspan" readonly>{{$v->content}}</textarea>
                                     </div>
                                 </div>
                                 <div class="message-reply-show">
@@ -149,5 +170,9 @@
 
 <script src="{{url('js/supply.js')}}" type="text/javascript"></script>
 <script src="{{url('js/textareaauto.js')}}" type="text/javascript"></script>
-
+<script>
+    $('.textareaspan').each(function () {
+        autoTextarea($(this)[0]);
+    });
+</script>
 @endsection

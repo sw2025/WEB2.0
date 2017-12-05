@@ -2,14 +2,40 @@
 @section("content")
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/newexp_res.css')}}" />
-
+<style>
+    #entimg2avt{
+        border-radius: 5px;
+        width: 88px;
+        height: 88px;
+        background: #ccc8c8;
+    }
+    #entimg2avt p{
+        color: #383333;
+        font-size: 30px;
+        text-align: center;
+    }
+    #btnnumber{
+        width:180px;
+        -webkit-border-radius:5px;
+        -moz-border-radius:5px;
+        height: 41px;
+        line-height: 20.5px;
+        background: #00a7ed;
+        color: #fff;
+        border:1px ;
+        border-radius: 4px;
+        margin-left:30px;
+        position: absolute;
+    }
+</style>
     <script type="text/javascript" src="js/list.js"></script>
             <!-- 企业资源 / start -->
             <div class="ucenter-con">
 
                 <div class="uct-list-filter">
                     <div class="uct-search">
-                        <div class="uct-list-search">
+                        <button id="btnnumber"  onmouseover="layer.tips('本页面显示的是已注册的企业，点击按钮跳转到已认证的企业', this, {tips: [1, '#3595CC'],time: 4000});" onclick="window.location='{{url('/uct_entres')}}'">升维网企业总入驻数：8000+<br />升维网已注册企业数：7000+</button>
+                        <div class="uct-list-search" style="width:55%;">
                             <input type="text" class="uct-list-search-inp placeholder" placeholder="请输入企业名称" value="{{$searchname or null}}">
                             <button type="button" class="uct-list-search-btn"><i class="iconfont icon-sousuo"></i></button>
                         </div>
@@ -114,19 +140,20 @@
                         <li class="col-md-6">
                             <a href="javascript:;" onclick="layer.alert('非常抱歉，暂无法查看未认证企业详情');" class="expert-list-link">
                                 <div class="exp-list-top">
-                                    <span class="exp-list-img"><img src="{{asset('img/632614695835566519.png')}}" /></span>
+                                    {{--<span class="exp-list-img"><img src="{{asset('img/632614695835566519.png')}}" /></span>--}}
+                                    <span class="exp-list-img" id="entimg2avt" style="background: {{['#ccc8c8','#c5d8d8','#c6ddec','#d4d4d4','#fff'][array_rand(['#ccc8c8','#c5d8d8','#c6ddec','#d4d4d4','#fff'],1)] }};"><p>{{mb_substr($v->enterprisename,0,2)}}</p><p>{{mb_substr($v->enterprisename,2,2)}}</p></span>
                                     <div class="exp-list-brief">
                                         <span class="exp-list-name">{{$v->enterprisename}}</span>
                                         <span class="exp-list-video"><i class="iconfont icon-shipin"></i>所在行业：<em>{{$v->industry}}</em></span>
                                         <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>所在地区：<em> {{$v->address}} </em></span>
+                                        <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>法人代表：<em> {{$v->username}} </em></span>
                                     </div>
 
                                 </div>
                                 <div class="exp-list-desc exps-enterprise">
-                                    <br />
                                     {{--{{$v->brief}}--}}该企业详情由于特殊原因暂不能查看！
-                                    <br />
-                                    敬请谅解
+                                    <p>敬请谅解</p>
+
                                 </div>
                             </a>
                             <div class="exp-list-icon">

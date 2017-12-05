@@ -761,7 +761,7 @@ class ExpertUcenterController extends Controller
             $obj = $datas->where($addresswhere)->where($industrywhere);
             //判断是否有搜索的关键字
             if(!empty($searchname)){
-                $obj = $obj->where("ext.expertname","like","%".$searchname."%");
+                $obj = $obj->where("ext.enterprisename","like","%".$searchname."%");
             }
             if(!empty($action)){
                 switch($action){
