@@ -2,14 +2,30 @@
 @section("content")
     <link rel="stylesheet" type="text/css" href="{{asset('css/experts.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/newexp_res.css')}}" />
+    <style>
+        #btnnumber{
+            width:180px;
+            -webkit-border-radius:5px;
+            -moz-border-radius:5px;
+            height: 41px;
+            line-height: 20.5px;
+            background: #00a7ed;
+            color: #fff;
+            border:1px ;
+            border-radius: 4px;
+            margin-left:30px;
+            position: absolute;
+        }
 
+    </style>
     <script type="text/javascript" src="js/list.js"></script>
             <!-- 企业资源 / start -->
             <div class="ucenter-con">
 
                 <div class="uct-list-filter">
                     <div class="uct-search">
-                        <div class="uct-list-search">
+                        <button id="btnnumber" onmouseover="layer.tips('本页面显示的是已认证的企业，点击按钮跳转到已注册的企业', this, {tips: [1, '#3595CC'],time: 4000});" onclick="window.location='{{url('/uct_entres/uct_entres2')}}'">升维网企业总入驻数：8000+<br />升维网已注册企业数：7000+</button>
+                        <div class="uct-list-search" style="width: 55%;">
                             <input type="text" class="uct-list-search-inp placeholder" placeholder="请输入企业名称" value="{{$searchname or null}}">
                             <button type="button" class="uct-list-search-btn"><i class="iconfont icon-sousuo"></i></button>
                         </div>

@@ -1,14 +1,18 @@
 @extends("layouts.ucenter4")
 @section("content")
-
-    <link rel="stylesheet" type="text/css" href="{{asset('css/uctexperts.css')}}" />
-
+<link rel="stylesheet" type="text/css" href="{{asset('css/uctexperts.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{asset('css/cropper.min.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{asset('css/main.css')}}" />
     <!-- 公共header / end -->
 <script src="{{asset('./FileUpload/js/vendor/jquery.ui.widget.js')}}"></script>
 <script src="{{asset('./FileUpload/js/jquery.fileupload.js')}}"></script>
 <script src="{{asset('./FileUpload/js/jquery.iframe-transport.js')}}"></script>
 <script src="{{asset('./FileUpload/js/jquery.fileupload-process.js')}}"></script>
 <script src="{{asset('./FileUpload/js/jquery.fileupload-validate.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/cropper.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/main.js')}}"></script>
 <div class="main">
     <!-- 发布需求 / start -->
     <h3 class="main-top">专家认证</h3>
@@ -145,12 +149,57 @@
                             <div class="datas-upload-rt">
                                 <img src="@if(!empty($result) && $result->showimage){{env('ImagePath').$result->showimage}}@else img/photo2.jpg @endif"
                                      id="avatar2" class="photo1"/>
-                                <div class="photo-upload">
+                                <div class="photo-upload" id="crop-avatar">
                                     <div class="photo-btn-box fileinput-button">
-                                        <span class="photo-btn-tip">上传专家照片</span>
-                                        <input id="photo2" type="file" name="files[]" data-url="{{asset('upload')}}"
+                                        <span class="photo-btn-tip avatar-view ">上传专家照片</span>
+                                           {{--  <input class="avatar-input" id="avatarInput" name="avatar_file" type="file">--}}
+                                       {{-- <input id="photo2" type="file" name="files[]" data-url="{{asset('upload')}}"
                                                multiple="" index="@if(!empty($result)){{$result->showimage}}@endif"
-                                               accept="image/png, image/gif, image/jpg, image/jpeg">
+                                               accept="image/png, image/gif, image/jpg, image/jpeg">--}}
+                                    </div>
+                                    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <form class="avatar-form" action="{{asset('avatarUpload')}}" enctype="multipart/form-data" method="post">
+                                                    <div class="modal-header">
+                                                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="avatar-body">
+
+                                                            <!-- Upload image and data -->
+                                                            <div class="avatar-upload">
+                                                                <input class="avatar-src" name="avatar_src" type="hidden">
+                                                                <input class="avatar-data" name="avatar_data" type="hidden">
+                                                              {{-- <label for="avatarInput"></label>--}}
+                                                                <input class="avatar-input" id="avatarInput"  name="avatar_file" type="file" >
+                                                            </div>
+
+                                                            <!-- Crop and preview -->
+                                                            <div class="row">
+                                                                <div class="col-md-9">
+                                                                    <div class="avatar-wrapper"></div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="avatar-preview preview-lg"></div>
+                                                                    <div class="avatar-preview preview-md"></div>
+                                                                    <div class="avatar-preview preview-sm"></div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row avatar-btns">
+                                                                <div class="col-md-3">
+                                                                    <button class="btn btn-primary btn-block avatar-save" type="submit">确定</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="modal-footer">
+                                                      <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                                                    </div> -->
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                     <p class="datas-lt-explain">专家照片用于展示专家，请选择能展现专家风采的照片</p>
                                 </div>
@@ -268,7 +317,7 @@
                 $.each(data.result.files, function (index, file) {
                     // console.log(file.name);
                     $("#avatar2").attr('src', '{{env('ImagePath')}}/images/' + file.name).show();
-                    $('#photo2').attr('index', '/images/' + file.name);
+                    $('#avatar2').attr('index', '/images/' + file.name);
                 });
             }
         });
@@ -300,7 +349,7 @@
             }
             var address = $('#address').html();
             var photo1 = $('#photo1').attr('index');
-            var photo2 = $('#photo2').attr('index');
+            var photo2 = $('#avatar2').attr('index');
             var brief = $('#brief').val();
 
             if (name == '' || photo1 == '' || industry == '' || address == '' || brief == '') {
