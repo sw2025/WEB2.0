@@ -345,3 +345,5 @@ Route::post('initpay','PingpayController@initPay');
 Route::get('pingsuccess','PingpayController@pingSuccess');
 
 Route::post("charge",'PingpayController@charge');
+
+Route::post("avatarUpload",'PublicController@uploadAvatar');
