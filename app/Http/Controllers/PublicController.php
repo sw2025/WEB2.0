@@ -393,6 +393,13 @@ class PublicController extends Controller
         return view('public.us');
     }
 
+    /**首页关于我们
+     * @return mixed
+     */
+    public function  help(){
+        return view('public.help');
+    }
+
     /**获取网易云token和accid;
      * @return array
      */
