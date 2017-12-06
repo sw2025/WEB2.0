@@ -1562,12 +1562,12 @@ class MyEnterpriseController extends Controller
         $userId=session("userId");
         $result=array();
         $domain=explode("/",$data['domain']);
-        if(strtotime($data['dateStart']) < time() || strtotime($data['dateEnd']) < time()){
-            return  ['msg' => '视频咨询开始时间或结束时间不能在今天以前','icon' => 2];
+        if(strtotime($data['dateStart']) < time() ){
+            return  ['msg' => '视频咨询开始时间不能在今天以前','icon' => 2];
         }
-        if(strtotime($data['dateStart']) > strtotime($data['dateEnd'])){
+       /* if(strtotime($data['dateStart']) > strtotime($data['dateEnd'])){
             return   ['msg' => '视频咨询开始时间结束时间错误','icon' => 2];
-        }
+        }*/
         DB::beginTransaction();
         try{
             $consultId=DB::table("t_c_consult")->insertGetId([
@@ -2245,6 +2245,9 @@ class MyEnterpriseController extends Controller
         $res=array();
         $userId=session('userId');
         $data=$_POST;
+        $times=strtotime($data['dateStart'])+$data['dateEnd']*60;
+        $endtime=date("Y-m-d H:i",$times);
+        $data['dateEnd']=$endtime;
         $enterprise=DB::table("t_u_enterprise")
             ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
             ->where("t_u_enterprise.userid",$userId)

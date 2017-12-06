@@ -21,6 +21,8 @@ Route::post('collectExpert','ExpertController@collectExpert');
 Route::get('service','PublicController@service');
 //首页关于我们
 Route::get('us','PublicController@us');
+//使用帮助
+Route::get('help','PublicController@help');
 //登录
 Route::get('login','LoginController@login');
 //注册
