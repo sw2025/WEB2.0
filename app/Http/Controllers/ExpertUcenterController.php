@@ -801,6 +801,9 @@ class ExpertUcenterController extends Controller
 
     public function enterpriseDetail($enterpriseid)
     {
+        if(empty(session('userId'))){
+            return redirect('/login');
+        }
         $memberrights=DB::table("t_u_memberright")->where("memberid","<>",1)->get();
         $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
         $array = DB::table('t_u_enterprise as ext')
@@ -925,18 +928,20 @@ class ExpertUcenterController extends Controller
                 ->orderBy('ver.id','desc')
                 ->where('ent.userid',session('userId'))
                 ->first();
+
             if($expertuserid->userid != session('userId') && (empty($verifymember) || $verifymember->configid != 2)){
                 return ['msg' => '不是认证专家或者本企业不能留言','icon' => 0];
             }
+
             if(!empty($verifymember) && $verifymember->level == -1){
                 return ['msg' => '由于您违反了了升维⽹网给企业留留⾔言的规定，已禁⽌止您给企业留留⾔言，如要开启，请联系升维⽹网客服⼈员或拨打网页下方的联系电话','icon' => 0];
             }
-            if($data['parentid'] != 0){
+            /*if($data['parentid'] != 0){
                 $msgcount = DB::table('t_u_messagetoenterprise')->where('parentid',$data['parentid'])->where('isdelete',0)->count();
                 if($msgcount >= 5){
                     return ['msg' => '留言下的回复最多回复5次想详细交流可进行申请办事交流','icon' => 6];
                 }
-            }
+            }*/
             $data['userid'] = session('userId');
             $data['messagetime'] = date('Y-m-d H:i:s',time());
             if(!$data['use_userid']){
@@ -946,48 +951,40 @@ class ExpertUcenterController extends Controller
             DB::beginTransaction();
             try{
                 $res = DB::table('t_u_messagetoenterprise')->insert($data);
-                /*if($expertuserid->userid != session('userId') && !$data['parentid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'] : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
+                if($expertuserid->userid != session('userId') && !$data['parentid']){
+                    $content = '专家【'.$verifymember->expertname.'】给您发送了一条留言：'.$data['content'];
                     $msg = DB::table('t_m_systemmessage')->insert([
                         'sendid' => 0,
                         'receiveid' => $expertuserid->userid,
                         'sendtime' => date('Y-m-d H:i:s',time()),
-                        'title' => '有用户给您留言了',
+                        'title' => '有专家给您留言了',
                         'content' => $content,
-                        'expertid'=> $data['enterpriseid'],
                         'state' => 0
                     ]);
                 }
-                if($expertuserid->userid != session('userId') && $data['parentid'] && !$data['use_userid']){
+                if($expertuserid->userid != session('userId') && $data['parentid']){
                     $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content']: '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
-                    $parid = DB::table('t_u_messagetoenterprise')->where('id',$data['parentid'])->first();
-
-                    if($parid->userid != session('userId')){
-                        $msg = DB::table('t_m_systemmessage')->insert([
-                            'sendid' => 0,
-                            'receiveid' => $parid->userid,
-                            'sendtime' => date('Y-m-d H:i:s',time()),
-                            'title' => '有用户给您留言了',
-                            'content' => $content,
-                            'expertid'=> $data['enterpriseid'],
-                            'state' => 0
-                        ]);
-                    }
+                    $msg = DB::table('t_m_systemmessage')->insert([
+                        'sendid' => 0,
+                        'receiveid' => $expertuserid->userid,
+                        'sendtime' => date('Y-m-d H:i:s',time()),
+                        'title' => '有专家给您回复了',
+                        'content' => '专家'.$verifymember->expertname.'回复了您：'.$data['content'],
+                        'state' => 0
+                    ]);
                 }
-                if($expertuserid->userid != session('userId') && $data['parentid'] && $data['use_userid']){
-                    $content = !empty($userinfo->nickname) ? '用户'.$userinfo->nickname.'给您发送了一条留言：'.$data['content'] : '用户'.substr_replace($userinfo->phone,'****',3,4).'给您发送了一条留言：'.$data['content'];
-                    if($data['use_userid'] != session('userId')){
-                        $msg = DB::table('t_m_systemmessage')->insert([
-                            'sendid' => 0,
-                            'receiveid' => $data['use_userid'],
-                            'sendtime' => date('Y-m-d H:i:s',time()),
-                            'title' => '有用户给您留言了',
-                            'content' => $content,
-                            'expertid'=> $data['enterpriseid'],
-                            'state' => 0
-                        ]);
-                    }
-                }*/
+                if($expertuserid->userid == session('userId') && $data['parentid']){
+                    $parid = DB::table('t_u_messagetoenterprise')->where('id',$data['parentid'])->first();
+                    $msg = DB::table('t_m_systemmessage')->insert([
+                        'sendid' => 0,
+                        'receiveid' => $parid->userid,
+                        'sendtime' => date('Y-m-d H:i:s',time()),
+                        'title' => '企业'.$expertuserid->enterprisename.'回复了您的留言',
+                        'content' => '企业【'.$expertuserid->enterprisename.'】回复了您的留言：'.$data['content'].' 。[更多详细请到企业资源页查找企业查看]',
+                        'state' => 0
+                    ]);
+                }
+
                 DB::commit();
                 return ['msg' => '留言/回复成功','icon' => 1];
             }catch (Exception $e){
