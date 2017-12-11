@@ -45,8 +45,7 @@
                         <tr>
                         <td>会议模式</td>
                             <td>
-                                <div class="modals publish-need-sel
-                                ">
+                                <div class="modals publish-need-sel">
                                     <a href="javascript:;" class="modal-choose" id="videoType">单人</a>
                                     <ul class="modals-list">
                                         <li>单人</li>
@@ -69,7 +68,15 @@
                                         <span>开始时间</span><span class="calendar-date laydate-icon start" id="start"></span>
                                     </div>
                                     <div class="calendar-end clearfix">
-                                        <span>结束时间</span><span class="calendar-date laydate-icon end " id="end"></span>
+                                        <span>会议时间</span>
+                                        <div class="modals publish-need-sel" style="margin-left:15px;width: 237px">
+                                            <a href="javascript:;" class="modal-choose" id="endTime">20</a>
+                                            <ul class="modals-list">
+                                                <li>20</li>
+                                                <li>30</li>
+                                            </ul>
+                                        </div>
+                                        <span style="margin-left: 16px;float: right;">分钟</span>
                                     </div>
                                 </div>
                             </td>
@@ -235,7 +242,7 @@
                 $("#start").text($.cookie("videodateStart"));
             }
             if($.cookie("videodateEnd")){
-                $("#end").text($.cookie("videodateEnd"));
+                $("#endTime").text($.cookie("videodateEnd"));
             }
             $('.modal-choose').click(function(){
                 $(this).next().stop().slideToggle();
@@ -295,7 +302,7 @@
                 var videoType=$("#videoType").text();
                 /*var industry=$("#industrys").text();*/
                 var dateStart=$('#start').text();
-                var dateEnd=$("#end").text();
+                var dateEnd=$("#endTime").text();
                 var text=$(this).text().trim();
                 var date = new Date();
                 date.setTime(date.getTime() + (120 * 60 * 1000));
@@ -431,7 +438,7 @@
             var describe=$(".uct-works-txt").val();
             /*var industry=$("#industrys").text().trim();*/
             var dateStart=$('#start').text().trim();
-            var dateEnd=$("#end").text().trim();
+            var dateEnd=$("#endTime").text().trim();
             var isAppoint=($.cookie("videoisAppoint"))?$.cookie("videoisAppoint"):1;
             var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
             var videoType=$("#videoType").text();
@@ -557,7 +564,7 @@
                         $(".publ-need-sel-def").text(domain);
                         $(".uct-works-txt").val(describe);
                         $("#start").text(dateStart);
-                        $("#end").text(dateEnd);
+                        $("#endTime").text(dateEnd);
                         layer.confirm(res.msg+'申请失败,请重新申请', {
                             btn: ['确定'] //按钮
                         });
@@ -672,7 +679,7 @@
         //日期范围限制
         var start = {
             elem: '#start',
-            format: 'YYYY/MM/DD hh:mm',
+            format: 'YYYY-MM-DD hh:mm',
             min: '{{date('Y-m-d H:i')}}', //设定最小日期为当前日期
             max: '2066-12-31 23:59', //最大日期
             istime: true,
@@ -684,7 +691,7 @@
         };
         var end = {
             elem: '#end',
-            format: 'YYYY/MM/DD hh:mm',
+            format: 'YYYY-MM-DD hh:mm',
             min: '{{date('Y-m-d H:i')}}',
             max: '2066-12-31 23:59',
             istime: true,

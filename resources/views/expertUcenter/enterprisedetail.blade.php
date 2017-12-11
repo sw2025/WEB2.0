@@ -82,13 +82,13 @@
                                         <div class="floor-host">
                                             <img src="@if(empty($v->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$v->avatar}}@endif" class="floor-host-ava" />
                                             <div class="floor-host-desc">
-                                                <a href="javascript:;" class="floor-host-name">{{$v->nickname or substr_replace($v->phone,'****',3,4)}} [{{$v->expertname or $v->enterprisename}}]</a><span class="floor-host-time">{{$v->messagetime}}</span>
+                                                <a href="javascript:;" class="floor-host-name">@if($v->userid == $datas->userid)【企业】{{$v->enterprisename}} @else 【专家】{{$v->expertname}} @endif</a><span class="floor-host-time">{{$v->messagetime}}</span>
                                                 <span class="floor-host-words">{{$v->content}}</span>
                                             </div>
                                         </div>
                                         <div class="message-reply-show">
-                                            <a href="javascript:;" class="look-reply">查看回复（@if(key_exists($v->id,$msgcount)){{$msgcount[$v->id]}}@else 0 @endif）</a>
-                                            <a href="javascript:;" class="message-reply">回复</a>
+                                            @if(session('userId') == $v->userid || session('userId') == $datas->userid)<a href="javascript:;" class="look-reply">查看回复（@if(key_exists($v->id,$msgcount)){{$msgcount[$v->id]}}@else 0 @endif）</a>
+                                            <a href="javascript:;" class="message-reply">回复</a>@endif
                                         </div>
                                         <div class="reply-list">
                                             <ul class="reply-list-ul">
@@ -97,7 +97,7 @@
                                                         <li>
                                                             <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
                                                             <div class="gloor-guest-cnt">
-                                                                <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->expertname or $reply->enterprisename}}]</a>
+                                                                <a href="javascript:;" class="floor-guest-name">@if($reply->userid == $datas->userid)【企业】{{$datas->enterprisename}}@else 【专家】{{$reply->expertname}} @endif</a>
                                                                 <span class="floor-guest-words">{{$reply->content}}</span>
                                                             </div>
                                                             <div class="floor-bottom">
@@ -109,7 +109,7 @@
                                                         <li>
                                                             <img src="@if(empty($reply->avatar)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$reply->avatar}}@endif" class="floor-guest-ava" />
                                                             <div class="gloor-guest-cnt">
-                                                                <a href="javascript:;" class="floor-guest-name">{{$reply->nickname or substr_replace($reply->phone,'****',3,4)}} [{{$reply->expertname or $reply->enterprisename}}]</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">{{$reply->nickname2 or substr_replace($reply->phone2,'****',3,4)}}</a>
+                                                                <a href="javascript:;" class="floor-guest-name">@if($reply->phone == $datas->phone)【企业】{{$datas->enterprisename}}@else 【专家】{{$reply->expertname}} @endif</a>回复&nbsp;<a href="javascript:;" class="floor-guest-name">@if($reply->phone2 == $datas->phone)【企业】{{$datas->enterprisename}} @else 【专家】{{$v->expertname or '专家'}} @endif</a>
                                                                 <span class="floor-guest-words">{{$reply->content}}</span>
                                                             </div>
                                                             <div class="floor-bottom">
