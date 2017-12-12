@@ -126,7 +126,7 @@
                     <!-- </div> -->
                 </div>
                 <div class="col-md-6 contacts">
-                    <p class="footer-title">联系升维</p>
+                    <p class="footer-title">联系升维<span id="help" style="margin-left: 15px;font-size: 12px">使用帮助</span></p>
                     <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：010-64430881/68985908</p>
                     <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>E-Mail：shengwei2025@163.com</p>
                     <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市朝阳区安贞里街道浙江大厦</p>
@@ -203,6 +203,9 @@
         }else{
             window.location.href="{{asset('uct_basic')}}"
         }
+    })
+    $("#help").on("click",function(){
+        window.location.href="{{asset('help')}}";
     })
 </script>
 </body>

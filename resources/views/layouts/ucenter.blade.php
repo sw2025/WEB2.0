@@ -238,7 +238,7 @@
             <!-- </div> -->
         </div>
         <div class="col-md-6 contacts">
-            <p class="footer-title">联系升维</p>
+            <p class="footer-title">联系升维<span id="help" style="margin-left: 15px;font-size: 12px">使用帮助</span></p>
             <p class="contact-pub contact-telephone"><i class="iconfont icon-dianhua"></i>Tel：010-64430881&nbsp;&nbsp;/&nbsp;&nbsp;68985908</p>
             <p class="contact-pub contact-email"><i class="iconfont icon-youxiang"></i>E-Mail：shengwei2025@163.com</p>
             <p class="contact-pub contact-addr"><i class="iconfont icon-dizhi"></i>Add：北京市朝阳区安贞里街道浙江大厦</p>
@@ -391,73 +391,9 @@
             window.location.href="{{asset('uct_basic')}}"
         }
     })
-
-  /*  $('.vip').on('click',function(){
-        var allowajax = true;
-        var amount = $.trim($('.years input:radio:checked').val());
-        var channel = $('.paytype input:radio:checked').val();
-        if(channel == undefined || channel == ''  || amount == undefined|| amount == ''){
-            layer.msg('请选好条件');
-            return false;
-        }
-        if(allowajax){
-            allowajax = false;
-            $.ajax({
-                type:'post',
-                url:'{{url('initpay')}}',
-                dataType:"json",
-                data:{amount:amount,channel:channel,subject:'测试标题',body:'测试摘要',code:$.trim($('#code').val())},
-                success:function(msg){
-                    if(msg.code == 1){
-                        pingpp.createPayment(msg.data.charge, function(result, err) {         //调起微信支付控件 进行支付
-                            if (result=="success") {
-                                // payment succeeded支付成功后的回调函数
-                                //window.location.href='http://xxxx.com/demo/pingview'+"?id="+10000*Math.random();成功跳转到指定地址
-                                layer.alert('支付成功');
-                            } else {
-                                //window.location.href='http://xxxx.com/demo/pingview'+"?id="+10000*Math.random();失败或关闭了支付控件 做对应处理
-                                console.log(result+" "+err.msg+" "+err.extra);
-                                layer.alert('支付失败');
-                            }
-                        });
-                    } else {
-                        layer.alert(msg.data.error_message);
-                    }
-
-                },
-                error:function(){
-                    layer.alert('支付异常1');
-                    console.log('请求是否关注信息失败');
-                },
-            });
-        }
-       /!* $.post('{{url('initpay')}}',{'type':paytype,'amount':amount},function (data) {
-            if(paytype == 'wx_pub_qr'){
-                layer.open({
-                    type: 1,
-                    skin: 'layui-layer-rim', //加上边框
-                    area: ['420px', '240px'], //宽高
-                    content: data.charge
-                });
-            } else {
-                pingpp.createPayment(data.charge, function(result, err){
-                    console.log(result);
-                    console.log(err.msg);
-                    console.log(err.extra);
-                    if (result == "success") {
-                        // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
-                    } else if (result == "fail") {
-                        // charge 不正确或者微信公众账号支付失败时会在此处返回
-                    } else if (result == "cancel") {
-                        // 微信公众账号支付取消支付
-                    }
-                });
-            }
-
-        });*!/
-    });*/
-
-
+    $("#help").on("click",function(){
+        window.location.href="{{asset('help')}}";
+    })
 </script>
 </body>
 </html>
