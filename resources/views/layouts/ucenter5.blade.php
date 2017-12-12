@@ -295,6 +295,7 @@
                                     <li><a href="javascript:;" onclick="putneed2()">发布商情</a></li>
                                     <li><a href="{{url('/myneed')}}">查看商情</a></li>
                                 </ul>
+
                             </div>
                             <div class="mainmenu">
                                 <a id="myneed2" href="{{asset('myneed2')}}?level=1"  class="v-ucenter-nav-item aa">
@@ -305,9 +306,9 @@
                                     <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
                                     VIP商情
                                  </span>
-                                <ul class="submenu">
-                                    <li><a href="javascript:;" onclick="putneed2()">发布商情</a></li>
-                                    <li><a href="{{url('/myneed2').'?level=1'}}">查看商情</a></li>
+                                <ul class="submenu" style="width:140px;">
+                                    <li><a href="javascript:;" onclick="putneed2()" style="width:140px;">向平台提交重要需求</a></li>
+                                    <li><a href="{{url('/myneed2').'?level=1'}}" style="width:140px;">查看平台推送信息</a></li>
                                 </ul>
                             </div>
 
