@@ -1624,6 +1624,9 @@ class MyEnterpriseController extends Controller
      */
     public  function videoSelect(Request $request){
         $cate = DB::table('t_common_domaintype')->get();
+        $times=strtotime($_GET['start'])+$_GET['end']*60;
+        $endtime=date("Y-m-d H:i",$times);
+        $_GET['end']=$endtime;
         $workIngExperts=array();
         $workExperts=DB::table('view_expertresponsetime')
                         ->select('expertid')
