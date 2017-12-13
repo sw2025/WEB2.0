@@ -510,6 +510,7 @@ class UploadHandler
                 }
             }
         }
+
         return $name;
     }
 
@@ -1103,6 +1104,7 @@ class UploadHandler
             }
             $this->set_additional_file_properties($file);
         }
+
         return $file;
     }
 

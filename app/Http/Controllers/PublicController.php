@@ -17,16 +17,16 @@ class PublicController extends Controller
     //公共的上传图片的方法
     public function upload(){
         error_reporting(E_ALL | E_STRICT);
-       // require_once("FileUpload/server/php/UploadHandler.php");
+        // require_once("FileUpload/server/php/UploadHandler.php");
         $uploadHandler =new \App\UploadHandler(["upload_dir" => dirname(base_path()) . "/swUpload/images/", "upload_url" => dirname(base_path()) . "/swUpload/images/"]);
     }
 
-    //办事的上传资料的方法
+    /*//办事的上传资料的方法
     public function eventUpload(){
         error_reporting(E_ALL | E_STRICT);
         // require_once("FileUpload/server/php/UploadHandler.php");
         $uploadHandler =new \App\UploadHandler(['correct_image_extensions' => true,'inline_file_types' => '/.+$/i' ,"upload_dir" => 'swUpload/event/'.session('userId').'/', "upload_url" => 'swUpload/event/'.session('userId').'/']);
-    }
+    }*/
 
 
     public function showFile ()
