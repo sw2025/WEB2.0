@@ -132,6 +132,8 @@ class MyEnterpriseController extends Controller
                 ->orderBy('id','desc')
                 ->paginate(10);
         foreach($datas as $k => $v){
+
+
             $expert = DB::table('t_u_expert')->where('userid',$v->userid)->first();
             $v->expertname = $expert->expertname;
             $v->expertid = $expert->expertid;
@@ -194,6 +196,16 @@ class MyEnterpriseController extends Controller
                 'parentid' => $data['id'],
                 'created_at' => date('Y-m-d H:i:s',time()),
                 'updated_at' => date('Y-m-d H:i:s',time())
+            ]);
+            $parid = DB::table('t_u_messagetoenterprise')->where('id',$data['id'])->first();
+            $expertuserid = DB::table('t_u_enterprise')->where('enterpriseid',$data['entid'])->first();
+            $msg = DB::table('t_m_systemmessage')->insert([
+                'sendid' => 0,
+                'receiveid' => $parid->userid,
+                'sendtime' => date('Y-m-d H:i:s',time()),
+                'title' => '企业'.$expertuserid->enterprisename.'回复了您的留言',
+                'content' => '企业【'.$expertuserid->enterprisename.'】回复了您的留言：'.$data['content'].'  。[更多详细请到企业资源页查找企业查看]',
+                'state' => 0
             ]);
             if($res){
                 return ['msg' => '回复成功','icon' => 1];
