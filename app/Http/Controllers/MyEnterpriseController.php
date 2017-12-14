@@ -1245,7 +1245,7 @@ class MyEnterpriseController extends Controller
                 $obj = $obj->orderBy('ext.expertid',$ordertime);
             } elseif(!empty($ordercollect)){
                 $obj = $obj->orderBy('coll.count',$ordercollect);
-            } else {
+            } elseif(!empty($ordermessage)){
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);

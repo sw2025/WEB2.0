@@ -96,7 +96,6 @@ $(function(){
                 getCondition(select);
                 break;
         }
-
     });
 
 
