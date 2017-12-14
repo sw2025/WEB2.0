@@ -80,7 +80,7 @@ $(function(){
         var ordername = $(this).text();
         var firsticon = ($('.sort .active span .icon-triangle-copy').hasClass('blue-color'))?'desc':'asc';
         switch (ordername){
-            case '认证时间  ':
+            case '认证时间':
                 select[0] = 'ordertime';
                 select[1] = firsticon;
                 getCondition(select);
@@ -96,7 +96,6 @@ $(function(){
                 getCondition(select);
                 break;
         }
-
     });
 
 
@@ -116,9 +115,9 @@ $(function(){
         address=(address)?address:null;
         consult=(consult)?consult:null;
         if( $(".sort").children('a').hasClass('active')){
-            var ordername = $('.sort .active ').text();
+            var ordernames = $('.sort .active ').text();
             var firsticon = ($('.sort .active span .icon-triangle-copy').hasClass('blue-color'))?'desc':'asc';
-            switch (ordername){
+            switch (ordernames){
                 case '认证时间':
                     var ordertime = firsticon;
                     break;
