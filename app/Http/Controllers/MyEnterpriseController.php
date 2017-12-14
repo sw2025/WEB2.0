@@ -42,7 +42,6 @@ class MyEnterpriseController extends Controller
             }
 
         }
-
         //用户回复的数量
         $msgcount = count(DB::table('t_u_messagetoexpert')->where('userid',session('userId'))->groupBy('expertid')->lists('expertid'));
         $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
@@ -100,7 +99,7 @@ class MyEnterpriseController extends Controller
                 $obj = $obj->orderBy('ext.expertid',$ordertime);
             } elseif(!empty($ordercollect)){
                 $obj = $obj->orderBy('coll.count',$ordercollect);
-            } else {
+            } elseif(!empty($ordermessage)) {
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);
@@ -1246,7 +1245,7 @@ class MyEnterpriseController extends Controller
                 $obj = $obj->orderBy('ext.expertid',$ordertime);
             } elseif(!empty($ordercollect)){
                 $obj = $obj->orderBy('coll.count',$ordercollect);
-            } else {
+            } elseif(!empty($ordermessage)){
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);
@@ -1656,7 +1655,8 @@ class MyEnterpriseController extends Controller
         $domainselect = ['找资金' => '投融资','找技术' => '科研技术', '定战略' => '战略管理', '找市场' => '市场资源'];
         $domainselect2 = ['投融资' => '找资金','科研技术' => '找技术', '战略管理' => '定战略', '市场资源' => '找市场'];
         //判断是否为http请求
-        if(!empty($get = $request->input())){
+        $get=$request->input();
+        if(isset($get['ordertime'])){
             //获取到get中的数据并处理
             $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
             $role=(isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
@@ -1671,16 +1671,21 @@ class MyEnterpriseController extends Controller
             $addresswhere = !empty($address)?array("ext.address"=>$address):array();
             if(!empty($consult) && $consult == '收费'){
                 $consultwhere = ['fee.state' => 1];
-                $datas = $datas->where('fee.fee','<>','null');
+               // $datas = $datas->where('fee.fee','<>','null');
             } elseif(!empty($consult) && $consult == '免费'){
                 $consultwhere = ['fee.state' => 0];
-                $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
+              //  $datas = $datas->whereRaw('fee.fee = 0 or fee.state = 0');
             } else {
                 $consultwhere = [];
             }
             if(!empty($supply)){
                 $supply[0] = $domainselect2[$supply[0]];
-                $obj = $datas->where($rolewhere)->where('ext.domain1',$supply[0])->where('ext.domain2','like','%'.$supply[1].'%')->where($addresswhere)->where($consultwhere);
+                $obj = $datas
+                    ->where($rolewhere)
+                    ->where('ext.domain1',$supply[0])
+                    ->where('ext.domain2','like','%'.$supply[1].'%')
+                    ->where($addresswhere)
+                    ->where($consultwhere);
                 $supply[0] = $domainselect[$supply[0]];
             } else {
                 $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
@@ -1692,9 +1697,11 @@ class MyEnterpriseController extends Controller
             //对三种排序进行判断
             if(!empty($ordertime)){
                 $obj = $obj->orderBy('ext.expertid',$ordertime);
+                //$obj = $obj->orderBy('coll.count',null);
+                //$obj = $obj->orderBy('mess.count',null);
             } elseif(!empty($ordercollect)){
                 $obj = $obj->orderBy('coll.count',$ordercollect);
-            } else {
+            } elseif(!empty($ordermessage)) {
                 $obj = $obj->orderBy('mess.count',$ordermessage);
             }
             $datas = $obj->paginate(4);
