@@ -754,6 +754,15 @@ class PublicController extends Controller
                                     "created_at" => date("Y-m-d H:i:s",time()),
                                     "updated_at" => date("Y-m-d H:i:s",time())
                                 ]);
+                                $phone = DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                    ->where('expertid', $v->expertid)
+                                    ->pluck('phone');
+                                $name = DB::table('t_e_event')
+                                    ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
+                                    ->where('eventid', $eventid)
+                                    ->pluck('enterprisename');
+                                self::_sendSms2($phone, '办事选择', 'push', $name);
                                 $expids[] = $v->expertid;
                             }
                         } elseif (!empty($expert2)){
@@ -766,6 +775,15 @@ class PublicController extends Controller
                                     "created_at" => date("Y-m-d H:i:s",time()),
                                     "updated_at" => date("Y-m-d H:i:s",time())
                                 ]);
+                                $phone = DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                    ->where('expertid', $v->expertid)
+                                    ->pluck('phone');
+                                $name = DB::table('t_e_event')
+                                    ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
+                                    ->where('eventid', $eventid)
+                                    ->pluck('enterprisename');
+                                self::_sendSms2($phone, '办事选择', 'push', $name);
                                 $expids[] = $v->expertid;
                             }
                         }
@@ -787,6 +805,15 @@ class PublicController extends Controller
                                 "created_at" => date("Y-m-d H:i:s",time()),
                                 "updated_at" => date("Y-m-d H:i:s",time()),
                             ]);
+                            $phone = DB::table('t_u_expert')
+                                ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                ->where('expertid', $val)
+                                ->pluck('phone');
+                            $name = DB::table('t_e_event')
+                                ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
+                                ->where('eventid', $eventid)
+                                ->pluck('enterprisename');
+                            self::_sendSms2($phone, '办事选择', 'push', $name);
                             $expids[] = $val;
                         }
                         DB::table('t_e_eventverify')->insert([
@@ -861,7 +888,6 @@ class PublicController extends Controller
                         shuffle($expert);
                         shuffle($expert2);
                         if(empty($expert) && empty($expert2)){
-
                             DB::commit();
                             DB::table('t_c_consultverify')->insert([
                                 'consultid' => $consultid,
@@ -892,10 +918,18 @@ class PublicController extends Controller
                                     ]);
                                     $expids[] = $v->expertid;
                                 }
+                                $phone=DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                                    ->where('expertid',$v->expertid)
+                                    ->pluck('phone');
+                                $name=DB::table('t_c_consult')
+                                    ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
+                                    ->where('consultid',$consultid)
+                                    ->pluck('enterprisename');
+                                self::_sendSms2($phone,'视频咨询','push',$name);
                                 if(count($expids) >= 5){
                                     break;
                                 }
-
                             }
                             if(!count($expids)){
                                 return ['msg' => '很抱歉系统未在您指定的时间段内找到合适的专家请重新更改下咨询时间谢谢','icon' => 2];
@@ -917,6 +951,15 @@ class PublicController extends Controller
                                     ]);
                                     $expids[] = $v->expertid;
                                 }
+                                $phone=DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                                    ->where('expertid',$v->expertid)
+                                    ->pluck('phone');
+                                $name=DB::table('t_c_consult')
+                                    ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
+                                    ->where('consultid',$consultid)
+                                    ->pluck('enterprisename');
+                                self::_sendSms2($phone,'视频咨询','push',$name);
                                 if(count($expids) >= 5){
                                     break;
                                 }
@@ -926,7 +969,6 @@ class PublicController extends Controller
                             }
                         }
                     } else {
-
                         $expertIds=explode(",",$data['expertIds']);
                         foreach ($expertIds as $val){
                             DB::table("t_c_consultresponse")->insert([
@@ -938,6 +980,15 @@ class PublicController extends Controller
                                 "updated_at" => date("Y-m-d H:i:s",time()),
                             ]);
                             $expids[] = $val;
+                            $phone=DB::table('t_u_expert')
+                                ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                                ->where('expertid',$val)
+                                ->pluck('phone');
+                            $name=DB::table('t_c_consult')
+                                ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
+                                ->where('consultid',$consultid)
+                                ->pluck('enterprisename');
+                            self::_sendSms2($phone,'视频咨询','push',$name);
                         }
                     }
                     $expertcosts = DB::table('t_u_expertfee')->whereIn('expertid',$expids)->where('state',1)->select('fee')->get();
@@ -959,7 +1010,6 @@ class PublicController extends Controller
                     DB::commit();
                     $expertsinfo = DB::table('t_u_expert')->whereIn('expertid',$expids)->select('expertname','showimage','expertid')->get();
                     $msg = ['msg' => '恭喜您,视频咨询通过审核并推送到指定专家。'.'您推送的专家所需的专家咨询费用一共 '.$cost.' 元(不包含该平台视频咨询费用)，系统将在您反选专家后会进行金额总结算。','icon' => 1,'expertsinfo' => $expertsinfo];
-
                 }catch(Exception $e){
                     DB::rollback();
                     return  ['msg' => '推送失败','icon' => 2];
@@ -982,8 +1032,6 @@ class PublicController extends Controller
                 break;
         }
     }
-
-
     /**
      * 定时获取办事的状态
      */

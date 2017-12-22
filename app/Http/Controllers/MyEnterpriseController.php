@@ -285,7 +285,6 @@ class MyEnterpriseController extends Controller
                 }
             }
         }
-
         return view("myenterprise.member",compact('data','configids'));
     }
 
@@ -296,6 +295,7 @@ class MyEnterpriseController extends Controller
     public function entVerify (Request $request) {
         if($request->ajax()){
             $data = $request->only(['entid','brief','enterprisename','licenceimage','showimage','size','industry','address']);
+            $data['showimage']=(!isset($data['showimage']) || empty($data['showimage']) || $data['showimage']=='img/photo2.jpg')?'/images/enterprise.jpg':$data['showimage'];
             $data['userid'] = session('userId');
             $data['updated_at'] = date('Y-m-d H:i:s',time());
             $info = DB::table('t_u_enterprise')->where('userid',session('userId'))->first();
@@ -1769,7 +1769,7 @@ class MyEnterpriseController extends Controller
                             ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                             ->where('consultid',$_POST['consultId'])
                             ->pluck('enterprisename');
-                        $this->_sendSms($phone,'视频咨询','reselect',$name);
+                        $this->_sendSms($phone,'视频咨询','reselects',$name);
 
                     }else{
                         DB::table("T_C_CONSULTRESPONSE")->insert([
