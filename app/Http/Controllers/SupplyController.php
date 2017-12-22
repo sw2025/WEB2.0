@@ -129,7 +129,7 @@ class SupplyController extends Controller
         $datas = $datas->where('need.needid',$supplyId)->first();
         //取出同类下推荐的供求
         $info = ['domain1' => $datas->domain1,'domain2' =>$datas->domain2,'needid' => $datas->needid];
-        $recommendNeed = $obj->where('need.needid','<>',$info['needid'])->orderBy('needtime','desc');
+        $recommendNeed = $obj->where('need.level',0)->where('need.needid','<>',$info['needid'])->orderBy('needtime','desc');
         $obj2 = clone $recommendNeed;
         //取出相同二级类下面的供求
         $recommendNeed = $recommendNeed->where(['need.domain2' => $info['domain2'],'need.domain1' => $info['domain1']])->where("configid",3)->take(5)->get();
