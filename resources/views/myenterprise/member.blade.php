@@ -244,7 +244,7 @@
                 layer.msg('企业简介字数不符',{'icon':5});
                 return false;
             }
-            if(entname == '' || size == '不限' ||  industry == '不限' || address == '全国' || content == '' || img1 == '' || img2 == ''){
+            if(entname == '' || size == '不限' ||  industry == '不限' || address == '全国' || content == '' || img1 == ''){
                 layer.msg('请填写完整的资料',{'icon':0});
                 $('#submit').attr('disabled',false);
                 $(this).html('提交认证');
