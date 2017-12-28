@@ -214,7 +214,7 @@ abstract class Controller extends BaseController{
         }elseif($action=='answer'){
             $request->setTemplateCode("SMS_97795045");//设置模板
         }elseif($action=='reselects'){
-            $request->setTemplateCode("SMS_98165010");//设置模板
+            $request->setTemplateCode("SMS_119076714");//设置模板
         }elseif($action=='push'){
             $request->setTemplateCode("SMS_117527100");//设置模板
         }else{
