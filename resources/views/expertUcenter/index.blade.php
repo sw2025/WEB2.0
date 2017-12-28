@@ -69,9 +69,10 @@
                 $(that).removeAttr('disabled');
                 $(that).html('修改');
                 if(res['code']=="success"){
-                    layer.msg("修改成功")
+                    layer.msg("修改成功");
+                    window.location.href= window.location;
                 }else{
-                    layer.msg("修改失败")
+                    window.location.href= window.location;
                 }
             }
         })

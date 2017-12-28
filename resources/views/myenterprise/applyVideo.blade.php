@@ -46,7 +46,7 @@
                         <td>会议模式</td>
                             <td>
                                 <div class="modals publish-need-sel">
-                                    <a href="javascript:;" class="modal-choose" id="videoType">单人</a>
+                                    <a href="javascript:;" class="modal-choose" id="videoType">多人</a>
                                     <ul class="modals-list">
                                         <li>单人</li>
                                         <li>多人</li>
@@ -213,6 +213,12 @@
     <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
     <script type="text/javascript">
+
+            var a = window.location.search;
+            if(a=='?people=1'){
+                $('#videoType').html('单人');
+            }
+
         $(function(){
             $('.closePop').click(function () {
                 $(this).closest('.layer-pop').hide();
