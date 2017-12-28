@@ -706,6 +706,7 @@ class PublicController extends Controller
 
     static public function  eventPutExpert ($type,$data,$memberType,$enterpriseId)
     {
+        $client = new \JPush\Client(env('app_key'), env('master_secret'),base_path('storage/logs/jpush.log'));
         switch ($type){
             case 'event':
                 $eventid = $data['eventid'];
@@ -758,11 +759,45 @@ class PublicController extends Controller
                                     ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
                                     ->where('expertid', $v->expertid)
                                     ->pluck('phone');
+                                $jpushTag=DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                    ->where('expertid', $v->expertid)
+                                    ->pluck('phone');
+                                $imei = DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                    ->where('expertid', $v->expertid)
+                                    ->pluck('imei');
                                 $name = DB::table('t_e_event')
                                     ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
                                     ->where('eventid', $eventid)
                                     ->pluck('enterprisename');
                                 self::_sendSms2($phone, '办事选择', 'push', $name);
+                                try
+                                {
+                                    if (!empty($imei)) {
+                                        $client->push()
+                                            ->setPlatform('all')
+                                            ->addAlias($jpushTag)
+                                            ->setNotificationAlert("尊敬的专家您好，企业" . $name . "向您发起了一个办事请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况")
+                                            ->iosNotification("尊敬的专家您好，企业" . $name . "向您发起了一个办事请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                                'extras' => [
+                                                    'role' => 'expert',
+                                                    'type' => 'event',
+                                                    'id' => $eventid
+                                                ]
+                                            ])
+                                            ->androidNotification("尊敬的专家您好，企业" . $name . "向您发起了一个办事请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                                'extras' => [
+                                                    'role' => 'expert',
+                                                    'type' => 'event',
+                                                    'id' => $eventid
+                                                ]
+                                            ])
+                                            ->send();
+                                    }
+                                }catch (Exception $e) {
+
+                                }
                                 $expids[] = $v->expertid;
                             }
                         } elseif (!empty($expert2)){
@@ -779,11 +814,45 @@ class PublicController extends Controller
                                     ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
                                     ->where('expertid', $v->expertid)
                                     ->pluck('phone');
+                                $jpushTag=DB::table('t_u_expert')
+                                        ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                        ->where('expertid', $v->expertid)
+                                        ->pluck('phone');
+                                $imei = DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                    ->where('expertid', $v->expertid)
+                                    ->pluck('imei');
                                 $name = DB::table('t_e_event')
                                     ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
                                     ->where('eventid', $eventid)
                                     ->pluck('enterprisename');
                                 self::_sendSms2($phone, '办事选择', 'push', $name);
+                                try
+                                {
+                                    if (!empty($imei)) {
+                                        $client->push()
+                                            ->setPlatform('all')
+                                            ->addAlias($jpushTag)
+                                            ->setNotificationAlert("尊敬的专家您好，企业" . $name . "向您发起了一个办事请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况")
+                                            ->iosNotification("尊敬的专家您好，企业" . $name . "向您发起了一个办事请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                                'extras' => [
+                                                    'role' => 'expert',
+                                                    'type' => 'event',
+                                                    'id' => $eventid
+                                                ]
+                                            ])
+                                            ->androidNotification("尊敬的专家您好，企业" . $name . "向您发起了一个办事请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                                'extras' => [
+                                                    'role' => 'expert',
+                                                    'type' => 'event',
+                                                    'id' => $eventid
+                                                ]
+                                            ])
+                                            ->send();
+                                    }
+                                }catch (Exception $e) {
+
+                                }
                                 $expids[] = $v->expertid;
                             }
                         }
@@ -809,11 +878,45 @@ class PublicController extends Controller
                                 ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
                                 ->where('expertid', $val)
                                 ->pluck('phone');
+                            $jpushTag = DB::table('t_u_expert')
+                                ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                ->where('expertid', $val)
+                                ->pluck('phone');
+                            $imei = DB::table('t_u_expert')
+                                ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                ->where('expertid', $val)
+                                ->pluck('imei');
                             $name = DB::table('t_e_event')
                                 ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
                                 ->where('eventid', $eventid)
                                 ->pluck('enterprisename');
                             self::_sendSms2($phone, '办事选择', 'push', $name);
+                            try
+                            {
+                                if (!empty($imei)) {
+                                    $client->push()
+                                        ->setPlatform('all')
+                                        ->addAlias($jpushTag)
+                                        ->setNotificationAlert("尊敬的专家您好，企业" . $name . "向您发起了一个办事请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况")
+                                        ->iosNotification("尊敬的专家您好，企业" . $name . "向您发起了一个办事请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                            'extras' => [
+                                                'role' => 'expert',
+                                                'type' => 'event',
+                                                'id' => $eventid
+                                            ]
+                                        ])
+                                        ->androidNotification("尊敬的专家您好，企业" . $name . "向您发起了一个办事请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                            'extras' => [
+                                                'role' => 'expert',
+                                                'type' => 'event',
+                                                'id' => $eventid
+                                            ]
+                                        ])
+                                        ->send();
+                                }
+                            }catch (Exception $e) {
+
+                            }
                             $expids[] = $val;
                         }
                         DB::table('t_e_eventverify')->insert([
@@ -922,11 +1025,45 @@ class PublicController extends Controller
                                     ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
                                     ->where('expertid',$v->expertid)
                                     ->pluck('phone');
+                                $jpushTag=DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                                    ->where('expertid',$v->expertid)
+                                    ->pluck('phone');
+                                $imei = DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                    ->where('expertid', $v->expertid)
+                                    ->pluck('imei');
                                 $name=DB::table('t_c_consult')
                                     ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                                     ->where('consultid',$consultid)
                                     ->pluck('enterprisename');
                                 self::_sendSms2($phone,'视频咨询','push',$name);
+                                try
+                                {
+                                    if (!empty($imei)) {
+                                        $client->push()
+                                            ->setPlatform('all')
+                                            ->addAlias($jpushTag)
+                                            ->setNotificationAlert("尊敬的专家您好，企业" . $name . "向您发起了一个咨询请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况")
+                                            ->iosNotification("尊敬的专家您好，企业" . $name . "向您发起了一个咨询请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                                'extras' => [
+                                                    'role' => 'expert',
+                                                    'type' => 'consult',
+                                                    'id' => $consultid
+                                                ]
+                                            ])
+                                            ->androidNotification("尊敬的专家您好，企业" . $name . "向您发起了一个咨询请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                                'extras' => [
+                                                    'role' => 'expert',
+                                                    'type' => 'consult',
+                                                    'id' => $consultid
+                                                ]
+                                            ])
+                                            ->send();
+                                    }
+                                }catch (Exception $e) {
+
+                                }
                                 if(count($expids) >= 5){
                                     break;
                                 }
@@ -955,11 +1092,45 @@ class PublicController extends Controller
                                     ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
                                     ->where('expertid',$v->expertid)
                                     ->pluck('phone');
+                                $jpushTag=DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                                    ->where('expertid',$v->expertid)
+                                    ->pluck('phone');
+                                $imei = DB::table('t_u_expert')
+                                    ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                    ->where('expertid', $v->expertid)
+                                    ->pluck('imei');
                                 $name=DB::table('t_c_consult')
                                     ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                                     ->where('consultid',$consultid)
                                     ->pluck('enterprisename');
                                 self::_sendSms2($phone,'视频咨询','push',$name);
+                                try
+                                {
+                                    if (!empty($imei)) {
+                                        $client->push()
+                                            ->setPlatform('all')
+                                            ->addAlias($jpushTag)
+                                            ->setNotificationAlert("尊敬的专家您好，企业" . $name . "向您发起了一个咨询请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况")
+                                            ->iosNotification("尊敬的专家您好，企业" . $name . "向您发起了一个咨询请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                                'extras' => [
+                                                    'role' => 'expert',
+                                                    'type' => 'consult',
+                                                    'id' => $consultid
+                                                ]
+                                            ])
+                                            ->androidNotification("尊敬的专家您好，企业" . $name . "向您发起了一个咨询请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                                'extras' => [
+                                                    'role' => 'expert',
+                                                    'type' => 'consult',
+                                                    'id' => $consultid
+                                                ]
+                                            ])
+                                            ->send();
+                                    }
+                                }catch (Exception $e) {
+
+                                }
                                 if(count($expids) >= 5){
                                     break;
                                 }
@@ -984,11 +1155,45 @@ class PublicController extends Controller
                                 ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
                                 ->where('expertid',$val)
                                 ->pluck('phone');
+                            $jpushTag=DB::table('t_u_expert')
+                                ->leftJoin('t_u_user','t_u_expert.userid','=','t_u_user.userid')
+                                ->where('expertid',$val)
+                                ->pluck('phone');
+                            $imei = DB::table('t_u_expert')
+                                ->leftJoin('t_u_user', 't_u_expert.userid', '=', 't_u_user.userid')
+                                ->where('expertid', $val)
+                                ->pluck('imei');
                             $name=DB::table('t_c_consult')
                                 ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                                 ->where('consultid',$consultid)
                                 ->pluck('enterprisename');
                             self::_sendSms2($phone,'视频咨询','push',$name);
+                            try
+                            {
+                                if (!empty($imei)) {
+                                    $client->push()
+                                        ->setPlatform('all')
+                                        ->addAlias($jpushTag)
+                                        ->setNotificationAlert("尊敬的专家您好，企业" . $name . "向您发起了一个咨询请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况")
+                                        ->iosNotification("尊敬的专家您好，企业" . $name . "向您发起了一个咨询请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                            'extras' => [
+                                                'role' => 'expert',
+                                                'type' => 'consult',
+                                                'id' => $consultid
+                                            ]
+                                        ])
+                                        ->androidNotification("尊敬的专家您好，企业" . $name . "向您发起了一个咨询请求，请您尽快登陆升维网及时查看，如有疑问请拨打010-68985908详细了解情况", [
+                                            'extras' => [
+                                                'role' => 'expert',
+                                                'type' => 'consult',
+                                                'id' => $consultid
+                                            ]
+                                        ])
+                                        ->send();
+                                }
+                            }catch (Exception $e) {
+
+                            }
                         }
                     }
                     $expertcosts = DB::table('t_u_expertfee')->whereIn('expertid',$expids)->where('state',1)->select('fee')->get();
