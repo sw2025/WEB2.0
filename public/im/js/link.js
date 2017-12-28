@@ -517,10 +517,13 @@ SDKBridge.prototype.setCurrSession = function (scene, to) {
 */
 SDKBridge.prototype.sendTextMessage = function (scene, to, text, isLocal, callback) {
   isLocal = !!isLocal;
+  var IOS_ID={'sessionId':to};
   this.nim.sendText({
     scene: scene || 'p2p',
     to: to,
     text: text,
+    //sessionId:to,
+    pushPayload:JSON.stringify(IOS_ID),
     isLocal: isLocal,
     done: callback
   });
@@ -534,9 +537,12 @@ SDKBridge.prototype.sendTextMessage = function (scene, to, text, isLocal, callba
 * @param callback：回调
 */
 SDKBridge.prototype.sendCustomMessage = function (scene, to, content, callback) {
+  var IOS_ID={'sessionId':to};
   this.nim.sendCustomMsg({
     scene: scene || 'p2p',
     to: to,
+    //sessionId:to,
+    pushPayload:JSON.stringify(IOS_ID),
     content: JSON.stringify(content),
     done: callback
   });
@@ -551,12 +557,15 @@ SDKBridge.prototype.sendCustomMessage = function (scene, to, content, callback) 
 */
 SDKBridge.prototype.sendFileMessage = function (scene, to, fileInput, callback) {
   var that = this,
-    value = fileInput.value,
-    ext = value.substring(value.lastIndexOf('.') + 1, value.length),
+      value = fileInput.value,
+      ext = value.substring(value.lastIndexOf('.') + 1, value.length),
     type = /png|jpg|bmp|jpeg|gif/i.test(ext) ? 'image' : 'file';
+  var IOS_ID={'sessionId':to};
   this.nim.sendFile({
     scene: scene,
     to: to,
+    //sessionId:to,
+    pushPayload:JSON.stringify(IOS_ID),
     type: type,
     fileInput: fileInput,
     uploadprogress: function (data) {

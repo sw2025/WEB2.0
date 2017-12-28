@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Crypt;
+use JPush\Exceptions\APIRequestException;
 
 
 class PublicController extends Controller
@@ -795,7 +796,7 @@ class PublicController extends Controller
                                             ])
                                             ->send();
                                     }
-                                }catch (Exception $e) {
+                                }catch (APIRequestException $e) {
 
                                 }
                                 $expids[] = $v->expertid;
@@ -850,7 +851,7 @@ class PublicController extends Controller
                                             ])
                                             ->send();
                                     }
-                                }catch (Exception $e) {
+                                }catch (APIRequestException $e) {
 
                                 }
                                 $expids[] = $v->expertid;
@@ -914,7 +915,7 @@ class PublicController extends Controller
                                         ])
                                         ->send();
                                 }
-                            }catch (Exception $e) {
+                            }catch (APIRequestException $e) {
 
                             }
                             $expids[] = $val;
@@ -1061,7 +1062,7 @@ class PublicController extends Controller
                                             ])
                                             ->send();
                                     }
-                                }catch (Exception $e) {
+                                }catch (APIRequestException $e) {
 
                                 }
                                 if(count($expids) >= 5){
@@ -1128,7 +1129,7 @@ class PublicController extends Controller
                                             ])
                                             ->send();
                                     }
-                                }catch (Exception $e) {
+                                }catch (APIRequestException $e) {
 
                                 }
                                 if(count($expids) >= 5){
@@ -1191,7 +1192,7 @@ class PublicController extends Controller
                                         ])
                                         ->send();
                                 }
-                            }catch (Exception $e) {
+                            }catch (APIRequestException $e) {
 
                             }
                         }
