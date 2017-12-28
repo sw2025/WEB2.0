@@ -355,6 +355,7 @@ class MyEnterpriseController extends Controller
         }
         return view("myenterprise.member2",compact('data'));
     }
+
     /**会员认证3
      * @return mixed
      */

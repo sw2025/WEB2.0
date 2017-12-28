@@ -27,21 +27,11 @@
         <div class="supply-service-entit">{{--SERVICE PROVIDED BY SHENGWEI FOR ENTERPRISES--}}</div>
         <ul class="clearfix">
             <li class="item col-md-3 col-xs-6"><a href="javascript:;">
-                    <div class="item-con dif-hexagon1">
-                        <span class="hexagon"></span>
-                        <h2 class="number">01</h2>
-                        <span class="item-tit">定战略</span>
-                        {{--<p class="item-desc">解决企业遇到各类问题</p>--}}
-                    </div>
-                    <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">战略定位</span><br /><br /><span style="font-size: 1.5em;">战略执行</span><br /><br /><span style="font-size: 1.5em;">商业模式</span><br /><br /><span style="font-size: 1.5em;">项目评价</span> </p>
-                    </div>
-                </a></li>
-            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
                     <div class="item-con dif-hexagon2">
                         <span class="hexagon"></span>
-                        <h2 class="number">02</h2>
+                        <h2 class="number">01</h2>
                         <span class="item-tit">找资金</span>
+                        {{--<p class="item-desc">解决企业遇到各类问题</p>--}}
                     </div>
                     <div class="item-con-hover">
                         <p><br/><span style="font-size: 1.0em;">融资综合方案</span><br /><span style="font-size: 1.0em;">项目融资</span><br /><span style="font-size: 1.0em;">政府性质贷款</span><br /><span style="font-size: 1.0em;">企业债</span><br /><span style="font-size: 1.0em;">资产证券化</span><br /><span style="font-size: 1.0em;">境外融资</span><br /><span style="font-size: 1.0em;">租赁与信托</span><br /><span style="font-size: 1.0em;">保理</span><br /><span style="font-size: 1.0em;">天使投资</span><br /><span style="font-size: 1.0em;">风险投资</span><br /></p>
@@ -50,7 +40,18 @@
             <li class="item col-md-3 col-xs-6"><a href="javascript:;">
                     <div class="item-con dif-hexagon4">
                         <span class="hexagon"></span>
-                        <h2 class="number">04</h2>
+                        <h2 class="number">02</h2>
+                        <span class="item-tit">拓市场</span>
+                        {{--<p class="item-desc">解决企业遇到各类问题</p>--}}
+                    </div>
+                    <div class="item-con-hover">
+                        <p><br /><span style="font-size: 1.5em;">寻求渠道与代理</span><br /><br /><br /><span style="font-size: 1.5em;">营销推广</span><br /><br /><br /><span style="font-size: 1.5em;">品牌建设</span><br /><br /></p>
+                    </div>
+                </a></li>
+            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
+                    <div class="item-con dif-hexagon3">
+                        <span class="hexagon"></span>
+                        <h2 class="number">03</h2>
                         <span class="item-tit">找技术</span>
                     </div>
                     <div class="item-con-hover">
@@ -58,13 +59,13 @@
                     </div>
                 </a></li>
             <li class="item col-md-3 col-xs-6"><a href="javascript:;">
-                    <div class="item-con dif-hexagon3">
+                    <div class="item-con dif-hexagon1">
                         <span class="hexagon"></span>
-                        <h2 class="number">03</h2>
-                        <span class="item-tit">拓市场</span>
+                        <h2 class="number">04</h2>
+                        <span class="item-tit">定战略</span>
                     </div>
                     <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">寻求渠道与代理</span><br /><br /><br /><span style="font-size: 1.5em;">营销推广</span><br /><br /><br /><span style="font-size: 1.5em;">品牌建设</span><br /><br /></p>
+                        <p><br /><span style="font-size: 1.5em;">战略定位</span><br /><br /><span style="font-size: 1.5em;">战略执行</span><br /><br /><span style="font-size: 1.5em;">商业模式</span><br /><br /><span style="font-size: 1.5em;">项目评价</span> </p>
                     </div>
                 </a></li>
 
@@ -394,16 +395,16 @@
         switch(aa)
         {
             case '01':
-               var domain='定战略';
+               var domain='找资金';
                 break;
             case '02':
-                var domain='找资金';
+                var domain='找市场';
                 break;
             case '03':
-               var domain='找市场';
+               var domain='找技术';
                 break;
             case '04':
-                var domain='找技术';
+                var domain='定战略';
                 break;
             default:
                 var domain='全部';
