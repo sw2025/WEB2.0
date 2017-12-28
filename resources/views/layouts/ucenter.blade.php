@@ -185,13 +185,13 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
-                                <a id="uct_myneed2" href="{{asset('uct_myneed2')}}"   class="v-ucenter-nav-item aa">
+                                <a id="uct_myneed2" href="{{asset('uct_myneed2')}}?level=1"   class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
-                                    VIP商情
+                                    VIP通道
                                 </a>
                                 <span class="v-ucenter-nav-item phone">
                                     <img src="{{asset('img/vicon04.png')}}" alt="VIP商情" />
-                                    VIP商情
+                                    VIP通道
                                  </span>
                                 <ul class="submenu" style="width:140px;">
                                     <li><a href="javascript:;" onclick="putneed()" style="width:140px;">向平台提交重要需求</a></li>
