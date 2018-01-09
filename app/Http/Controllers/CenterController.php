@@ -137,7 +137,7 @@ class CenterController extends Controller
      * @return mixed
      */
     public function rechargeMoney(){
-        $memberrights=DB::table("t_u_memberright")->where("memberid","<>",1)->get();
+        $memberrights=DB::table("t_u_memberright")->whereNotIn("memberid",[1,5])->get();
         return view("ucenter.rechargeMoney",compact("memberrights"));
     }
 

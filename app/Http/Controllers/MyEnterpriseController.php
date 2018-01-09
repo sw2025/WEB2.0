@@ -1135,7 +1135,7 @@ class MyEnterpriseController extends Controller
     public function applyWork(){
 
         $cate = DB::table('t_common_domaintype')->get();
-        $memberrights=DB::table("t_u_memberright")->where("memberid","<>",1)->get();
+        $memberrights=DB::table("t_u_memberright")->whereNotIn("memberid",[1,5])->get();
         return view("myenterprise.work1",compact("cate",'memberrights'));
     }
     /**保存申请的办事
@@ -1564,7 +1564,7 @@ class MyEnterpriseController extends Controller
      */
     public function applyVideo(){
         $cate = DB::table('t_common_domaintype')->get();
-        $memberrights=DB::table("t_u_memberright")->where("memberid","<>",1)->get();
+        $memberrights=DB::table("t_u_memberright")->whereNotIn("memberid",[1,5])->get();
         return view("myenterprise.applyVideo",compact("cate",'memberrights'));
     }
     /**保存申请的咨询
