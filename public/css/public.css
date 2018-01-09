@@ -18,7 +18,7 @@
 .log-username,.quit{color:#fff;}
 .header-link:hover{background:#fff;color:#00a7ed;border-radius: 5px;}
 .header-link:hover i{color:#00a7ed;}
-.log-username{max-width:80px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.log-username{max-width:96px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .quit{margin-left: 1px;}
 .after-login{display: none;}
 .after-login,.before-login{float: right;}
@@ -201,8 +201,9 @@
 /*cebianlan*/
 .v-aside{overflow: inherit;}
 .mainmenu{position: relative;}
-.submenu{position: absolute;z-index: 10;top: 0;left: 100%;width: 100px;background: rgba(0,73,129,0.7);padding: 5px 10px 10px;border-radius: 5px;display: none;}
-.submenu a{line-height: 30px;display: block;width: 100px;text-align: center;color: #fff;}
+/*.submenu{position: absolute;z-index: 10;top: 0;left: 100%;width: 100px;background: rgba(0,73,129,0.7);padding: 5px 10px 10px;border-radius: 5px;display: none;}*/
+.submenu{position: absolute;z-index: 10;top: 0;left: 100%;background: rgba(0,73,129,0.7);padding: 5px 10px 10px;border-radius: 5px;display: none;width:160px;box-sizing:  border-box;}
+.submenu a{line-height: 30px;display: block;text-align: center;color: #fff;width:100%}
 .submenu li{border-bottom: 1px solid #b9cddc;padding: 5px 0;}
 .submenu a:hover{background: #ffaa03;border-radius: 3px;}
 .v-identity-list{z-index: 20;}

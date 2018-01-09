@@ -306,9 +306,9 @@
                                     <img src="{{asset('img/vicon04.png')}}" alt="VIP通道" />
                                     VIP通道
                                  </span>
-                                <ul class="submenu" style="width:140px;">
-                                    <li><a href="javascript:;" onclick="putneed2()" style="width:140px;">向平台提交重要需求</a></li>
-                                    <li><a href="{{url('/myneed2').'?level=1'}}" style="width:140px;">查看平台推送信息</a></li>
+                                <ul class="submenu" >
+                                    <li><a href="javascript:;" onclick="putneed2()" >向平台提交重要需求</a></li>
+                                    <li><a href="{{url('/myneed2').'?level=1'}}" >查看平台推送信息</a></li>
                                 </ul>
                             </div>
 
