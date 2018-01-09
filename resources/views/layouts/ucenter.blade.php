@@ -82,7 +82,7 @@
             <ul class="nav">
                 <li id="index"><a href="{{asset('/')}}">首页</a></li>
                 <li id="service" ><a href="{{asset('service')}}">服务介绍</a></li>
-                <li id="expert" ><a href="{{asset('expert')}}">专家资源</a></li>
+                <li id="expert" ><a href="{{asset('expert')}}?role=专家&ordertime=desc">专家资源</a></li>
                 <li id="supply" ><a href="{{asset('supply')}}">商情信息</a></li>
                 <li id="us" ><a href="{{asset('us')}}">关于我们</a></li>
             </ul>
