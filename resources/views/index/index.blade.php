@@ -79,7 +79,7 @@
     <div class="container">
         <div class="supply-service-tit supply-demand">专家资源库<span class="middle-line"></span></div>
         <div class="supply-service-entit">{{--EXPERT RESOURCE BASE--}}</div>
-        <div class="more-box"><a href="{{asset('expert')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
+        <div class="more-box"><a href="{{asset('expert')}}?role=专家&ordertime=desc" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
         <div class="row tab-resources">
             <div class="tabar clearfix" id="knowExpert">
                 <a href="javascript:;" style="width: 50%;" class="tabar-opt">资深专家<div class="triangle-top"></div></a>
