@@ -878,11 +878,10 @@ class MyExpertController extends Controller
         $typeWhere=($type!="不限")?array("t_l_linemeetverify.configid"=>$linemeetconfigtype[$type]):array();
 
 
-
         $results = DB::table('t_u_expert')
             ->leftJoin('t_u_expertverify','t_u_expert.expertid','=','t_u_expertverify.expertid')
             ->where('t_u_expert.userid',$userId)
-            ->where('t_u_expertverify.configid',3)
+            ->where('t_u_expertverify.configid',2)
             ->first();
         if(!$results){
             $expertdata = [0,000];
@@ -903,7 +902,6 @@ class MyExpertController extends Controller
             $count=clone $result;
             $counts = $result->count();
             $datas = $result->paginate(6);
-
             return view("myexpert.lineMeetExpert",compact('datas','index','counts'));
 
         }
@@ -977,10 +975,9 @@ class MyExpertController extends Controller
      */
     public function lineMeetDetail($linemeetid)
     {
-        $configid = DB::table('t_l_linemeetverify')->where('meetid',$linemeetid)->first()->configid;
+        /*$configid = DB::table('t_l_linemeetverify')->where('meetid',$linemeetid)->first()->configid;
 
-
-        if($configid == '1'){
+        if($configid == '1'){*/
 
             $datas = DB::table('t_l_linemeet')
                 ->leftJoin('t_u_expert','t_u_expert.expertid',"=",'t_l_linemeet.expertid')
@@ -1002,6 +999,6 @@ class MyExpertController extends Controller
                 return view("myexpert.lineMeetDetail3",compact('datas','memberrights'));
             }
 
-        }
+
     }
 }
