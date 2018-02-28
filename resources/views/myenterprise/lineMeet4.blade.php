@@ -20,29 +20,31 @@
                         <tr>
                             <td>专家姓名</td>
                             <td>
-                                <ul>{{$data->expertname}}</ul>
+                                <ul><b style="font-size: 18px;">{{$data->expertname}}</b></ul>
                             </td>
                         </tr>
-                        <tr>
-                            <td>专家联系方式</td>
-                            <td>
-                                <ul>{{$phone}}</ul>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>收费标准</td>
-                            <td>
-                                <ul>{{$data->linefee}}</ul>
-                            </td>
-                        </tr>
-
                         <tr>
                             <td>专家头像</td>
                             <td>
                                 <ul><img src="{{env('ImagePath').$data->showimage}}" class='uct-works-exp-img' ></ul>
                             </td>
                         </tr>
+
+                        <tr>
+                            <td>专家联系方式</td>
+                            <td>
+                                <ul><b style="font-size: 18px;color:red">{{$phone}}   &ensp;&ensp;&ensp;&ensp;&ensp;已获取到专家手机号  可线下联系</b></ul>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>收费标准</td>
+                            <td>
+                                <ul>{{$data->linefee}}元/小时</ul>
+                            </td>
+                        </tr>
+
+
                         <tr>
                             <td>问题描述</td>
                             <td>

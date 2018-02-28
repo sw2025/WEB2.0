@@ -934,7 +934,7 @@ class MyExpertController extends Controller
                 ->whereRaw('t_l_linemeetverify.id in (select max(id) from t_l_linemeetverify group by meetid)')
                 ->where("t_l_linemeet.expertid",$expertid)
                 ->where($typeWhere)
-                ->where('t_l_linemeetverify.configid',3)
+                ->whereIn('t_l_linemeetverify.configid',[3,4])
                 ->orderBy('t_l_linemeet.puttime','desc');
         }
 

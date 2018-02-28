@@ -61,6 +61,10 @@ class PingpayController extends Controller
                 $amount = $payload['amount'];
                 $user = $payload['userid'];
                 $body = '发布项目评议,由专家进行专业评议';
+            } else if($payload['type']=="linemeet") {
+                $amount = $payload['amount'];
+                $user = $payload['userid'];
+                $body = '线下约见专家';
             } else {
                 $amount = $payload['amount'];
             }
@@ -69,7 +73,8 @@ class PingpayController extends Controller
             $eventcount=isset($payload['eventCount'])?$payload['eventCount']:0;
             $consultcount=isset($payload['consultCount'])?$payload['consultCount']:0;
             $showconunt=isset($payload['showCount'])?$payload['showCount']:0;
-            $metadata=['payType'=>'payMoney','type'=>$payload['type'],'userid'=>$user,"eventCount"=>$eventcount,"consultCount"=>$consultcount,'showConunt' => $showconunt];
+            $meetid=isset($payload['meetid'])?$payload['meetid']:0;
+            $metadata=['payType'=>'payMoney','type'=>$payload['type'],'userid'=>$user,"eventCount"=>$eventcount,"consultCount"=>$consultcount,'showConunt' => $showconunt,'meetid' => $meetid];
         }
      
         $url =$payload['urlType'];

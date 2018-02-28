@@ -4,6 +4,75 @@
     <link rel="stylesheet" href="{{asset('css/publishneed.css')}}">
     <link rel="stylesheet" href="{{asset('css/videoconsult.css')}}">
     <script type="text/javascript" src="{{asset('js/laydate/laydate.js')}}"></script>
+    <style>
+        .layer_notice {
+            float: left;
+            overflow: hidden;
+            background: #5FB878;
+            padding: 10px;
+        }
+        #needcontetn b{
+            font-size:18px;
+            color: #f00;
+        }
+        .layer_notice a {
+            color: #fff;
+        }
+
+        #zhifubao {
+            width: 500px;
+            padding: 20px;
+        }
+        #zhifubao p{
+            margin: 20px;
+            font-size: 22px;
+        }
+        #zhifubao .button1{
+            border: 1px solid #ccc;
+            width: 200px;
+            height: 50px;
+            background: #1a2799;
+            color: #fff;
+            border-radius: 40px;
+            font-size: 18px;
+            margin-right: 30px;
+        }
+        #zhifubao .button2{
+            border: 1px solid #ccc;
+            width: 200px;
+            height: 50px;
+            background: #0e840e;
+            color: #fff;
+            font-size: 18px;
+            border-radius: 40px;
+        }
+
+        .layer_image {
+            float: left;
+            overflow: hidden;
+            background: #1e8e8e;
+            padding: 10px;
+        }
+
+
+        .layer_image a {
+
+            float: left;
+            margin: 0 5px;
+        }
+        .layer_image img {
+            border: 2px solid #ccc;
+            width: 100px;
+            height: 100px;
+            border-radius: 65px;
+        }
+        .layer_image span {
+            color:#fff;
+        }
+        .changeWeixin img{
+            margin:0 auto;
+        }
+    </style>
     <div class="main">
         <!-- 专家视频咨询 / start -->
         <h3 class="main-top">线下约见</h3>
@@ -27,7 +96,7 @@
                         <tr>
                             <td>收费标准</td>
                             <td>
-                                <ul>{{$data->linefee}}</ul>
+                                <ul>{{$data->linefee}}元/小时</ul>
                             </td>
                         </tr>
 
@@ -66,7 +135,7 @@
                         <p class="uct-works-tips-para light-color">近期，网监部门查敏感类信息比较严格，所以内容中多加了一些类似“共产党”等政治性文字的敏感词语类或其它敏感词汇信息需要验证，请您按照文明规范填写办事内容。</p>
                     </div>
                     <div class="uct-works-con">
-                        <button class="test-btn submit-audit" type="button" disabled="disabled">支付费用</button>
+                        <button class="test-btn submit-audit" type="button">支付费用</button>
                     </div>
                 </div>
             </div>
@@ -117,37 +186,16 @@
         <li>
         </li>
     </ul>
-    <div class="pop-pay">
-        <div class="payoff">
-            <span class="pay-close"  title="关闭"><i class="iconfont icon-chahao"></i></span>
-            <div class="single">
-                <div class="single-two">
-                <span class="single-opt pay-opt" id="singlePay">
-                    <input class="rad-inp" type="radio" style="width: 12%;">
-                    <div class="opt-label normal "></div>
-                </span>
-                </div>
-                <div class="cub" style="display:block"></div>
-
+    <div id="payhtml" style="width: 400px;display: none;">
+        <div class="single open-member">
+            <div class="years" style="padding: 10px 0px 0px 20px;font-size: 16px;">
+                <span id="needcontetn"></span>
             </div>
-            <div class="single open-member">
-                <div class="single-opt pay-opt been">
-                    <input class="rad-inp" type="radio">
-                    <div class="opt-label dibs"><span></span>开通会员</div>
-                    <span class="open-right">会员权益</span>
-                </div>
-                <div class="years">
-                    @foreach($memberrights as $memberright)
-                        <span class="pay-opt" memberId="{{$memberright->memberid}}">
-                        <input class="rad-inp" type="radio" >
-                        <div class="opt-label"><span></span>{{$memberright->termtime}}年&nbsp;&nbsp;￥{{$memberright->cost}}<em class="benifit">优惠次数 {{$memberright->eventcounts}} 次</em><em class="benifit">优惠时间 {{$memberright->consultcounts}} 分钟</em></div>
-                    </span>
-                    @endforeach
-                </div>
 
-                <div class="cub"></div>
-            </div>
-            <div class="paytype payoff-way">
+            <div class="cub"></div>
+        </div>
+        <div class="paytype payoff-way">
+            <p>请选择支付方式：</p>
                     <span class="pay-opt focus been">
                         <input class="rad-inp" type="radio"  value="wx_pub_qr">
                         <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lweixin.png')}}"><em class="way-cap">微信支付</em></div>
@@ -156,11 +204,10 @@
                         <input class="rad-inp" type="radio"  value="alipay_pc_direct">
                         <div class="opt-label"><span></span><img class="way-img" src="{{asset('img/lzhifubao.png')}}"><em class="way-cap">支付宝支付</em></div>
                     </span>
-            </div>
-            <div style="text-align: center;padding: 0 0 20px;"><button type="button" class="pop-btn vip" id="vip">付费</button></div>
         </div>
+        <div style="text-align: center;padding:10px 0 0 10px;"><button type="button" class="pop-btn vip" id="vip">付费</button></div>
     </div>
-    <div class="layer-pop" style="position:fixed;background: rgba(0,0,0,0.3);top: 0;left: 0;width: 100%;height: 100%;z-index: 1000;display: none;">
+    <div class="layer-pop" style="position:fixed;background: rgba(0,0,0,0.3);top: 0;left: 0;width: 100%;height: 100%;z-index: 19891016;display: none;">
         <div class="popWx" style="position: absolute;top: 10%;width: 285px;border: 2px solid #ccc;left: 50%;top: 50%;margin: -160px 0 0 -145px;background: #fff;text-align: center;border-radius: 3px;font-size: 14px;padding: 30px 0 27px;">
             <div class="changeWeixin">
                 <div class="popWeixin" id="code">
@@ -171,9 +218,14 @@
             <a href="javascript:;" class="closePop" title="关闭" style="position: absolute;top: 0;right: 0;"><i class="iconfont icon-chahao"></i></a>
         </div>
     </div>
+    <div id="zhifubao" style="display: none;">
+        <p>请您在5分钟内尽快完成支付 后回到本页面点击完成支付即可</p>
+        <button class="button1" >完成支付</button>
+        <button class='button2' >去支付</button>
+    </div>
     <script type="text/javascript" src="{{url('/js/jquery.qrcode.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/pingpp2.js')}}"></script>
     <script type="text/javascript">
 
             /*var a = window.location.search;
@@ -182,12 +234,10 @@
             }*/
 
         $(function(){
-           /* $('.closePop').click(function () {
+            $('.closePop').click(function () {
                 $(this).closest('.layer-pop').hide();
-                $('.pop-pay').hide();
-                $(".submit-audit").attr('disabled',false);
-                $(".submit-audit").html('请专家开会');
-            })
+                window.location = window.location.href;
+            })/*
             $('.datas-sel-def').click(function () {
                 $(this).next('ul').stop().slideToggle();
                 $(this).parent().siblings().children('ul').hide();
@@ -422,216 +472,113 @@
         })
 
         $(".submit-audit").on("click",function(){
-            var that=this;
-            //var domain=$(".publ-need-sel-def").text().trim();
-            var describe=$(".uct-works-txt").val();
-            var expertname=$(".uct-linemeet-expertname").html();
-            var expertid=$("input[name='expertId[]']").val();
-            var linefee=$("input[name='linefee']").val();
-            var time=$("#time").html();
-            //alert(time);
-            /*var industry=$("#industrys").text().trim();*/
-            /*var dateStart=$('#start').text().trim();
-            var dateEnd=$("#endTime").text().trim();
-            var isAppoint=($.cookie("videoisAppoint"))?$.cookie("videoisAppoint"):1;
-            var expertIds= $("input[name='expertId[]']").map(function(){return $(this).val()}).get().join(",");
-            var videoType=$("#videoType").text();
-            if(videoType=="单人"){
-                videoType="0";
-            }else{
-                videoType="1";
-            }*/
-            // console.log(expertIds);
-            if(describe.length>20 && describe.length<500){
-            }else{
-                $(this).attr('disabled',false);
-                $(this).html('请专家开会');
-                layer.msg('问题描述字数不符',{'icon':5});
-                return false;
-            }
-            if($("#random").hasClass('active')){
-                var state=1;
-            }else{
-                var state=0;
-            }
 
-            var date = new Date();
-            date.setTime(date.getTime() + (120 * 60 * 1000));
-            //$.cookie("videodomain",domain,{expires:date,path:'/',domain:'sw2025.com'});
-            $.cookie("videodescribe",describe,{expires:date,path:'/',domain:'sw2025.com'});
-            //$.cookie("videoType",videoType,{expires:date,path:'/',domain:'sw2025.com'});
-            //$.cookie("videodateStart",dateStart,{expires:date,path:'/',domain:'sw2025.com'});
-            //$.cookie("videodateEnd",dateEnd,{expires:date,path:'/',domain:'sw2025.com'});
-            //$.cookie("videoreselect",expertIds,{expires:date,path:'/',domain:'sw2025.com'});
-            //$.cookie("state",state,{expires:date,path:'/',domain:'sw2025.com'});
-            $(this).attr('disabled',true);
-            $(this).html('正在提交');
-            $.ajax({
-                url:"{{asset('startMeet')}}",
-                data:{"describe":describe,'expertid':expertid,'linefee':linefee},
-                dateType:"json",
-                type:"POST",
-                success:function(res){
-                    var date = new Date();
-                    date.setTime(date.getTime() + (120 * 60 * 1000));
-                    if(res['icon'] == 1){
-                        $.cookie("videoreselect","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodomain","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videoType","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodescribe","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodateStart","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("videodateEnd","",{expires:date,path:'/',domain:'sw2025.com'});
-                        $.cookie("state","",{expires:date,path:'/',domain:'sw2025.com'});
-                        /*$.cookie("videoindustry","",{expires:date,path:'/',domain:'sw2025.com'});*/
-                        if(state == 0){
-                            /*layer.msg(res.msg,{'icon':6,'time':5000},function () {
-                                window.location = '{{url('uct_video')}}';
-                            });*/
-                            layer.open({
-                                type: 1,
-                                shade: 0.6,
-                                title: '已为您推送到指定专家,30秒后自动跳转', //不显示标题
-                                content: '<div style=padding:10px;background:#5FB878;color:#fff;>'+res.msg+'</div>', //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                time:30000,
-                                cancel: function(index,layero){
-                                    window.location = '{{url('uct_video')}}';
-                                },
-                                end:function () {
-                                    window.location = '{{url('uct_video')}}';
-                                }
+            var timelot = "{{$data->timelot}}";
+            var cost = "{{$data->price}}";
+            var userid = "{{session('userId')}}";
+            $('#vip').attr('userid',userid);
+            $('#needcontetn').html('您线下约见该专家 <b id=needpeoples>'+timelot+'小时</b> <br />一共需要支付'+' <b id=needpaynumbers>'+cost+'</b> 元');
+            layer.open({
+                type: 1,
+                shade: 0.8,
+                title: '支付窗口', //不显示标题
+                area: ['400px', '350px'],
+                isOutAnim:2,
+                content: $('#payhtml'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                cancel: function(){
 
-                            });
-                        } else {
-                            var str = '';
-                            var obj = res.expertsinfo;
-                            for(var i=0;i<obj.length;i++){
-                                str += '<a href={{url("expert/detail")}}/'+obj[i]['expertid']+' target="_blank"><img src="{{env('ImagePath')}}'+obj[i]['showimage']+'"><span>'+obj[i]['expertname']+'</span></a>';
-                            }
-                            $('.layer_image li').append(str);
-                            $('.layer_image p').append(res.msg);
-                            layer.open({
-                                type: 1,
-                                shade: false,
-                                area: ['695px', '240px'], //宽高
-                                title: '恭喜您，以为您推送到专家，以下的是专家的相关信息', //不显示标题
-                                content: $('.layer_image'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                cancel: function(){
-                                    window.location.href="{{asset('uct_video')}}";
-                                }
-                            });
-                        }
-                    }else if(res['icon'] == 2){
-                        $(".publ-need-sel-def").text(domain);
-                        $(".uct-works-txt").val(describe);
-                        $("#start").text(dateStart);
-                        $("#endTime").text(dateEnd);
-                        layer.confirm(res.msg+'申请失败,请重新申请', {
-                            btn: ['确定'] //按钮
-                        });
-                        $(that).removeAttr('disabled');
-                        $(that).html('请专家开会');
-                    }else if(res['icon'] == 3){
-                        layer.confirm(res.msg, {
-                            btn: ['确定','取消'] ,
-                            skin: 'layer-ext-moon',
-                            icon:0,
-                        }, function(index){
-                            var str;
-                            if(res['code']==2){
-                                window.location.href="/"+res['url'];
-                            }
-                            if(res['code']==6){
-                                str="<span></span>单次缴费：￥<b class='money'>{{env('consultMemberMoney')}}</b>/{{env('Time')}}分钟 &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
-                            }else{
-                                str="<span></span>单次缴费：￥<b class='money'>{{env('Money')}}</b>/{{env('Time')}}分钟 &nbsp;&nbsp;&nbsp;&nbsp;充值时间 <input type='number' class='re-counts times'  min='1' style='border: 1px solid #ccc;padding-left: 10px;box-sizing:border-box;width: 140px;'>"
-                            }
-                            pop(str);
-                            layer.close(index);
-                        }, function(index){
-                            $(that).attr('disabled',false);
-                            $(that).html('请专家开会');
-                            layer.close(index);
-                        });
-                    }
-                }
-            })
-        })
-
-        $("#vip").on("click",function(){
-            var payType;
-            var memberId;
-            var channel;
-            var amount;
-            var consultCount;
-            var urlType=window.location.href;
-            var res=$("#singlePay").hasClass("been");
-            if(res){
-                payType="payMoney";
-                var money=$("#singlePay").find(".money:first").text();
-                consultCount=$("#singlePay").find(".times").val();
-                if(consultCount<1){
-                    alert("请填写充值时间");
-                    return false;
-                }
-                amount=amounts*consultCount;
-                memberId=0;
-            }else{
-                payType="member";
-                $(".years").children().each(function(){
-                    if($(this).hasClass('juniorbe')){
-                        memberId=$(this).attr("memberId");
-                    }
-                })
-                amount=0;
-                consultCount=0;
-            }
-            $(".payoff-way").children().each(function(){
-                if($(this).hasClass('been')){
-                    channel=$(this).children(":first").attr("value");
                 }
             });
-            $.ajax({
-                url:"{{url('charge')}}",
-                data:{"payType":payType,"memberId":memberId,"channel":channel,"amount":amount,"type":"consult","consultCount":consultCount,"urlType":urlType},
-                dateType:"json",
-                type:"POST",
-                success:function(res){
-                    var charge =JSON.parse(res);
-                    console.log(charge);
-                    $('#code').empty();
-                    if(charge.credential.wx_pub_qr){
-                        var qrcode = new QRCode('code', {
-                            text: charge.credential.wx_pub_qr,
-                            width: 200,
-                            height: 200,
-                            colorDark : '#000000',
-                            colorLight : '#ffffff',
-                            correctLevel : QRCode.CorrectLevel.H
-                        });
-                        console.log(qrcode);
-                        if(channel=="wx_pub_qr"){
-                            $('.poplayer').show();
-                            $('.layer-pop').show();
-                            $(".weixinTips").show();
-                        }
-                        return;
+        })
+
+            $("#vip").on("click",function(){
+                layer.closeAll();
+                var payType;
+                var userid;
+                var channel;
+                var amount;
+                var meetid;
+                var urlType=window.location.href;
+                meetid={{$data->id}};
+                payType="payMoney";
+                //var money={{$data->price}};
+                var money=1;
+                amount=money;
+                userid=$(this).attr('userid');
+                $(".payoff-way").children().each(function(){
+                    if($(this).hasClass('been')){
+                        channel=$(this).children(":first").attr("value");
                     }
-                    pingpp.createPayment(charge, function(result, err){
-                        // console.log(result);
-                        // console.log(err.msg);
-                        // console.log(err.extra);
-                        if (result == "success") {
-                            // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
-                        } else if (result == "fail") {
-                            // charge 不正确或者微信公众账号支付失败时会在此处返回
-                        } else if (result == "cancel") {
-                            // 微信公众账号支付取消支付
+                });
+
+                $.ajax({
+                    url:"{{url('charge')}}",
+                    data:{"payType":payType,"userid":userid,'meetid':meetid,"channel":channel,"amount":amount,"type":"linemeet","urlType":urlType,'subject':'升维网线下约见'},
+                    dateType:"json",
+                    type:"POST",
+                    success:function(res){
+                        var charge =JSON.parse(res);
+
+
+                        console.log(charge);
+                        $('#code').empty();
+                        if(charge.credential.wx_pub_qr){
+                            var qrcode = new QRCode('code', {
+                                text: charge.credential.wx_pub_qr,
+                                width: 200,
+                                height: 200,
+                                colorDark : '#000000',
+                                colorLight : '#ffffff',
+                                correctLevel : QRCode.CorrectLevel.H
+                            });
+                            console.log(qrcode);
+                            if(channel=="wx_pub_qr"){
+                                $('.poplayer').show();
+                                $('.layer-pop').show();
+                                $(".weixinTips").show();
+                            }
+                            return;
                         }
-                    });
-                }
+                        pingpp.setUrlReturnCallback(function (err, url) {
+                            // 自行处理跳转或者另外打开支付页面地址(url)
+                            $('.button2').attr('onclick','window.open(\''+url+'\')');
+
+                            layer.open({
+                                type: 1,
+                                shade: 0.8,
+                                title: false, //不显示标题
+                                isOutAnim:2,
+                                area: ['550px', '220px'],
+                                content: $('#zhifubao'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                                cancel: function(){
+
+                                }
+                            });
+                        }, ['alipay_pc_direct', 'alipay_wap']);
+
+                        pingpp.createPayment(charge, function(result, err){
+                            console.log(result);
+                            console.log(err.msg);
+                            console.log(err.extra);
+                            if (result == "success") {
+                                // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+                                layer.alert('支付成功');
+                            } else if (result == "fail") {
+                                // charge 不正确或者微信公众账号支付失败时会在此处返回
+                            } else if (result == "cancel") {
+                                // 微信公众账号支付取消支付
+                            }
+                        });
+                    }
+                })
+
             })
 
-        })
+            $('.button1').on('click',function () {
+                layer.closeAll();
+                 window.location = window.location.href;
+
+            });
         // =========日期插件使用方法======>start
             /* !function(){
             laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库

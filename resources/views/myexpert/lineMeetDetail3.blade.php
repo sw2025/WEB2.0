@@ -28,6 +28,10 @@
                     <td>{{$datas->contents}}</td>
                 </tr>
                 <tr>
+                    <td>约见时长</td>
+                    <td>{{$datas->timelot}}小时</td>
+                </tr>
+                <tr>
                     <td>我的收益</td>
                     <td>{{$datas->price}}</td>
                 </tr>
@@ -36,7 +40,7 @@
         </div>
         <br><br><br><br>
         <div>
-            <span class="accept" style="width: 200px;margin-left:400px;">线下约谈</span>
+            <span class="accept" style="width: 400px;margin:0px auto;font-size: 18px;">企业已付款  请等待企业联系您确认时间地点见面方式</span>
         </div>
         <div class="respond-btn-box">
             <!-- 状态按钮根据实际状态只展示一个 -->
