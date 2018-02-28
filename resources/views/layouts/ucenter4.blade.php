@@ -216,6 +216,20 @@
                                     <li><a href="{{url('/uct_myask').'?index=1'}}">查看全部咨询</a></li>
                                 </ul>
                             </div>
+                            <div class="mainmenu" >
+                                <a id="myshows" href="{{asset('myshows')}}"  class="v-ucenter-nav-item aa">
+                                    <img src="{{asset('img/vicon03.png')}}" alt="我的评议" />
+                                    我的评议
+                                </a>
+                                 <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon03.png')}}" alt="我的评议" />
+                                    我的评议
+                                 </span>
+                                <ul class="submenu">
+                                    <li><a href="{{url('/myshows').'?index=0'}}">待评议的项目</a></li>
+                                    <li><a href="{{url('/myshows').'?index=1'}}">查看全部项目</a></li>
+                                </ul>
+                            </div>
                             <div class="mainmenu">
                                 <a id="uct_entres" href="{{asset('uct_entres')}}"  class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/enterpriseicon.png')}}" alt="企业资源" />

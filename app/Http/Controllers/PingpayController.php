@@ -32,6 +32,7 @@ class PingpayController extends Controller
             echo 'channel or amount is empty';
             exit();
         }*/
+        $body = '充值';
         $user = session('userId');
         $channel = strtolower($payload['channel']);
         if($payload['payType']=="member"){
@@ -56,14 +57,19 @@ class PingpayController extends Controller
             if($payload['type']=="consult"){
                 $amounts = $payload['amount'];
                 $amount=$amounts/100;
-            }else{
+            }else if($payload['type']=="onlineshow"){
+                $amount = $payload['amount'];
+                $user = $payload['userid'];
+                $body = '发布项目评议,由专家进行专业评议';
+            } else {
                 $amount = $payload['amount'];
             }
             $orderNo = 'CZ' . time() . mt_rand(1000,9999);
 
             $eventcount=isset($payload['eventCount'])?$payload['eventCount']:0;
             $consultcount=isset($payload['consultCount'])?$payload['consultCount']:0;
-            $metadata=['payType'=>'payMoney','type'=>$payload['type'],'userid'=>$user,"eventCount"=>$eventcount,"consultCount"=>$consultcount];
+            $showconunt=isset($payload['showCount'])?$payload['showCount']:0;
+            $metadata=['payType'=>'payMoney','type'=>$payload['type'],'userid'=>$user,"eventCount"=>$eventcount,"consultCount"=>$consultcount,'showConunt' => $showconunt];
         }
      
         $url =$payload['urlType'];
@@ -157,7 +163,7 @@ class PingpayController extends Controller
                 array(
                     //请求参数字段规则，请参考 API 文档：https://www.pingxx.com/api#api-c-new
                     'subject'   => $subject,
-                    'body'      => '充值',
+                    'body'      => $body,
                     'amount'    => $amountMoney,//订单总金额, 人民币单位：分（如订单总金额为 1 元，此处请填 100）
                     'order_no'  => $orderNo,// 推荐使用 8-20 位，要求数字或字母，不允许其他字符
                     'currency'  => 'cny',

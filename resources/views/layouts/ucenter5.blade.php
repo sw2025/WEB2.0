@@ -189,6 +189,20 @@
                                     <li><a href="{{asset('uct_video').'?consultType=多人'}}">查看多人会议</a></li>
                                 </ul>
                             </div>
+                            <div class="mainmenu" >
+                                <a id="myshows" href="{{asset('myshows')}}"  class="v-ucenter-nav-item aa">
+                                    <img src="{{asset('img/vicon03.png')}}" alt="我的评议" />
+                                    我的评议
+                                </a>
+                                 <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon03.png')}}" alt="我的评议" />
+                                    我的评议
+                                 </span>
+                                <ul class="submenu">
+                                    <li><a href="{{url('/myshows').'?index=0'}}">待评议的项目</a></li>
+                                    <li><a href="{{url('/myshows').'?index=1'}}">查看全部项目</a></li>
+                                </ul>
+                            </div>
                             <div class="mainmenu">
                                 <a id="uct_resource" href="{{asset('uct_resource')}}"  class="v-ucenter-nav-item aa">
                                     <span id="expertmsgtome">0</span>
