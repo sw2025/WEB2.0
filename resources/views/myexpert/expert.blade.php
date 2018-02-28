@@ -350,6 +350,10 @@
             var address = $('#address').html();
             var photo1 = $('#photo1').attr('index');
             var photo2 = $('#avatar2').attr('index');
+            if(photo2 == undefined){
+                photo2 = 'img/photo2.jpg';
+            }
+
             var brief = $('#brief').val();
 
             if (name == '' || photo1 == '' || industry == '' || address == '' || brief == '') {

@@ -1505,7 +1505,7 @@ class PublicController extends Controller
         return ['code' => 'success','number' => $tomymsgcount];
 
     }
-    
+
     public function  uploadAvatar(){
         require('/data/wwwroot/www.sw2025.com/SW2025_WEB/app/Libraries/MyClass/UploadavatarClass.php');
         $crop= new \UploadavatarClass($_POST['avatar_src'], $_POST['avatar_data'], $_FILES['avatar_file']);
@@ -1517,5 +1517,4 @@ class PublicController extends Controller
 
         echo json_encode($response);
     }
-
 }

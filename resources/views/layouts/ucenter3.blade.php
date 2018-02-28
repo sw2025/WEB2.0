@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- 百度统计代码 -->
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6f6e01e4a95947e6714c0d5ce631597b";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0">--}}
@@ -147,6 +157,8 @@
                                     <li><a href="{{url('/uct_video/applyVideo')}}">发起多人会议</a></li>
                                     <li><a href="{{asset('uct_video').'?consultType=单人'}}">查看一对一视频</a></li>
                                     <li><a href="{{asset('uct_video').'?consultType=多人'}}">查看多人会议</a></li>
+
+                                    <li><a href="{{asset('uct_linemeet')}}">查看线下约见</a></li>
                                 </ul>
                             </div>
                             <div class="mainmenu">

@@ -349,3 +349,20 @@ Route::get('pingsuccess','PingpayController@pingSuccess');
 Route::post("charge",'PingpayController@charge');
 
 Route::post("avatarUpload",'PublicController@uploadAvatar');
+
+//线下约见
+Route::get('uct_video/lineMeet', 'MyEnterpriseController@linemeet');
+//发起线下约见
+Route::post('startMeet', 'MyEnterpriseController@startMeet');
+//企业约见信息
+Route::get('uct_linemeet', 'MyEnterpriseController@lineMeetData');
+//企业约见信息
+Route::get('uct_linemeet/detail/{linemeetid}', 'MyEnterpriseController@lineMeetDetail');
+
+//专家约见信息
+Route::get('uct_linemeetexpert', 'MyExpertController@lineMeetExpert');
+//专家确认约见按钮
+Route::post('uct_linemeetexpert/requestLineMeet', 'MyExpertController@requestLineMeet');
+//专家观看线下约见详情页
+Route::get('uct_linemeetexpert/lineMeetDetail/{linemeetid}', 'MyExpertController@lineMeetDetail');
+
