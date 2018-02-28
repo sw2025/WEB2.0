@@ -224,7 +224,7 @@
                                 <ul class="submenu">
                                     <li><a href="{{url('/uct_myask').'?index=0'}}">待响应的咨询</a></li>
                                     <li><a href="{{url('/uct_myask').'?index=1'}}">查看全部咨询</a></li>
-                                    <li><a href="{{url('/uct_linemeetexpert').'?index=0'}}">查看线下约见</a></li>
+                                    <li><a href="{{url('/uct_myask/uct_linemeetexpert').'?index=0'}}">查看线下约见</a></li>
                                 </ul>
                             </div>
                             <div class="mainmenu" >

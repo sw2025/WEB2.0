@@ -157,26 +157,6 @@ Route::post('exttomymsg/reply','MyEnterpriseController@msgReply');
     Route::get('uct_myneed/examineNeed/{needid?}', 'CenterController@examineNeed');
 //企业缴费
     Route::post('member/pay/{needid}', 'MyEnterpriseController@memberPay');
-
-//项目评议----企业部分
-//查看项目评议
-Route::get('uct_myshow', 'CenterController@myShow');
-//发布项目评议
-    Route::get('uct_myshow/supplyShow/{showid?}', 'CenterController@supplyShow');
-//新增项目评议
-Route::post('uct_myshow/addShow', 'CenterController@addShow');
-//项目评议详情
-Route::get('uct_myshow/showDetail/{showid}', 'CenterController@showDetail');
-//解决项目评议
-Route::post('uct_myshow/solveShow', 'CenterController@solveShow');
-
-//项目评议  -----专家部分
-Route::get('myshows', 'ExpertUcenterController@myShows');
-//项目评议详情
-Route::get('myshows/showDetail/{showid}', 'ExpertUcenterController@showDetail');
-//专家评议项目
-Route::post('myshows/messagetoShow', 'ExpertUcenterController@messageToShow');
-
     /***************************************个人中心我是专家路由(公共部分)****************************************************************/
 //基本资料
     Route::get('basic', 'ExpertUcenterController@index');
@@ -374,13 +354,20 @@ Route::post("avatarUpload",'PublicController@uploadAvatar');
 Route::get('uct_video/lineMeet', 'MyEnterpriseController@linemeet');
 //发起线下约见
 Route::post('startMeet', 'MyEnterpriseController@startMeet');
+
+
+//等待专家线下约见确认
+Route::get('uct_video/lineMeet2/{linemeetid}', 'MyEnterpriseController@lineMeet2');
+
+//等待专家线下约见确认
+Route::get('uct_linemeet/lineMeet3/{linemeetid}', 'MyEnterpriseController@lineMeet3');
 //企业约见信息
-Route::get('uct_linemeet', 'MyEnterpriseController@lineMeetData');
+Route::get('uct_video/uct_linemeet', 'MyEnterpriseController@lineMeetData');
 //企业约见信息
 Route::get('uct_linemeet/detail/{linemeetid}', 'MyEnterpriseController@lineMeetDetail');
 
 //专家约见信息
-Route::get('uct_linemeetexpert', 'MyExpertController@lineMeetExpert');
+Route::get('uct_myask/uct_linemeetexpert', 'MyExpertController@lineMeetExpert');
 //专家确认约见按钮
 Route::post('uct_linemeetexpert/requestLineMeet', 'MyExpertController@requestLineMeet');
 //专家观看线下约见详情页

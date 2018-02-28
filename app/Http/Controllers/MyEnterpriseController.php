@@ -2351,7 +2351,9 @@ class MyEnterpriseController extends Controller
             ->where('t_u_enterprise.userid',$userid)
             ->select('t_u_enterpriseverify.configid')
             ->first();
-        if(!$result){
+        //dd($enterpriseid);
+
+        if($result){
             $enterpriseid = 999;
         }else{
             $enterpriseid = $result->configid;
