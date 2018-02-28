@@ -1567,6 +1567,7 @@ class MyEnterpriseController extends Controller
         $memberrights=DB::table("t_u_memberright")->whereNotIn("memberid",[1,5])->get();
         return view("myenterprise.applyVideo",compact("cate",'memberrights'));
     }
+
     /**保存申请的咨询
      * @return array
      */
@@ -2330,12 +2331,160 @@ class MyEnterpriseController extends Controller
      * @param $enterpriseId
      * @return mixed
      */
-public function updateEnterprise($enterpriseId){
-    $data=DB::table("t_u_enterprise")->where("enterpriseid",$enterpriseId)->first();
-    return view("myenterprise.updateEnterprise",compact('data'));
-}
+    public function updateEnterprise($enterpriseId){
+        $data=DB::table("t_u_enterprise")->where("enterpriseid",$enterpriseId)->first();
+        return view("myenterprise.updateEnterprise",compact('data'));
+    }
+    /**申请视频咨询
+     * @return mixed
+     */
+    public function linemeet(){
+        //$cate = DB::table('t_common_domaintype')->get();
+
+        $memberrights=DB::table("t_u_memberright")->whereNotIn("memberid",[1,5])->get();
+        //dd($memberrights);
+        $userid = session('userId');
+
+        $result = DB::table("t_u_enterprise")
+            ->leftJoin('t_u_enterpriseverify','t_u_enterprise.enterpriseid','=','t_u_enterpriseverify.enterpriseid')
+            ->whereRaw('t_u_enterpriseverify.id in (select max(id) from t_u_enterpriseverify group by enterpriseid)')
+            ->where('t_u_enterprise.userid',$userid)
+            ->select('t_u_enterpriseverify.configid')
+            ->first();
+        if(!$result){
+            $enterpriseid = 999;
+        }else{
+            $enterpriseid = $result->configid;
+        }
+
+        return view("myenterprise.lineMeet",compact('memberrights','enterpriseid'));
+    }
+
+    /**
+     * 企业线下约见专家
+     */
+    public function startMeet()
+    {
+        $res=array();
+        $userId=session('userId');
+        $data=$_POST;
+        /*dd($data);*/
+        $price = $data['time'] * $data['linefee'];
+
+        $result = DB::table("t_l_linemeet")->insert([
+        "userid" => $userId,
+        "timelot" => $data['time'],
+        'expertid' => $data['expertid'],
+        'contents' => $data['describe'],
+        'price' => $price,
+        "puttime" => date("Y-m-d H:i:s", time()),
+        "created_at" => date("Y-m-d H:i:s", time()),
+        "updated_at" => date("Y-m-d H:i:s", time())
+    ]);
+
+        $linemeetid = DB::table('t_l_linemeet')->where('userid',$userId)->orderBy('id','desc')->first()->id;
+
+        DB::table("t_l_linemeetverify")->insert([
+        "meetid" => $linemeetid,
+        "configid" => 2,
+        'verifytime' => date("Y-m-d H:i:s", time()),
+
+        "created_at" => date("Y-m-d H:i:s", time()),
+        "updated_at" => date("Y-m-d H:i:s", time())
+    ]);
 
 
-   
 
+        if($result){
+            return  ['msg'=>'success','linemeetid'=>$linemeetid];
+        }else{
+            return  ['msg'=>'error'];
+
+        }
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+
+
+    /**
+     * 查看约见信息
+     */
+
+    public function lineMeetData()
+    {
+
+        $userId=session('userId');
+
+        $type = isset($_GET['type'])?$_GET['type']:"不限";
+
+        $linemeetconfigtype = array("已提交"=>1,"未通过"=>2,"已通过"=>3,"已完成"=>4);
+
+        $typeWhere=($type!="不限")?array("t_l_linemeetverify.configid"=>$linemeetconfigtype[$type]):array();
+
+        //dd($typeWhere);
+
+        $datas=DB::table("t_l_linemeet")
+            ->leftJoin("t_l_linemeetverify","t_l_linemeetverify.meetid","=","t_l_linemeet.id")
+            ->leftJoin("t_u_expert","t_u_expert.expertid","=","t_l_linemeet.expertid")
+            ->select("t_l_linemeet.*",'t_l_linemeetverify.configid','t_u_expert.expertname','t_u_expert.domain2')
+            ->whereRaw('t_l_linemeetverify.id in (select max(id) from t_l_linemeetverify group by meetid)')
+            ->where("t_l_linemeet.userid",$userId)
+            ->where($typeWhere)
+            ->orderBy('t_l_linemeet.puttime','desc')
+            ->paginate(6);
+        return view("myenterprise.lineMeetManage",compact("datas","type","counts"));
+    }
+
+    public function lineMeetDetail($linemeetid)
+    {
+            $configid = DB::table('t_l_linemeet')
+                ->leftJoin("t_l_linemeetverify","t_l_linemeetverify.meetid","=","t_l_linemeet.id")
+                ->whereRaw('t_l_linemeetverify.id in (select max(id) from t_l_linemeetverify group by meetid)')
+                ->where('meetid',$linemeetid)->first()->configid;
+
+        if($configid == 2){
+
+                $data = DB::table('t_l_linemeet')
+                    ->leftJoin('t_u_expert','t_u_expert.expertid',"=",'t_l_linemeet.expertid')
+                    ->leftJoin('t_u_expertfee','t_u_expertfee.expertid',"=",'t_l_linemeet.expertid')
+                    //->leftJoin("t_u_memberright", "t_u_memberright.memberid", "=", "t_u_enterprisemember.memberid")
+                    ->where('t_l_linemeet.id',$linemeetid)
+                    ->select('t_l_linemeet.*','t_u_expert.expertname','t_u_expert.showimage','t_u_expertfee.linefee')
+                    ->first();
+                $memberrights=DB::table("t_u_memberright")->whereNotIn("memberid",[1,5])->get();
+
+                return view("myenterprise.lineMeet2",compact('data','memberrights'));
+            }elseif ($configid == 3){
+                $data = DB::table('t_l_linemeet')
+                    ->leftJoin('t_u_expert','t_u_expert.expertid',"=",'t_l_linemeet.expertid')
+                    ->leftJoin('t_u_expertfee','t_u_expertfee.expertid',"=",'t_l_linemeet.expertid')
+                    //->leftJoin("t_u_memberright", "t_u_memberright.memberid", "=", "t_u_enterprisemember.memberid")
+                    ->where('t_l_linemeet.id',$linemeetid)
+                    ->select('t_l_linemeet.*','t_u_expert.expertname','t_u_expert.showimage','t_u_expertfee.linefee')
+                    ->first();
+
+                $memberrights=DB::table("t_u_memberright")->whereNotIn("memberid",[1,5])->get();
+
+                return view("myenterprise.lineMeet3",compact('data','memberrights'));
+            }elseif ($configid == 4){
+                $data = DB::table('t_l_linemeet')
+                    ->leftJoin('t_u_expert','t_u_expert.expertid',"=",'t_l_linemeet.expertid')
+                    ->leftJoin('t_u_expertfee','t_u_expertfee.expertid',"=",'t_l_linemeet.expertid')
+                    //->leftJoin("t_u_memberright", "t_u_memberright.memberid", "=", "t_u_enterprisemember.memberid")
+                    ->where('t_l_linemeet.id',$linemeetid)
+                    ->select('t_l_linemeet.*','t_u_expert.expertname','t_u_expert.showimage','t_u_expertfee.linefee')
+                    ->first();
+
+                $phone = DB::table('t_u_expert')
+                    ->leftJoin('t_u_user','t_u_user.userid','=','t_u_expert.userid')
+                    ->where('t_u_expert.expertid',$data->expertid)
+                    ->first()->phone;
+
+                $memberrights=DB::table("t_u_memberright")->whereNotIn("memberid",[1,5])->get();
+
+                return view("myenterprise.lineMeet4",compact('data','memberrights','phone'));
+            }
+    }
 }

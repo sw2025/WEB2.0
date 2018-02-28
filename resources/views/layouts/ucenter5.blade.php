@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- 百度统计代码 -->
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6f6e01e4a95947e6714c0d5ce631597b";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0">--}}
@@ -266,6 +276,7 @@
                                 <ul class="submenu">
                                     <li><a href="{{url('/uct_myask').'?index=0'}}">待响应的咨询</a></li>
                                     <li><a href="{{url('/uct_myask').'?index=1'}}">查看全部咨询</a></li>
+                                    <li><a href="{{url('/uct_linemeetexpert').'?index=0'}}">查看线下约见</a></li>
                                 </ul>
                             </div>
                             <div class="mainmenu">

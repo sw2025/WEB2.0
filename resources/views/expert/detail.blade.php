@@ -36,7 +36,8 @@
                 </div>
                 <div class="exp-details-con">
                     <div class="exp-det-con-top">
-                        @if(!empty(session('role')) && session('role') != '专家')<button id="selectexpert" style="font-size: 15px;" onclick="selectexpertjoinevent(null)">邀请专家[办事/视频咨询]</button>@endif
+                        @if(!empty(session('role')) && session('role') != '专家')<button id="selectexpert" style="font-size: 15px;" onclick="selectexpertjoinevent(null)">约见专家</button>@else<button id="selectexpert" style="font-size: 15px;" onclick="selectexpertjoinevent(null)">约见专家</button>@endif
+
                         <img src="@if(empty($datas->showimage)){{url('img/avatar.jpg')}}@else {{env('ImagePath').$datas->showimage}}@endif" class="exp-details-img" />
                         <div class="exp-details-brief">
                             <span class="exp-details-name"><i class="iconfont icon-iconfonticon"></i>{{$datas->expertname}}</span>
@@ -331,6 +332,11 @@
             });
                 return false;
             }
+        if($.cookie('userId')=={{$datas->userid}}){
+                layer.msg('不可以约见自己哦',{'icon':5});
+                return false;
+            }
+
             if(obj != null){
                 var str = '<div style="padding:10px;">系统会自动在创建办事/视频咨询的过程中将您的问题分类和需求自动填充到新建办事/视频咨询中，可进行修改后完成邀请专家。是否继续？<p style=color:red;font-size:12px;>提示：请您确保您的身份是升维网认证企业，且在后续创建办事或者咨询时会产生相关费用。请做好相关准备<p></div>';
             }else{
@@ -341,18 +347,18 @@
                 skin: 'layui-layer-rim', //加上边框
                 area: ['400px', '210px'],
                 shadeClose: false, //开启遮罩关闭
-                title:'新建[办事/视频咨询]提醒',
+                title:'约见专家提醒',
                 content: str,
-                btn: ['邀请办事','邀请视频咨询','取消'],
+                btn: ['线下约见','线上约见','取消'],
                 yes: function(index, layero){
-                    $.cookie("isAppoint",1,{path:'/',domain:'sw2025.com'});
-                    $.cookie("reselect",'{{$datas->expertid.$datas->showimage}}',{path:'/',domain:'sw2025.com'});
+                    $.cookie("videoisAppoint",1,{path:'/',domain:'sw2025.com'});
+                    $.cookie("videoreselect",'{{$datas->expertname.'/'.$datas->linefee.'/'.$datas->expertid.$datas->showimage}}',{path:'/',domain:'sw2025.com'});
                     if(obj != null){
                         var ss = $(obj).val().split(/【(.*)】/i);
-                        $.cookie("domain",ss[1],{path:'/',domain:'sw2025.com'});
-                        $.cookie("describe", $.trim(ss[2]),{path:'/',domain:'sw2025.com'});
+                        $.cookie("videodomain",ss[1],{path:'/',domain:'sw2025.com'});
+                        $.cookie("videodescribe", $.trim(ss[2]),{path:'/',domain:'sw2025.com'});
                     }
-                    window.location.href="{{url('uct_works/applyWork')}}";
+                    window.location.href="{{url('/uct_video/lineMeet')}}";
                 },btn2: function(index, layero){
                     $.cookie("videoisAppoint",1,{path:'/',domain:'sw2025.com'});
                     $.cookie("videoreselect",'{{$datas->expertid.$datas->showimage}}',{path:'/',domain:'sw2025.com'});

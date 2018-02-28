@@ -109,8 +109,9 @@ class ExpertController extends Controller
             ->leftJoin('view_expertcollectcount as coll', 'ext.expertid', '=', 'coll.expertid')
             ->leftJoin('view_expertmesscount as mess', 'ext.expertid', '=', 'mess.expertid')
             ->leftJoin('view_expertstatus as state', 'state.expertid', '=', 'ext.expertid')
+            ->leftJoin('t_u_expertfee as expertfee', 'expertfee.expertid', '=', 'ext.expertid')
             ->where(['state.configid' => 2])
-            ->select('ext.*', 'user.phone', 'fee.fee', 'fee.state');
+            ->select('ext.*', 'user.phone', 'fee.fee', 'fee.state','expertfee.linefee');
         $obj = clone $datas;
         $datas = $datas->where('ext.expertid', $expertid)->first();
         //取出同类下推荐的供求

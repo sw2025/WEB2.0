@@ -785,46 +785,68 @@ class MyExpertController extends Controller
         }else{
             return redirect('/uct_expert');
         }
-        $fees=DB::table('t_u_expertfee')->where('expertid',$expertid)->orderBy('expertid', 'desc')->first();
-        if($fees){
-            $fee=$fees->fee;
+        $islinemeet = $result->islinemeet;
+        $isonlinemeet = $result->isonlinemeet;
+        $fee =DB::table('t_u_expertfee')->where('expertid',$expertid)->orderBy('expertid', 'desc')->first();
+        if($fee){
+            $linefee=$fee->linefee;
+        }else{
+            $linefee=0;
+        }
+        if($fee){
+            $fee=$fee->fee;
         }else{
             $fee=0;
         }
+
         if($request->ajax()){
             $data = $request->input();
+            $islinemeet = DB::table('t_u_expert')->where('expertid',$expertid)->first()->islinemeet;
+            $isonlinemeet = DB::table('t_u_expert')->where('expertid',$expertid)->first()->isonlinemeet;
+            $linefee = DB::table('t_u_expertfee')->where('expertid',$expertid)->first()->linefee;
+            $fee = DB::table('t_u_expertfee')->where('expertid',$expertid)->first()->fee;
+
+            if($data['islinemeet'] != $islinemeet){
+                DB::table('t_u_expert')->where('expertid',$expertid)->update(['islinemeet' => $data['islinemeet']]);
+            }
+            if($data['isonlinemeet'] != $isonlinemeet){
+                DB::table('t_u_expert')->where('expertid',$expertid)->update(['isonlinemeet' => $data['isonlinemeet']]);
+            }
             $count= DB::table('t_u_expertfee')->where('expertid',$expertid)->count();
-            if($data['fee']==0){
+            /*if($data['fee']==0){
                 $state=0;
             }else{
                 $state=1;
-            }
-            if($count){
-                $result = DB::table('t_u_expertfee')
-                    ->where('expertid',$expertid)
-                    ->update([
-                        'fee' => $data['fee'],
-                        'state'=>$state,
+            }*/
+            if($data['linefee'] != $linefee || $data['fee'] != $fee) {
+                if ($count) {
+                    $result = DB::table('t_u_expertfee')
+                        ->where('expertid', $expertid)
+                        ->update([
+                            'fee' => $data['fee'],
+                            'linefee' => $data['linefee']
+                        ]);
+                } else {
+                    $result = DB::table('t_u_expertfee')->insert([
+                        "expertid" => $expertid,
+                        "fee" => $data['fee'],
+                        'linefee' => $data['linefee'],
+                        "created_at" => date("Y-m-d H:i:s", time()),
+                        "updated_at" => date("Y-m-d H:i:s", time())
                     ]);
-            }else{
-                $result = DB::table('t_u_expertfee')->insert([
-                    "expertid"=>$expertid,
-                    "fee" => $data['fee'],
-                    "state"=>$state,
-                    "created_at"=>date("Y-m-d H:i:s",time()),
-                    "updated_at"=>date("Y-m-d H:i:s",time())
-                ]);
 
+                }
             }
 
-            if(!$result){
-                return ['msg' => '添加失败','icon' => 2];
+            if($result){
+                return ['msg' => '设置成功','icon' => 1];
             }else{
-                return ['msg' => '添加成功','icon' => 1];
+                return ['msg' => '设置失败','icon' => 2];
 
             }
         }
-        return view("myexpert.standard",compact('fee'));
+        //dd($fee);
+        return view("myexpert.standard",compact('linefee','fee','islinemeet','isonlinemeet'));
     }
 
     /**我的办事视频
@@ -845,5 +867,141 @@ class MyExpertController extends Controller
         return view("myexpert.updateExpert",compact('result','cate'));
     }
 
+    public function lineMeetExpert()
+    {
+        $userId=session('userId');
 
+        $type = isset($_GET['type'])?$_GET['type']:"不限";
+
+        $linemeetconfigtype = array("已提交"=>1,"未通过"=>2,"已通过"=>3,"已完成"=>4);
+
+        $typeWhere=($type!="不限")?array("t_l_linemeetverify.configid"=>$linemeetconfigtype[$type]):array();
+
+
+
+        $results = DB::table('t_u_expert')
+            ->leftJoin('t_u_expertverify','t_u_expert.expertid','=','t_u_expertverify.expertid')
+            ->where('t_u_expert.userid',$userId)
+            ->where('t_u_expertverify.configid',3)
+            ->first();
+        if(!$results){
+            $expertdata = [0,000];
+            if(!isset($_GET['index']) || $_GET['index']==0){
+                $index=0;
+            }else{
+                $index=1;
+            }
+            $result =DB::table("t_l_linemeet")
+                ->leftJoin("t_l_linemeetverify","t_l_linemeetverify.meetid","=","t_l_linemeet.id")
+                ->leftJoin("t_u_expert","t_u_expert.expertid","=","t_l_linemeet.expertid")
+                ->leftJoin("t_u_enterprise","t_l_linemeet.userid","=","t_u_enterprise.userid")
+                ->select("t_l_linemeet.*",'t_l_linemeetverify.configid','t_u_expert.expertname','t_u_expert.domain2','t_u_enterprise.enterprisename','t_u_enterprise.industry')
+                ->whereRaw('t_l_linemeetverify.id in (select max(id) from t_l_linemeetverify group by meetid)')
+                ->whereIn('t_l_linemeet.expertid', $expertdata)
+                ->where('t_l_linemeetverify.configid',2)
+                ->orderBy('t_l_linemeet.puttime','desc');
+            $count=clone $result;
+            $counts = $result->count();
+            $datas = $result->paginate(6);
+
+            return view("myexpert.lineMeetExpert",compact('datas','index','counts'));
+
+        }
+        $expertid = $results->expertid;
+
+        if(!isset($_GET['index']) || $_GET['index']==0){
+            $typeWhere=[];
+            $configTypeWhere=[];
+            $index=0;
+
+            $result =DB::table("t_l_linemeet")
+                ->leftJoin("t_l_linemeetverify","t_l_linemeetverify.meetid","=","t_l_linemeet.id")
+                ->leftJoin("t_u_expert","t_u_expert.expertid","=","t_l_linemeet.expertid")
+                ->leftJoin("t_u_enterprise","t_l_linemeet.userid","=","t_u_enterprise.userid")
+                ->select("t_l_linemeet.*",'t_l_linemeetverify.configid','t_u_expert.expertname','t_u_expert.domain2','t_u_enterprise.enterprisename','t_u_enterprise.industry')
+                ->whereRaw('t_l_linemeetverify.id in (select max(id) from t_l_linemeetverify group by meetid)')
+                ->where("t_l_linemeet.expertid",$expertid)
+                ->where($typeWhere)
+                ->where('t_l_linemeetverify.configid',2)
+                ->orderBy('t_l_linemeet.puttime','desc');
+        }else{
+            $typeWhere=[];
+            $configTypeWhere=[];
+            $index=1;
+            $result =DB::table("t_l_linemeet")
+                ->leftJoin("t_l_linemeetverify","t_l_linemeetverify.meetid","=","t_l_linemeet.id")
+                ->leftJoin("t_u_expert","t_u_expert.expertid","=","t_l_linemeet.expertid")
+                ->leftJoin("t_u_enterprise","t_l_linemeet.userid","=","t_u_enterprise.userid")
+                ->select("t_l_linemeet.*",'t_l_linemeetverify.configid','t_u_expert.expertname','t_u_expert.domain2','t_u_enterprise.enterprisename','t_u_enterprise.industry')
+                ->whereRaw('t_l_linemeetverify.id in (select max(id) from t_l_linemeetverify group by meetid)')
+                ->where("t_l_linemeet.expertid",$expertid)
+                ->where($typeWhere)
+                ->where('t_l_linemeetverify.configid',3)
+                ->orderBy('t_l_linemeet.puttime','desc');
+        }
+
+        $count=clone $result;
+        $counts = $result->count();
+        $datas = $result->paginate(6);
+
+
+
+        return view("myexpert.lineMeetExpert",compact("datas","type","counts",'index'));
+    }
+
+
+    //接受企业的先下约谈请求
+    public function requestLineMeet()
+    {
+        $linemeetid = $_POST['id'];
+        $result = DB::table('t_l_linemeetverify')->insert([
+            "meetid"=>$linemeetid,
+            "configid"=>3,
+            "verifytime"=> date("Y-m-d H:i:s", time()),
+            "created_at"=> date("Y-m-d H:i:s", time()),
+            "updated_at"=> date("Y-m-d H:i:s", time()),
+
+        ]);
+
+        if(!$result){
+            return  ['icon'=>'2','msg'=>"接收失败"];
+        }else{
+            return  ['icon'=>'1','msg'=>"接收成功"];
+
+        }
+
+    }
+
+    /**
+     *
+     */
+    public function lineMeetDetail($linemeetid)
+    {
+        $configid = DB::table('t_l_linemeetverify')->where('meetid',$linemeetid)->first()->configid;
+
+
+        if($configid == '1'){
+
+            $datas = DB::table('t_l_linemeet')
+                ->leftJoin('t_u_expert','t_u_expert.expertid',"=",'t_l_linemeet.expertid')
+                ->leftJoin('t_u_enterprise','t_u_enterprise.userid',"=",'t_l_linemeet.userid')
+                ->leftJoin('t_u_expertfee','t_u_expertfee.expertid',"=",'t_l_linemeet.expertid')
+                ->leftJoin("t_l_linemeetverify","t_l_linemeetverify.meetid","=","t_l_linemeet.id")
+                //->leftJoin("t_u_memberright", "t_u_memberright.memberid", "=", "t_u_enterprisemember.memberid")
+                ->whereRaw('t_l_linemeetverify.id in (select max(id) from t_l_linemeetverify group by meetid)')
+                ->where('t_l_linemeet.id',$linemeetid)
+                ->select('t_l_linemeet.*','t_u_expert.expertname','t_u_expert.showimage','t_u_expertfee.linefee','t_u_enterprise.*','t_l_linemeetverify.configid')
+                ->first();
+            $memberrights=DB::table("t_u_memberright")->whereNotIn("memberid",[1,5])->get();
+
+            if($datas->configid == 2){
+                return view("myexpert.lineMeetDetail",compact('datas','memberrights'));
+            }elseif ($datas->configid == 3){
+                return view("myexpert.lineMeetDetail2",compact('datas','memberrights'));
+            }elseif ($datas->configid == 4){
+                return view("myexpert.lineMeetDetail3",compact('datas','memberrights'));
+            }
+
+        }
+    }
 }
