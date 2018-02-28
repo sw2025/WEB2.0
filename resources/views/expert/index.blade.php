@@ -1,5 +1,6 @@
 @extends("layouts.master")
 @section("content")
+
 <!-- 搜索框 / start -->
 <link rel="stylesheet" type="text/css" href="{{asset('css/list.css')}}" />
 <script type="text/javascript" src="{{asset('js/list.js')}}"></script>
@@ -113,9 +114,23 @@
                     <div class="exp-list-top">
                         <span class="exp-list-img"><img src="{{env('ImagePath').$v->showimage}}" /></span>
                         <div class="exp-list-brief">
-                            <span class="exp-list-name">{{$v->expertname}}</span>
-                            <span class="exp-list-video"><i class="iconfont icon-shipin"></i>视频咨询：{{--<em>@if(!$v->state || $v->fee == 0)免费 @else ￥{{$v->fee}}/分钟@endif</em>--}}</span>
+                            <span class="exp-list-name" >{{$v->expertname}}</span>
+
+                        @if($v->islinemeet==1)
+                                <span class="exp-list-video"><i class="iconfont icon-shipin"></i>线下:￥{{$v->linefee}}/小时 </span>
+                            @else
+                                <span class="exp-list-video"><i class="iconfont icon-shipin"></i>线上:未开启</span>
+                            @endif
+
+                            @if($v->isonlinemeet==1)
+                                <span class="exp-list-video"><i class="iconfont icon-shipin"></i>线上:￥{{$v->fee}}/分钟</span>
+                            @else
+                                <span class="exp-list-video"><i class="iconfont icon-shipin"></i>线上:未开启</span>
+                            @endif
+
+{{--
                             <span class="exp-list-best"><i class="iconfont icon-shanchang"></i>擅长领域：<em>{{$domainselect[$v->domain1]}}</em></span>
+--}}
                         </div>
                         <div class="exp-list-lab">
                             @foreach(explode(',',$v->domain2) as $do2)
@@ -126,8 +141,14 @@
                     <div class="exp-list-desc">
                         {{$v->brief}}
                     </div>
+
                 </a>
                 <div class="exp-list-icon">
+                    <span style="position: relative;left:-52px;">
+                        <button id="{{$v->userid}}" islinemeet="{{$v->islinemeet}}" name="{{$v->expertname}}" linefee="{{$v->linefee}}" expertid="{{$v->expertid}}" showimage="{{$v->showimage}}" class="linemeet" style="border-style:solid;background-color:transparent;width: 100px;height: 32px;">线下约见</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button id="{{$v->userid}}" isonlinemeet="{{$v->isonlinemeet}}" name="{{$v->expertname}}" linefee="{{$v->linefee}}" expertid="{{$v->expertid}}" showimage="{{$v->showimage}}" class="onlinemeet" style=" border-style:solid;background-color:transparent;width: 120px;height: 32px;">线上约见</button>
+                    </span>
+
                     <a href="{{url('expert/detail',$v->expertid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i></a>
                     <a href="javascript:;" class="collect @if(in_array($v->expertid,$collectids)) red @endif" index="{{$v->expertid}}" title="@if(in_array($v->expertid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> <span>{{$v->collcount}}</span></a>
                 </div>
@@ -162,6 +183,82 @@
             //阻止单击事件
             return false;
         }
+    })
+    $('.linemeet').click(function () {
+        if(!$.cookie('userId')){
+            layer.confirm('您还未登录是否去登录？', {
+                btn: ['去登录','暂不需要'], //按钮
+                skin:'layui-layer-molv'
+            }, function(){
+                window.location.href='/login';
+            }, function(){
+                layer.close();
+            });
+            return false;
+        }
+
+        if($.cookie('userId')==userid){
+            layer.msg('不可以约见自己哦',{'icon':5});
+            return false;
+        }
+        var userid=$(this).attr("id");
+        var expertname =$(this).attr("name");
+        var linefee =$(this).attr("linefee");
+        var expertid =$(this).attr("expertid");
+        var showimage =$(this).attr("showimage");
+        var islinemeet =$(this).attr("islinemeet");
+
+        if(islinemeet!=1){
+            layer.msg('专家还没开启此功能',{'icon':7});
+            return false;
+        }
+
+        $.cookie("videoisAppoint",1,{path:'/',domain:'sw2025.com'});
+        $.cookie("videoreselect",expertname+'/'+linefee+'/'+expertid+showimage,{path:'/',domain:'sw2025.com'});
+
+        window.location.href="{{url('/uct_video/lineMeet')}}";
+    })
+
+    $('.onlinemeet').click(function () {
+
+        if(!$.cookie('userId')){
+            layer.confirm('您还未登录是否去登录？', {
+                btn: ['去登录','暂不需要'], //按钮
+                skin:'layui-layer-molv'
+            }, function(){
+                window.location.href='/login';
+            }, function(){
+                layer.close();
+            });
+            return false;
+        }
+
+
+        if($.cookie('userId')==userid){
+            layer.msg('不可以约见自己哦',{'icon':5});
+            return false;
+        }
+        var userid=$(this).attr("id");
+        var expertname =$(this).attr("name");
+        var linefee =$(this).attr("linefee");
+        var expertid =$(this).attr("expertid");
+        var showimage =$(this).attr("showimage");
+        var isonlinemeet =$(this).attr("isonlinemeet");
+
+        if(isonlinemeet!=1){
+            layer.msg('嘻嘻，专家还没开启此功能',{'icon':5});
+            return false;
+        }
+
+        $.cookie("videoisAppoint",1,{path:'/',domain:'sw2025.com'});
+        $.cookie("videoreselect",expertid+showimage,{path:'/',domain:'sw2025.com'});
+        /*if(obj != null){
+         var ss = $(obj).val().split(/【(.*)】/i);
+         $.cookie("videodomain",ss[1],{path:'/',domain:'sw2025.com'});
+         $.cookie("videodescribe", $.trim(ss[2]),{path:'/',domain:'sw2025.com'});
+         }*/
+        window.location.href="{{url('/uct_video/applyVideo')}}";
+
     })
 </script>
 <script src="{{url('js/expert.js')}}" type="text/javascript"></script>

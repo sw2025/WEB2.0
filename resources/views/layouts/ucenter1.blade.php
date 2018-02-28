@@ -158,7 +158,7 @@
                                     <li><a href="{{url('/uct_video/applyVideo')}}">发起多人会议</a></li>
                                     <li><a href="{{asset('uct_video').'?consultType=单人'}}">查看一对一视频</a></li>
                                     <li><a href="{{asset('uct_video').'?consultType=多人'}}">查看多人会议</a></li>
-                                    <li><a href="{{asset('uct_linemeet')}}">查看线下约见</a></li>
+                                    <li><a href="{{asset('uct_video/uct_linemeet')}}">查看线下约见</a></li>
 
                                 </ul>
                             </div>

@@ -6,21 +6,17 @@
                         <a href="javascript:;" class="v-works-mlt-opt @if($index==0) active @endif" index="0" page="0">线下约见请求</a>
                         <a href="javascript:;" class="v-works-mlt-opt @if($index!=0) active @endif" index="1" page="0">我的线下约见</a>
                     </div>
-                    @if($index==0)
-                    <div class="v-feedback condition0">
-                    <span class="v-feedback-span"><i class="iconfont icon-laba"></i>
-                    <span class="v-feedback-count">{{$counts}}</span>家企业向您发出线下约见</span>
-                    </div>
-                        @endif
+                   @if($index==0)
+                        <div class="v-feedback condition0">
+                                <span class="v-feedback-span"><i class="iconfont icon-laba"></i>
+                                <span class="v-feedback-count">{{$counts}}</span>企业向您发出线下约见请求</span>
+                        </div>
+                    @endif
+
+
                 </div>
-
-
-
-
-            @if($index==0)
-
-            <br/>
-            <div class="v-m-list-box">
+        @if($index==0)
+                <div class="v-m-list-box">
                     <ul class="v-manage-list-ul v-m-l-show clearfix">
                         @foreach($datas as $v)
                         <li>
@@ -46,30 +42,30 @@
                     </ul>
                     @else
 
-                    <div class="v-feedback condition1" >
-                        {{-- <div class="v-works-sel">
-                             <span class="allwork">全部咨询</span>
-                             <a href="javascript:;" class="v-works-sel-def" id="domainType">{{$type or "不限"}}</a>
-                             <ul class="v-works-sel-list domainType"  >
-                                 <li @if($type && $type=="不限") class="active" @endif>不限</li>
-                                 @foreach($domains as $value)
-                                     <li @if($type && $type ==$value->domainname) active @endif>{{$value->domainname}}</li>
-                                 @endforeach
-                             </ul>
-                         </div>
-                         <div class="v-works-sel">
-                             <span class="allwork">全部状态</span>
-                             <a href="javascript:;" class="v-works-sel-def" id="configType">{{$configType or "不限"}}</a>
-                             <ul class="v-works-sel-list configType" >
-                                 <li class="active">不限</li>
-                                 <li>已响应</li>
-                                 <li>正在咨询</li>
-                                 <li>已完成</li>
-                                 <li>已评价</li>
-                                 <li>异常终止</li>
-                             </ul>
-                         </div>--}}
-                    </div>
+                        <div class="v-feedback condition1" >
+                            {{--<div class="v-works-sel">
+                                <span class="allwork">全部咨询</span>
+                                <a href="javascript:;" class="v-works-sel-def" id="domainType">{{$type or "不限"}}</a>
+                                <ul class="v-works-sel-list domainType"  >
+                                    <li @if($type && $type=="不限") class="active" @endif>不限</li>
+                                    @foreach($domains as $value)
+                                        <li @if($type && $type ==$value->domainname) active @endif>{{$value->domainname}}</li>
+                                    @endforeach
+                                </ul>
+                            </div>--}}
+                            {{--<div class="v-works-sel">
+                                <span class="allwork">全部状态</span>
+                                <a href="javascript:;" class="v-works-sel-def" id="configType">{{$configType or "不限"}}</a>
+                                <ul class="v-works-sel-list configType" >
+                                    <li class="active">不限</li>
+                                    <li>已响应</li>
+                                    <li>正在咨询</li>
+                                    <li>已完成</li>
+                                    <li>已评价</li>
+                                    <li>异常终止</li>
+                                </ul>
+                            </div>--}}
+                        </div>
                     <ul class="v-manage-list-ul v-m-l-show clearfix">
                         @foreach($datas as $v)
                         <li>
@@ -100,14 +96,11 @@
                         @endforeach
                     </ul>
                         @endif
-
-
                 </div>
                 <div class="pages myinfo-page v-page">
                     <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
                 </div>
             </div>
-
 <script type="text/javascript">
     $(function(){
         $(document).click(function () {
@@ -185,8 +178,6 @@
             } else {
                 layer.msg(data.msg,{'time':2500,'icon':data.icon},function () {
                     window.location.href ="uct_linemeetexpert?index=1&type=不限";
-                    //http://sb.sw2025.com/uct_linemeetexpert?index=1&type=%E4%B8%8D%E9%99%90
-                    //http://sb.sw2025.com/uct_linemeetexpert/lineMeetExpert?index=1&type=%E4%B8%8D%E9%99%90
                 });
             }
         })

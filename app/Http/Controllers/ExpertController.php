@@ -24,7 +24,7 @@ class ExpertController extends Controller
             ->leftJoin('view_expertmesscount as mess', 'ext.expertid', '=', 'mess.expertid')
             ->leftJoin('view_expertstatus as status', 'ext.expertid', '=', 'status.expertid')
             ->where('status.configid', 2)
-            ->select('ext.*', 'user.phone', 'fee.fee', 'fee.state', 'coll.count as collcount', 'mess.count as messcount');
+            ->select('ext.*', 'user.phone', 'fee.fee','fee.linefee', 'fee.state', 'coll.count as collcount', 'mess.count as messcount');
         //获得用户的收藏
         $collectids = [];
         if (session('userId')) {
@@ -76,10 +76,12 @@ class ExpertController extends Controller
                 $obj = $obj->orderBy('mess.count', $ordermessage);
             }
             $datas = $obj->paginate(12);
+
             return view("expert.index", compact('cate', 'searchname', 'datas', 'role', 'collectids', 'consult', 'domainselect', 'supply', 'address', 'ordertime', 'ordercollect', 'ordermessage'));
         }
         $datas = $datas->orderBy("ext.expertid", 'desc')->paginate(12);
         $ordertime = 'desc';
+
         return view("expert.index", compact('cate', 'datas', 'ordertime', 'collectids', 'domainselect'));
 
     }
