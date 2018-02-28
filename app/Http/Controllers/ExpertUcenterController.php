@@ -994,4 +994,156 @@ class ExpertUcenterController extends Controller
         }
         return ['msg' => '留言失败请刷新重试','icon' => 0];
     }
+
+    /**我的项目评议
+     * @return mixed
+     */
+    public function  myShows(Request $request){
+        //获取板块信息
+        $cate = DB::table('t_common_domaintype')->get();
+        $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+        $pushs = [];
+        if(!empty($expert)){
+
+            $pushs = DB::table('t_s_pushshow')->where('expertid',$expert->expertid)->lists('showid');
+            $also = DB::table('t_s_messagetoshow')->where('userid',session('userId'))->lists('showid');
+        }
+
+        $datas = DB::table('t_s_show as show')
+            ->leftJoin('view_userrole as view','view.userid', '=','show.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_user as user','show.userid' ,'=' ,'user.userid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->leftJoin('view_showmesscount as mess','mess.showid' ,'=' ,'show.showid')
+            ->leftJoin('view_showstatus as status','status.showid' ,'=' ,'show.showid')
+            ->select('show.*','view.role','ent.enterprisename','ent.showimage as entimg','status.configid as flag','mess.count as messcount','ext.showimage as extimg','ext.expertname')
+            ->whereIn('show.showid',$pushs);
+        //待评议
+       $putcount = count(array_diff($pushs,$also));
+        //已评议
+        $waitcount= count($also);
+        /*//商情的数量
+        $vipneedcount = DB::table('t_s_pushshow')->where('userid',session('userId'))->count();*/
+        //判断是否为http请求
+        if(!empty($get = $request->input())){
+            //获取到get中的数据并处理
+            $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
+            //设置where条件生成where数组
+
+
+            $obj = $datas;
+
+            if(!empty($action)){
+                switch($action){
+
+
+                    case 'waitverify':
+                        $action  = '待评议';
+                        $obj = $obj->whereIn('show.showid',array_diff($pushs,$also));;
+                        break;
+                    case 'refuseverify':
+                        $action  = '已评议';
+                        $obj = $obj->whereIn('show.showid',$also);;
+                        break;
+                }
+            } else {
+
+            }
+
+            $datas = $obj->orderBy("show.showtime",'desc')->paginate(4);
+            foreach($datas as $k => $v){
+                if($v->flag == 3){
+                    $v->flag2 = '待评议';
+                } elseif($v->flag == 5 || $v->flag == 4){
+                    $v->flag2 = '已评议';
+                }
+            }
+            return view("expertUcenter.myshows",compact('vipneedcount','waitcount','refusecount','cate','msgcount','datas','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
+        }
+        $datas = $datas
+            ->orderBy("show.showtime",'desc')
+            ->paginate(4);
+        $ordertime = 'desc';
+        foreach($datas as $k => $v){
+            if($v->flag == 3){
+                $v->flag2 = '待评议';
+            } elseif($v->flag == 5 || $v->flag == 4){
+                $v->flag2 = '已评议';
+            }
+        }
+        return view("expertUcenter.myshows",compact('level','vipneedcount','waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
+
+    }
+
+    /**项目评议详情
+     * @return mixed
+     */
+    public function  showDetail($showId){
+        //取出指定的供求信息
+        $datas = DB::table('t_s_show as show')
+            ->leftJoin('view_userrole as view','view.userid', '=','show.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_user as user','user.userid' ,'=' ,'show.userid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->select('ent.brief as desc1','ext.brief as desc2','show.*','ent.enterprisename','ent.address','ext.expertname','user.phone','ent.showimage as entimg','ext.showimage as extimg');
+        //获取该供求的当前状态
+        $configid = DB::table('t_s_showverify as need')->where('showid',$showId)->orderBy('id','desc')->select('configid')->first();
+        $obj = clone $datas;
+        $datas = $datas->where('showid',$showId)->first();
+
+
+        //查询留言的信息
+        $message = DB::table('t_s_messagetoshow as msg')
+            ->leftJoin('t_u_expert as ext','ext.userid' ,'=' ,'msg.userid')
+            ->where('showid',$showId)
+            ->where('msg.userid',session('userId'))
+            ->select('msg.*','ext.expertname','ext.showimage','ext.expertid')
+            ->orderBy('messagetime','desc')
+            ->get();
+        $cryptid = Crypt::encrypt(session('userId').$showId);
+        return view("expertUcenter.showDetail",compact('datas','message','configid','msgcount','cryptid'));
+    }
+
+    /*
+     *专家回复项目  进行评议
+     */
+    public function messageToShow(Request $request)
+    {
+        $data = $request->input();
+        if(empty(session('userId'))){
+            return ['msg' => '请登录','icon' => 2 ];
+        }
+        $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+        if(!empty($expert)){
+            $pushs = DB::table('t_s_pushshow')->where('expertid',$expert->expertid)->where('showid',$data['showid'])->first();
+        } else {
+            return ['msg' => '很抱歉 您不是专家无此权限','icon' => 2];
+        }
+        if(empty($pushs)){
+            return ['msg' => '非法操作','icon' => 2];
+        }
+        if(!empty($data['isupdate'])){
+            $res = DB::table('t_s_messagetoshow')
+                    ->where(['showid' => $data['showid'],'userid' => session('userId')])
+                    ->update(['content' => $data['content']]);
+            if($res){
+                return ['msg' => '修改评议成功','icon' => 1];
+            } else {
+                return ['msg' => '修改评议失败 请重试','icon' => 2];
+            }
+        } else {
+            $res = DB::table('t_s_messagetoshow')
+                    ->insert([
+                        'content' => $data['content'],
+                        'showid' => $data['showid'],
+                        'userid' => session('userId'),
+                        'messagetime' => date('Y-m-d H:i:s',time())
+                    ]);
+            if($res){
+                return ['msg' => '发布评议成功','icon' => 1];
+            } else {
+                return ['msg' => '发布评议失败 请重试','icon' => 2];
+            }
+        }
+    }
 }

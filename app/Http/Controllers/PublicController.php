@@ -454,7 +454,8 @@ class PublicController extends Controller
                 if($result==3){
                     $showimages=DB::table("t_u_enterprise")->where("userid",$userId)->pluck("showimage");
                     $res['remark']="success";
-                }else{                    $showimages='/images/avatar.jpg';
+                }else{                    
+                    $showimages='/images/clickver.png';
                     $res['remark']="error";
                 }
                 $res['enterAvatar']=$showimages;
@@ -470,7 +471,7 @@ class PublicController extends Controller
                     $showimages=DB::table("t_u_expert")->where("userid",$userId)->pluck("showimage");
                     $res['expertRemark']="success";
                 }else{
-                    $showimages='/images/avatar.jpg';
+                    $showimages='/images/clickver.png';
                     $res['expertRemark']="error";
                 }
                 $res['expertAvatar']=$showimages;
@@ -772,7 +773,7 @@ class PublicController extends Controller
                                     ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
                                     ->where('eventid', $eventid)
                                     ->pluck('enterprisename');
-                                self::_sendSms2($phone, '办事选择', 'push', $name);
+                                //self::_sendSms2($phone, '办事选择', 'push', $name);
                                 try
                                 {
                                     if (!empty($imei)) {
@@ -827,7 +828,7 @@ class PublicController extends Controller
                                     ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
                                     ->where('eventid', $eventid)
                                     ->pluck('enterprisename');
-                                self::_sendSms2($phone, '办事选择', 'push', $name);
+                                //self::_sendSms2($phone, '办事选择', 'push', $name);
                                 try
                                 {
                                     if (!empty($imei)) {
@@ -891,7 +892,7 @@ class PublicController extends Controller
                                 ->leftJoin('t_u_enterprise', 't_e_event.userid', '=', 't_u_enterprise.userid')
                                 ->where('eventid', $eventid)
                                 ->pluck('enterprisename');
-                            self::_sendSms2($phone, '办事选择', 'push', $name);
+                            //self::_sendSms2($phone, '办事选择', 'push', $name);
                             try
                             {
                                 if (!empty($imei)) {
@@ -1038,7 +1039,7 @@ class PublicController extends Controller
                                     ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                                     ->where('consultid',$consultid)
                                     ->pluck('enterprisename');
-                                self::_sendSms2($phone,'视频咨询','push',$name);
+                                //self::_sendSms2($phone,'视频咨询','push',$name);
                                 try
                                 {
                                     if (!empty($imei)) {
@@ -1105,7 +1106,7 @@ class PublicController extends Controller
                                     ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                                     ->where('consultid',$consultid)
                                     ->pluck('enterprisename');
-                                self::_sendSms2($phone,'视频咨询','push',$name);
+                                //self::_sendSms2($phone,'视频咨询','push',$name);
                                 try
                                 {
                                     if (!empty($imei)) {
@@ -1168,7 +1169,7 @@ class PublicController extends Controller
                                 ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                                 ->where('consultid',$consultid)
                                 ->pluck('enterprisename');
-                            self::_sendSms2($phone,'视频咨询','push',$name);
+                            //self::_sendSms2($phone,'视频咨询','push',$name);
                             try
                             {
                                 if (!empty($imei)) {

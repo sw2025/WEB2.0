@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use PhpSpec\Exception\Exception;
 
 class CenterController extends Controller
@@ -1042,5 +1043,290 @@ class CenterController extends Controller
         }
 
         return $res;
+    }
+
+    /**我的项目评议
+     * @return mixed
+     */
+    public function  myShow(Request $request){
+        //获取板块信息
+        $cate = DB::table('t_common_domaintype')->get();
+        $datas = DB::table('t_s_show as show')
+            ->leftJoin('view_userrole as view','view.userid', '=','show.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_user as user','show.userid' ,'=' ,'user.userid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->leftJoin('view_showmesscount as mess','mess.showid' ,'=' ,'show.showid')
+            ->leftJoin('view_showstatus as status','status.showid' ,'=' ,'show.showid')
+            ->select('show.*','view.role','ent.enterprisename','ent.showimage as entimg','status.configid as flag','mess.count as messcount','ext.showimage as extimg','ext.expertname');
+
+        //用户发布的数量
+        $putcount = DB::table('view_showstatus as show')->where('userid',session('userId'))->where('show.configid',1)->count();
+        //用户回复的数量
+        $msgcount = count(DB::table('t_s_messagetoshow as show')->where('userid',session('userId'))->groupBy('showid')->lists('showid'));
+        //用户待审核的供求的数量
+        $waitcount= DB::table('view_showstatus as show')->where('userid',session('userId'))->whereIn('show.configid',[3,4])->count();
+        //用户拒审核的供求的数量
+        $refusecount = DB::table('view_showstatus as show')->where('userid',session('userId'))->where('show.configid',5)->count();
+        /*//商情的数量
+        $vipneedcount = DB::table('t_s_pushshow')->where('userid',session('userId'))->count();*/
+        //判断是否为http请求
+        if(!empty($get = $request->input())){
+            //获取到get中的数据并处理
+            $action = ( isset($get['action']) && $get['action'] != "null") ? $get['action'] : null;
+            //设置where条件生成where数组
+
+
+            $obj = $datas;
+
+            if(!empty($action)){
+                switch($action){
+
+                    case 'myput':
+                        $obj = $obj->where('status.configid',1);
+                        $action  = '已发布';
+                        break;
+
+                    case 'waitverify':
+                        $action  = '评议中';
+                        $obj = $obj->whereIn('status.configid',[3,4]);
+                        break;
+                    case 'refuseverify':
+                        $action  = '已完成';
+                        $obj = $obj->where('status.configid',5);
+                        break;
+                }
+            } else {
+
+            }
+
+
+            $datas = $obj->where('show.userid',session('userId'))->orderBy("show.showtime",'desc')->paginate(4);
+
+            foreach($datas as $k => $v){
+                if($v->flag == 1){
+                    $v->flag2 = '已发布';
+                } elseif($v->flag == 3 || $v->flag == 4){
+                    $v->flag2 = '评议中';
+                } elseif($v->flag == 5){
+                    $v->flag2 = '已完成';
+                }
+            }
+            return view("ucenter.myshow",compact('vipneedcount','waitcount','refusecount','cate','msgcount','datas','action','collectids','putcount','supply','address','ordertime','ordercollect','ordermessage'));
+        }
+        $datas = $datas->where('show.userid',session('userId'))
+            ->orderBy("show.showtime",'desc')
+            ->paginate(4);
+        $ordertime = 'desc';
+        foreach($datas as $k => $v){
+            if($v->flag == 1){
+                $v->flag2 = '已发布';
+            } elseif($v->flag == 3 || $v->flag == 4){
+                $v->flag2 = '评议中';
+            } elseif($v->flag == 5){
+                $v->flag2 = '已完成';
+            }
+        }
+        return view("ucenter.myshow",compact('level','vipneedcount','waitcount','refusecount','cate','datas','ordertime','collectids','putcount','msgcount'));
+    }
+
+
+    //发布路演（项目评议）
+    public function  supplyShow($needid = null){
+        //获取板块信息
+        $cate = DB::table('t_common_domaintype')->get();
+        if($needid){
+            //验证是否该供求的状态为拒绝 否则重定向到首页
+            $res = DB::table('view_needstatus')->where(['needid' => $needid,'configid' => 2])->first();
+            if($res){
+                $info = DB::table('t_n_need')->where('needid',$needid)->first();
+                $data = DB::table('t_n_needverify')->where('needid',$needid)->orderBy('id','desc')->first();
+                $info->error = $data->remark;
+                return view("ucenter.supplyNeed",compact('cate','info'));
+            } else {
+                return redirect('/');
+            }
+        }
+        return view("ucenter.supplyShow",compact('cate'));
+    }
+
+    /**新增项目评议
+     * @param Request $request
+     */
+    public function addShow (Request $request) {
+        //判断是否为ajax请求
+        if($request->ajax()){
+            //判断是否登陆
+            if(!empty(session('userId'))){
+                $data = $request->input();
+                $file = $request->file('file');
+                $showpeoples= intval(trim($data['showpeoples']));
+                $content = $data['content'];
+                $title = $data['title'];
+                $userId=session('userId');
+                $enterprise=DB::table("t_u_enterprise")
+                    ->leftJoin("t_u_enterpriseverify","t_u_enterprise.enterpriseid","=","t_u_enterpriseverify.enterpriseid")
+                    ->where("t_u_enterprise.userid",$userId)
+                    ->orderBy("t_u_enterpriseverify.id","desc")
+                    ->first();
+                if(empty($enterprise) || $enterprise->configid != 3){
+                    return ['icon'=>4,'code' => 2,'msg' => '企业不存在或者未通过认证','url' => url('uct_member')];
+                }
+                $enterpriseid = DB::table('t_u_enterprise')
+                    ->where('userid', $userId)
+                    ->pluck('enterpriseid') ;
+                $results = DB::table('t_u_enterprisemember')
+                    ->where('enterpriseid', $enterpriseid)
+                    ->first() ;
+                if(!$results){
+                    //不存在记录 202 开通会员操作
+                    $res = DB::table('t_u_enterprisemember')->insert([
+                        'memberid' => 1,
+                        'enterpriseid' => $enterpriseid,
+                        'starttime' => date('Y-m-d H:i:s',time()),
+                        'endtime' => date('Y-m-d H:i:s',time()+60*60*24*365)
+                    ]);
+                    return ['icon' => 5,'code' => $showpeoples,'userid' => $userId];
+                } else {
+                    if($results->onlineshow < $showpeoples){
+                        return ['icon' => 5,'code' => $showpeoples,'userid' => $userId];
+                    }
+                }
+
+
+                if ($file->isValid()) {
+
+                    // 获取文件相关信息
+                    $originalName = $file->getClientOriginalName(); // 文件原名
+                    $ext = $file->getClientOriginalExtension();     // 扩展名
+                    $realPath = $file->getRealPath();   //临时文件的绝对路径
+                    $type = $file->getClientMimeType();     // image/jpeg
+
+                    // 上传文件
+                    $filename = date('YmdHis'). uniqid() . '.' . $ext;
+                    // 使用我们新建的uploads本地存储空间（目录）
+                    $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
+
+                } else {
+                    return ['msg' => '上传失败~','icon' => 2];
+                }
+                $domain1 = trim(explode('/',$data['domain'])[0]);
+                $domain2 = trim(explode('/',$data['domain'])[1]);
+
+                    $verifyent = DB::table('t_u_enterprise')->where('userid',session('userId'))->first()->enterpriseid;
+                    if($verifyent){
+                        $verentconfig = DB::table('t_u_enterpriseverify')->where('enterpriseid',$verifyent)->orderBy('id','desc')->first()->configid;
+                        if($verentconfig != 3){
+
+                            return ['msg' => '您的企业未通过认证,暂不能发布','icon' => 2];
+                        }
+                    } else {
+                        return ['msg' => '您还未成为企业~','icon' => 2];
+
+                    }
+
+
+
+                //开启事务
+                DB::beginTransaction();
+                try{
+                    $showid = DB::table('t_s_show')->insertGetId([
+                        'userid' => session('userId'),
+                        'domain1' => $domain1,
+                        'domain2' => $domain2,
+                        'level' => 1,
+                        'brief' => $content,
+                        'bpurl' => $filename,
+                        'title' => $title,
+                        'bpname' => $originalName,
+                        'showtime' => date('Y-m-d H:i:s',time()),
+                        'basicdata' => $showpeoples,
+                        'updated_at' => date('Y-m-d H:i:s',time())
+                    ]);
+                    DB::table('t_s_showverify')->insert([
+                        'showid' => $showid,
+                        'configid' => 1,
+                        'verifytime' => date('Y-m-d H:i:s',time()),
+                        'updated_at' => date('Y-m-d H:i:s',time())
+                    ]);
+                    DB::table('t_u_enterprisemember')->where('enterpriseid',$enterpriseid)->decrement('onlineshow',intval($showpeoples));
+                    DB::commit();
+                    $res = ['msg' => '该路演已通过,已为您提交到后台，请等待后台为您精准推送评议人.','icon' => 1];
+                    return $res;
+
+                }catch(Exception $e)
+                {
+                    DB::rollBack();
+                    return ['msg' => '处理失败','icon' => 2];
+                }
+            }
+            return ['msg' => '请登录','icon' => 2];
+        }
+        return ['msg' => '非法访问','icon' => 2];
+    }
+
+    /**项目评议详情
+     * @return mixed
+     */
+    public function  showDetail($showId){
+        //取出指定的供求信息
+        $datas = DB::table('t_s_show as show')
+            ->leftJoin('view_userrole as view','view.userid', '=','show.userid')
+            ->leftJoin('t_u_enterprise as ent','ent.enterpriseid', '=','view.enterpriseid')
+            ->leftJoin('t_u_user as user','user.userid' ,'=' ,'show.userid')
+            ->leftJoin('t_u_expert as ext','ext.expertid' ,'=' ,'view.expertid')
+            ->select('ent.brief as desc1','ext.brief as desc2','show.*','ent.enterprisename','ent.address','ext.expertname','user.phone','ent.showimage as entimg','ext.showimage as extimg');
+        //获取该供求的当前状态
+        $configid = DB::table('t_s_showverify as need')->where('showid',$showId)->orderBy('id','desc')->select('configid')->first();
+        $obj = clone $datas;
+        $datas = $datas->where('showid',$showId)->first();
+
+
+
+        //查询留言的信息
+        $message = DB::table('t_s_messagetoshow as msg')
+            ->leftJoin('t_u_expert as ext','ext.userid' ,'=' ,'msg.userid')
+            ->where('showid',$showId)
+            ->where('msg.isdelete',0)
+            ->select('msg.*','ext.expertname','ext.showimage','ext.expertid')
+            ->orderBy('messagetime','desc')
+            ->get();
+        $cryptid = Crypt::encrypt(session('userId').$showId);
+        return view("ucenter.showDetail",compact('datas','message','configid','msgcount','cryptid'));
+    }
+    /**
+     * 解决项目评议
+     */
+    public function solveShow (Request $request){
+        //判断是否ajax请求
+        if($request->ajax()){
+            $data = $request->input();
+            $showid = $data['showid'];
+            $mdid = $data['mdid'];
+            //判断你是否登陆 和 验证crypt解密对比
+            if(!empty(session('userId')) && session('userId').$showid == Crypt::decrypt($mdid)){
+                //确认这个需求是本人的
+                $res = DB::table('t_s_show')->where('userid',session('userId'))->where('showid',$showid)->first();
+                //防止连续点击触发多次插入 需要查询确定
+                $res_repeat = DB::table('t_s_showverify')->where('configid',5)->where('showid',$showid)->first();
+                if($res_repeat){
+                    return ['msg' => '请勿重复提交','icon' => 2];
+                }
+                if($res){
+                    $result = DB::table('t_s_showverify')->insert([
+                        'showid' => $showid,
+                        'configid' => 5,
+                        'verifytime' => date('Y-m-d H:i:s',time()),
+                        'updated_at' => date('Y-m-d H:i:s',time())
+                    ]);
+                    if($result){
+                        return ['msg' => '处理成功','icon' => 1];
+                    }
+                }
+                return ['msg' => '处理失败','icon' => 2];
+            }
+            return ['msg' => '非法访问','icon' => 2];
+        }
+        return ['msg' => '非法访问','icon' => 2];
     }
 }

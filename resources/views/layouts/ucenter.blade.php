@@ -183,6 +183,20 @@
                                 </ul>
                             </div>
                             <div class="mainmenu">
+                                <a id="uct_myshow" href="{{asset('uct_myshow')}}"   class="v-ucenter-nav-item aa">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="项目评议" />
+                                    项目评议
+                                </a>
+                                <span class="v-ucenter-nav-item phone">
+                                    <img src="{{asset('img/vicon04.png')}}" alt="项目评议" />
+                                    项目评议
+                                 </span>
+                                <ul class="submenu">
+                                    <li><a href="javascript:;" onclick="putshow()">发布评议</a></li>
+                                    <li><a href="{{url('/uct_myshow')}}">查看评议</a></li>
+                                </ul>
+                            </div>
+                            <div class="mainmenu">
                                 <a id="uct_myneed" href="{{asset('uct_myneed')}}"   class="v-ucenter-nav-item aa">
                                     <img src="{{asset('img/vicon04.png')}}" alt="普通商情" />
                                     普通商情
@@ -406,9 +420,13 @@
     $("#help").on("click",function(){
         window.location.href="{{asset('help')}}";
     })
+
+
 </script>
 </body>
 </html>
+
+
 
 <script src="{{asset('js/notification.js')}}"></script>
 <script>createNotification('type')</script>
