@@ -27,7 +27,7 @@
                         <tr>
                             <td>收费标准</td>
                             <td>
-                                <ul>{{$data->linefee}}</ul>
+                                <ul>{{$data->linefee}}元/小时</ul>
                             </td>
                         </tr>
 

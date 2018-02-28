@@ -27,6 +27,11 @@
                     <td>咨询描述</td>
                     <td>{{$datas->contents}}</td>
                 </tr>
+
+                <tr>
+                    <td>约见时长</td>
+                    <td>{{$datas->timelot}}小时</td>
+                </tr>
                 <tr>
                     <td>我的收益</td>
                     <td>{{$datas->price}}</td>
