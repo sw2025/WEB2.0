@@ -1,0 +1,175 @@
+.sw-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 63px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.sw-logo {
+  position: absolute;
+  top: 11px;
+  left: 0;
+  display: block;
+}
+
+.sw-menu {
+  padding: 23px 0 0 0;
+}
+
+.sw-nav {
+  float: right;
+  margin-right: 1rem;
+  font-size: 0;
+}
+
+.sw-nav li {
+  display: inline-block;
+  margin: 0 0.24rem;
+  line-height: 1;
+  font-size: 16px;
+}
+
+.sw-nav li a {
+  color: #fff;
+}
+
+.sw-nav li a:hover {
+  color: #e25633;
+}
+
+.sw-user {
+  float: right;
+  line-height: 16px;
+  color: #fff;
+}
+
+.sw-user a {
+  color: #fff;
+}
+
+.sw-toggle-nav {
+  display: none;
+}
+
+.sw-footer {
+  padding: 0.5rem 0;
+  width: 100%;
+  background: #2c2c2c;
+  font-size: 0.16rem;
+  border-top:1px solid #e25633;
+}
+
+.sw-footer-l {
+  padding: 0.2rem 0 0 0.2rem;
+  color: #acacac;
+}
+
+.sw-footer-l strong {
+  display: block;
+  font-weight: 300;
+  color: #fff;
+  font-size: 0.3rem;
+}
+
+.sw-footer-r {
+  color: #fff;
+}
+
+.sw-wx {
+  text-align: center;
+}
+
+.sw-wx img {
+  margin: 0 auto;
+}
+
+.sw-app-caption {
+  width: 122px;
+  text-align: center;
+}
+.sw-app{
+  position: relative;
+}
+.app-caption{
+  position: absolute;
+  bottom: 0;
+  left: 135px;
+}
+.app-caption span{
+  display: block;
+  line-height: 24px;
+  margin-top: 2px;
+  font-size: 12px;
+  height: 24px;
+  width: 80px;
+  background: rgba(0,0,0,0.5);
+}
+@media (max-width: 767px) {
+  .sw-menu {
+    position: absolute;
+    top: 63px;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    padding: 0 0 30px;
+    display: none;
+  }
+  .sw-nav {
+    float: none;
+    margin-right: 0;
+    border-bottom: 1px solid #848484;
+  }
+  .sw-nav li {
+    display: block;
+    line-height: 2;
+    margin: 0 0.07rem;
+  }
+  .sw-nav li a{
+    display: block;
+  }
+  .sw-user{
+    float: none;
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    line-height: 30px;
+  }
+  .sw-toggle-nav {
+    display: block;
+    float: right;
+    color: #fff;
+    width: 30px;
+    text-align: center;
+    height: 26px;
+    line-height: 26px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 18px 10px 0 0;
+  }
+  .sw-footer {
+    padding: 0.15rem 0 0.35rem;
+    font-size: 0.14rem;
+  }
+  .sw-footer-l strong {
+    font-size: 0.2rem;
+  }
+}
+@media (max-width: 945px) {
+  .app-caption{
+    bottom: -25px;
+    left: 0px;
+  }
+  .app-caption span{
+    display: inline-block;
+    width:auto;
+    padding:0 9px 0 3px;
+  }
+}
+@media (min-width: 768px){
+  .sw-menu{
+    display: block!important;
+  }
+}

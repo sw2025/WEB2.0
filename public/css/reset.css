@@ -1,0 +1,31 @@
+/**样式重置*/
+body,button,dd,dl,dt,form,h1,h2,h3,h4,h5,h6,hr,input,li,ol,p,td,textarea,th,ul{margin:0;padding:0;}
+body,button,input,select,textarea{font:14px/1.5 "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "WenQuanYi Micro Hei", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;}
+h1,h2,h3,h4,h5,h6,button,input,select,textarea{font-size:100%;}
+em,i{font-style:normal;}
+ol,ul{list-style:none;}
+img,input{border:none;}
+img{ display:block;max-width: 100%; width: auto\9; height: auto; vertical-align: middle; border: 0; -ms-interpolation-mode: bicubic;}
+textarea{resize:none;}
+a,input,button,select,textarea{outline:none;}
+button{cursor:pointer;}
+a{text-decoration: none;}
+.clearfix {*zoom: 1;}
+.clearfix:before,.clearfix:after {display: table; content: ""; line-height: 0; }
+.clearfix:after {clear: both; }
+/**字体图标*/
+@font-face {
+    font-family: 'iconfont';
+    src: url('../iconfont/iconfont.eot');
+    src: url('../iconfont/iconfont.eot?#iefix') format('embedded-opentype'),
+    url('../iconfont/iconfont.woff') format('woff'),
+    url('../iconfont/iconfont.ttf') format('truetype'),
+    url('../iconfont/iconfont.svg#iconfont') format('svg');
+}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}

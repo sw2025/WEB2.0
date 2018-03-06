@@ -1,0 +1,97 @@
+html{
+    font-size: 100px;
+}
+.swcontainer{
+    position: relative;
+    margin:0 auto;
+}
+.swcol-xs-1,.swcol-xs-2,.swcol-xs-3,.swcol-xs-4,.swcol-xs-5,.swcol-xs-6,.swcol-xs-7,.swcol-xs-8,.swcol-xs-9,.swcol-xs-10,.swcol-xs-11,.swcol-xs-12,
+.swcol-sm-1,.swcol-sm-2,.swcol-sm-3,.swcol-sm-4,.swcol-sm-5,.swcol-sm-6,.swcol-sm-7,.swcol-sm-8,.swcol-sm-9,.swcol-sm-10,.swcol-sm-11,.swcol-sm-12,
+.swcol-md-1,.swcol-md-2,.swcol-md-3,.swcol-md-4,.swcol-md-5,.swcol-md-6,.swcol-md-7,.swcol-md-8,.swcol-md-9,.swcol-md-10,.swcol-md-11,.swcol-md-12{
+    float: left;
+    box-sizing: border-box;
+}
+
+.swcol-md-12 {
+    width: 100%;
+}
+.swcol-md-11 {
+    width: 91.66666667%;
+}
+.swcol-md-10 {
+    width: 83.33333333%;
+}
+.swcol-md-9 {
+    width: 75%;
+}
+.swcol-md-8 {
+    width: 66.66666667%;
+}
+.swcol-md-7 {
+    width: 58.33333333%;
+}
+.swcol-md-6 {
+    width: 50%;
+}
+.swcol-md-5 {
+    width: 41.66666667%;
+}
+.swcol-md-4 {
+    width: 33.33333333%;
+}
+.swcol-md-3 {
+    width: 25%;
+}
+.swcol-md-2 {
+    width: 16.66666667%;
+}
+.swcol-md-1 {
+    width: 8.33333333%;
+}
+/* 小屏幕（小于等于 767px） */
+@media (max-width: 767px) {
+    .swcol-xs-12 {
+        width: 100%;
+    }
+    .swcol-xs-11 {
+        width: 91.66666667%;
+    }
+    .swcol-xs-10 {
+        width: 83.33333333%;
+    }
+    .swcol-xs-9 {
+        width: 75%;
+    }
+    .swcol-xs-8 {
+        width: 66.66666667%;
+    }
+    .swcol-xs-7 {
+        width: 58.33333333%;
+    }
+    .swcol-xs-6 {
+        width: 50%;
+    }
+    .swcol-xs-5 {
+        width: 41.66666667%;
+    }
+    .swcol-xs-4 {
+        width: 33.33333333%;
+    }
+    .swcol-xs-3 {
+        width: 25%;
+    }
+    .swcol-xs-2 {
+        width: 16.66666667%;
+    }
+    .swcol-xs-1 {
+        width: 8.33333333%;
+    }
+}
+
+/* 中等屏幕（大于等于 960px） */
+@media (min-width: 960px) {
+    .swcontainer{
+        width: 960px;
+    }
+}
+

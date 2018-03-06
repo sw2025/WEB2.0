@@ -1,9 +1,0 @@
-@media screen and (max-width: 640px) {
-	.card-step{font-size: 14px;}
-	.card-sum{width: 224px;margin: 0;}
-	.card-bank-open{width: 218px;margin: 0;}
-	.card-bank-sel{width: 224px;}
-	.card-bank-list{width: 204px;}
-	.card-sum, .card-bank-open, .cash-num{padding-left: 6px;}
-	.available-money,.card-must{padding: 20px 0;}
-}

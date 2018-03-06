@@ -16,14 +16,26 @@ class LoginController extends Controller
      * @return mixed
      */
     public function login(){
-        return view("login.index");
+        $return = empty($_GET['returnurl']) ? 0 : 1 ;
+        if($return){
+            $returnurl = $_GET['returnurl'];
+        } else {
+            $returnurl = url('/');
+        }
+        return view("login.login",compact('return','returnurl'));
     }
 
     /**注册页面
      * @return mixed
      */
     public  function  register(){
-        return view("login.register");
+        $return = empty($_GET['returnurl']) ? 0 : 1 ;
+        if($return){
+            $returnurl = $_GET['returnurl'];
+        } else {
+            $returnurl = url('/');
+        }
+        return view("login.register",compact('return','returnurl'));
     }
 
     /**找回密码
@@ -47,22 +59,23 @@ class LoginController extends Controller
      * @return array
      * @throws \Exception
      */
-    public function  registerHandle(){
-        $phone=$_POST['phone'];
-        $pwd=$_POST['passWord'];
-        $code=$_POST['codes'];
-        $role=$_POST['role'];
+    public function  registerHandle(Request $request){
+        $post = $request->only(['phone','passWord','codes','role']);
+        $phone=$post['phone'];
+        $pwd=$post['passWord'];
+        $code=$post['codes'];
+        $role=$post['role'];
         $str=array();
        if(Cache::has($phone)){
             $smsCode=Cache::get($phone);
-            if($smsCode!=$code){
+            if(trim($smsCode)!=trim($code)){
                 $str['code']="code";
                 $str['msg']="验证码输入错误!";
                 return $str;
             }
         }else{
             $str['code']="code";
-            $str['msg']="没有生成验证码,稍后重试!";
+            $str['msg']="没有生成验证码或已过期,稍后重试!";
             return $str;
         }
         $datas=\UserClass::regVerify($phone,$role,$pwd);
@@ -108,10 +121,11 @@ class LoginController extends Controller
      * 发送验证码
      * @return mixed
      */
-    public function getCode(){
+    public function getCode(Request $request){
         // 获取手机号码
-        $phone = $_POST['phone'];
-        $action =$_POST['action'];
+        $post = $request->input();
+        $phone = $post['phone'];
+        $action =$post['action'];
         $res=array();
         switch ($action){
             case "register":
@@ -139,42 +153,11 @@ class LoginController extends Controller
 
         Cache::put($phone, $randNum, $expiresAt);
 
-        // // 短信内容
-        // $smsTxt = '验证码为：' . $randNum . '，请在 10 分钟内使用！';
-
         // 发送验证码短信
         $res = $this->_sendSms($phone, $randNum, $action);
         return $res;
     }
 
-   /* public function verifyPhone(){
-        $phone = $_POST['phone'];
-        $action =$_POST['action'];
-        $res=array();
-        switch ($action){
-            case "register":
-                $user = User::where('phone', $phone)->first();
-                if($user) {
-                    $res['code']="phone";
-                    $res['msg']="该手机号已经注册!";
-                }else{
-                    $res['code']="success";
-                }
-                return $res;
-                break;
-            case "findPwd":
-                $user = User::where('phone', $phone)->first();
-                if(!$user) {
-                    $res['code']="phone";
-                    $res['msg']="该手机号不存在!";
-                }else{
-                    $res['code']="success";
-                }
-                return $res;
-                break;
-        }
-    }*/
-    
    
     
 

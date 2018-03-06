@@ -1,465 +1,207 @@
 @extends("layouts.master")
 @section("content")
-<!-- banner / start -->
-<link rel="stylesheet" type="text/css" href="{{asset('css/index.css')}}" />
-<div class="banner">
-    <ul>
-        {{--<li class="img01"><img src="img/banner1.jpg" /></li>
-        <li class="img02"><img src="img/banner2.jpg" /></li>
-        <li class="img03"><img src="img/banner3.jpg" /></li>--}}
-        <li class="img01"></li>
-        <li class="img02"></li>
-        <li class="img03"></li>
-    </ul>
-    <ol>
-        <li class="cur"></li>
-        <li></li>
-        <li></li>
-    </ol>
-    <a href="javascript:;" class="leftBtn btn"><i class="iconfont icon-jiantou1"></i></a>
-    <a href="javascript:;" class="rightBtn btn"><i class="iconfont icon-jiantou2"></i></a>
-</div>
-<!-- banner / end -->
-<!-- section1 / start -->
-<div class="section bg-white">
-    <div class="container">
-        <div class="supply-service-tit">升维网为企业提供的服务<span class="long-line"></span></div>
-        <div class="supply-service-entit">{{--SERVICE PROVIDED BY SHENGWEI FOR ENTERPRISES--}}</div>
-        <ul class="clearfix">
-            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
-                    <div class="item-con dif-hexagon2">
-                        <span class="hexagon"></span>
-                        <h2 class="number">01</h2>
-                        <span class="item-tit">创业孵化</span>
-                        {{--<p class="item-desc">解决企业遇到各类问题</p>--}}
+    <div class="sw-banner">
+        <ul class="sw-banner-wrapper">
+            <li class="img01">
+                <div class="swcontainer">
+                    <div class="sw-banner-content">
+                        <span class="sw-banner-title">我是创业者</span>
+                        <p class="sw-banner-para">
+                            当我拿着BP海投无果时，<br>升维网为我精准匹配到合适的投资人<br>不到两个月，公司获得天使投资500万<br>效率决定项目生死，融资我选择升维网
+                        </p>
+                        <span class="sw-banner-tip">将创业项目提交至升维网，我们将对接投资机构对项目进行认真评估，<br>您将在系统中查看不同投资人对项目的评议、估值及宝贵建议！</span>
+                        <div class="sw-banner-links">
+                            <a href="{{url('showIndex')}}" class="hover">提交项目</a><a href="{{url('meetIndex')}}">约见投资人</a><a href="{{url('lineShowIndex')}}">线下路演</a>
+                        </div>
                     </div>
-                    <div class="item-con-hover">
-                       <p><br /><span style="font-size: 1.5em;">项目评议</span><br /><br /><br /><span style="font-size: 1.5em;">约见投资人</span><br /><br /><br /><span style="font-size: 1.5em;">深度孵化</span><br /><br /></p>
-                    </div>
-                </a></li>
-            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
-                    <div class="item-con dif-hexagon4">
-                        <span class="hexagon"></span>
-                        <h2 class="number">02</h2>
-                        <span class="item-tit">企业成长</span>
-                        {{--<p class="item-desc">解决企业遇到各类问题</p>--}}
-                    </div>
-                    <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">风险投资</span><br /><br /><br /><span style="font-size: 1.5em;">协同营销</span><br /><br /><br /><span style="font-size: 1.5em;">综合运营</span><br /><br /></p>
-                    </div>
-                </a></li>
-            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
-                    <div class="item-con dif-hexagon3">
-                        <span class="hexagon"></span>
-                        <h2 class="number">03</h2>
-                        <span class="item-tit">转型升级</span>
-                    </div>
-                    <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">方向评价</span><br /><br /><br /><span style="font-size: 1.5em;">项目评价</span><br /><br /><br /><span style="font-size: 1.5em;">众筹</span><br /><br /></p>
-                    </div>
-                </a></li>
-            <li class="item col-md-3 col-xs-6"><a href="javascript:;">
-                    <div class="item-con dif-hexagon1">
-                        <span class="hexagon"></span>
-                        <h2 class="number">04</h2>
-                        <span class="item-tit">文宣</span>
-                    </div>
-                    <div class="item-con-hover">
-                        <p><br /><span style="font-size: 1.5em;">战略定位</span><br /><br /><span style="font-size: 1.5em;">战略执行</span><br /><br /><span style="font-size: 1.5em;">商业模式</span><br /><br /><span style="font-size: 1.5em;">项目评价</span> </p>
-                    </div>
-                </a></li>
-
+                </div>
+            </li>
+            <li class="img02"></li>
+            <li class="img03"></li>
         </ul>
-        <div class="listbottom-link"><a href="javascript:;" class="become-expert homepage-link">入驻平台</a></div>
+        <ol>
+            <li class="cur"></li>
+            <li></li>
+            <li></li>
+        </ol>
     </div>
-</div>
-<!-- section1 / end -->
-<!-- section2 / start -->
-<div class="section fix-bg">
-    <div class="container">
-        <div class="supply-service-tit supply-demand">专家资源库<span class="middle-line"></span></div>
-        <div class="supply-service-entit">{{--EXPERT RESOURCE BASE--}}</div>
-        <div class="more-box"><a href="{{asset('expert')}}?role=专家&ordertime=desc" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
-        <div class="row tab-resources">
-            <div class="tabar clearfix" id="knowExpert">
-                <a href="javascript:;" style="width: 50%;" class="tabar-opt">资深专家<div class="triangle-top"></div></a>
-                {{--<a href="javascript:;" class="tabar-opt">成功企业家<div class="triangle-top"></div></a>--}}
-                <a href="javascript:;" style="width: 50%;" class="tabar-opt">知名机构<div class="triangle-top"></div></a>
-
-            </div>
-            <div class="tab-con">
-                <ul class="tab-list clearfix" id="konwExpertList">
-
-                </ul>
-            </div>
-            <div class="listbottom-link nomargin"><a href="javascript:;" class="become-expert homepage-link">成为专家</a></div>
+<div class="sw-preview">
+    <div class="swcontainer clearfix">
+        <div class="swcol-md-4 swcol-xs-12 sw-pre-item pre-item1">
+            <img src="img/swicon1.png">
+            <span class="pre-item-title">创业孵化</span>
+            <p>找投资快人一步</p>
+            <p class="pre-item-para">直接联系投资人得到评议<br>了解您的项目实际竞争力<br>掌握新技能，找到创业突破口</p>
         </div>
-        <a href="javascript:;" class="tab-leftbtn"><i class="iconfont icon-jiantou1"></i></a>
-        <a href="javascript:;" class="tab-rightbtn"><i class="iconfont icon-jiantou2"></i></a>
-    </div>
-</div>
-<!-- section2 / end -->
-<!-- section3 / start -->
-<div class="section">
-    <div class="container clearfix">
-        <div class="supply-service-tit supply-demand">商情信息<span class="short-line"></span></div>
-        <div class="supply-service-entit">{{--SUPPLY AND DEMAND INFORMATION--}}</div>
-        <div class="row supply-categary clearfix">
-            <div class="col-md-6">
-                <div class="demands">
-                    <h2 class="category">资金需求<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
-                    <ul class="demands-list">
-                        @foreach($invests as $invest)
-                        <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$invest->needid)}}"><span class="dem-li-tit">{{$invest->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$invest->created_at}}</span></a></li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="demands">
-                    <h2 class="category">战略与管理<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
-                    <ul class="demands-list">
-                        @foreach($works as $work)
-                        <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$work->needid)}}"><span class="dem-li-tit">{{$work->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$work->created_at}}</span></a></li>
-                       @endforeach
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="demands">
-                    <h2 class="category">找技术<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
-                    <ul class="demands-list">
-                        @foreach($products as $product)
-                        <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$product->needid)}}"><span class="dem-li-tit">{{$product->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$product->created_at}}</span></a></li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="demands">
-                    <h2 class="category">拓市场<a href="{{asset('supply')}}" class="more">更多<i class="iconfont icon-rilijiantouyoushuang"></i></a></h2>
-                    <ul class="demands-list">
-                        @foreach($markets as $market)
-                        <li><i class="iconfont icon-jiantou"></i><a href="{{asset('supply/detail/'.$market->needid)}}"><span class="dem-li-tit">{{$market->brief}}</span><span class="dem-li-time"><i class="iconfont icon-shijian2"></i>{{$market->created_at}}</span></a></li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
+        <div class="swcol-md-4 swcol-xs-12 sw-pre-item pre-item2">
+            <img src="img/swicon2.png">
+            <span class="pre-item-title">成长加速</span>
+            <p>开创市场销售新机会</p>
+            <p class="pre-item-para">对接资本资源，加速融资<br>共享市场资源，实现协同销售<br>梳理战略部署，提升综合运营能力</p>
         </div>
-        <div class="listbottom-link"><a href="javascript:;" class="become-expert homepage-link">发布商情</a></div>
+        <div class="swcol-md-4 swcol-xs-12 sw-pre-item pre-item3">
+            <img src="img/swicon3.png">
+            <span class="pre-item-title">转型升级</span>
+            <p>轻松突破发展瓶颈</p>
+            <p class="pre-item-para">结合企业特点，把握转型方向<br>集中资源，实现项目优化<br>多种转型模式，加速企业发展</p>
+        </div>
     </div>
 </div>
-<!-- section3 / end -->
-<script>
-
-    $(function(){
-        var type=$("#knowExpert a:first-child").text();
-        $("#knowExpert a:first-child").addClass("current")
-        getType(type)
-    })
-    $("#knowExpert a").on("click",function(){
-        $("#konwExpertList").empty();
-        $("#konwExpertList").css('left','0%');
-        var expertType= $(this).text();
-        getType(expertType);
-    })
-    var getType=function(type){
-        $.ajax({
-            url:"{{asset('returnData')}}",
-            data:{"type":type},
-            dateType:"json",
-            type:"POST",
-            success:function(res){
-                if(res['code']=="success"){
-                    $.each(res['msg'],function(key,value){
-                        var str=" <li class=''>";
-                            str+="<a href='{{asset('expert/detail/')}}"+"/"+value.expertid+"'class='tab-list-link'>";
-                            str+="<span class='ex-res-img'><img src={{env('ImagePath')}}"+value.showimage+" /></span>";
-                            str+="<div class='ex-res-con'>";
-                            str+="<div class='triangle-bottom'></div>"
-                            str+="<div class='ex-res-con-tit'>"
-                            str+="<span class='expert-name'>"+value.expertname+"</span>"
-                            str+="<span class='expert-consult'>视频咨询："+value.fee +"</span></div><div class='ex-res-con-desc'>"
-                            str+="<span class='expert-field'><strong>擅长领域：</strong>"+value.domain1+"</span>"
-                            str+="<p class='expert-field-desc'>"+value.brief+"</p>"
-                            str+="</div> </div> </a><div class='ex-res-icon'>"
-                            str+="<a href='javascript:;' class='review' id='"+value.expertid+"' onclick='toMessage(this)'><i class='iconfont icon-pinglun1'></i></a>"
-                            if(value.collect==0){
-                                str+="<a href='javascript:;' class='collect ' title='收藏' id='"+value.expertid+"' onclick='collect(this)'><i class='iconfont icon-likeo'></i></a> </div></li>";
-                            }else{
-                                str+="<a href='javascript:;' class='collect red ' title='已收藏' id='"+value.expertid+"' onclick='collect(this)'><i class='iconfont icon-likeo'></i></a> </div></li>";
-                            }
-                        $("#konwExpertList").append(str);
-                    })
-                }else{
-                   /* $("#konwExpertList").text("暂无数据");*/
-                }
-            }
-
-        })
-    }
-   function collect(e){
-        var expertId=$(e).attr('id');
-        var remark;
-       if(!$.cookie("userId")){
-           window.location.href="{{asset('login')}}"
-           return false;
-       }else{
-           if($(e).attr('title') == '已收藏'){
-               remark="0";
-               collectHndle(expertId,remark);
-               $(e).attr("title","收藏");
-               $(e).removeClass('red');
-           }else{
-               remark="1";
-               collectHndle(expertId,remark);
-               $(e).attr("title","已收藏");
-               $(e).addClass('red');
-           }
-       }
-   }
-    var collectHndle=function(expertId,remark){
-            $.ajax({
-                url:"{{asset('collectExpert')}}",
-                data:{"remark":remark,"expertId":expertId},
-                dateType:"json",
-                type:"POST",
-                success:function(res){
-                    if(res['code']=="error"){
-                        alert("收藏失败!")
-                        return false;
-                    }
-                }
-            })
-        }
-    function toMessage(e){
-        var expertId=$(e).attr('id');
-        if(!$.cookie('userId')){
-            window.location.href="{{asset('login')}}"
-            return false;
-        }else{
-            window.location.href="{{asset('expert/detail')}}"+"/"+expertId;
-        }
-    }
-    var  getPath=function(type){
-        if(!$.cookie('userId')){
-            window.location.href="/login"
-            return false;
-        }
-        switch(type){
-            case "入驻平台":
-                    window.location.href="{{asset('uct_works')}}";
-            break;
-            case "成为专家":
-                window.location.href="{{asset('uct_expert')}}";
-                break;
-            case "发布商情":
-
-                layer.confirm('请问您以什么身份发起商情？', {
-                    btn: ['以企业身份发起','以专家身份发起','取消'], //按钮
-                    yes: function(index, layero){
-                        $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
-                            if(data.type == 3 || data.type == 1){
-                                layer.msg(data.msg,{'icon':data.icon});
-                            } else if(data.type == 2){
-                                layer.confirm(data.msg, {
-                                    btn: ['去认证','取消'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    window.location.href=data.url;
-                                }, function(){
-                                    layer.closeAll();
-                                });
-                            } else if(data.type == 4){
-                                layer.confirm('您还未登陆是否去登陆？', {
-                                    btn: ['去登陆','暂不需要'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    window.location.href='/login';
-                                }, function(){
-                                    layer.close();
-                                    /*$(obj).attr("title","收藏");
-                                     $(obj).removeClass('red');
-                                     if($(obj).hasClass('done')){
-                                     $(obj).removeClass('done');
-                                     }*/
-                                });
-                            } else {
-                                window.location = '{{asset('uct_myneed/supplyNeed')}}';
-                            }
-                        });
-                    },
-                    btn2: function(index, layero){
-                        $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
-                            if(data.type == 3 || data.type == 1){
-                                layer.msg(data.msg,{'icon':data.icon});
-                            } else if(data.type == 2){
-                                layer.confirm(data.msg, {
-                                    btn: ['去认证','取消'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    window.location.href=data.url;
-                                }, function(){
-                                    layer.closeAll();
-                                });
-                            } else if(data.type == 4){
-                                layer.confirm('您还未登陆是否去登陆？', {
-                                    btn: ['去登陆','暂不需要'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    window.location.href='/login';
-                                }, function(){
-                                    layer.close();
-                                    /*$(obj).attr("title","收藏");
-                                     $(obj).removeClass('red');
-                                     if($(obj).hasClass('done')){
-                                     $(obj).removeClass('done');
-                                     }*/
-                                });
-                            } else {
-                                window.location = '{{asset('myneed/supplyNeed')}}';
-                            }
-                        });
-                    },
-                    btn3: function(index, layero){
-                        //按钮【按钮三】的回调
-                        layer.close(index);
-                        //return false 开启该代码可禁止点击该按钮关闭
-                    }
-                });
-                    /*if($.cookie('role')=="企业" || $.cookie('role')=="专家企业"){
-
-                        $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
-                            if(data.type == 3){
-                                layer.msg(data.msg,{'icon':data.icon});
-                            } else if(data.type == 2){
-                                layer.confirm(data.msg, {
-                                    btn: ['去认证','以专家身份发起需求'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    window.location.href=data.url;
-                                }, function(){
-                                    expertputneed();
-                                });
-                            } else if (data.type == 1){
-                                layer.confirm(data.msg+', 您是否以专家身份发起需求？', {
-                                    btn: ['是','否'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    expertputneed();
-                                }, function(){
-                                    layer.close();
-                                });
-                            } else {
-                                window.location = '{{asset('uct_myneed/supplyNeed')}}';
-                            }
-                        });
-                    }else{
-                        $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
-                            if(data.type == 3){
-                                layer.msg(data.msg,{'icon':data.icon});
-                            } else if(data.type == 2){
-                                layer.confirm(data.msg, {
-                                    btn: ['去认证','以企业身份发起需求'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    window.location.href=data.url;
-                                }, function(){
-                                    enterpriseputneed();
-                                });
-                            } else if (data.type == 1){
-                                layer.confirm(data.msg+', 您是否以企业身份发起需求？', {
-                                    btn: ['是','否'], //按钮
-                                    skin:'layui-layer-molv'
-                                }, function(){
-                                    enterpriseputneed();
-                                }, function(){
-                                    layer.close();
-                                });
-                            } else {
-                                window.location = '{{asset('myneed/supplyNeed')}}';
-                            }
-                        });
-
-                    }*/
-            break;
-        }
-    }
-    $(".homepage-link").on("click",function(){
-        var type=$(this).text();
-        getPath(type);
-    })
-
-    $('.item-con-hover span').on('click',function () {
-        var aa = $(this).parent('p').parent('div').prev('div').children('h2').html();
-        switch(aa)
-        {
-            case '01':
-               var domain='找资金';
-                break;
-            case '02':
-                var domain='找市场';
-                break;
-            case '03':
-               var domain='找技术';
-                break;
-            case '04':
-                var domain='定战略';
-                break;
-            default:
-                var domain='全部';
-        }
-        if(!$.cookie('userId')){
-            window.location.href="/login"
-            return false;
-        } else {
-            window.location.href="{{asset('uct_works').'?domain='}}"+domain;
-        }
-
-    });
-    function expertputneed () {
-        $.post('{{url('myneed/verifyputneed')}}',{'role':'专家'},function (data) {
-            if(data.type == 3){
-                layer.msg(data.msg,{'icon':data.icon});
-            } else if(data.type == 2){
-                layer.confirm(data.msg, {
-                    btn: ['去认证','暂不需要'], //按钮
-                    skin:'layui-layer-molv'
-                }, function(){
-                    window.location.href=data.url;
-                }, function(){
-                    layer.close();
-                });
-            } else if (data.type == 1){
-                layer.alert(data.msg,{'icon':data.icon});
-            } else {
-                window.location = '{{asset('myneed/supplyNeed')}}';
-            }
-        });
-    }
-
-    function enterpriseputneed () {
-        $.post('{{url('myneed/verifyputneed')}}',{'role':'企业'},function (data) {
-            if(data.type == 3){
-                layer.msg(data.msg,{'icon':data.icon});
-            } else if(data.type == 2){
-                layer.confirm(data.msg, {
-                    btn: ['去认证','暂不需要'], //按钮
-                    skin:'layui-layer-molv'
-                }, function(){
-                    window.location.href=data.url;
-                }, function(){
-                    layer.close();
-                });
-            } else if (data.type == 1){
-                layer.alert(data.msg,{'icon':data.icon});
-            } else {
-                window.location = '{{asset('uct_myneed/supplyNeed')}}';
-            }
-        });
-    }
-
-
-</script>
+<div class="sw-five clearfix">
+    <div class="sw-five-item">
+        <span class="five-item-title">20000+万天使投资</span>
+        <p>升维网至今已为<br>创业项目募集资金达2亿元</p>
+    </div>
+    <div class="sw-five-item">
+        <span class="five-item-title">1000+名顶尖专家</span>
+        <p>共有千余名行业专家、<br>投资人、知名企业家入驻升维网</p>
+    </div>
+    <div class="sw-five-item">
+        <span class="five-item-title">600+企业</span>
+        <p>升维网已为600多家<br>企业精准对接需求</p>
+    </div>
+    <div class="sw-five-item">
+        <span class="five-item-title">10+企业</span>
+        <p>升维网已为10余家<br>大中型企业提供转型升级服务，<br>其中3家直接带来<br>年业绩增长近亿元。</p>
+    </div>
+    <div class="sw-five-item">
+        <span class="five-item-title">10+ 双创营</span>
+        <p>升维网已与多个地方高新区<br>建立合作关系，<br>共同建立双创营</p>
+    </div>
+</div>
+<div class="swcontainer investor">
+    <span class="investor-title">投资人</span>
+    <div class="investor-wrapper">
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person1.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person2.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person3.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person4.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person1.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person1.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person1.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person1.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person1.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person1.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person1.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+        <a href="#" class="investor-img-wrapper">
+            <img src="img/person1.jpg" class="investor-ava">
+            <div class="investor-intro">
+                <span class="investor-name">王澜</span>
+                <span class="investor-job">中企业港资本总裁</span>
+                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-project">已投资的项目20个</span>
+            </div>
+        </a>
+    </div>
+    <div class="investor-more"><a href="#" class="investor-more-link">更多投资人>></a></div>
+</div>
+<div class="institution">
+    <div class="swcontainer institution-wrapper">
+        <span class="investor-title">投资机构</span>
+        <div class="institution-brand">
+            <span><img src="img/brand1.png"></span>
+            <span><img src="img/brand2.png"></span>
+            <span><img src="img/brand3.png"></span>
+            <span><img src="img/brand4.png"></span>
+            <span><img src="img/brand5.png"></span>
+            <span><img src="img/brand6.png"></span>
+            <span><img src="img/brand7.png"></span>
+            <span><img src="img/brand8.jpg"></span>
+        </div>
+        <div class="investor-more"><a href="#" class="investor-more-link">更多投资机构>></a></div>
+    </div>
+</div>
+<div class="sw-about">
+    <span class="sw-about-tit">关于升维网</span>
+    <p>我们为优秀商业项目提供资金、技术、对接融资机构等专业支持，<br>旨在助力优秀商业项目和企业的孵化与成长！</p>
+</div>
 
 @endsection

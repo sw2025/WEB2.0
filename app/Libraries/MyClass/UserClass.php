@@ -42,11 +42,11 @@
         public static function regVerify($phone, $role, $pwd)
         {
             $result = array();
-            if ($role == "企业") {
+           /* if ($role == "企业") {
                 $table = "T_U_ENTERPRISE";
             } else {
                 $table = "T_U_EXPERT";
-            }
+            }*/
             $counts =\App\User::where("phone", $phone)->get()->toArray();
             if (count($counts) == 0) {
                 DB::beginTransaction();
@@ -58,11 +58,11 @@
                         "created_at" => date("Y-m-d H:i:s", time()),
                         "updated_at" => date("Y-m-d H:i:s", time()),
                     ]);
-                    DB::table($table)->insert([
+                    /*DB::table($table)->insert([
                         "userid" => $userid,
                         "created_at" => date("Y-m-d H:i:s", time()),
                         "updated_at" => date("Y-m-d H:i:s", time()),
-                    ]);
+                    ]);*/
                     DB::table("t_m_systemmessage")->insert([
                         "sendid"=>0,
                         "receiveid"=>$userid,

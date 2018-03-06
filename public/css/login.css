@@ -1,83 +1,442 @@
 /***********login***********/
+.sw-bg {
+    width: 100%;
+    height: 762px;
+    background: url(../img/swbanner1.jpg) no-repeat center top;
+}
 
-.login-bg{width:100%;height: 769px;background:url(../img/bg.jpg) no-repeat center 60px;}
-.login-bg .container{position: relative;}
-.user-box{background:rgba(255, 255, 255, 0.6);filter: alpha(opacity=60);width: 352px;padding:22px 25px;box-sizing: border-box;position: absolute;right:12px;color:#333;}
-.user-login-top{top: 290px;-webkit-animation: enter 2s;-moz-animation: enter 2s;-ms-animation: enter 2s;animation: enter 2s;}
-.login-tit{font-size: 26px;}
-.login-en-tit{font-size: 14px;display: block;}
-.user-tel{margin-top: 25px;margin-bottom: 12px;}
-.user-pwd{margin-bottom: 32px;}
-.user-tel,.user-pwd{position: relative;width:100%;border: 1px solid #ccc;border-radius: 3px;background:#fff;height: 36px;line-height: 36px;}
-.user-tel label,.user-pwd label,.user-test label,.user-role label{position: absolute;left:0;top: 6px;padding:0 10px;border-right: 1px solid #afafaf;height:24px;line-height: 24px;}
-.user-tel i,.user-pwd i,.user-test i,.user-role i{font-size: 20px;color:#afafaf;}
-.user-tel input,.user-pwd input,.user-test input{padding-left: 60px;color:#757575;}
-#getCode{padding-left: 0;color:#fff;cursor: pointer;}
-.login-btn{display: block;border: none;background:#338dfa;border-radius: 3px;width:100%;height: 40px;line-height: 40px;text-align: center;color:#fff;font-size: 16px;margin-bottom: 12px;}
-.login-btn{display: block;border: none;background:#338dfa;border-radius: 3px;width:100%;height: 40px;line-height: 40px;text-align: center;color:#fff;font-size: 16px;margin-bottom: 12px;}
-.login-btn:hover{background:#00a7ed;}
-.login-bottom{overflow: hidden;font-size: 12px;}
-.go{float: left;}
-.to-register,.find,.to-log{padding:3px 12px;border-radius: 3px;}
-.to-register:hover,.find:hover,.to-log:hover{text-decoration: underline;}
-.to-register,.to-log{background:#338dfa;color:#fff;display: inline-block;}
-.find{float: right;background:#fff;color:#338dfa;}
-@-webkit-keyframes enter{
-    0%  {top: 100px;}
-    100%{top: 290px;}
+.sw-bg .swcontainer {
+    position: relative;
 }
-@-moz-keyframes enter{
-    0%  {top: 100px;}
-    100%{top: 290px;}
+
+.user-box {
+    background: rgba(255, 255, 255, 0.6);
+    filter: alpha(opacity=60);
+    width: 365px;
+    padding: 22px 25px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0px;
+    color: #333;
 }
-@-ms-keyframes enter{
-    0%  {top: 100px;}
-    100%{top: 290px;}
+
+.user-login-top {
+    top: 1.9rem;
+    -webkit-animation: enter 2s;
+    -moz-animation: enter 2s;
+    -ms-animation: enter 2s;
+    animation: enter 2s;
 }
-@keyframes enter{
-    0%  {top: 100px;}
-    100%{top: 290px;}
+
+.login-tit {
+    font-size: 26px;
+    color: #e25633;
+    font-weight: 500;
 }
+
+.login-en-tit {
+    font-size: 14px;
+    display: block;
+    color: #e25633;
+}
+
+.user-tel {
+    margin-top: 25px;
+    margin-bottom: 12px;
+}
+
+.user-pwd {
+    margin-bottom: 32px;
+}
+
+.user-tel, .user-pwd {
+    position: relative;
+    width: 100%;
+    border-radius: 3px;
+    background: #908f8b;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.user-tel label, .user-pwd label, .user-test label, .user-role label {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    padding: 0 0.2rem 0 0.15rem;
+    border-right: 1px solid #afafaf;
+    height: 24px;
+    line-height: 24px;
+}
+
+.user-tel i, .user-pwd i, .user-test i, .user-role i {
+    font-size: 20px;
+    color: #f7f7f7;
+    -webkit-text-stroke-width:0;
+    font-weight: 500;
+}
+.user-test .user-test-enter i{
+    font-weight: normal;
+    font-size: 18px;
+    margin-right: 2px;
+    -webkit-text-stroke-width:0;
+}
+.user-tel input, .user-pwd input, .user-test input {
+    padding-left: 0.68rem;
+    color: #757575;
+    background: none;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 1px solid #908f8b;
+    color: #fff;
+}
+
+.user-tel input:focus, .user-pwd input:focus, .user-test input:focus {
+    border-color: #e25633;
+}
+
+#getCode {
+    padding-left: 0;
+    color: #fff;
+    cursor: pointer;
+    width: 112px;
+    background: #e25633;
+    border: none;
+}
+
+.login-btn {
+    display: block;
+    border: none;
+    background: #338dfa;
+    border-radius: 3px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.login-btn {
+    display: block;
+    border: none;
+    background: #e25633;
+    border-radius: 3px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.login-btn:hover {
+    background: #c2320e;
+}
+
+.login-bottom {
+    overflow: hidden;
+    font-size: 12px;
+}
+
+.go {
+    float: left;
+}
+
+.to-register, .find, .to-log {
+    padding: 3px 12px;
+    border-radius: 3px;
+}
+
+.to-register:hover, .find:hover, .to-log:hover {
+    text-decoration: underline;
+}
+
+.to-register, .to-log {
+    background: #e25633;
+    color: #fff;
+    display: inline-block;
+}
+
+.find {
+    float: right;
+    color: #fff;
+    background: #e25633;
+}
+
+@-webkit-keyframes enter {
+    0% {
+        top: 100px;
+    }
+    100% {
+        top: 1.9rem;
+    }
+}
+
+@-moz-keyframes enter {
+    0% {
+        top: 100px;
+    }
+    100% {
+        top: 1.9rem;
+    }
+}
+
+@-ms-keyframes enter {
+    0% {
+        top: 100px;
+    }
+    100% {
+        top: 1.9rem;
+    }
+}
+
+@keyframes enter {
+    0% {
+        top: 100px;
+    }
+    100% {
+        top: 1.9rem;
+    }
+}
+
 /***********login***********/
 /***********find***********/
-.user-test{position: relative;margin-bottom: 12px;}
-.user-test-enter{border: 1px solid #ccc;border-radius: 3px;background:#fff;height: 36px;line-height: 36px;float: left;}
-.user-test-inp{width: 128px;}
-.get-test{float: right;height: 36px;line-height: 36px;width: 96px;text-align: center;background:#338dfa;color:#fff;border-radius: 3px;}
+.user-test {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.user-test-enter {
+    /*border: 1px solid #908f8b;*/
+    border-radius: 3px;
+    overflow: hidden;
+    background: #908f8b;
+    height: 36px;
+    line-height: 36px;
+    float: left;
+    width: 185px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.user-test-inp {
+    width: 128px;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.get-test {
+    float: right;
+    height: 36px;
+    line-height: 36px;
+    width: 96px;
+    text-align: center;
+    background: #338dfa;
+    color: #fff;
+    border-radius: 3px;
+}
+
 /***********find***********/
 /***********register***********/
-.user-register-top{top: 250px;-webkit-animation: enterReg 1s;-moz-animation: enterReg 1s;-ms-animation: enterReg 1s;animation: enterReg 1s;}
-.protocol{float: left;line-height: 24px;color:#333;}
-.go-login{float: right;}
-.user-register-pwd{margin-bottom: 12px;}
-.user-wrapper{position: relative;}
-.user-role{position: relative;margin-bottom: 12px;float: left;width: 260px;}
-.user-role-opt{height: 36px;line-height: 36px;background:#fff;border: 1px solid #ccc;box-sizing: border-box;display: block;border-radius: 3px;padding-left: 60px;cursor: pointer;}
-.user-role-opt a{color:#757575;}
-.mutil-choice{position: absolute;right: 0;top: 0;background:#72b0fc;height: 34px;line-height: 34px;border: 1px solid #62a1ec;width: 36px;text-align: center;border-radius: 0 3px 3px 0;}
-.mutil-choice i{color:#fff;font-size: 14px;}
-.user-role-list{position: absolute;top: 36px;left:0;background:#ececec;width:100%;border-radius: 0 0 3px 3px;box-shadow: 0 0 10px #bebebe;display: none;}
-.user-role-list li{height:30px;line-height: 30px;text-align: center;font-size: 16px;color:#333;cursor: pointer;}
-.user-role-list li:hover{background:#72b0fc;color:#fff;}
-#reMark{float: right;line-height:36px;width: 40px;overflow: hidden;color: #333;}
-.hover-info-show{position: absolute;top: -52px;right: -25px;background: #fff;padding: 5px 3px;border-radius: 3px;width: 342px;box-shadow: 0 0 2px #999;display: none;
-    color: #ed0006;}
-.hover-info-show:before{position: absolute;bottom:-12px;right:32px;content: "\ea81";color:#fff;font-family:"iconfont";}
-#reMark i{font-size:20px;}
-@-webkit-keyframes enterReg{
-    0%  {top: 100px;}
-    100%{top: 250px;}
+.user-register-top {
+    top: 1.5rem;
+    -webkit-animation: enterReg 1s;
+    -moz-animation: enterReg 1s;
+    -ms-animation: enterReg 1s;
+    animation: enterReg 1s;
 }
-@-moz-keyframes enterReg{
-    0%  {top: 100px;}
-    100%{top: 250px;}
+
+.protocol {
+    float: right;
+    line-height: 24px;
+    color: #333;
 }
-@-ms-keyframes enterReg{
-    0%  {top: 100px;}
-    100%{top: 250px;}
+
+.go-login {
+    float: left;
 }
-@keyframes enterReg{
-    0%  {top: 100px;}
-    100%{top: 250px;}
+
+.user-register-pwd {
+    margin-bottom: 12px;
+}
+
+.user-wrapper {
+    position: relative;
+}
+
+.user-role {
+    position: relative;
+    margin-bottom: 12px;
+    float: left;
+    width: 100%;
+}
+
+.user-role-opt {
+    height: 36px;
+    line-height: 36px;
+    background: #908f8b;
+    box-sizing: border-box;
+    display: block;
+    border-radius: 3px;
+    padding-left: 0.68rem;
+    cursor: pointer;
+}
+
+.user-role-opt a {
+    color: #f7f7f7;
+}
+
+.mutil-choice {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #e25633;
+    height: 36px;
+    line-height: 36px;
+    width: 36px;
+    text-align: center;
+    border-radius: 0 3px 3px 0;
+}
+
+.mutil-choice i {
+    color: #fff;
+    font-size: 14px;
+}
+
+.user-role-list {
+    position: absolute;
+    top: 36px;
+    left: 0;
+    background: #ececec;
+    width: 100%;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 0 10px #bebebe;
+    display: none;
+}
+
+.user-role-list li {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+
+.user-role-list li:hover {
+    background: #72b0fc;
+    color: #fff;
+}
+
+#reMark {
+    float: right;
+    line-height: 36px;
+    width: 40px;
+    overflow: hidden;
+    color: #333;
+}
+
+.hover-info-show {
+    position: absolute;
+    top: -52px;
+    right: -25px;
+    background: #fff;
+    padding: 5px 3px;
+    border-radius: 3px;
+    width: 342px;
+    box-shadow: 0 0 2px #999;
+    display: none;
+    color: #ed0006;
+}
+
+.hover-info-show:before {
+    position: absolute;
+    bottom: -12px;
+    right: 32px;
+    content: "\ea81";
+    color: #fff;
+    font-family: "iconfont";
+}
+
+#reMark i {
+    font-size: 20px;
+}
+
+@-webkit-keyframes enterReg {
+    0% {
+        top: 1rem;
+    }
+    100% {
+        top: 1.5rem;
+    }
+}
+
+@-moz-keyframes enterReg {
+    0% {
+        top: 1rem;
+    }
+    100% {
+        top: 1.5rem;
+    }
+}
+
+@-ms-keyframes enterReg {
+    0% {
+        top: 1rem;
+    }
+    100% {
+        top: 1.5rem;
+    }
+}
+
+@keyframes enterReg {
+    0% {
+        top: 1rem;
+    }
+    100% {
+        top: 1.5rem;
+    }
+}
+@media (max-width: 767px){
+    .user-box{
+        position: relative;
+        margin:0 auto;
+    }
+    .sw-bg .swcontainer{
+        padding-top: 1.5rem;
+    }
+    .user-tel input, .user-pwd input, .user-test input,.user-role-opt {
+        padding-left: 0.9rem;
+    }
+    html{
+        font-size:50px;
+    }
+}
+@media (max-width: 414px){
+    .user-box{
+        width: 320px;
+    }
+    .user-test-enter{
+        width: 145px;
+    }
 }
 /***********register***********/
+.user-tel input::-webkit-input-placeholder, .user-pwd input::-webkit-input-placeholder, .user-test input::-webkit-input-placeholder{
+    color:#f7f7f7;
+}
+.user-tel input::-moz-placeholder, .user-pwd input::-moz-placeholder, .user-test input::-moz-placeholder{
+    color:#f7f7f7;
+}
+.user-tel input:-moz-placeholder, .user-pwd input:-moz-placeholder, .user-test input:-moz-placeholder{
+    color:#f7f7f7;
+}
+.user-tel input:-ms-input-placeholder, .user-pwd input:-ms-input-placeholder, .user-test input:-ms-input-placeholder{
+    color:#f7f7f7;
+}
