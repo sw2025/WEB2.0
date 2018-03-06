@@ -27,115 +27,135 @@
                 的手机号飞机撒都会觉得双方就开始的撒垃圾罚款第三方的手机号飞机撒都会觉得双方就开始的撒垃圾罚款第三方的手机号飞机撒都会觉得双方就开始的撒垃圾罚款第三方的手机号飞机撒都会觉得双方就开始的撒垃圾罚款第三方的手机号飞机撒都会觉得双
             </div>
             <div class="sw-pro-form">
+
+                <div class="sw-pro-row clearfix forbidden">
+                    <div class="swcol-md-4 sw-pro-label">选择大V</div>
+                    <div class="swcol-md-8 sw-pro-rowcon sw-need-con">
+                        <div class="sw-choose-expert @if(empty($basedata) ||  $basedata['selecttype'] == '系统匹配') swon @endif">
+                            <input type="radio" id="system" name="choice">
+                            <label for="system" class="radio-label"><span></span><em>系统匹配</em></label>
+                        </div>
+                        <div class="sw-choose-expert @if(!empty($basedata) && $basedata['selecttype'] == '手动选择') swon @endif">
+                            <input type="radio" id="hand" name="choice">
+                            <label for="hand" class="radio-label"><span></span><em>手动选择</em></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sw-pro-row clearfix forbidden">
+                    <div class="swcol-md-4 sw-pro-label">需要几个大V评议</div>
+                    <div class="swcol-md-8 sw-pro-rowcon sw-refer">
+                        <!-- 系统匹配时显示的内容 -->
+                        <div class="sw-need-con" @if(empty($basedata) ||  $basedata['selecttype'] == '系统匹配') style="display: block;" @else style="display: none;" @endif>
+                            <div class="sw-radio-wrapper @if(!empty($basedata) &&  ($basedata['selecttype'] == '系统匹配' && $basedata['selectnumbers'] == 3)) swon @endif">
+                                <input type="radio" id="threePer" name="person">
+                                <label for="threePer" class="radio-label"><span></span><em>3人</em></label>
+                            </div>
+                            <div class="sw-radio-wrapper @if(!empty($basedata) &&  $basedata['selecttype'] == '系统匹配' && $basedata['selectnumbers'] == 5) swon @endif">
+                                <input type="radio" id="fivePer" name="person">
+                                <label for="fivePer" class="radio-label"><span></span><em>5人</em></label>
+                            </div>
+                        </div>
+                        <!-- 手动选择时显示的专家内容 -->
+                        <div class="sw-need-con sw-mine" @if(!empty($basedata) && $basedata['selecttype'] == '手动选择') style="display: block;" @else style="display: none;" @endif>
+                            @if(!empty($showimages) &&  !empty($basedata) && $basedata['selecttype'] == '手动选择')
+                                @foreach($showimages as $v)
+                                    <div class="expert-img-wrapper">
+                                        <img src="{{env('ImagePath').$v->showimage}}" alt="">
+                                        <span title="{{$v->expertname}}">{{$v->expertname}}</span>
+                                    </div>
+                                @endforeach
+                            @endif
+                            <!--<a href="selectExpert.html" class="sw-choose-link">选择大V</a>-->
+                        </div>
+                    </div>
+                </div>
+
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>项目名称</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <input type="text" value="{{$showinfo->title}}" disabled class="project-name">
                     </div>
                 </div>
-                <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">工商注册公司全称</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled value="公司全名"></div>
-                </div>
+
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>一句话简介</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <input type="text" value="概括产品与服务" disabled class="sw-one-word">
+                        <input type="text" value="{{$showinfo->oneword or ''}}" disabled class="sw-one-word">
                     </div>
                 </div>
+
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>所属领域</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-field">领域1</a>
+                        <a href="javascript:;" class="sw-select-default sw-domain">{{$showinfo->domain1}}</a>
                     </div>
                 </div>
-                <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>{{$showinfo->domain1 or '所属领域'}}</div>
-                    <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-domain">选择领域</a>
-                    </div>
-                </div>
-                <div class="sw-pro-row clearfix">
+               {{-- <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>项目类型</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <a href="javascript:;" class="sw-select-default sw-type">类型1</a>
                     </div>
-                </div>
+                </div>--}}
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label">项目概述</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <textarea maxlength="1000" class="sw-project-txt" disabled>产品描述、用户群体、项目愿景、竞争对手等方面详细描述</textarea>
+                        <textarea maxlength="1000" class="sw-project-txt" disabled>{{$showinfo->brief or ''}}</textarea>
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div>
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>你的角色</div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>投资主体</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-role">企业</a>
+                        <a href="javascript:;" class="sw-select-default sw-role">{{$basedata['role'] or ''}}</a>
+                    </div>
+                </div>
+
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label">投资阶段</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <a href="javascript:;" class="sw-select-default sw-stage">{{$basedata['stage'] or ''}}</a>
                     </div>
                 </div>
                 <div class="sw-pro-row clearfix forbidden">
                     <div class="swcol-md-4 sw-pro-label">商业计划书</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <div class="sw-upload-wrapper">
-                            <span class="sw-upload-cap">上传文件</span>
+                            <span class="sw-upload-cap">{{$showinfo->bpname or '上传文件'}}</span>
                             <input class="sw-upload-btn" type="file" name="files[]" data-url="https://www.sw2025.com/upload" index="/images/15078635376874.png" multiple="" accept="image/png, image/gif, image/jpg, image/jpeg" disabled>
                         </div>
                         <span class="sw-upload-exp">请上传小于7.5M的PDF文件</span>
                         <div class="sw-upload-det">填写具体的媒体报道、产品描述、核心竞争力等，让投资人更了解你<i class="iconfont icon-arrows"></i></div>
                     </div>
                 </div>
-                <div class="sw-pro-row clearfix forbidden">
-                    <div class="swcol-md-4 sw-pro-label">选择大V</div>
-                    <div class="swcol-md-8 sw-pro-rowcon sw-need-con">
-                        <div class="sw-choose-expert swon">
-                            <input type="radio" id="system" name="choice">
-                            <label for="system" class="radio-label"><span></span><em>系统匹配</em></label>
-                        </div>
-                        <div class="sw-choose-expert">
-                            <input type="radio" id="hand" name="choice">
-                            <label for="hand" class="radio-label"><span></span><em>手动选择</em></label>
-                        </div>
+
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label">工商注册公司全称</div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled value="{{$basedata['enterprisename'] or ''}}"></div>
+                </div>
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled class="sw-enterjob" value="{{$basedata['job'] or ''}}"></div>
+                </div>
+
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <a href="javascript:;" class="sw-select-default sw-industry">{{$basedata['industry'] or ''}}</a>
+
                     </div>
                 </div>
-                <div class="sw-pro-row clearfix forbidden">
-                    <div class="swcol-md-4 sw-pro-label">需要几个大V评议</div>
-                    <div class="swcol-md-8 sw-pro-rowcon sw-refer">
-                        <!-- 系统匹配时显示的内容 -->
-                        <div class="sw-need-con">
-                            <div class="sw-radio-wrapper swon">
-                                <input type="radio" id="threePer" name="person">
-                                <label for="threePer" class="radio-label"><span></span><em>3人</em></label>
-                            </div>
-                            <div class="sw-radio-wrapper">
-                                <input type="radio" id="fivePer" name="person">
-                                <label for="fivePer" class="radio-label"><span></span><em>5人</em></label>
-                            </div>
-                        </div>
-                        <!-- 手动选择时显示的专家内容 -->
-                        <div class="sw-need-con sw-mine">
-                            <div class="expert-img-wrapper">
-                                <img src="{{asset('img/person1.jpg')}}" alt="">
-                                <span title="专家名称一">专一</span>
-                            </div>
-                            <div class="expert-img-wrapper">
-                                <img src="{{asset('img/person1.jpg')}}" alt="">
-                                <span title="专家名称一">专家名称一</span>
-                            </div>
-                            <!--<a href="selectExpert.html" class="sw-choose-link">选择大V</a>-->
-                        </div>
-                    </div>
-                </div>
+
                 <div class="sw-pro-row clearfix forbidden">
                     <div class="swcol-md-4 sw-pro-label">支付方式</div>
                     <div class="swcol-md-8 sw-pro-rowcon sw-need-con">
-                        <div class="sw-radio-wrapper swon">
+                        <div class="sw-radio-wrapper @if(empty($basedata) ||  $basedata['paytype'] == '微信支付') swon @endif">
                             <input type="radio" id="payWX" name="pay">
                             <label for="payWX" class="radio-label">
                                 <span></span><i class="iconfont icon-weixin"></i><em>微信支付</em>
                             </label>
                         </div>
-                        <div class="sw-radio-wrapper">
+                        <div class="sw-radio-wrapper @if(!empty($basedata) &&  $basedata['paytype'] == '支付宝支付') swon @endif">
                             <input type="radio" id="payZFB" name="pay">
                             <label for="payZFB" class="radio-label">
                                 <span></span><i class="iconfont icon-zhifubao"></i><em>支付宝支付</em>
@@ -148,8 +168,8 @@
                     <div class="swcol-md-8 sw-pro-rowcon sw-pay-money">100元</div>
                 </div>
                 <div class="sw-btn-wrapper">
-                    <a class="sw-btn-change" href="#">再改改</a>
-                    <a class="sw-btn-pay" href="#">去支付</a>
+                    <a class="sw-btn-change" href="{{url('/showIndex',$showinfo->showid)}}">再改改</a>
+                    <a class="sw-btn-pay" href="javascript:;">去支付</a>
                 </div>
             </div>
         </div>
