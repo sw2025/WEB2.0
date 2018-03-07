@@ -209,7 +209,12 @@
             $.cookie("reselect",reselect,{expires:date,path:'/',domain:'swchina.com'});
         }
         console.log(reselect);
-        if(reselect.length==5){
+        if("{{$type}}"=="show"){
+            var allownumbers=5;
+        } else if("{{$type}}"=="meet"){
+            var allownumbers=1;
+        }
+        if(reselect.length==allownumbers){
             if($.inArray(value,reselect)>=0){
                 deleteArray(reselect,value);
                 $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
