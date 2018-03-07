@@ -21,6 +21,7 @@
                     $roles=DB::table("view_userrole")->where('userid',$counts[0]['userid'])->pluck("role");
                     $array['role']=$roles;
                     session(['role' => $roles]);
+                    session(['phone' => substr_replace($phone,'****',3,4)]);
                 } else {
                     $array['code'] = "pwd";
                     $array['msg'] = "密码错误!";
@@ -87,6 +88,7 @@
                     $result['name'] = !empty($counts[0]['nickname'])?$counts[0]['nickname']:substr_replace($phone,'****',3,4);
                     $roles=DB::table("view_userrole")->where('userid',$userid)->pluck("role");
                     session(['role' => $roles]);
+                    session(['phone' => substr_replace($phone,'****',3,4)]);
                     $result['role']=$roles;
                 } else {
                     $result['code'] = "phone";

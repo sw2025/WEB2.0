@@ -26,6 +26,8 @@ Route::post('/loginHandle','LoginController@loginHandle');
 Route::post('/registerHandle','LoginController@registerHandle');
 //忘记密码信息验证处理
 Route::post('/forgetHandle','LoginController@forgetHandle');
+//退出
+Route::post('quit','LoginController@quit');
 
 
 //提交项目评议页面
@@ -47,10 +49,15 @@ Route::get('keepmeet/{meetid}','MeetController@keepmeet');
 
 //判断支付
 Route::post('payJudge','ShowController@payJudge');
-
+//ping++支付接口
+Route::post("charge",'PingpayController@charge');
 //线下路演发布页
 Route::get('lineShowIndex','ShowController@lineShowIndex');
 
-//ping++支付接口
-Route::post("charge",'PingpayController@charge');
-
+/**************个人中心  我是企业 **************/
+//企业个人中心首页
+Route::get('entindex/index','EnterpriseUcenter@Index');
+//企业个人中心我的评议首页
+Route::get('entmyshow/myshowindex','EnterpriseUcenter@myshowIndex');
+//企业个人中心修改企业数据
+Route::post('modifyEntData','EnterpriseUcenter@modifyEntData');
