@@ -37,7 +37,7 @@
                 <!-- <a href="#">个人中心</a> -->
             </div>
             <ul class="sw-nav">
-                <li><a href="#">创业孵化</a></li>
+                <li><a href="{{url('showIndex')}}">创业孵化</a></li>
                 <li><a href="#">成长加速</a></li>
                 <li><a href="#">企业转型升级</a></li>
             </ul>

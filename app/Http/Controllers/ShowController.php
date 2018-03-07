@@ -24,8 +24,11 @@ class ShowController extends Controller
             $expertids = explode(',',$showinfo->expertids);
             $showimages = DB::table('t_u_expert')->whereIn('expertid',$expertids)->select('showimage','expertname')->get();
         }
+        if(!empty(session('userId'))){
+            $entinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->select('enterprisename','job','industry')->first();
+        }
         $cate = DB::table('t_common_domaintype')->where('level',1)->get();
-        return view('show.index',compact('showid','cate','showinfo','basedata','showimages'));
+        return view('show.index',compact('showid','cate','showinfo','basedata','showimages','entinfo'));
     }
 
     /**提交项目
@@ -95,8 +98,10 @@ class ShowController extends Controller
                 }
 
                 $expertids = join(',',$expertids);
+                $data['selectnumbers'] = intval($data['selectnumbers']);
             } else {
                 $expertids = $data['selectnumbers'];
+                $data['selectnumbers'] = count(explode(',',$data['selectnumbers']));
             }
 
             $basedata = [
@@ -107,7 +112,7 @@ class ShowController extends Controller
                     'job' => $data['enterjob'],
                     'industry' => $data['industry'],
                     'selecttype' => $data['selecttype'],
-                    'selectnumbers' => intval($data['selectnumbers']),
+                    'selectnumbers' => $data['selectnumbers'],
             ];
             if($showid){
                 if($data['upload'] != 1){
@@ -150,13 +155,14 @@ class ShowController extends Controller
                     'bpname' => $originalName,
                     'basicdata' => serialize($basedata)
                 ]);
+                DB::table('t_s_showverify')->insert([
+                    'showid' => $showid,
+                    'configid' => 1,
+                    'verifytime' => $data['projecttxt'],
+                ]);
             }
 
-            DB::table('t_s_showverify')->insert([
-                'showid' => $showid,
-                'configid' => 1,
-                'verifytime' => $data['projecttxt'],
-            ]);
+
 
             DB::commit();
             $msg = ['msg' => '提交成功','icon' => 1,'code' => 4,'url' => url('keepshow',$showid)];
@@ -175,11 +181,18 @@ class ShowController extends Controller
      */
     public function keepShow($showid)
     {
+        $configid = self::getNewShowVerify($showid);
         $showinfo = DB::table('t_s_show')->where('showid',$showid)->first();
         $basedata = unserialize($showinfo->basicdata);
         $expertids = explode(',',$showinfo->expertids);
         $showimages = DB::table('t_u_expert')->whereIn('expertid',$expertids)->select('showimage','expertname')->get();
-        return view('show.keepshow',compact('showinfo','basedata','showimages'));
+        return view('show.keepshow',compact('showinfo','basedata','showimages','configid'));
+    }
+
+
+    static private function getNewShowVerify($showid){
+        $configid = DB::table('view_showstatus')->where('showid',$showid)->pluck('configid');
+        return $configid;
     }
 
 
@@ -231,6 +244,82 @@ class ShowController extends Controller
         $datas = $datas->orderBy("ext.expertid",'desc')->paginate(9);
         $ordertime = 'desc';
         return view("public.selectExpert",compact('type','cate','datas','ordertime'));
+    }
+
+    /**支付判断
+     * @param Request $request
+     */
+    public function payJudge(Request $request)
+    {
+        $data = $request->input();
+        if(!empty(session('userId')) && !empty($data['type']) && !empty($data['id'])){
+            $return = self::getPayData(session('userId'),$data['type'],$data['id']);
+            return $return;
+        } else {
+            return ['icon' => 2,'code' => 2,'type' => $data['type'],'id' => $data['id']];
+        }
+    }
+
+    /**吧支付所需要的参数数据返回
+     * @param $userid
+     * @param $type
+     * @param $id
+     * @return array
+     */
+    static public function getPayData($userid,$type,$id){
+        $payType = 'payMoney';
+
+        switch ($type){
+            case 'show':
+                $showverify = DB::table('view_showstatus')->where('showid',$id)->pluck('configid');
+                if($showverify == 1){
+                    $basicdata = DB::table('t_s_show')->where('showid',$id)->pluck('basicdata');
+                    $basicdata = unserialize($basicdata);
+                    $amount = $basicdata['selectnumbers']*env('showPrice');
+                    $channel = $basicdata['paytype'] == '微信支付' ? 'wx_pub_qr' :'alipay_pc_direct';
+                    $type = 'show';
+                    $showid = $id;
+                    $urlType = url('/keepshow',$id);
+                    $subject = '升维网项目评议';
+                    return [
+                        'icon' => 1,
+                        'data' => [
+                            'payType' => $payType,
+                            'userid' => $userid,
+                            'channel' => $channel,
+                            'type' => $type,
+                            'showid' => $showid,
+                            'urlType' => $urlType,
+                            'subject' => $subject,
+                            'amount' => $amount
+                        ]
+                    ];
+                } else {
+                    return [
+                        'icon' => 2,
+                        'msg' => '已支付'
+                    ];
+                }
+
+            case 'meet':
+                /*$basicdata = DB::table('t_m_meet')->where('meetid',$id)->pluck('basicdata');
+                $amount = $basicdata['selectnumbers']*env('showPrice');
+                $channel = $basicdata['paytype'] == '微信支付' ? 'wx_pub_qr' :'alipay_pc_direct';
+                $type = 'show';
+                $showid = $id;
+                $urlType = url('/keepshow',$id);
+                $subject = '升维网项目评议';
+                return [
+                    'payType' => $payType,
+                    'userid' => $userid,
+                    'channel' => $channel,
+                    'type' => $type,
+                    'showid' => $showid,
+                    'urlType' => $urlType,
+                    'subject' => $subject,
+                    'amount' => $amount
+                ];*/
+        }
     }
 
 }

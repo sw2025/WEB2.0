@@ -2,12 +2,19 @@
 @section("content")
     <link type="text/css" rel="stylesheet" href="css/login.css">
     <script type="text/javascript" src="js/reg.js"></script>
-    <script type="text/javascript" src="{{asset('js/jquery.cookie.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery/jquery.cookie.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/payJudge.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/jquery/jquery.qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
     <style>
         .lawerpop{overflow-y: scroll;padding:10px 20px;line-height: 24px;color:#333;}
         .lawerpop h3{text-align: center;font-size: 20px;height:48px;line-height: 48px;font-weight: normal;}
         .lawerpop p,.lawerpop h4{text-indent: 2em;}
         .layui-layer-btn{text-align: center;}
+         .changeWeixin img{
+             margin:0 auto;
+         }
     </style>
     <!-- 登录 / start -->
     <div class="section sw-bg">
@@ -41,6 +48,18 @@
                     <span class="go-login">已有账号，去 <a href="{{asset('login')}}" class="to-log">登录</a></span>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="layer-pop" style="position:fixed;background: rgba(0,0,0,0.3);top: 0;left: 0;width: 100%;height: 100%;z-index: 19891016;display: none;">
+        <div class="popWx" style="position: absolute;top: 10%;width: 285px;border: 2px solid #ccc;left: 50%;top: 50%;margin: -160px 0 0 -145px;background: #fff;text-align: center;border-radius: 3px;font-size: 14px;padding: 30px 0 27px;">
+            <div class="changeWeixin">
+                <div class="popWeixin" id="code">
+                </div>
+            </div>
+            <span class="weixinLittle"></span>
+            <div class="weixinTips" style="display: none"><strong>扫瞄二维码完成支付</strong><br>支付完成后请关闭二维码</div>
+            <a href="javascript:;" class="closePop" title="关闭" style="position: absolute;top: 0;right: 0;"><i class="iconfont icon-chahao"></i></a>
         </div>
     </div>
     <!-- 登录 / end -->
@@ -121,12 +140,15 @@
 
 
         $(".login-btn").on("click",function(){
+            var that=this;
             var reg1 = /^1[3578][0-9]{9}$/;//手机号
             var reg2 = /^[a-zA-Z0-9]{6,18}$/;//密码
             var phone=$(".user-tel-inp").val();
             var pwd=$(".user-pwd-inp").val();
             var code=$(".user-test-inp").val();
             var role='企业';
+            var type="{{$type}}";
+            var id= "{{$id}}";
             if(!(reg1.test(phone))){
                 layer.tips('手机号不能为空或输入错误', '.user-tel', {
                     tips: [2, '#e25633'],
@@ -152,7 +174,7 @@
             $(this).html('注册中...');
             $.ajax({
                 url:"{{url('registerHandle')}}",
-                data:{"phone":phone,"passWord":pwd,"codes":code,"role":role},
+                data:{"phone":phone,"passWord":pwd,"codes":code,"role":role,'id':parseInt(id),'type':type},
                 dateType:"json",
                 type:"POST",
                 success:function(res){
@@ -181,27 +203,42 @@
                         $.cookie("role",res['role'],{expires:date,path:'/',domain:'swchina.com'});
                         $.cookie("register","register",{path:'/',domain:'sw2025.com'});
                         $.cookie("register","register",{path:'/',domain:'swchina.com'});
+                        if(type!='' && id!=''){
 
-                        layer.open({
-                            type: 1,
-                            skin: 'layui-layer-rim', //加上边框
-                            area: ['360px', '160px'],
-                            title: false, //不显示标题
-                            shadeClose: false, //开启遮罩关闭
-                            content: '<div style="padding:10px;background: #e25633;color: #fff;"><span style="font-size:18px;">恭喜您注册成功</span><br /><br />在升维网做身份认证获取更多权益，是否继续认证？</div>',
-                            btn: ['认证大V','认证企业','暂不认证'],
-                            yes: function(index, layero){
-                                window.location.href="{{asset('uct_mywork')}}";
-                            },btn2: function(index, layero){
-                                window.location.href="{{asset('uct_mywork')}}";
-                            },btn3: function(index, layero){
-                                if({{$return}}){
-                                    window.location.href="{{$returnurl}}";
-                                } else {
-                                        window.location.href="{{asset('uct_mywork')}}";
-                                }
+                            if(res.data.icon==2){
+                                layer.msg(res.data.msg,function () {
+                                    window.location.href="/";
+                                    return false;
+                                });
+                            } else {
+                                callPingPay(res.data.data);
+                                $(that).html('注册完成,请支付');
+                                $('.closePop').on('click',function () {
+                                    window.location = '/keep'+type+'/'+id;
+                                });
                             }
-                        });
+                        }else {
+                            layer.open({
+                                type: 1,
+                                skin: 'layui-layer-rim', //加上边框
+                                area: ['360px', '160px'],
+                                title: false, //不显示标题
+                                shadeClose: false, //开启遮罩关闭
+                                content: '<div style="padding:10px;background: #e25633;color: #fff;"><span style="font-size:18px;">恭喜您注册成功</span><br /><br />在升维网做身份认证获取更多权益，是否继续认证？</div>',
+                                btn: ['认证大V','认证企业','暂不认证'],
+                                yes: function(index, layero){
+                                    window.location.href="{{asset('uct_mywork')}}";
+                                },btn2: function(index, layero){
+                                    window.location.href="{{asset('uct_mywork')}}";
+                                },btn3: function(index, layero){
+                                    if({{$return}}){
+                                        window.location.href="{{$returnurl}}";
+                                    } else {
+                                        window.location.href="{{asset('uct_mywork')}}";
+                                    }
+                                }
+                            });
+                        }
 
                     }
                 }
