@@ -15,8 +15,6 @@ class IndexController extends Controller
      * @return mixed
      */
     public function index(){
-      
-      
         $datas=DB::table("T_U_EXPERT")
                 ->leftJoin("T_U_EXPERTFEE","T_U_EXPERTFEE.expertid","=","T_U_EXPERT.expertid")
                 ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERTVERIFY.expertid","=","T_U_EXPERT.expertid")
