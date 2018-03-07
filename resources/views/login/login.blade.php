@@ -3,7 +3,7 @@
     <!-- 登录 / start -->
     <link type="text/css" rel="stylesheet" href="{{asset('css/login.css')}}">
     <script type="text/javascript" src="{{asset('js/reg.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/jquery.cookie.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery/jquery.cookie.js')}}"></script>
 
 
 <div class="section sw-bg"  onkeydown="autosubmit()">

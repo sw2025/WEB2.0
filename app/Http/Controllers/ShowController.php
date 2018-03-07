@@ -16,14 +16,16 @@ class ShowController extends Controller
     /**
      * 项目提交页面
      */
-    public function Index($showid='')
+    public function Index($showid=0)
     {
         if(!empty($showid)){
             $showinfo = DB::table('t_s_show')->where('showid',$showid)->first();
-            $basedata = unserialize($showinfo->basedata);
+            $basedata = unserialize($showinfo->basicdata);
+            $expertids = explode(',',$showinfo->expertids);
+            $showimages = DB::table('t_u_expert')->whereIn('expertid',$expertids)->select('showimage','expertname')->get();
         }
         $cate = DB::table('t_common_domaintype')->where('level',1)->get();
-        return view('show.index',compact('cate','showinfo','basedata'));
+        return view('show.index',compact('showid','cate','showinfo','basedata','showimages'));
     }
 
     /**提交项目
@@ -79,20 +81,22 @@ class ShowController extends Controller
             //插入项目表数据
             //判断系统匹配或者自选专家
             if($data['selecttype'] == '系统匹配'){
-                $expertnumbers = $data['selectnumbers'];
+                $expertnumbers = intval($data['selectnumbers']);
                 $expertids = DB::table('t_u_expert')
                     ->leftJoin('view_expertstatus as state','state.expertid','=','t_u_expert.expertid')
                     ->where('state.configid', 2)
                     ->where(['domain1' => $data['domain']])
                     ->whereRaw('1=1  group by rand()')
                     ->limit($expertnumbers)
-                    ->pluck('t_u_expert.expertid');
+                    ->lists('t_u_expert.expertid');
+
                 if(empty($expertids)){
                     $expertids = [0];
                 }
-                $expertids = implode(',',$expertids);
+
+                $expertids = join(',',$expertids);
             } else {
-                $expertids = 0;
+                $expertids = $data['selectnumbers'];
             }
 
             $basedata = [
@@ -101,7 +105,9 @@ class ShowController extends Controller
                     'paytype' => $data['paytype'],
                     'enterprisename' => $data['entername'],
                     'job' => $data['enterjob'],
-                    'industry' => $data['industry']
+                    'industry' => $data['industry'],
+                    'selecttype' => $data['selecttype'],
+                    'selectnumbers' => intval($data['selectnumbers']),
             ];
             if($showid){
                 if($data['upload'] != 1){
@@ -130,7 +136,7 @@ class ShowController extends Controller
                     ];
                 }
 
-                $showid = DB::table('t_s_show')->update($arr)->where('showid',$showid);
+               DB::table('t_s_show')->where('showid',$showid)->update($arr);
             } else {
                 $showid = DB::table('t_s_show')->insertGetId([
                     'userid' => $userid,
@@ -163,12 +169,68 @@ class ShowController extends Controller
         return $msg;
     }
 
-
+    /**保存项目评议待支付页面
+     * @param $showid
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function keepShow($showid)
     {
         $showinfo = DB::table('t_s_show')->where('showid',$showid)->first();
-        $basedata = unserialize($showinfo->basedata);
-        return view('show.keepshow',compact('showinfo','basedata'));
+        $basedata = unserialize($showinfo->basicdata);
+        $expertids = explode(',',$showinfo->expertids);
+        $showimages = DB::table('t_u_expert')->whereIn('expertid',$expertids)->select('showimage','expertname')->get();
+        return view('show.keepshow',compact('showinfo','basedata','showimages'));
+    }
+
+
+    /**
+     * 选择专家页面
+     */
+    public function selectExpert(Request $request)
+    {
+        $userid = empty(session('userId'))?0:session('userId');
+        //获取板块信息
+        $cate = DB::table('t_common_domaintype')->get();
+        $datas = DB::table('t_u_expert as ext')
+            ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
+            ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
+            ->where('status.configid',2)
+            ->where("ext.userid","<>",$userid)
+            ->where("ext.iscomment",1)
+            ->select('ext.*');
+        $type = '';
+        //获得用户的收藏
+        //判断是否为http请求
+        if(!empty($get = $request->input())){
+            //获取到get中的数据并处理
+            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            $supply=(isset($get['supply']) && $get['supply'] != "null") ? $get['supply'] : null;
+            $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
+            $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : 'desc';
+            $type = ( isset($get['type']) && $get['type'] != "null") ? $get['type'] : '';
+            $addresswhere = !empty($address)?array("ext.address"=>$address):array();
+
+            if(!empty($supply)){
+                $obj = $datas->where('ext.domain1',$supply)->where($addresswhere);
+            } else {
+                $obj = $datas->where($addresswhere);
+            }            //判断是否有搜索的关键字
+            if(!empty($searchname)){
+                $obj = $obj->where("ext.expertname","like","%".$searchname."%");
+            }
+            //对三种排序进行判断
+            if(!empty($ordertime)){
+                $obj = $obj->orderBy('ext.expertid',$ordertime);
+            }
+
+            $datas = $obj->paginate(9);
+
+            return view("public.selectExpert",compact('type','cate','searchname','datas','supply','address','ordertime'));
+        }
+
+        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(9);
+        $ordertime = 'desc';
+        return view("public.selectExpert",compact('type','cate','datas','ordertime'));
     }
 
 }

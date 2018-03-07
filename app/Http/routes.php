@@ -34,6 +34,8 @@ Route::get('showIndex/{showid?}','ShowController@Index');
 Route::post('submitShow','ShowController@submitShow');
 //保存项目评议页面
 Route::get('keepshow/{showid}','ShowController@keepshow');
+//项目评议选择专家页面
+Route::any('selectExpert','ShowController@selectExpert');
 
 
 //提交约见页面
