@@ -193,11 +193,12 @@ class ShowController extends Controller
         $cate = DB::table('t_common_domaintype')->get();
         $datas = DB::table('t_u_expert as ext')
             ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
+            ->leftJoin('t_u_expertfee as fee','fee.expertid' ,'=' ,'ext.expertid')
             ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
             ->where('status.configid',2)
             ->where("ext.userid","<>",$userid)
             ->where("ext.iscomment",1)
-            ->select('ext.*');
+            ->select('ext.*','fee.linefee');
         $type = '';
         //获得用户的收藏
         //判断是否为http请求

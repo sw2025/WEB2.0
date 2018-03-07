@@ -38,8 +38,8 @@ Route::get('keepshow/{showid}','ShowController@keepshow');
 Route::any('selectExpert','ShowController@selectExpert');
 
 
-//提交约见页面
-Route::get('meetIndex/{meetid?}','MeetController@index');
+//提交线下约见页面
+Route::get('meetIndex/{meetid?}','MeetController@Index');
 //保存约见
 Route::post('submitMeet','MeetController@submitMeet');
 //保存约见页面
