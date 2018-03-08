@@ -22,7 +22,7 @@ class PublicController extends Controller
         $uploadHandler =new \App\UploadHandler(["upload_dir" => dirname(base_path()) . "/swUpload/images/", "upload_url" => dirname(base_path()) . "/swUpload/images/"]);
     }
 
-    public function isLogin (){
+    static public function isLogin (){
         if(empty(session('userId'))){
             return ['icon' => 2,'code' => 2];
         } else {

@@ -11,49 +11,28 @@ use Aliyun\Core\Profile\DefaultProfile;
 use Aliyun\Core\DefaultAcsClient;
 use Aliyun\Api\Sms\Request\V20170525\SendSmsRequest;
 use Aliyun\Api\Sms\Request\V20170525\QuerySendDetailsRequest;
+use Illuminate\Support\Facades\DB;
 
 abstract class Controller extends BaseController{
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    /**
-     * 发送验证码
-     * @param $mobile
-     * @param $message
-     * @param $action
-     * @return array
-     */
-   /* protected function _sendSms($mobile, $message, $action){
-        require(base_path().'/vendor/alidayu/TopSdk.php');
-        date_default_timezone_set('Asia/Shanghai');
-        $c = new \TopClient;
-        $c->appkey = '23401348';//需要加引号
-        $c->secretKey =env('ALIDAYU_APPSECRET');
-        $c->format = 'xml';
-        $req = new \AlibabaAliqinFcSmsNumSendRequest;
-        $req->setExtend("");//暂时不填
-        $req->setSmsType("normal");//默认可用
-        $req->setSmsFreeSignName("复根资产");//设置短信免费符号名(需在阿里认证中有记录的)
-        $req->setSmsParam("{\"code\":\"{$message}\"}");///设置短信参数
-        $req->setRecNum($mobile);//设置接受手机号
-        if($action == 'register'){
-            $req->setSmsTemplateCode("SMS_63315479");//设置模板
-        } elseif($action == 'findPwd') {
-            $req->setSmsTemplateCode("SMS_63475490");//设置模板
-        }else{
-            $req->setSmsTemplateCode("SMS_63970969");//设置模板
-        }
-        $resp = $c->execute($req);//执行
-        $str=array();
-        if($resp->result->success){
-            $str['code']="code";
-            $str['msg']="发送成功!";
-            return $str;
-        }else {
-            $str['code']="code";
-            $str['msg']="发送失败,稍后重试!";
-            return $str;
-        }
-    }*/
 
+    public function __construct()
+
+    {
+
+        if (session('userId')) {
+            $enterpriseinfo = DB::table('t_u_enterprise')->where('userid', session('userId'))->select('enterprisename', 'showimage')->first();
+            if (empty($enterpriseinfo)) {
+                $enterprisename = session('phone');
+                $showimage = asset('img/avatar.jpg');
+            } else {
+                $enterprisename = $enterpriseinfo->enterprisename;
+                $showimage = env('ImagePath') . $enterpriseinfo->showimage;
+            }
+            view()->share(['enterprisename' => $enterprisename, 'showimage' => $showimage]);
+        }
+
+    }
     /**
      * 获取六位随机的数字
      * @param int $len

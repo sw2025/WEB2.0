@@ -20,6 +20,7 @@
     <script type="text/javascript" src="{{asset('js/jquery/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/public.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery/jquery.cookie.js')}}"></script>
     <script src="{{asset('js/jquery/jquery.ui.widget.js')}}"></script>
     <script src="{{asset('js/jquery/jquery.fileupload.js')}}"></script>
 </head>
@@ -32,9 +33,18 @@
         <div class="sw-menu">
             <div class="sw-user">
                 <!-- 登录前 -->
+                @if(empty(session('userId')))
                 <a href="{{url('/login')}}">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{{url('/register')}}">注册</a>
                 <!-- 登录后 -->
-                <!-- <a href="#">个人中心</a> -->
+                @else
+                <a href="#" class="sw-info sw-read"><i class="iconfont icon-email"></i><span class="info-exist"></span></a>
+                <a href="javascript:;" class="sw-logined"><img src="{{asset('img/avatar.jpg')}}"><span>{{session('phone')}}</span></a>
+                <div class="sw-entry">
+                    <a href="#">专家入口</a>
+                    <a href="{{url('entindex/index')}}">企业入口</a>
+                    <a href="#" class="quit">退出</a>
+                </div>
+                @endif
             </div>
             <ul class="sw-nav">
                 <li><a href="{{url('showIndex')}}">创业孵化</a></li>
@@ -88,7 +98,54 @@
         hm.src = "https://hm.baidu.com/hm.js?6f6e01e4a95947e6714c0d5ce631597b";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
+
+        var str=window.location.pathname;
+        var num1=str.indexOf('/');
+        var find = '/';//表示要找的字符
+        var flag = 2;//表示第几次出现
+        var num2=0;
+        for(var i=0;i<str.length;i++){
+            if(str.charAt(i)==find)
+                flag--;
+            if(flag==0){
+                num2=i;
+                break;
+            }
+        }
+        if(num2){
+            var string=str.substring(num1+1,num2);
+        }else{
+            var string=str.substring(num1+1);
+        }
+        $("#"+string).addClass('active');
     })();
+
+    $(".quit").on("click",function(){
+        $.ajax({
+            url:"{{asset("quit")}}",
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    $.cookie("userId",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("name",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("avatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("enterAvatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("expertAvatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("userId",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("name",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("avatar",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("enterAvatar",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("expertAvatar",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("phone",'',{path:'/',domain:'swchina.com'});
+                    window.location.href="{{asset('/')}}"
+                }else{
+                    window.location.href="{{asset('/')}}"
+                }
+            }
+        })
+    })
 </script>
 
 

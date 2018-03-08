@@ -3,7 +3,6 @@
     <!-- 登录 / start -->
     <link type="text/css" rel="stylesheet" href="{{asset('css/login.css')}}">
     <script type="text/javascript" src="{{asset('js/reg.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/jquery/jquery.cookie.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/payJudge.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/jquery/jquery.qrcode.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
@@ -124,11 +123,12 @@
                         if({{$return}}){
                             window.location.href="{{$returnurl}}";
                         } else {
-                            if(res['role']=="专家"){
+                            window.location.href="/";
+                            /*if(res['role']=="专家"){
                                 window.location.href="{{asset('uct_mywork')}}";
                             }else{
                                 window.location.href="{{asset('uct_works')}}";
-                            }
+                            }*/
                         }
                     }
 
