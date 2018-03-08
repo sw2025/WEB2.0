@@ -55,9 +55,30 @@ Route::post("charge",'PingpayController@charge');
 Route::get('lineShowIndex','ShowController@lineShowIndex');
 
 /**************个人中心  我是企业 **************/
-//企业个人中心首页
+//首页
 Route::get('entindex/index','EnterpriseUcenter@Index');
-//企业个人中心我的评议首页
-Route::get('entmyshow/myshowindex','EnterpriseUcenter@myshowIndex');
-//企业个人中心修改企业数据
+//评议列表页
+Route::get('entmyshow/myshowindex','EnterpriseUcenter@myShowIndex');
+//修改企业数据
 Route::post('modifyEntData','EnterpriseUcenter@modifyEntData');
+//约见投资人列表页
+Route::get('entmymeet/mymeetindex','EnterpriseUcenter@myMeetIndex');
+//约见大V列表页
+Route::get('entmydav/mydavindex','EnterpriseUcenter@myDavIndex');
+//线下路演列表页
+Route::get('entmylineshow/mylineshowindex','EnterpriseUcenter@myLineShowIndex');
+//私董会列表页
+Route::get('entmysector/mysectorindex','EnterpriseUcenter@mySectorIndex');
+//发布私董会页面
+Route::get('entmysector/supplysector','EnterpriseUcenter@supplySector');
+//保存私董会
+Route::post('consultCharge', 'MyEnterpriseController@consultCharge');
+//申请视频咨询指定专家
+Route::get('uct_video/videoSelect', 'MyEnterpriseController@videoSelect');
+//视频咨询
+Route::get('entmysector/detail/{consultId}', 'EnterpriseUcenter@sectorDetail');
+/**************个人中心  我是专家 **************/
+//专家个人中心认证首页
+Route::get('expindex/index','ExpertUcenter@Index');
+//专家提交认证方法
+Route::post('submitExpertVerify','ExpertUcenter@submitExpertVerify');

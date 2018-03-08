@@ -22,6 +22,7 @@ abstract class Controller extends BaseController{
 
         if (session('userId')) {
             $enterpriseinfo = DB::table('t_u_enterprise')->where('userid', session('userId'))->select('enterprisename', 'showimage')->first();
+            $expertinfo = DB::table('t_u_expert')->where('userid', session('userId'))->select('expertname', 'showimage')->first();
             if (empty($enterpriseinfo)) {
                 $enterprisename = session('phone');
                 $showimage = asset('img/avatar.jpg');
@@ -29,7 +30,14 @@ abstract class Controller extends BaseController{
                 $enterprisename = $enterpriseinfo->enterprisename;
                 $showimage = env('ImagePath') . $enterpriseinfo->showimage;
             }
-            view()->share(['enterprisename' => $enterprisename, 'showimage' => $showimage]);
+            if (empty($expertinfo)) {
+                $expertname = session('phone');
+                $showimage2 = asset('img/avatar.jpg');
+            } else {
+                $expertname = $expertinfo->expertname;
+                $showimage2 = env('ImagePath') . $expertinfo->showimage;
+            }
+            view()->share(['enterprisename' => $enterprisename, 'showimage' => $showimage,'expertname' => $expertname,'showimage2' => $showimage2]);
         }
 
     }
