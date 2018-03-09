@@ -1765,7 +1765,7 @@ class MyEnterpriseController extends Controller
                             ->leftJoin('t_u_enterprise','t_c_consult.userid','=','t_u_enterprise.userid')
                             ->where('consultid',$_POST['consultId'])
                             ->pluck('enterprisename');
-                        $this->_sendSms($phone,'视频咨询','reselects',$name);
+                        /*$this->_sendSms($phone,'视频咨询','reselects',$name);*/
 
                     }else{
                         DB::table("T_C_CONSULTRESPONSE")->insert([

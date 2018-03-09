@@ -34,8 +34,10 @@
             <div class="sw-user">
                 <!-- 登录前 -->
                 @if(empty(session('userId')))
-                <a href="{{url('/login')}}">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{{url('/register')}}">注册</a>
-                <!-- 登录后 -->
+                    <span class="sw-mt">
+                        <a href="javascript:;">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;">注册</a>
+                    </span>
+                        <!-- 登录后 -->
                 @else
                 <a href="#" class="sw-info sw-read"><i class="iconfont icon-email"></i><span class="info-exist"></span></a>
                 <a href="javascript:;" class="sw-logined"><img src="{{asset('img/avatar.jpg')}}"><span>{{session('phone')}}</span></a>
@@ -58,13 +60,14 @@
 <!-- 公共header / end -->
 @yield("content")
         <!-- 公共footer / end -->
+<!-- 底部 -->
 <div class="sw-footer">
     <div class="swcontainer clearfix">
         <div class="swcol-md-6 swcol-xs-12">
             <div class="sw-footer-l">
                 <span>客服电话：</span>
                 <strong>010-64430881&nbsp;/&nbsp;68985908</strong>
-                <p>E-Mail：sunwy@swchina.com</p>
+                <p>E-Mail：shengwei2025@163.com</p>
                 <p>北京市朝阳区安贞里街道浙江大厦</p>
             </div>
         </div>
@@ -72,17 +75,20 @@
             <div class="sw-footer-r clearfix">
                 <div class="swcol-md-6 sw-wx">
                     升维公众号
-                    <img src="{{asset('img/erweima1.jpg')}}" alt="升维公众号">
+                    <img src="{{asset('img/erweima1.jpg')}} " alt="升维公众号">
                 </div>
                 <div class="swcol-md-6 sw-app">
                     <p class="sw-app-caption">客户端</p>
-                    <img src="{{asset('img/erweima2.jpg')}}" alt="客户端">
+                    <img src="{{asset('img/erweima2.jpg')}} " alt="客户端">
                     <div class="app-caption">
                         <span><i class="iconfont icon-changyonglogo35"></i>IOS</span>
                         <span><i class="iconfont icon-changyonglogo37"></i>Android</span>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="sw-copy">
+            <p>京ICP备17053834号copyright&nbsp;&nbsp;&copy;&nbsp;&nbsp;2017&nbsp;swchina.com</p>
         </div>
     </div>
 </div>
@@ -118,6 +124,7 @@
             var string=str.substring(num1+1);
         }
         $("#"+string).addClass('active');
+        $("#"+string).addClass('on');
     })();
 
     $(".quit").on("click",function(){
@@ -146,6 +153,25 @@
             }
         })
     })
+
+    $('.sw-mt a').on('click',function () {
+        var isreturnurl = window.location.search.indexOf('returnurl');
+        if(isreturnurl==-1){
+            if($.trim($(this).text())=='登录'){
+                window.location.href="{{url('/login')}}?returnurl="+window.location.href;
+            }else {
+                window.location.href="{{url('/register')}}?returnurl="+window.location.href;
+            }
+        } else {
+            if($.trim($(this).text())=='登录'){
+                window.location.href="{{url('/login')}}"+window.location.search;
+            }else {
+                window.location.href="{{url('/register')}}"+window.location.search;
+            }
+        }
+
+
+    });
 </script>
 
 

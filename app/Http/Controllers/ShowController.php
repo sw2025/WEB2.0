@@ -158,7 +158,7 @@ class ShowController extends Controller
                 DB::table('t_s_showverify')->insert([
                     'showid' => $showid,
                     'configid' => 1,
-                    'verifytime' => $data['projecttxt'],
+                    'verifytime' => date('Y-m-d H:i:s',time()),
                 ]);
             }
 

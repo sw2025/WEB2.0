@@ -106,7 +106,7 @@ class EnterpriseUcenter extends Controller
         $configname = [1 => '已保存',2 => '已支付' ,3 => '已响应',4 => '已拒绝' ,5 => '已完成'];
         foreach($data as $k => $v){
             $expert = DB::table('t_u_expert')
-                ->where('expertid',$v->expertid)
+                ->where('expertid',$v->exertid)
                 ->select('expertid','showimage','expertname','domain1','organiza','job')
                 ->get();
             $expertinfo[$k] = $expert;
@@ -125,7 +125,7 @@ class EnterpriseUcenter extends Controller
             ->whereRaw('verify.id in (select max(id) from t_m_meetverify group by meetid)')
             ->select('meet.*','verify.configid')
             ->orderBy('meet.meetid','desc')
-            ->paginate(3);
+            ->paginatpe(3);
 
         $expertinfo = [];
         $configname = [1 => '已保存',2 => '已支付' ,3 => '已响应',4 => '已拒绝' ,5 => '已完成'];
@@ -192,6 +192,7 @@ class EnterpriseUcenter extends Controller
             }else{
                 $data->state="系统分配";
             }
+            $data->timelong = (strtotime($data->endtime)-strtotime($data->starttime))/60;
             $data->starttime=date("Y年m月d日 H:i:s",strtotime($data->starttime));
             $data->endtime=date("Y年m月d日 H:i:s",strtotime($data->endtime));
         }

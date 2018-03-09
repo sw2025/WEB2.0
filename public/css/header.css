@@ -100,7 +100,11 @@
   line-height: 35px;
   font-size: 14px;
 }
-
+.sw-mt{
+  display: block;
+  vertical-align: top;
+  margin-top: 23px;
+}
 .sw-entry{
   position: absolute;
   top:62px;
@@ -115,10 +119,6 @@
   line-height: 1;
   padding:0.08rem 0.15rem;
   text-align: right;
-}
-.sw-entry a:hover{
-  background: #e25633;
-  border-radius: 5px;
 }
 
 .sw-footer {
@@ -251,7 +251,7 @@
   margin:0 auto 0.4rem;
   background: #fff;
   box-sizing: border-box;
-  min-height: 800px;
+  min-height: 750px;
   overflow: hidden;
 }
 .sw-aside{
@@ -320,8 +320,38 @@
 .sw-aside-item:nth-child(2) .sw-item-title{
   background-position: 15px -52px;
 }
-.sw-aside-item:last-child .sw-item-title{
+.sw-aside-item:nth-child(3) .sw-item-title{
   background-position: 15px -107px;
+}
+.sw-aside-list{
+  margin:0.15rem 0 0;
+}
+.my-ucenter{
+  border-top:2px solid #e0e0e0;
+}
+.my-ucenter .sw-aside-item{
+  border:none;
+}
+.my-ucenter .sw-aside-item a:hover{
+  color: #e25633;
+}
+.my-ucenter .sw-item-title{
+  background: url("../img/usericon.png") no-repeat 15px 13px;
+}
+.my-ucenter .sw-aside-item .my2{
+  background-position: 15px -42px;
+}
+.my-ucenter .sw-aside-item .my3{
+  background-position: 15px -94px;
+}
+.my-ucenter .sw-aside-item .my4{
+  background-position: 15px -147px;
+}
+.my-ucenter .on a,.my-ucenter .sw-aside-item a:hover{
+  background: #e25633;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: normal;
 }
 .sw-aside-sublist a{
   display: block;
@@ -353,10 +383,12 @@
 }
 .sw-mains{
   margin-left: 185px;
-  min-height: 800px;
+  min-height: 750px;
   box-sizing: border-box;
   padding: 0.25rem 0.25rem 0;
   border: 1px solid #e25633;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
 }
 
 .sw-pop{

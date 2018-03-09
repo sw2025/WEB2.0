@@ -23,7 +23,7 @@
         </div>
         <div class="invite-experts">
             <div class="invite-expert-tit">
-                <i class="iconfont icon-shenhejujue"></i><span>已响应<b class="invite-counts">{{$selected}}</b>人</span>
+                <i class="iconfont icon-shenhejujue"></i><span>已响应<b class="invite-counts">{{$selected}}</b>人 &ensp;&ensp;您可以选择哪些响应您的专家开启私董会</span>
             </div>
 
             <table class="invite-table">
@@ -39,8 +39,8 @@
                         <td>{{$data->starttime}}</td>
                     </tr>
                     <tr>
-                        <td>结束时间</td>
-                        <td>{{$data->endtime}}</td>
+                        <td>咨询时长</td>
+                        <td>{{$data->timelong}}分钟</td>
                     </tr>
 
                     <tr>
@@ -52,11 +52,22 @@
                         <td>
                             <ul class="selected-experts">
                                 @foreach($selExperts as $selExpert)
-                                    <li id="{{$selExpert->expertid}}" style="width:80px;float: left;padding-left: 30px"><a href="javascript:;" class="expert-wrapper"><img src="{{env('ImagePath').$selExpert->showimage}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;"><span class="expert-name">{{$selExpert->expertname}}</span></a></li>
+                                    <li id="{{$selExpert->expertid}}" state="{{$selExpert->state}}" fee="{{$selExpert->fee}}" style="width:80px;float: left;padding-left: 30px"><a href="javascript:;" class="expert-wrapper"><img src="{{env('ImagePath').$selExpert->showimage}}" alt="" style="border: 1px solid #ccc;border-radius: 10px;"><span class="expert-name">{{$selExpert->expertname}} </span></a></li>
                                 @endforeach
                             </ul>
                         </td>
                     </tr>
+                    <tr>
+                        <td>专家咨询的费用</td>
+                        <td>
+                            @foreach($selExperts as $selExpert)
+                                <span>{{$selExpert->expertname}} : {{$selExpert->fee}}元/分钟</span> &ensp;&ensp;&ensp;
+                            @endforeach
+
+                        </td>
+                    </tr>
+
+
                 @endforeach
             </table>
         </div>
@@ -103,7 +114,7 @@
     </div>
         </div>
         </div>
-    <script type="text/javascript" src="{{url('/js/jquery.qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/jquery/jquery.qrcode.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
     <script type="text/javascript">
@@ -180,6 +191,8 @@
                 var date = new Date();
                 date.setTime(date.getTime() + (120 * 60 * 1000));
                 $.cookie("selected",expertIds,{expires:date,path:'/',domain:'sw2025.com'});
+                $.cookie("selected",expertIds,{expires:date,path:'/',domain:'swchina.com'});
+                console.log(expertIds);
                 if(expertIds.length!=0){
                     $.ajax({
                         url:"{{asset('handleSelect')}}",

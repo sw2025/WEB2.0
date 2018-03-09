@@ -1,0 +1,106 @@
+body{
+    background: #eeeeee;
+}
+.junior-banner {
+    width: 100%;
+    height: 430px;
+    background: url("../img/swpro.jpg") no-repeat center top;
+    border-bottom: 0.08rem solid #e25633;
+}
+
+.jun-banner-cap {
+    padding: 1.6rem 0 0 0.6rem;
+    color: #fff;
+    font-size: 0.4rem;
+}
+
+.jun-banner-btn {
+    display: block;
+    line-height: 0.4rem;
+    width: 1.6rem;
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    color: #867a6e;
+    border-radius: 5px;
+}
+
+.jun-banner-intro {
+    font-size: 0.3rem;
+}
+
+.sw-review-detail{}
+.sw-result-tit{
+    padding:0 0 0.2rem;
+    line-height: 1;
+    text-align: center;
+    font-size: 0.24rem;
+}
+.sw-result-tit span{
+    color: #e25633;
+}
+.sw-result-content{
+    padding:0.2rem 0.25rem;
+    background: #f2f2f2;
+    border-top: 3px solid #e25633;
+}
+.sw-prodesc-cap{
+    color: #333333;
+}
+.sw-detail-desc{
+    line-height: 30px;
+    color: #898989;
+    text-align: justify;
+}
+.sw-detail-txt{
+    margin-top: 12px;
+}
+.sw-detail-txt textarea{
+    display: block;
+    padding: 10px;
+    text-align: justify;
+    width: 100%;
+    border: 1px solid #666;
+    background: #ffffff;
+    box-sizing: border-box;
+    border-radius: 2px;
+    color: #6a6a6a;
+    border-radius: 5px;
+    min-height: 220px;
+}
+.sw-btn-wrapper {
+    padding: 0.35rem 0;
+    margin-top: 0.15rem;
+    text-align: center;
+}
+
+.sw-btn-submit {
+    display: inline-block;
+    line-height: 0.38rem;
+    background: #e25633;
+    color: #fff;
+    width: 1.42rem;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media (max-width: 767px){
+    .jun-banner-cap {
+        padding: 1.12rem 0 0 0.42rem;
+        font-size: 0.28rem;
+    }
+
+    .jun-banner-btn {
+        line-height: 0.28rem;
+        width: 1.12rem;
+    }
+
+    .jun-banner-intro {
+        font-size: 0.21rem;
+    }
+    .sw-result-content{
+        padding:0.15rem;
+    }
+}

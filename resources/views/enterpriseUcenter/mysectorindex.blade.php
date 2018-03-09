@@ -27,7 +27,7 @@
         <ul class="sw-mains-list">
             @foreach($data as $k => $v)
             <li class="sw-article">
-                <div class="sw-article-tit"><a href="@if($v->configid ==5) {{url('/entmysector/detail',$v->consultid)}} @endif">{{$v->domain1}}</a></div>
+                <div class="sw-article-tit"><a href="@if($v->configid ==5 || $v->configid==6) {{url('/entmysector/detail',$v->consultid)}}@else javascript:; @endif">{{$v->domain1}}</a></div>
                 <div class="sw-article-desc">
                     <p class="sw-article-para">{{$v->brief}}</p>
                 </div>
@@ -35,7 +35,7 @@
                     <span class="sw-article-cap">参会人：</span>
                     @if(!empty($expertinfo))
                         @foreach($expertinfo[$k] as $vv)
-                            <img src="{{env('ImagePath').$vv->showimage}}" @if($vv->state==2) style="border: 3px solid #f00;" @else style="border: 3px solid #ccc;" @endif class="sw-article-img" title="{{$vv->expertname}}@if($vv->state==2)已响应@endif">
+                            <img src="{{env('ImagePath').$vv->showimage}}" @if($vv->state==2) style="border: 3px solid #f00;" title="{{$vv->expertname}}已响应" @elseif($vv->state==3) style="border: 3px solid #36b942;" title="{{$vv->expertname}}已被选择" @elseif($vv->state==4) style="border: 3px solid #e25633;" title="{{$vv->expertname}}已完成" @elseif($vv->state==5) style="border: 3px solid #000;" title="{{$vv->expertname}}已拒绝或失效" @else style="border: 3px solid #ccc;" title="{{$vv->expertname}}" @endif class="sw-article-img"  >
                         @endforeach
                     @endif
                 </div>
