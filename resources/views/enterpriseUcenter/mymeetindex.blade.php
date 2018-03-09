@@ -7,7 +7,6 @@
     <script type="text/javascript" src="{{asset('js/fill.js')}}"></script>
 
 
-
     <!-- banner -->
     <div class="junior-banner">
         <div class="swcontainer">
@@ -24,26 +23,45 @@
         @include('layouts.entucenter')
     <!-- 个人中心主体 -->
     <div class="sw-mains">
-        <ul class="sw-white-style">
+        @foreach($data as $v)
+           <ul class="sw-white-style">
             <li class="sw-white-item">
+                 <span onclick="javascript:window.location.href= '{{url('keepmeet',$v->meetid)}}'" style="cursor:pointer;">
                 <div class="img-wrapper">
-                    <img src="img/person1.jpg" class="sw-expert-img">
-                    <a href="javascript:;" class="sw-connect-btn">联系投资人</a>
+                    <img src="{{env('ImagePath').$v->showimage}}" class="sw-expert-img">
+                        @if($v->configid == 2 || $v->configid == 3|| $v->configid == 5)
+                            @if($v->meettype == 0)
+                                <a href="javascript:;" class="sw-connect-btn">联系专家</a>
+                             @else
+                                <a href="javascript:;" class="sw-connect-btn">{{$expertinfo[$v->expertid]->phone}}</a>
+                            @endif
+                        @endif
                 </div>
+
                 <div class="content-wrapper">
-                    <strong class="sw-meet-name">专家名字</strong>
+                    <strong class="sw-meet-name">{{$v->expertname}}</strong>
+                    <span style="color: red">（{{$v->meettypename}}）</span>
+
                     <div class="sw-meet-label">
                         <a href="javacript:;">天使投资</a>
                         <a href="javacript:;">A轮</a>
                     </div>
+                    <h3>问题描述：</h3>
                     <p class="sw-meet-desc">
-                        十年深厚的管理咨询经验。北京交通大学d管理学博士并在德国科隆CTC中心进行管理深造，曾担某纺织机械公司副总经理，在人力资源管理以及企业管理模式有较为深入的研究，咨询辅导的企业上百家，并为中石油、国家开发投资公司、鲁能集团、保利集团、中国铁路工程总公司。
+                        {{$v->contents}}
+                    </p>
+                    <h3>备注：</h3>
+                    <p class="sw-meet-desc">
+                        {{unserialize($v->basicdata)['oneword']}}
                     </p>
                 </div>
-                <div class="sw-meet-time"><span>约见时间：</span>2018.3.12</div>
-                <span class="sw-meet-state">已约见</span>
+            </span>
+                <div class="sw-meet-time"><span></span>{{$v->puttime}}</div>
+                <span class="sw-meet-state"> <a href="{{url('keepmeet',$v->meetid)}}" style="color:#e25633;">{{$v->configname}}</a></span>
+
             </li>
         </ul>
+    @endforeach
     </div>
 </div>
 @endsection

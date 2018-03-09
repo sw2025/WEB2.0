@@ -17,9 +17,9 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">项目评议</a>
-        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">创业加速包</a>
+        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">xxx</a>
+        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见大V</a>
+        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">xxx</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
@@ -27,17 +27,15 @@
                 只需要几十元，当您提交问题后，可以获得约见投资人多个维度的论证点评与反馈，让您的创业之路不再迷茫。
             </div>
 
-
-
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">选择投资人</div>
+                    <div class="swcol-md-4 sw-pro-label">选择大V</div>
                     <div class="swcol-md-8 sw-pro-rowcon sw-refer">
                         <div class="sw-need-con sw-mine" style="display: block;">
                             @if(!empty($meetData)))
                             <div class="expert-img-wrapper"><img src="{{env('ImagePath').$expertData->showimage}}" alt=""></div>
                             @endif
 
-                            <a href="{{url('selectExpert')}}?type=meet" class="sw-choose-link">选择大V</a>
+                            <a href="javascript:;"  class="sw-choose-link">选择大V</a>
 
                         </div>
                     </div>
@@ -170,8 +168,44 @@
     </div>
 
 </div>
+    <style>
+        .my-skin .layui-layer-btn a{/*border: 1px solid #e25633;color: #e25633;blackground-color:red;*/margin-top:16px;}
+    </style>
 
     <script>
+
+
+        $('.sw-choose-link').on('click',function (){
+            layer.open({
+                title:'<h3 style="color: #e25633">请选择约见领域</h3>',
+                content:'选择精准领域能让你事半功倍，嘻嘻',
+                skin:'my-skin'
+                ,btn: ['找资金','找技术','找市场','找战略']
+                ,btn1: function(index, layero){
+                    window.location.href="{{url('selectExpert')}}?type=daV&supply=找资金";
+                }
+                ,btn2: function(index, layero){
+                    window.location.href="{{url('selectExpert')}}?type=daV&supply=找技术";
+
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+                ,btn3: function(index, layero){
+                    window.location.href="{{url('selectExpert')}}?type=daV&supply=找市场";
+
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+                ,btn4: function(index, layero){
+                    window.location.href="{{url('selectExpert')}}?type=daV&supply=定战略";
+
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+                ,cancel: function(){
+                    //右上角关闭回调
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+        })
+
         var ids = new Array;
         var images = new Array;
         /**
@@ -192,7 +226,6 @@
         });
 
 
-
         /**
          * 提交onclick事件
          */
@@ -208,6 +241,7 @@
             var enterjob = $('.sw-enterjob').val(); //身份
             var entername = $('.sw-entername').val(); //企业名称
             var industry = $('.sw-industry').text(); //企业行业
+            var type = 0; //约见大V
             var meetid = $('#meetid').val();
 
             //支付的方式
@@ -233,7 +267,7 @@
             //var fileObj = document.getElementById("bpurl").files[0]; // js 获取文件对象
             var formFile = new FormData();
             formFile.append("meettype", meettype);
-            formFile.append("type", 1);
+            formFile.append("type",type);
             formFile.append("name", name);
             formFile.append("linefee", linefee);
             formFile.append("timelot", timelot);
