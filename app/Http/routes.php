@@ -62,6 +62,11 @@ Route::get('lineShowIndex','ShowController@lineShowIndex');
 Route::post('submitLineShow','ShowController@submitLineShow');
 //线下路演
 Route::get('keeplineshow/{lineshowid}','ShowController@keeplineshow');
+//获取accid和token
+Route::post('getAccid','PublicController@getAccid');
+//获取群ID
+Route::post('getTeamId','PublicController@getTeamId');
+
 
 /**************个人中心  我是企业 **************/
 //首页
@@ -86,8 +91,36 @@ Route::post('consultCharge', 'MyEnterpriseController@consultCharge');
 Route::get('uct_video/videoSelect', 'MyEnterpriseController@videoSelect');
 //视频咨询
 Route::get('entmysector/detail/{consultId}', 'EnterpriseUcenter@sectorDetail');
+//视频咨询处理响应的专家
+Route::post('handleSelect', 'MyEnterpriseController@handleSelect');
+//判断正在咨询的时间
+Route::post('compareConsultTime', 'MyEnterpriseController@compareConsultTime');
+//咨询结束
+Route::post('finishConsult', 'MyEnterpriseController@finishConsult');
 /**************个人中心  我是专家 **************/
-//专家个人中心认证首页
+//个人中心认证首页
 Route::get('expindex/index','ExpertUcenter@Index');
-//专家提交认证方法
+//提交认证方法
 Route::post('submitExpertVerify','ExpertUcenter@submitExpertVerify');
+//我的评议列表页
+Route::get('expmyshow/myShowList','ExpertUcenter@myShowList');
+//我的约见列表页
+Route::get('expmymeet/myMeetList','ExpertUcenter@myMeetList');
+//我的私董会列表页
+Route::get('expmysector/mySectorList','ExpertUcenter@mySectorList');
+//我的钱包
+Route::get('expmycharge/myCharge','ExpertUcenter@myCharge');
+//我的评议详情页
+Route::get('expmyshow/showdetail/{showid}','ExpertUcenter@showDetail');
+//发表评议
+Route::post('dealpostshow', 'ExpertUcenter@dealPostShow');
+//我的约见详情页
+Route::get('expmymeet/myMeetdetail/{meetid}','ExpertUcenter@myMeetDetail');
+//我的约见详情页
+Route::get('expmysector/intoSector/{consultid}','ExpertUcenter@intoSector');
+//响应咨询
+Route::post('uct_myask/responseconsult', 'ExpertUcenter@responseConsult');
+//处理约见
+Route::post('dealmeet', 'ExpertUcenter@dealMeet');
+
+

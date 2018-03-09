@@ -1,10 +1,10 @@
 $(function () {
     // tab栏切换
-    $('.sw-pro-tab a').click(function () {
+   /* $('.sw-pro-tab a').click(function () {
         var num = $(this).index();
         $('.sw-pro-tabcon').eq(num).show().siblings().hide();
         $(this).addClass('active').siblings().removeClass('active');
-    })
+    })*/
     // 领域、类型、角色下拉
     $('.sw-select-default').on('click', function (e) {
         e.stopPropagation();

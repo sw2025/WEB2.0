@@ -2,6 +2,10 @@
  * 主要业务逻辑相关
  */
 $userId=$.cookie("userId");
+if($userId==undefined){
+    $userId=userid2;
+}
+
 $.ajax({
     url:"/getAccid",
     data:{"userId":$userId},
@@ -19,15 +23,18 @@ $.ajax({
             //setCookie('sdktoken',res['imtoken']);
             $.cookie("sdktoken",res['imtoken'].toLocaleLowerCase(),{expires:date,path:'/',domain:'sw2025.com'});*/
             $.cookie("uid",res['accid'],{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("uid",res['accid'],{expires:date,path:'/',domain:'swchina.com'});
             //自己的appkey就不用加密了
             // setCookie('sdktoken',pwd);
             //setCookie('sdktoken',res['imtoken']);
             $.cookie("sdktoken",res['imtoken'],{expires:date,path:'/',domain:'sw2025.com'});
+            $.cookie("sdktoken",res['imtoken'],{expires:date,path:'/',domain:'swchina.com'});
         }else{
             window.location.href="/login";
         }
     }
 })
+
 var userUID = readCookie("uid")
 /**
  * 实例化

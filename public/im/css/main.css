@@ -511,9 +511,9 @@ html, body {
 .dialog-team-container {
     position: fixed;
     width: 680px;
-    height: 580px;
-    top: 50%;
-    left:50%;
+    height: 520px;
+    top: 60%;
+    left:54%;
     margin-top: -290px;
     margin-left: -340px;
     background-color: #fff;
@@ -1611,7 +1611,7 @@ width: 40px;
     bottom: 0;
     background-color: #fff;
     width: 100%;
-    padding: 22px 0;
+    padding: 10px 0;
     border-top: 1px solid #ddd;
 }
 .info-footer {
@@ -1762,7 +1762,7 @@ width: 40px;
 }
 
 .team-box .item .desc{
-    font-size: 16px;
+    font-size: 15px;
     color: #aaa;
     padding-left: 32px;
 }

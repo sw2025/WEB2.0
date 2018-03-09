@@ -56,7 +56,7 @@ class PingpayController extends Controller
         }else{
             if($payload['type']=="consult"){
                 $amounts = $payload['amount'];
-                $amount=$amounts/100;
+                $amount=$amounts;
             }else if($payload['type']=="onlineshow" || $payload['type']=="show"  ){
                 $amount = $payload['amount'];
                 $user = $payload['userid'];
@@ -79,7 +79,8 @@ class PingpayController extends Controller
         }
      
         $url =$payload['urlType'];
-        $amountMoney=$amount*100;
+        /*$amountMoney=$amount*100;*/
+        $amountMoney=$amount;
         $subject = isset($payload['subject']) ? $payload['subject']:'充值金额';
 
         /**

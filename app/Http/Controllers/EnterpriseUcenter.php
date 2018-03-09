@@ -202,6 +202,7 @@ class EnterpriseUcenter extends Controller
             }else{
                 $data->state="系统分配";
             }
+            $data->timelong = (strtotime($data->endtime)-strtotime($data->starttime))/60;
             $data->starttime=date("Y年m月d日 H:i:s",strtotime($data->starttime));
             $data->endtime=date("Y年m月d日 H:i:s",strtotime($data->endtime));
         }
