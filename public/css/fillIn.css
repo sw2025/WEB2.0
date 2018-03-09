@@ -1,6 +1,7 @@
-body{
+body {
     background: #eeeeee;
 }
+
 .junior-banner {
     width: 100%;
     height: 430px;
@@ -29,18 +30,18 @@ body{
     font-size: 0.3rem;
 }
 
-
-
-.sw-fillin{
-    padding:0.55rem 0;
+.sw-fillin {
+    padding: 0.55rem 0;
     width: 70%;
-    margin:0 auto;
+    margin: 0 auto;
 }
-.sw-fill-row{
+
+.sw-fill-row {
     padding-bottom: 14px;
     font-size: 0;
 }
-.sw-fill-left{
+
+.sw-fill-left {
     display: inline-block;
     vertical-align: top;
     line-height: 40px;
@@ -49,10 +50,11 @@ body{
     width: 20%;
     font-weight: 600;
 }
-.sw-fill-inp{
+
+.sw-fill-inp {
     display: inline-block;
     vertical-align: top;
-    padding:0 8px;
+    padding: 0 8px;
     line-height: 40px;
     height: 40px;
     border: 1px solid #dedede;
@@ -61,16 +63,31 @@ body{
     border-radius: 5px;
     font-size: 14px;
 }
-.sw-fill-select{
+
+.sw-fill-textarea {
+    display: inline-block;
+    vertical-align: top;
+    padding: 8px 8px;
+    line-height: 16px;
+    height: 90px;
+    border: 1px solid #dedede;
+    box-sizing: border-box;
+    width: 80%;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.sw-fill-select {
     position: relative;
     display: inline-block;
     vertical-align: top;
     width: 80%;
 }
-.sw-fill-opt{
+
+.sw-fill-opt {
     position: relative;
     display: block;
-    padding:0 8px;
+    padding: 0 8px;
     line-height: 40px;
     height: 40px;
     border: 1px solid #dedede;
@@ -80,20 +97,22 @@ body{
     color: #696f77;
     overflow: hidden;
 }
-.sw-fill-opt:before{
+
+.sw-fill-opt:before {
     position: absolute;
     top: 0;
     right: 0;
     width: 42px;
     height: 40px;
-    font-family:"iconfont";
+    font-family: "iconfont";
     content: "\e60c";
     background: #dfdfdf;
     color: #868686;
     text-align: center;
     font-size: 36px;
 }
-.sw-fill-list{
+
+.sw-fill-list {
     position: absolute;
     top: 40px;
     left: 0;
@@ -105,21 +124,25 @@ body{
     display: none;
     z-index: 2;
 }
-.sw-fill-list li{
+
+.sw-fill-list li {
     line-height: 26px;
-    padding:0 10px;
+    padding: 0 10px;
     border-bottom: 1px dotted #eee;
     color: #6a6a6a;
     cursor: pointer;
 }
-.sw-fill-list li:hover{
+
+.sw-fill-list li:hover {
     background: #eeeeee;
 }
-.sw-btn-wrapper{
+
+.sw-btn-wrapper {
     padding: 0.35rem 0;
     margin-top: 0.15rem;
     text-align: center;
 }
+
 .sw-btn-submit {
     display: inline-block;
     line-height: 0.38rem;
@@ -132,13 +155,70 @@ body{
     cursor: pointer;
 }
 
-@media (max-width: 767px){
-    html{
+/*专家*/
+.sw-row-avatar{
+    padding:0.3rem 0 0;
+}
+.sw-fill-right{
+    display: inline-block;
+    vertical-align: top;
+}
+.sw-upload-ava {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 0.28rem;
+    width: 144px;
+    height: 144px;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.sw-upload-ava img {
+    width: 144px;
+    height: 144px;
+}
+
+.sw-upload-wrapper {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    width: 100px;
+    height: 0.38rem;
+    line-height:0.38rem;
+    border: 1px solid #e25633;
+    border-radius: 4px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.sw-upload-btn{
+    font-size: 14px;
+    color: #e25633;
+}
+.hide-upbtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+    font-size: 200px !important;
+    direction: ltr;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+}
+
+@media (max-width: 767px) {
+    html {
         font-size: 70px;
     }
-    .sw-fillin{
+
+    .sw-fillin {
         width: 90%;
     }
+
     /*.jun-banner-cap {
         padding: 1.12rem 0 0 0.42rem;
         font-size: 0.28rem;
@@ -153,12 +233,14 @@ body{
         font-size: 0.21rem;
     }*/
 }
+
 @media (max-width: 500px) {
-    .sw-fill-select,.sw-fill-inp{
+    .sw-fill-select, .sw-fill-inp {
         display: block;
         width: 100%;
     }
-    .sw-fill-left{
+
+    .sw-fill-left {
         display: block;
         width: 100%;
     }

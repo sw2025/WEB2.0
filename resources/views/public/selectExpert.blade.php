@@ -220,7 +220,7 @@
                 $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
                 $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'swchina.com'});
             }else{
-                layer.alert('您已经指定5位大V', {
+                layer.alert('您已经指定'+allownumbers+'位大V', {
                     btn: ['确定'], //按钮
                     'title':'升维网提示'
                 });

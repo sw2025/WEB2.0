@@ -15,10 +15,10 @@
                     <a href="{{url('entmyshow/myshowindex')}}">项目评议</a>
                 </li>
                 <li id="entmymeet">
-                    <a href="#">约见投资人</a>
+                    <a href="{{url('entmymeet/mymeetindex')}}">约见投资人</a>
                 </li>
                 <li id="entmylineshow">
-                    <a href="#">线下路演</a>
+                    <a href="{{url('entmylineshow/mylineshowindex')}}">线下路演</a>
                 </li>
             </ul>
         </li>
@@ -26,10 +26,10 @@
             <a href="javascript:;" class="sw-item-title">我的成长加速</a>
             <ul class="sw-aside-sublist">
                 <li id="entmydav">
-                    <a href="#">约见大咖</a>
+                    <a href="{{url('entmydav/mydavindex')}}">约见大咖</a>
                 </li>
-                <li id="entmyvideo">
-                    <a href="#">线上私董会</a>
+                <li id="entmysector">
+                    <a href="{{url('entmysector/mysectorindex')}}">线上私董会</a>
                 </li>
             </ul>
         </li>

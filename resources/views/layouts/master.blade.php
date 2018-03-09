@@ -40,7 +40,7 @@
                 <a href="#" class="sw-info sw-read"><i class="iconfont icon-email"></i><span class="info-exist"></span></a>
                 <a href="javascript:;" class="sw-logined"><img src="{{asset('img/avatar.jpg')}}"><span>{{session('phone')}}</span></a>
                 <div class="sw-entry">
-                    <a href="#">专家入口</a>
+                    <a href="{{url('expindex/index')}}">专家入口</a>
                     <a href="{{url('entindex/index')}}">企业入口</a>
                     <a href="#" class="quit">退出</a>
                 </div>

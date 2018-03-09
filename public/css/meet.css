@@ -1,0 +1,142 @@
+body{
+    background: #eeeeee;
+}
+.junior-banner {
+    width: 100%;
+    height: 430px;
+    background: url("../img/swpro.jpg") no-repeat center top;
+    border-bottom: 0.08rem solid #e25633;
+}
+
+.jun-banner-cap {
+    padding: 1.6rem 0 0 0.6rem;
+    color: #fff;
+    font-size: 0.4rem;
+}
+
+.jun-banner-btn {
+    display: block;
+    line-height: 0.4rem;
+    width: 1.6rem;
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    color: #867a6e;
+    border-radius: 5px;
+}
+
+.jun-banner-intro {
+    font-size: 0.3rem;
+}
+
+.sw-white-style{
+
+}
+.sw-white-item{
+    position: relative;
+    padding: 8px 0.16rem 40px 8px;
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    box-shadow: 0 0 3px #eee;
+}
+.sw-white-item .img-wrapper{
+    position: absolute;
+    top: 8px;
+    left: 8px;
+}
+.sw-white-item .content-wrapper{
+    margin:0 0 0 136px;
+    color: #666666;
+    padding:0 0 0 0.2rem;
+}
+.sw-expert-img{
+    margin-bottom: 0.2rem;
+    width: 134px;
+    height: 134px;
+}
+.sw-connect-btn{
+    display: inline-block;
+    line-height: 24px;
+    width: 134px;
+    text-align: center;
+    border-radius:5px;
+    background:#e25633;
+    color: #ffffff;
+    font-size: 14px;
+}
+.sw-meet-name{
+    font-size: 18px;
+    font-weight: normal;
+}
+.sw-meet-label{
+    font-size: 0;
+}
+.sw-meet-label a{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 22px;
+    padding:0 0.15rem;
+    margin:0.1rem 0.14rem 0.08rem 0;
+    font-size: 14px;
+    color: #e25633;
+    border: 1px solid #e25633;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-weight: 600;
+}
+.sw-meet-desc{
+    line-height: 28px;
+    text-align: justify;
+}
+
+.sw-meet-time{
+    position: absolute;
+    top: 12px;
+    right: 0.16rem;
+    line-height: 1;
+    color: #909090;
+}
+.sw-meet-time span{
+    color: #6a6a6a;
+    font-weight: 600;
+}
+.sw-meet-state{
+    position: absolute;
+    bottom: 18px;
+    right: 0.16rem;
+    line-height: 1;
+    color: #999999;
+    font-weight: 600;
+}
+
+
+
+@media (max-width: 767px){
+    .jun-banner-cap {
+        padding: 1.12rem 0 0 0.42rem;
+        font-size: 0.28rem;
+    }
+
+    .jun-banner-btn {
+        line-height: 0.28rem;
+        width: 1.12rem;
+    }
+
+    .jun-banner-intro {
+        font-size: 0.21rem;
+    }
+}
+
+@media (max-width: 540px) {
+    .sw-white-item .img-wrapper{
+        position: static;
+    }
+    .sw-white-item .content-wrapper{
+        margin: 0;
+        padding: 0.1rem 0 0;
+    }
+    .sw-meet-time span{
+        display: block;
+        line-height: 2;
+    }
+}

@@ -50,7 +50,7 @@ class PingpayController extends Controller
                     $expertIDS[]=$values[0];
                 }
             }
-            $amount=$amounts/100;
+            $amount=$amounts;
             $orderNo = 'CZ' . time() . mt_rand(1000,9999);
             $metadata=['payType'=>'payExpertMoney','type'=>$payload['type'],'userid'=>$user['userid'],"expert"=>$expertIDS,"consultid"=>$payload['consultid'],"chargeFrom"=>$payload['chargeFrom']];
         }else{
