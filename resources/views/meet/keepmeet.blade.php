@@ -29,11 +29,19 @@
             <div class="sw-pro-form">
 
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">DA V头像</div>
+                    <div class="swcol-md-4 sw-pro-label">大V头像</div>
                     <div class="swcol-md-8 sw-pro-rowcon sw-refer">
                         <div class="sw-need-con sw-mine" style="display: block;">
                             <div class="expert-img-wrapper"><img src="{{env('ImagePath').$expertData->showimage}}" alt=""></div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>约见模式</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <a href="javascript:;" class="sw-select-default sw-pattern">@if($meetData->meettype=='1')线上约见@else线下约见@endif</a>
+                        <span class="sw-error"></span>
                     </div>
                 </div>
 
@@ -46,8 +54,6 @@
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>资费</div>
                     <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" value="{{$meetData->price}}"></div>
                 </div>
-
-
 
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>约见时长</div>
@@ -89,14 +95,18 @@
                 </div>
 
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">付款方式</div>
+                    <div class="swcol-md-4 sw-pro-label">支付方式</div>
                     <div class="swcol-md-8 sw-pro-rowcon sw-need-con">
-                        <div class="sw-radio-wrapper @if(!empty($basedata['paytype'])) swon @endif">
-                            <input type="radio" id="payWX" name="pay">
+                        <div class="sw-radio-wrapper @if(empty($basedata) ||  $basedata['paytype'] == '微信支付') swon @endif">
+                            <input type="radio"  id="payWX" name="pay" readonly="true">
                             <label for="payWX" class="radio-label">
-                                <span></span><i class="iconfont icon-weixin"></i><em>
-                                    @if($basedata['paytype'] == '微信支付')微信支付@elseif($basedata['paytype'] == '支付宝支付')支付宝支付@endif （已付款）
-                                </em>
+                                <span></span><i class="iconfont icon-weixin"></i><em>微信支付</em>
+                            </label>
+                        </div>
+                        <div class="sw-radio-wrapper @if(!empty($basedata) && $basedata['paytype'] == '支付宝支付') swon @endif">
+                            <input type="radio" id="payZFB"  name="pay" >
+                            <label for="payZFB" class="radio-label">
+                                <span></span><i class="iconfont icon-zhifubao"></i><em>支付宝支付</em>
                             </label>
                         </div>
                     </div>
@@ -107,7 +117,7 @@
                 <input type="hidden" value="" id="expertid">
                 <div class="sw-btn-wrapper">
                     <button class="sw-btn-submit" type="button" onclick=window.location="{{url("/meetIndex/$meetid")}}" >修改内容资料</button>
-                    <button class="sw-btn-submit" type="button" id="submit">等待专家确认</button>
+                    <button class="sw-btn-submit" type="button" id="submit">去支付</button>
                 </div>
             </div>
         </div>
@@ -116,13 +126,6 @@
     </div>
 
 </div>
-
-    <script>
-        var a = $basedata['paytype'];
-        alert(a);
-
-    </script>
-
 
 @endsection
 

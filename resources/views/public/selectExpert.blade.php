@@ -139,7 +139,7 @@
                         {{$v->brief}}
                     </div>
                 </a>
-                <span class="checkbox-wrapper nocheck xuanzhong" linefee="{{$v->linefee}}" name="{{$v->expertname}}" id="{{$v->expertid}}" index="{{$v->showimage}}"></span>
+                <span class="checkbox-wrapper nocheck xuanzhong" linefee="{{$v->linefee}}"fee="{{$v->fee}}" name="{{$v->expertname}}" id="{{$v->expertid}}" index="{{$v->showimage}}"></span>
             </li>
             @endforeach
         </ul>
@@ -190,13 +190,14 @@
     $('.xuanzhong').click(function(event) {
         var name=$(this).attr("name");
         var linefee=$(this).attr("linefee");
+        var fee=$(this).attr("fee");
         var key=$(this).attr("id");
         var img=$(this).attr("index");
         var type = "{{$type}}";
         if( type == 'show'){
             var value=key+'@'+img;
         }else{
-            var value=key+'@'+img+'@'+name+'@'+linefee;
+            var value=key+'@'+img+'@'+name+'@'+linefee+'@'+fee;
         }
         var reselect;
         var date = new Date();

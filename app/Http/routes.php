@@ -53,6 +53,10 @@ Route::post('payJudge','ShowController@payJudge');
 Route::post("charge",'PingpayController@charge');
 //线下路演发布页
 Route::get('lineShowIndex','ShowController@lineShowIndex');
+//线下路演发布页
+Route::post('submitLineShow','ShowController@submitLineShow');
+//线下路演
+Route::get('keeplineshow/{lineshowid}','ShowController@keeplineshow');
 
 /**************个人中心  我是企业 **************/
 //企业个人中心首页

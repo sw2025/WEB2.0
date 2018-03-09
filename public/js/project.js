@@ -19,6 +19,16 @@ $(function () {
         var aHtml = $(this).html();
         $(this).parent().hide();
         $(this).parent().prev().html(aHtml);
+        if(aHtml=='线上约见'){
+            fee = $('#linefee').attr("fee");
+            $('#linefee').val(fee);
+
+        }else if(aHtml=='线下约见'){
+            linefee=$('#linefee').attr("linefee");
+           $('#linefee').val(linefee);
+
+        }
+
     })
     // 大V、支付方式radio选择
     $('.sw-radio-wrapper').click(function () {
