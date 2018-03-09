@@ -327,9 +327,12 @@ class ShowController extends Controller
      * 线下路演
      */
     public function lineShowIndex()
-    {        $cate = DB::table('t_common_domaintype')->where('level',1)->get();
-
-        return view('show.lineshowindex',compact('cate'));
+    {
+        if(!empty(session('userId'))){
+            $entinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->select('enterprisename','job','industry')->first();
+        }
+        $cate = DB::table('t_common_domaintype')->where('level',1)->get();
+        return view('show.lineshowindex',compact('cate','entinfo'));
     }
 
     /**
@@ -380,7 +383,7 @@ class ShowController extends Controller
             }
 
             $lineshowid = DB::table('t_s_lineshow')->insertGetId([
-                    "userid" => 1,
+                    "userid" => $userid,
                     "title" =>$data['projectname'],
                     "describe" =>$data['projecttxt'],
                     "remarks" =>$data['remarks'],
@@ -406,11 +409,13 @@ class ShowController extends Controller
      */
     public function keeplineshow($lineshowid)
     {
+
         $lineShowData = DB::table('t_s_lineshow')
             ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_lineshow.userid')
             ->where('lineshowid',$lineshowid)
             ->select('t_s_lineshow.*','t_u_enterprise.enterprisename','t_u_enterprise.job','t_u_enterprise.industry')
             ->first();
+
         return view('show.keeplineshow',compact('lineShowData'));
     }
 

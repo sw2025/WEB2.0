@@ -255,6 +255,8 @@
             window.location.href="{{url('showIndex')}}";
         } else if("{{$type}}"=="meet"){
             window.location.href="{{url('meetIndex')}}";
+        } else if("{{$type}}"=="daV"){
+            window.location.href="{{url('daVIndex')}}";
         }
     })
     $("#return").on("click",function(){
@@ -264,6 +266,8 @@
             window.location.href="{{url('showIndex')}}";
         } else if("{{$type}}"=="meet"){
             window.location.href="{{url('meetIndex')}}";
+        } else if("{{$type}}"=="daV"){
+            window.location.href="{{url('daVIndex')}}";
         }
 
     })
