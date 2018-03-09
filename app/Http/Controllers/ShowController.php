@@ -211,7 +211,7 @@ class ShowController extends Controller
             ->where('status.configid',2)
             ->where("ext.userid","<>",$userid)
             ->where("ext.iscomment",1)
-            ->select('ext.*','fee.linefee');
+            ->select('ext.*','fee.linefee','fee.fee');
         $type = '';
         //获得用户的收藏
         //判断是否为http请求
@@ -321,6 +321,97 @@ class ShowController extends Controller
                     'amount' => $amount
                 ];*/
         }
+    }
+
+    /**
+     * 线下路演
+     */
+    public function lineShowIndex()
+    {        $cate = DB::table('t_common_domaintype')->where('level',1)->get();
+
+        return view('show.lineshowindex',compact('cate'));
+    }
+
+    /**
+     * 线下路演提交按钮
+     */
+    public function submitLineShow(Request $request)
+    {
+        $data = $request->input();
+        $file = $request->file('file');
+        $userid = empty(session('userId')) ? '':session('userId');
+        $lineshowid = $data['lineshowid'];
+        if($data['upload'] != 1){
+        if ($file->isValid()) {
+
+            // 获取文件相关信息
+        $originalName = $file->getClientOriginalName(); // 文件原名
+        $ext = $file->getClientOriginalExtension();     // 扩展名
+        $realPath = $file->getRealPath();   //临时文件的绝对路径
+        $type = $file->getClientMimeType();     // image/jpeg
+
+            // 上传文件
+        $filename = date('YmdHis'). uniqid() . '.' . $ext;
+            // 使用我们新建的uploads本地存储空间（目录）
+        $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
+        } else {
+            return ['msg' => '上传失败~','icon' => 2,'code' => 3];
+        }
+        }
+        DB::beginTransaction();
+        try {
+
+            //判断用户是否登录 改变/插入企业表数据
+            if($userid){
+                $enterprise = DB::table('t_u_enterprise')->where('userid',$userid)->first();
+                if(!empty($enterprise)){
+                    DB::table('t_u_enterprise')->where('userid',$userid)->update([
+                        'enterprisename' => $data['entername'],
+                        'job' => $data['enterjob'],
+                        'industry' => $data['industry']
+                    ]);
+                } else {
+                    DB::table('t_u_enterprise')->where('userid',$userid)->insert([
+                        'enterprisename' => $data['entername'],
+                        'job' => $data['enterjob'],
+                        'industry' => $data['industry']
+                    ]);
+                }
+            }
+
+            $lineshowid = DB::table('t_s_lineshow')->insertGetId([
+                    "userid" => 1,
+                    "title" =>$data['projectname'],
+                    "describe" =>$data['projecttxt'],
+                    "remarks" =>$data['remarks'],
+                    'bpurl' => $filename,
+                    'bpname' => $originalName,
+                    "puttime" =>date('Y-m-d H:i:s',time()),
+                    "created_at" =>date('Y-m-d H:i:s',time()),
+                    "updated_at" =>date('Y-m-d H:i:s',time())
+            ]);
+
+            DB::commit();
+            $msg = ['msg' => '提交成功', 'icon' => 1, 'code' => 4, 'url' => url('keeplineshow', $lineshowid)];
+        }catch(Exception $e){
+                //异常处理
+                $msg = ['msg' => '提交失败','icon' => 2,'code' => 6];
+                throw $e;
+            }
+        return $msg;
+    }
+
+    /**
+     *
+     */
+    public function keeplineshow($lineshowid)
+    {
+        $lineShowData = DB::table('t_s_lineshow')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_lineshow.userid')
+            ->where('lineshowid',$lineshowid)
+            ->select('t_s_lineshow.*','t_u_enterprise.enterprisename','t_u_enterprise.job','t_u_enterprise.industry')
+            ->first();
+        return view('show.keeplineshow',compact('lineShowData'));
     }
 
 }
