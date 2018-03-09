@@ -80,7 +80,7 @@
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-industry">{{$lineShowData->industry or ''}} </a>
+                        <a href="javascript:;" class="sw-select-default sw-industry">{{$lineShowData->industry or '选择行业'}} </a>
                         <span class="sw-error"></span>
                     </div>
                 </div>
@@ -88,9 +88,13 @@
 
                 <div class="sw-btn-wrapper">
                     @if(!empty($lineShowData))
-                        <input type="hidden" value="" id="lineshowid">
-                        <button class="sw-btn-submit" type="button" id="" style="margin-right: 10%;" onclick=window.location="{{url('/showIndex/')}}">取消线下路演项目提交</button>
-                        <button class="sw-btn-submit" type="button" id="submit">等待</button>
+                        @if($lineShowData->state==1)
+                            <input type="hidden" value="" id="lineshowid">
+                            <button class="sw-btn-submit" type="button" id="" style="margin-right: 10%;" onclick=window.location="{{url('/showIndex/')}}">取消线下路演项目提交</button>
+                            <button class="sw-btn-submit" type="button" id="submit">等待</button>
+                        @else
+                            <button class="sw-btn-submit" type="button" id="submit">已取消</button>
+                        @endif
                     @else
                         <input type="hidden" value="" id="lineshowid">
                         <button class="sw-btn-submit" type="button" id="submit">申请项目评议</button>
@@ -102,100 +106,10 @@
         <div class="sw-pro-tabcon">222</div>
         <div class="sw-pro-tabcon">333</div>
     </div>
-
 </div>
-
     <script>
-        var ids = new Array;
-        var images = new Array;
-        /**
-         * 上传文件onchang事件
-         */
-        $('.sw-upload-btn').on('change',function (e) {
-            var path =  $('.sw-upload-btn').val();
-            var test1 = path.lastIndexOf("/");  //对路径进行截取
-            var test2 = path.lastIndexOf("\\");  //对路径进行截取
-            var test= Math.max(test1, test2)
-            if(test<0){
-                var value2 = path;
-            }else{
-                var value2 = path.substring(test + 1); //赋值文件名
-            }
-            $(this).attr('index',path);
-            $('.sw-upload-cap').text(value2);
-        });
 
-        /**
-         * 提交onclick事件
-         */
-        $('#submit').on('click',function () {
-            var projectname = $('.project-name').val();  //项目名称
-            var projecttxt = $('.sw-project-txt').val();  //项目概述
-            var remarks = $('.sw-remarks').val();
-            var entername = $('.sw-entername').val(); //企业名称
-            var enterjob = $('.sw-enterjob').val(); //身份
-            var industry = $('.sw-industry').text(); //企业行业
-
-            var upload= $('.sw-upload-btn').attr('index');    //上传文件
-            var lineshowid = $('#lineshowid').val();
-
-            if(projectname == '' ||  projecttxt == '' || entername == '' || enterjob == '' || upload == ''){
-                layer.alert('请填写完整信息');
-                return false;
-            }
-
-            if(industry == '选择行业'){
-                layer.alert('请填写行业信息');
-                return false;
-            }
-
-            var fileObj = document.getElementById("bpurl").files[0]; // js 获取文件对象
-            var formFile = new FormData();
-            formFile.append("projectname", projectname);
-            formFile.append("projecttxt", projecttxt);
-            formFile.append("remarks", remarks);
-            formFile.append("entername", entername);
-            formFile.append("enterjob", enterjob);
-            formFile.append("industry", industry);
-
-            formFile.append("file", fileObj); //加入文件对象
-
-            formFile.append("lineshowid", lineshowid); //加入文件对象
-            formFile.append("upload", upload); //加入文件对象
-            if($.trim(upload)!='1'){
-                if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-                    layer.alert('请选择正确的文件');
-                    return false;
-                }
-            }
-
-
-            $(this).attr('disabled',true);
-            $(this).text('正在提交');
-            $.ajax({
-                url: "{{url('submitLineShow')}}",
-                data: formFile,
-                type: "Post",
-                dataType: "json",
-                cache: false,//上传文件无需缓存
-                processData: false,//用于对data参数进行序列化处理 这里必须false
-                contentType: false, //必须
-                success: function (data) {
-                    if(data.icon==1){
-                        layer.msg(data.msg,{'icon':data.icon,'time':2000},function () {
-                            window.location = data.url;
-                        });
-                    } else {
-                        layer.msg(data.msg,{'icon':data.icon,'time':2000},function () {
-                            window.location = window.location.href;
-                        });
-                    }
-                },
-            });
-        });
 
     </script>
-
-
 @endsection
 

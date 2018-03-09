@@ -1,6 +1,6 @@
 @extends("layouts.master")
 @section("content")
-
+    <link type="text/css" rel="stylesheet" href="{{asset('css/meet.css')}}">
     <link type="text/css" rel="stylesheet" href="{{asset('css/ucenterProView.css')}}">
     <link type="text/css" rel="stylesheet" href="{{asset('css/fillIn.css')}}">
     <script type="text/javascript" src="{{asset('js/fill.js')}}"></script>
@@ -22,21 +22,28 @@
         <!-- 个人中心左侧 -->
         @include('layouts.entucenter')
     <!-- 个人中心主体 -->
-    <div class="sw-mains">
-        <ul class="sw-mains-list">
-            <li class="sw-article">
-                <div class="sw-article-tit"><a href="javascript:;">XX路演</a></div>
-                <div class="sw-article-desc">
-                    <p class="sw-article-para">[ 妙传 ]是服务于中小企业、社区周边商户及个人卖家的新型广告信息发布平台。旨在通过改变宣传的
-                        传统途径，提升、改善信息传播的效果和效率。[ 妙传 ]是服务于中小企业、社区周边商户及个人卖家
-                        的新型广告信息发布平台。旨在通过改变宣传的</p>
-                </div>
-                <div class="zhan-wei"></div>
-                <span class="sw-article-time"><b class="sw-time-explain">提交时间：</b>2018-03-12</span>
-                <span class="sw-article-state">已提交</span>
-            </li>
-        </ul>
-    </div>
+            <div class="sw-mains">
+                @foreach($data as $v)
+                <ul class="sw-mains-list">
+                    <li class="sw-article">
+                        <div class="sw-article-tit"><a href="{{url('keeplineshow',$v->lineshowid)}}">{{$v->title}}</a></div>
+                        <div class="sw-article-desc">
+                            <p class="sw-article-para">{{$v->describe}}</p>
+                            <p class="sw-article-para">{{$v->remarks}}</p>
+                            <a href="javascript:;" class="sw-connect-btn">项目资料</a>
+                        </div>
+                        <div class="zhan-wei"></div>
+                        <span class="sw-article-time"><b class="sw-time-explain">提交时间：</b>{{$v->puttime}}</span>
+                        @if($v->state==1)
+                            <span class="sw-article-state">已提交</span>
+                        @else
+                            <span class="sw-article-state">已删除</span>
+                        @endif
+
+                    </li>
+                </ul>
+                @endforeach
+            </div>
 </div>
 <!-- 底部 -->
 @endsection

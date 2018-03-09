@@ -27,6 +27,8 @@ class MeetController extends Controller
     public function Index($meetid=0)
     {
 
+        $daVIndex = empty($_SERVER['REQUEST_URI']) ? '' : substr($_SERVER['REQUEST_URI'],1,8);
+
         if(!empty($meetid)) {
             $url = empty($_SERVER['HTTP_REFERER']) ? '':$_SERVER['HTTP_REFERER'];
             if(!empty($url)){
@@ -38,9 +40,15 @@ class MeetController extends Controller
         if(!empty(session('userId'))){
             $entinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->select('enterprisename','job','industry')->first();
         }
-
         $cate = DB::table('t_common_domaintype')->where('level',1)->get();
-        return view('meet.index',compact('meetData','expertData','basedata','meetid','cate','entinfo'));
+
+        if($daVIndex!='daVIndex'){
+
+            return view('meet.index',compact('meetData','expertData','basedata','meetid','cate','entinfo'));
+
+        }else{
+            return view('meet.davindex',compact('meetData','expertData','basedata','meetid','cate','entinfo'));
+        }
     }
 
     /**
@@ -49,14 +57,17 @@ class MeetController extends Controller
      **/
     public function keepmeet($meetid)
     {
+        $daVIndex = empty($_SERVER['REQUEST_URI']) ? '' : substr($_SERVER['REQUEST_URI'],1,7);
         $meetData = DB::table('t_m_meet')->where('meetid',$meetid)->first();
-
         $basedata = unserialize($meetData->basicdata);
 
         $expertData = DB::table('t_u_expert')->where('expertid',$meetData->expertid)->select('showimage','expertname')->first();
 
-
-        return view('meet.keepmeet',compact('meetData','expertData','basedata','meetid'));
+        if($daVIndex=='keepdav'){
+            return view('meet.keepdav',compact('meetData','expertData','basedata','meetid'));
+        }else{
+            return view('meet.keepmeet',compact('meetData','expertData','basedata','meetid'));
+        }
     }
 
 
@@ -103,7 +114,7 @@ class MeetController extends Controller
                     "timelot"=>$data['timelot'],
                     "expertid"=> $data['expertid'],
                     "timelot"=> $data['timelot'],
-                    "price"=> $data['linefee'],
+                    "price"=> $data['linefee']*$data['timelot'],
                     "contents"=> $data['projecttxt'],
                     "meettype"=> $data['meettype'],
                     'basicdata'=> serialize($basedata),
@@ -113,13 +124,13 @@ class MeetController extends Controller
             }else{
 
             $meetid = DB::table('t_m_meet')->insertGetId([
-                "userid"=> 1,
+                "userid"=> $userid,
                 "timelot"=>$data['timelot'],
                 "expertid"=> $data['expertid'],
                 "contents"=> $data['projecttxt'],
                 "meettype"=> $data['meettype'],
-                "type"=> 1,
-                "price"=> $data['linefee'],
+                "type"=> $data['type'],
+                "price"=> $data['linefee']*$data['timelot'],
                 "timelot"=> $data['timelot'],
                 'basicdata'=> serialize($basedata),
                 "puttime"=> date('Y-m-d H:i:s',time()),
@@ -136,7 +147,12 @@ class MeetController extends Controller
           }
 
             DB::commit();
-            $msg = ['msg' => '提交成功','icon' => 1,'code' => 4,'url' => url('keepmeet',$meetid)];
+            if($data['type']==1){
+                $msg = ['msg' => '提交成功','icon' => 1,'code' => 4,'url' => url('keepmeet',$meetid)];
+            }else{
+                $msg = ['msg' => '提交成功','icon' => 1,'code' => 4,'url' => url('keepdav',$meetid)];
+            }
+
 
 
         }catch(Exception $e){

@@ -96,21 +96,24 @@ class EnterpriseUcenter extends Controller
         //获取项目评议所有数据
         $data = DB::table('t_m_meet as meet')
             ->leftJoin('t_m_meetverify as verify','verify.meetid','=','meet.meetid')
+            ->leftJoin('t_u_expert as expert','expert.expertid','=','meet.expertid')
             ->where('meet.userid',$userid)
+            ->where('meet.type',1)
             ->whereRaw('verify.id in (select max(id) from t_m_meetverify group by meetid)')
-            ->select('meet.*','verify.configid')
+            ->select('meet.*','verify.configid','expert.*')
             ->orderBy('meet.meetid','desc')
-            ->paginate(3);
-
-        $expertinfo = [];
+            ->paginate(4);
         $configname = [1 => '已保存',2 => '已支付' ,3 => '已响应',4 => '已拒绝' ,5 => '已完成'];
-        foreach($data as $k => $v){
+        $meettype = [1 => '线下约谈' ,0 => '线上约谈'];
+        foreach($data as $v) {
             $expert = DB::table('t_u_expert')
-                ->where('expertid',$v->exertid)
-                ->select('expertid','showimage','expertname','domain1','organiza','job')
-                ->get();
-            $expertinfo[$k] = $expert;
+                ->leftJoin('t_u_user', 't_u_user.userid', '=', 't_u_expert.userid')
+                ->where('expertid', $v->expertid)
+                ->select('t_u_expert.expertid', 't_u_expert.showimage', 't_u_expert.expertname', 'domain1', 't_u_user.phone', 't_u_user.userid')
+                ->first();
+            $expertinfo[$expert->expertid] = $expert;
             $v->configname = $configname[$v->configid];
+            $v->meettypename = $meettype[$v->meettype];
         }
         return view('enterpriseUcenter.mymeetindex',compact('data','expertinfo'));
     }
@@ -121,27 +124,34 @@ class EnterpriseUcenter extends Controller
         //获取项目评议所有数据
         $data = DB::table('t_m_meet as meet')
             ->leftJoin('t_m_meetverify as verify','verify.meetid','=','meet.meetid')
+            ->leftJoin('t_u_expert as expert','expert.expertid','=','meet.expertid')
             ->where('meet.userid',$userid)
+            ->where('meet.type',0)
             ->whereRaw('verify.id in (select max(id) from t_m_meetverify group by meetid)')
-            ->select('meet.*','verify.configid')
+            ->select('meet.*','verify.configid','expert.*')
             ->orderBy('meet.meetid','desc')
-            ->paginatpe(3);
-
-        $expertinfo = [];
+            ->paginate(4);
         $configname = [1 => '已保存',2 => '已支付' ,3 => '已响应',4 => '已拒绝' ,5 => '已完成'];
-        foreach($data as $k => $v){
+        $meettype = [1 => '线下约谈' ,0 => '线上约谈'];
+        foreach($data as $v) {
             $expert = DB::table('t_u_expert')
-                ->where('expertid',$v->expertid)
-                ->select('expertid','showimage','expertname','domain1','organiza','job')
-                ->get();
-            $expertinfo[$k] = $expert;
+                ->leftJoin('t_u_user', 't_u_user.userid', '=', 't_u_expert.userid')
+                ->where('expertid', $v->expertid)
+                ->select('t_u_expert.expertid', 't_u_expert.showimage', 't_u_expert.expertname', 'domain1', 't_u_user.phone', 't_u_user.userid')
+                ->first();
+            $expertinfo[$expert->expertid] = $expert;
             $v->configname = $configname[$v->configid];
+            $v->meettypename = $meettype[$v->meettype];
         }
         return view('enterpriseUcenter.mydavindex',compact('data','expertinfo'));
     }
 
     public function myLineShowIndex()
     {
+        $userid = session('userId');
+
+        $data = DB::table("t_s_lineshow")->where('userid',$userid)->paginate(4);
+
         return view('enterpriseUcenter.mylineshowindex',compact('data','expertinfo'));
     }
 
