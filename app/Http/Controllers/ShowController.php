@@ -16,19 +16,19 @@ class ShowController extends Controller
     /**
      * 项目提交页面
      */
-    public function Index($showid=0)
+    public function Index($showid = 0)
     {
-        if(!empty($showid)){
-            $showinfo = DB::table('t_s_show')->where('showid',$showid)->first();
+        if (!empty($showid)) {
+            $showinfo = DB::table('t_s_show')->where('showid', $showid)->first();
             $basedata = unserialize($showinfo->basicdata);
-            $expertids = explode(',',$showinfo->expertids);
-            $showimages = DB::table('t_u_expert')->whereIn('expertid',$expertids)->select('showimage','expertname')->get();
+            $expertids = explode(',', $showinfo->expertids);
+            $showimages = DB::table('t_u_expert')->whereIn('expertid', $expertids)->select('showimage', 'expertname')->get();
         }
-        if(!empty(session('userId'))){
-            $entinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->select('enterprisename','job','industry')->first();
+        if (!empty(session('userId'))) {
+            $entinfo = DB::table('t_u_enterprise')->where('userid', session('userId'))->select('enterprisename', 'job', 'industry')->first();
         }
-        $cate = DB::table('t_common_domaintype')->where('level',1)->get();
-        return view('show.index',compact('showid','cate','showinfo','basedata','showimages','entinfo'));
+        $cate = DB::table('t_common_domaintype')->where('level', 1)->get();
+        return view('show.index', compact('showid', 'cate', 'showinfo', 'basedata', 'showimages', 'entinfo'));
     }
 
     /**提交项目
@@ -40,9 +40,9 @@ class ShowController extends Controller
     {
         $data = $request->input();
         $file = $request->file('file');
-        $userid = empty(session('userId')) ? '':session('userId');
+        $userid = empty(session('userId')) ? '' : session('userId');
         $showid = $data['showid'];
-        if($data['upload'] != 1){
+        if ($data['upload'] != 1) {
             if ($file->isValid()) {
 
                 // 获取文件相关信息
@@ -52,29 +52,29 @@ class ShowController extends Controller
                 $type = $file->getClientMimeType();     // image/jpeg
 
                 // 上传文件
-                $filename = date('YmdHis'). uniqid() . '.' . $ext;
+                $filename = date('YmdHis') . uniqid() . '.' . $ext;
                 // 使用我们新建的uploads本地存储空间（目录）
                 $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
             } else {
-                return ['msg' => '上传失败~','icon' => 2,'code' => 3];
+                return ['msg' => '上传失败~', 'icon' => 2, 'code' => 3];
             }
         }
         //保存文件
 
 
         DB::beginTransaction();
-        try{
+        try {
             //判断用户是否登录 改变/插入企业表数据
-            if($userid){
-                $enterprise = DB::table('t_u_enterprise')->where('userid',$userid)->first();
-                if(!empty($enterprise)){
-                    DB::table('t_u_enterprise')->where('userid',$userid)->update([
+            if ($userid) {
+                $enterprise = DB::table('t_u_enterprise')->where('userid', $userid)->first();
+                if (!empty($enterprise)) {
+                    DB::table('t_u_enterprise')->where('userid', $userid)->update([
                         'enterprisename' => $data['entername'],
                         'job' => $data['enterjob'],
                         'industry' => $data['industry']
                     ]);
                 } else {
-                    DB::table('t_u_enterprise')->where('userid',$userid)->insert([
+                    DB::table('t_u_enterprise')->where('userid', $userid)->insert([
                         'enterprisename' => $data['entername'],
                         'job' => $data['enterjob'],
                         'industry' => $data['industry']
@@ -83,39 +83,39 @@ class ShowController extends Controller
             }
             //插入项目表数据
             //判断系统匹配或者自选专家
-            if($data['selecttype'] == '系统匹配'){
+            if ($data['selecttype'] == '系统匹配') {
                 $expertnumbers = intval($data['selectnumbers']);
                 $expertids = DB::table('t_u_expert')
-                    ->leftJoin('view_expertstatus as state','state.expertid','=','t_u_expert.expertid')
+                    ->leftJoin('view_expertstatus as state', 'state.expertid', '=', 't_u_expert.expertid')
                     ->where('state.configid', 2)
                     ->where(['domain1' => $data['domain']])
                     ->whereRaw('1=1  group by rand()')
                     ->limit($expertnumbers)
                     ->lists('t_u_expert.expertid');
 
-                if(empty($expertids)){
+                if (empty($expertids)) {
                     $expertids = [0];
                 }
 
-                $expertids = join(',',$expertids);
+                $expertids = join(',', $expertids);
                 $data['selectnumbers'] = intval($data['selectnumbers']);
             } else {
                 $expertids = $data['selectnumbers'];
-                $data['selectnumbers'] = count(explode(',',$data['selectnumbers']));
+                $data['selectnumbers'] = count(explode(',', $data['selectnumbers']));
             }
 
             $basedata = [
-                    'role' => $data['role'],
-                    'stage' => $data['stage'],
-                    'paytype' => $data['paytype'],
-                    'enterprisename' => $data['entername'],
-                    'job' => $data['enterjob'],
-                    'industry' => $data['industry'],
-                    'selecttype' => $data['selecttype'],
-                    'selectnumbers' => $data['selectnumbers'],
+                'role' => $data['role'],
+                'stage' => $data['stage'],
+                'paytype' => $data['paytype'],
+                'enterprisename' => $data['entername'],
+                'job' => $data['enterjob'],
+                'industry' => $data['industry'],
+                'selecttype' => $data['selecttype'],
+                'selectnumbers' => $data['selectnumbers'],
             ];
-            if($showid){
-                if($data['upload'] != 1){
+            if ($showid) {
+                if ($data['upload'] != 1) {
                     $arr = [
                         'userid' => $userid,
                         'oneword' => $data['oneword'],
@@ -123,7 +123,7 @@ class ShowController extends Controller
                         'domain1' => $data['domain'],
                         'brief' => $data['projecttxt'],
                         'expertids' => $expertids,
-                        'showtime' => date('Y-m-d H:i:s',time()),
+                        'showtime' => date('Y-m-d H:i:s', time()),
                         'bpurl' => $filename,
                         'bpname' => $originalName,
                         'basicdata' => serialize($basedata)
@@ -136,12 +136,12 @@ class ShowController extends Controller
                         'domain1' => $data['domain'],
                         'brief' => $data['projecttxt'],
                         'expertids' => $expertids,
-                        'showtime' => date('Y-m-d H:i:s',time()),
+                        'showtime' => date('Y-m-d H:i:s', time()),
                         'basicdata' => serialize($basedata)
                     ];
                 }
 
-               DB::table('t_s_show')->where('showid',$showid)->update($arr);
+                DB::table('t_s_show')->where('showid', $showid)->update($arr);
             } else {
                 $showid = DB::table('t_s_show')->insertGetId([
                     'userid' => $userid,
@@ -150,7 +150,7 @@ class ShowController extends Controller
                     'domain1' => $data['domain'],
                     'brief' => $data['projecttxt'],
                     'expertids' => $expertids,
-                    'showtime' => date('Y-m-d H:i:s',time()),
+                    'showtime' => date('Y-m-d H:i:s', time()),
                     'bpurl' => $filename,
                     'bpname' => $originalName,
                     'basicdata' => serialize($basedata)
@@ -158,18 +158,17 @@ class ShowController extends Controller
                 DB::table('t_s_showverify')->insert([
                     'showid' => $showid,
                     'configid' => 1,
-                    'verifytime' => date('Y-m-d H:i:s',time()),
+                    'verifytime' => date('Y-m-d H:i:s', time()),
                 ]);
             }
 
 
-
             DB::commit();
-            $msg = ['msg' => '提交成功','icon' => 1,'code' => 4,'url' => url('keepshow',$showid)];
+            $msg = ['msg' => '提交成功', 'icon' => 1, 'code' => 4, 'url' => url('keepshow', $showid)];
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
             DB::rollback();
-            $msg = ['msg' => '提交失败','icon' => 2,'code' => 6];
+            $msg = ['msg' => '提交失败', 'icon' => 2, 'code' => 6];
             throw $e;
         }
         return $msg;
@@ -182,16 +181,17 @@ class ShowController extends Controller
     public function keepShow($showid)
     {
         $configid = self::getNewShowVerify($showid);
-        $showinfo = DB::table('t_s_show')->where('showid',$showid)->first();
+        $showinfo = DB::table('t_s_show')->where('showid', $showid)->first();
         $basedata = unserialize($showinfo->basicdata);
-        $expertids = explode(',',$showinfo->expertids);
-        $showimages = DB::table('t_u_expert')->whereIn('expertid',$expertids)->select('showimage','expertname')->get();
-        return view('show.keepshow',compact('showinfo','basedata','showimages','configid'));
+        $expertids = explode(',', $showinfo->expertids);
+        $showimages = DB::table('t_u_expert')->whereIn('expertid', $expertids)->select('showimage', 'expertname')->get();
+        return view('show.keepshow', compact('showinfo', 'basedata', 'showimages', 'configid'));
     }
 
 
-    static private function getNewShowVerify($showid){
-        $configid = DB::table('view_showstatus')->where('showid',$showid)->pluck('configid');
+    static private function getNewShowVerify($showid)
+    {
+        $configid = DB::table('view_showstatus')->where('showid', $showid)->pluck('configid');
         return $configid;
     }
 
@@ -201,50 +201,50 @@ class ShowController extends Controller
      */
     public function selectExpert(Request $request)
     {
-        $userid = empty(session('userId'))?0:session('userId');
+        $userid = empty(session('userId')) ? 0 : session('userId');
         //获取板块信息
         $cate = DB::table('t_common_domaintype')->get();
         $datas = DB::table('t_u_expert as ext')
-            ->leftJoin('t_u_user as user','ext.userid' ,'=' ,'user.userid')
-            ->leftJoin('t_u_expertfee as fee','fee.expertid' ,'=' ,'ext.expertid')
-            ->leftJoin('view_expertstatus as status','ext.expertid' ,'=' ,'status.expertid')
-            ->where('status.configid',2)
-            ->where("ext.userid","<>",$userid)
-            ->where("ext.iscomment",1)
-            ->select('ext.*','fee.linefee','fee.fee');
+            ->leftJoin('t_u_user as user', 'ext.userid', '=', 'user.userid')
+            ->leftJoin('t_u_expertfee as fee', 'fee.expertid', '=', 'ext.expertid')
+            ->leftJoin('view_expertstatus as status', 'ext.expertid', '=', 'status.expertid')
+            ->where('status.configid', 2)
+            ->where("ext.userid", "<>", $userid)
+            ->where("ext.iscomment", 1)
+            ->select('ext.*', 'fee.linefee', 'fee.fee');
         $type = '';
         //获得用户的收藏
         //判断是否为http请求
-        if(!empty($get = $request->input())){
+        if (!empty($get = $request->input())) {
             //获取到get中的数据并处理
-            $searchname=(isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
-            $supply=(isset($get['supply']) && $get['supply'] != "null") ? $get['supply'] : null;
-            $address=(isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
-            $ordertime=( isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : 'desc';
-            $type = ( isset($get['type']) && $get['type'] != "null") ? $get['type'] : '';
-            $addresswhere = !empty($address)?array("ext.address"=>$address):array();
+            $searchname = (isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
+            $supply = (isset($get['supply']) && $get['supply'] != "null") ? $get['supply'] : null;
+            $address = (isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
+            $ordertime = (isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : 'desc';
+            $type = (isset($get['type']) && $get['type'] != "null") ? $get['type'] : '';
+            $addresswhere = !empty($address) ? array("ext.address" => $address) : array();
 
-            if(!empty($supply)){
-                $obj = $datas->where('ext.domain1',$supply)->where($addresswhere);
+            if (!empty($supply)) {
+                $obj = $datas->where('ext.domain1', $supply)->where($addresswhere);
             } else {
                 $obj = $datas->where($addresswhere);
             }            //判断是否有搜索的关键字
-            if(!empty($searchname)){
-                $obj = $obj->where("ext.expertname","like","%".$searchname."%");
+            if (!empty($searchname)) {
+                $obj = $obj->where("ext.expertname", "like", "%" . $searchname . "%");
             }
             //对三种排序进行判断
-            if(!empty($ordertime)){
-                $obj = $obj->orderBy('ext.expertid',$ordertime);
+            if (!empty($ordertime)) {
+                $obj = $obj->orderBy('ext.expertid', $ordertime);
             }
 
             $datas = $obj->paginate(9);
 
-            return view("public.selectExpert",compact('type','cate','searchname','datas','supply','address','ordertime'));
+            return view("public.selectExpert", compact('type', 'cate', 'searchname', 'datas', 'supply', 'address', 'ordertime'));
         }
 
-        $datas = $datas->orderBy("ext.expertid",'desc')->paginate(9);
+        $datas = $datas->orderBy("ext.expertid", 'desc')->paginate(9);
         $ordertime = 'desc';
-        return view("public.selectExpert",compact('type','cate','datas','ordertime'));
+        return view("public.selectExpert", compact('type', 'cate', 'datas', 'ordertime'));
     }
 
     /**支付判断
@@ -253,11 +253,11 @@ class ShowController extends Controller
     public function payJudge(Request $request)
     {
         $data = $request->input();
-        if(!empty(session('userId')) && !empty($data['type']) && !empty($data['id'])){
-            $return = self::getPayData(session('userId'),$data['type'],$data['id']);
+        if (!empty(session('userId')) && !empty($data['type']) && !empty($data['id'])) {
+            $return = self::getPayData(session('userId'), $data['type'], $data['id']);
             return $return;
         } else {
-            return ['icon' => 2,'code' => 2,'type' => $data['type'],'id' => $data['id']];
+            return ['icon' => 2, 'code' => 2, 'type' => $data['type'], 'id' => $data['id']];
         }
     }
 
@@ -267,20 +267,21 @@ class ShowController extends Controller
      * @param $id
      * @return array
      */
-    static public function getPayData($userid,$type,$id){
+    static public function getPayData($userid, $type, $id)
+    {
         $payType = 'payMoney';
 
-        switch ($type){
+        switch ($type) {
             case 'show':
-                $showverify = DB::table('view_showstatus')->where('showid',$id)->pluck('configid');
-                if($showverify == 1){
-                    $basicdata = DB::table('t_s_show')->where('showid',$id)->pluck('basicdata');
+                $showverify = DB::table('view_showstatus')->where('showid', $id)->pluck('configid');
+                if ($showverify == 1) {
+                    $basicdata = DB::table('t_s_show')->where('showid', $id)->pluck('basicdata');
                     $basicdata = unserialize($basicdata);
-                    $amount = $basicdata['selectnumbers']*env('showPrice');
-                    $channel = $basicdata['paytype'] == '微信支付' ? 'wx_pub_qr' :'alipay_pc_direct';
+                    $amount = $basicdata['selectnumbers'] * env('showPrice');
+                    $channel = $basicdata['paytype'] == '微信支付' ? 'wx_pub_qr' : 'alipay_pc_direct';
                     $type = 'show';
                     $showid = $id;
-                    $urlType = url('/keepshow',$id);
+                    $urlType = url('/keepshow', $id);
                     $subject = '升维网项目评议';
                     return [
                         'icon' => 1,
@@ -328,11 +329,11 @@ class ShowController extends Controller
      */
     public function lineShowIndex()
     {
-        if(!empty(session('userId'))){
-            $entinfo = DB::table('t_u_enterprise')->where('userid',session('userId'))->select('enterprisename','job','industry')->first();
+        if (!empty(session('userId'))) {
+            $entinfo = DB::table('t_u_enterprise')->where('userid', session('userId'))->select('enterprisename', 'job', 'industry')->first();
         }
-        $cate = DB::table('t_common_domaintype')->where('level',1)->get();
-        return view('show.lineshowindex',compact('cate','entinfo'));
+        $cate = DB::table('t_common_domaintype')->where('level', 1)->get();
+        return view('show.lineshowindex', compact('cate', 'entinfo'));
     }
 
     /**
@@ -342,39 +343,39 @@ class ShowController extends Controller
     {
         $data = $request->input();
         $file = $request->file('file');
-        $userid = empty(session('userId')) ? '':session('userId');
+        $userid = empty(session('userId')) ? '' : session('userId');
         $lineshowid = $data['lineshowid'];
-        if($data['upload'] != 1){
-        if ($file->isValid()) {
+        if ($data['upload'] != 1) {
+            if ($file->isValid()) {
 
-            // 获取文件相关信息
-        $originalName = $file->getClientOriginalName(); // 文件原名
-        $ext = $file->getClientOriginalExtension();     // 扩展名
-        $realPath = $file->getRealPath();   //临时文件的绝对路径
-        $type = $file->getClientMimeType();     // image/jpeg
+                // 获取文件相关信息
+                $originalName = $file->getClientOriginalName(); // 文件原名
+                $ext = $file->getClientOriginalExtension();     // 扩展名
+                $realPath = $file->getRealPath();   //临时文件的绝对路径
+                $type = $file->getClientMimeType();     // image/jpeg
 
-            // 上传文件
-        $filename = date('YmdHis'). uniqid() . '.' . $ext;
-            // 使用我们新建的uploads本地存储空间（目录）
-        $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
-        } else {
-            return ['msg' => '上传失败~','icon' => 2,'code' => 3];
-        }
+                // 上传文件
+                $filename = date('YmdHis') . uniqid() . '.' . $ext;
+                // 使用我们新建的uploads本地存储空间（目录）
+                $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
+            } else {
+                return ['msg' => '上传失败~', 'icon' => 2, 'code' => 3];
+            }
         }
         DB::beginTransaction();
         try {
 
             //判断用户是否登录 改变/插入企业表数据
-            if($userid){
-                $enterprise = DB::table('t_u_enterprise')->where('userid',$userid)->first();
-                if(!empty($enterprise)){
-                    DB::table('t_u_enterprise')->where('userid',$userid)->update([
+            if ($userid) {
+                $enterprise = DB::table('t_u_enterprise')->where('userid', $userid)->first();
+                if (!empty($enterprise)) {
+                    DB::table('t_u_enterprise')->where('userid', $userid)->update([
                         'enterprisename' => $data['entername'],
                         'job' => $data['enterjob'],
                         'industry' => $data['industry']
                     ]);
                 } else {
-                    DB::table('t_u_enterprise')->where('userid',$userid)->insert([
+                    DB::table('t_u_enterprise')->where('userid', $userid)->insert([
                         'enterprisename' => $data['entername'],
                         'job' => $data['enterjob'],
                         'industry' => $data['industry']
@@ -383,24 +384,24 @@ class ShowController extends Controller
             }
 
             $lineshowid = DB::table('t_s_lineshow')->insertGetId([
-                    "userid" => $userid,
-                    "title" =>$data['projectname'],
-                    "describe" =>$data['projecttxt'],
-                    "remarks" =>$data['remarks'],
-                    'bpurl' => $filename,
-                    'bpname' => $originalName,
-                    "puttime" =>date('Y-m-d H:i:s',time()),
-                    "created_at" =>date('Y-m-d H:i:s',time()),
-                    "updated_at" =>date('Y-m-d H:i:s',time())
+                "userid" => $userid,
+                "title" => $data['projectname'],
+                "describe" => $data['projecttxt'],
+                "remarks" => $data['remarks'],
+                'bpurl' => $filename,
+                'bpname' => $originalName,
+                "puttime" => date('Y-m-d H:i:s', time()),
+                "created_at" => date('Y-m-d H:i:s', time()),
+                "updated_at" => date('Y-m-d H:i:s', time())
             ]);
 
             DB::commit();
             $msg = ['msg' => '提交成功', 'icon' => 1, 'code' => 4, 'url' => url('keeplineshow', $lineshowid)];
-        }catch(Exception $e){
-                //异常处理
-                $msg = ['msg' => '提交失败','icon' => 2,'code' => 6];
-                throw $e;
-            }
+        } catch (Exception $e) {
+            //异常处理
+            $msg = ['msg' => '提交失败', 'icon' => 2, 'code' => 6];
+            throw $e;
+        }
         return $msg;
     }
 
@@ -411,12 +412,193 @@ class ShowController extends Controller
     {
 
         $lineShowData = DB::table('t_s_lineshow')
-            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_lineshow.userid')
-            ->where('lineshowid',$lineshowid)
-            ->select('t_s_lineshow.*','t_u_enterprise.enterprisename','t_u_enterprise.job','t_u_enterprise.industry')
+            ->leftJoin('t_u_enterprise', 't_u_enterprise.userid', '=', 't_s_lineshow.userid')
+            ->where('lineshowid', $lineshowid)
+            ->where('state', 1)
+            ->select('t_s_lineshow.*', 't_u_enterprise.enterprisename', 't_u_enterprise.job', 't_u_enterprise.industry')
             ->first();
 
-        return view('show.keeplineshow',compact('lineShowData'));
+        if (!$lineShowData) {
+            return redirect('lineShowIndex');
+        }
+        return view('show.keeplineshow', compact('lineShowData'));
     }
+
+    /**
+     *删除线下路演
+     */
+    public function cancelLineShow()
+    {
+        if ($_POST['lineshowid']) {
+
+            $result = DB::table('t_s_lineshow')->where('lineshowid', $_POST['lineshowid'])->update([
+                "state" => 0
+            ]);
+
+            return ['state' => 2, 'msg' => '删除成功', 'icon' => 1, 'url' => url('lineShowIndex')];
+
+        }
+        return ['state' => 1, 'msg' => '呵，删除错误', 'icon' => 5];
+
+    }
+
+    /**
+     * 项目提交页面
+     */
+    public function submitIndex($showid = 0)
+    {
+        if (!empty($showid)) {
+            $showinfo = DB::table('t_s_show')->where('showid', $showid)->first();
+            $basedata = unserialize($showinfo->basicdata);
+            $expertids = explode(',', $showinfo->expertids);
+            $showimages = DB::table('t_u_expert')->whereIn('expertid', $expertids)->select('showimage', 'expertname')->get();
+        }
+        if (!empty(session('userId'))) {
+            $entinfo = DB::table('t_u_enterprise')->where('userid', session('userId'))->select('enterprisename', 'job', 'industry')->first();
+        }
+        $cate = DB::table('t_common_domaintype')->where('level', 1)->get();
+        return view('show.submitIndex', compact('showid', 'cate', 'showinfo', 'basedata', 'showimages', 'entinfo'));
+    }
+
+    /**
+     * 提交项目
+     */
+    public function submitProject(Request $request)
+    {
+        $data = $request->input();
+        $file = $request->file('file');
+        $userid = empty(session('userId')) ? '' : session('userId');
+        $showid = $data['showid'];
+        if ($data['upload'] != 1) {
+            if ($file->isValid()) {
+
+                // 获取文件相关信息
+                $originalName = $file->getClientOriginalName(); // 文件原名
+                $ext = $file->getClientOriginalExtension();     // 扩展名
+                $realPath = $file->getRealPath();   //临时文件的绝对路径
+                $type = $file->getClientMimeType();     // image/jpeg
+
+                // 上传文件
+                $filename = date('YmdHis') . uniqid() . '.' . $ext;
+                // 使用我们新建的uploads本地存储空间（目录）
+                $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
+            } else {
+                return ['msg' => '上传失败~', 'icon' => 2, 'code' => 3];
+            }
+        }
+        //保存文件
+
+
+        DB::beginTransaction();
+        try {
+            //判断用户是否登录 改变/插入企业表数据
+            if ($userid) {
+                $enterprise = DB::table('t_u_enterprise')->where('userid', $userid)->first();
+                if (!empty($enterprise)) {
+                    DB::table('t_u_enterprise')->where('userid', $userid)->update([
+                        'enterprisename' => $data['entername'],
+                        'job' => $data['enterjob'],
+                        'industry' => $data['industry']
+                    ]);
+                } else {
+                    DB::table('t_u_enterprise')->where('userid', $userid)->insert([
+                        'enterprisename' => $data['entername'],
+                        'job' => $data['enterjob'],
+                        'industry' => $data['industry']
+                    ]);
+                }
+            }
+
+            $basedata = [
+                'role' => $data['role'],
+                'stage' => $data['stage'],
+                'enterprisename' => $data['entername'],
+                'job' => $data['enterjob'],
+                'industry' => $data['industry']
+            ];
+            if ($showid) {
+                if ($data['upload'] != 1) {
+                    $arr = [
+                        'userid' => $userid,
+                        'oneword' => $data['oneword'],
+                        'title' => $data['projectname'],
+                        'domain1' => $data['domain'],
+                        'brief' => $data['projecttxt'],
+                        'showtime' => date('Y-m-d H:i:s', time()),
+                        'bpurl' => $filename,
+                        'bpname' => $originalName,
+                        'basicdata' => serialize($basedata),
+                    ];
+                } else {
+                    $arr = [
+                        'userid' => $userid,
+                        'oneword' => $data['oneword'],
+                        'title' => $data['projectname'],
+                        'domain1' => $data['domain'],
+                        'brief' => $data['projecttxt'],
+                        'showtime' => date('Y-m-d H:i:s', time()),
+                        'basicdata' => serialize($basedata)
+                    ];
+                }
+
+                DB::table('t_s_show')->where('showid', $showid)->update($arr);
+            } else {
+                $showid = DB::table('t_s_show')->insertGetId([
+                    'userid' => $userid,
+                    'oneword' => $data['oneword'],
+                    'title' => $data['projectname'],
+                    'domain1' => $data['domain'],
+                    'brief' => $data['projecttxt'],
+                    'showtime' => date('Y-m-d H:i:s', time()),
+                    'bpurl' => $filename,
+                    'bpname' => $originalName,
+                    'basicdata' => serialize($basedata),
+                    'level' => 0
+                ]);
+
+            }
+
+            DB::commit();
+            $msg = ['msg' => '提交成功', 'icon' => 1, 'code' => 4, 'url' => url('keepSubmit', $showid)];
+
+        } catch (Exception $e) {
+            DB::rollback();
+            $msg = ['msg' => '提交失败', 'icon' => 2, 'code' => 6];
+            throw $e;
+        }
+        return $msg;
+    }
+
+    /**保存项目评议
+     * @param $showid
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function keepSubmit($showid)
+    {
+        $showinfo = DB::table('t_s_show')->where('showid', $showid)->first();
+        $basedata = unserialize($showinfo->basicdata);
+        $expertids = explode(',', $showinfo->expertids);
+        $showimages = DB::table('t_u_expert')->whereIn('expertid', $expertids)->select('showimage', 'expertname')->get();
+        return view('show.keepSubmit', compact('showinfo', 'basedata', 'showimages', 'configid'));
+    }
+
+    /**
+     *删除
+     */
+    public function deteleSubmit()
+    {
+        if ($_POST['showid']) {
+
+            $result = DB::table('t_s_show')->where('showid', $_POST['xshowid'])->update([
+                "state" => 0
+            ]);
+
+            return ['state' => 2, 'msg' => '删除成功', 'icon' => 1, 'url' => url('lineShowIndex')];
+
+        }
+        return ['state' => 1, 'msg' => '呵，删除错误', 'icon' => 5];
+
+    }
+
 
 }

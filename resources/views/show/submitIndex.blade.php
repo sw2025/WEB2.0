@@ -17,14 +17,14 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">项目评议</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">线下路演</a>
+        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">xxx</a>
+        <a href="" class="active swcol-md-4 swcol-xs-12">提交项目</a>
+        <a href="" class="swcol-md-4 swcol-xs-12">xxx</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
             <div class="sw-pro-para">
-                        只需要填写表单，当您提交项目后，升维网可以获得帮你进行线下路演，通过投资人多个维度的论证点评与反馈，让您的创业之路不再迷茫。
+                只需要几十元，当您提交项目后，可以获得投资人多个维度的论证点评与反馈，让您的创业之路不再迷茫。
             </div>
             <div class="sw-pro-form">
 
@@ -39,22 +39,68 @@
                     </div>
                 </div>
 
-
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>一句话简介</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <input type="text" placeholder="一句话概括产品与服务，30字内" class="sw-one-word" value="{{$showinfo->oneword or ''}}">
+                        <span class="sw-error"></span>
+                    </div>
+                </div>
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>所属领域</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <a href="javascript:;" class="sw-select-default sw-domain">{{$showinfo->domain1 or '选择领域'}}</a>
+                        <ul class="sw-select-list sw-field-list">
+                            @foreach($cate as $v)
+                                <li style="padding: 5px;">{{$v->domainname}}</li>
+                            @endforeach
+                        </ul>
+                        <span class="sw-error"></span>
+                    </div>
+                </div>
+            {{--    <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>项目类型</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <a href="javascript:;" class="sw-select-default sw-type">选择项目类型</a>
+                        <ul class="sw-select-list sw-type-list">
+                            <li>领域1</li>
+                            <li>领域领域2</li>
+                            <li>领域反反复复3</li>
+                        </ul>
+                        <span class="sw-error"></span>
+                    </div>
+                </div>--}}
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label "><span class="need">*</span>项目概述</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <textarea placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$showinfo->brief or ''}}</textarea>
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
-                </div><
-                <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label "><span class="need">*</span>项目备注</div>
+                </div>
+               <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label">投资主体</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <textarea placeholder="备注，不超过1000字" maxlength="1000" class="sw-remarks" >{{$showinfo->brief or ''}}</textarea>
-                        <div class="sw-count"><span class="sw-num">0</span>/1000</div>
+                        <a href="javascript:;" class="sw-select-default sw-role">{{$basedata['role'] or '选择主体'}}</a>
+                        <ul class="sw-select-list sw-role-list">
+                            <li>企业</li>
+                            <li>个人</li>
+                            <li>其他</li>
+                        </ul>
+                        <span class="sw-error"></span>
                     </div>
                 </div>
-
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label">投资阶段</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <a href="javascript:;" class="sw-select-default sw-stage">{{$basedata['stage'] or '选择阶段'}}</a>
+                        <ul class="sw-select-list sw-role-list">
+                            <li>种子期</li>
+                            <li>初创期</li>
+                            <li>成长期</li>
+                        </ul>
+                        <span class="sw-error"></span>
+                    </div>
+                </div>
 
                 <form name="form1" id="form1">
                     <div class="sw-pro-row clearfix">
@@ -75,12 +121,12 @@
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif "></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-industry">@if(!empty($basedata['industry'])){{$basedata['industry']}}@elseif(!empty($entinfo)){{$entinfo->industry}}@else选择行业@endif </a>
+                        <a href="javascript:;" class="sw-select-default sw-industry">@if(!empty($basedata['industry'])){{$basedata['industry']}}@elseif(!empty($entinfo)){{$entinfo->industry}} @else选择行业@endif </a>
                         <ul class="sw-select-list sw-field-list">
                             <li>IT|通信|电子|互联网</li>
                             <li>金融业</li>
@@ -101,14 +147,15 @@
                 </div>
 
 
+
                 <div class="sw-btn-wrapper">
                     @if(!empty($showinfo))
-                        <input type="hidden" value="" id="lineshowid">
+                        <input type="hidden" value="{{$showinfo->showid}}" id="showid">
                         <button class="sw-btn-submit" type="button" id="" style="margin-right: 10%;" onclick=window.location="{{url('/showIndex/')}}">重新发起项目评议 </button>
-                        <button class="sw-btn-submit" type="button" id="submit">修改项目评议</button>
+                        <button class="sw-btn-submit" type="button" id="submit">修改项目</button>
                     @else
-                        <input type="hidden" value="" id="lineshowid">
-                        <button class="sw-btn-submit" type="button" id="submit">申请线下路演</button>
+                        <input type="hidden" value="" id="showid">
+                        <button class="sw-btn-submit" type="button" id="submit">提交项目</button>
                     @endif
 
                 </div>
@@ -145,37 +192,53 @@
          */
         $('#submit').on('click',function () {
             var projectname = $('.project-name').val();  //项目名称
+            var oneword = $('.sw-one-word').val();  //一次简介
+            var domain = $('.sw-domain').text();  //领域
             var projecttxt = $('.sw-project-txt').val();  //项目概述
-            var remarks = $('.sw-remarks').val();
+            var role = $('.sw-role').text();  //企业阶段
+            var stage = $('.sw-stage').text(); //融资轮次
             var entername = $('.sw-entername').val(); //企业名称
-            var enterjob = $('.sw-enterjob').val(); //身份
+            var enterjob = $('.sw-enterjob').val(); //职位
             var industry = $('.sw-industry').text(); //企业行业
-
             var upload= $('.sw-upload-btn').attr('index');    //上传文件
-            var lineshowid = $('#lineshowid').val();
+            var showid = $('#showid').val();
+            //选择方式
+           /* var selecttype = $.trim($('.sw-need-con .swon').children('label').eq(0).text());
+            if(selecttype=='系统匹配'){
+                //选择评议人的数量
+                var selectnumbers = $.trim($('.sw-need-con .swon').children('label').eq(1).text());
+            } else {
+                var selectnumbers = ids;
+            }*/
+            //支付的方式
+            //var paytype = $.trim($('.sw-need-con .swon').children('label').eq(2).text());
 
-            if(projectname == '' ||  projecttxt == '' || entername == '' || enterjob == '' || upload == ''){
+            if(projectname == '' || oneword == '' || projecttxt == '' || entername == '' || enterjob == '' || upload == ''){
                 layer.alert('请填写完整信息');
                 return false;
             }
 
-            if(industry == '选择行业'){
-                layer.alert('请填写行业信息');
+            if(domain == '选择领域' || industry == '选择行业'){
+                layer.alert('请填写完整领域或者行业信息');
                 return false;
             }
 
             var fileObj = document.getElementById("bpurl").files[0]; // js 获取文件对象
             var formFile = new FormData();
             formFile.append("projectname", projectname);
+            formFile.append("oneword", oneword);
+            formFile.append("domain", domain);
             formFile.append("projecttxt", projecttxt);
-            formFile.append("remarks", remarks);
+            formFile.append("role", role);
+            formFile.append("stage", stage);
             formFile.append("entername", entername);
             formFile.append("enterjob", enterjob);
             formFile.append("industry", industry);
-
             formFile.append("file", fileObj); //加入文件对象
-
-            formFile.append("lineshowid", lineshowid); //加入文件对象
+            //formFile.append("selecttype", selecttype); //加入文件对象
+            //formFile.append("selectnumbers", selectnumbers); //加入文件对象
+            //formFile.append("paytype", paytype); //加入文件对象
+            formFile.append("showid", showid); //加入文件对象
             formFile.append("upload", upload); //加入文件对象
             if($.trim(upload)!='1'){
                 if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
@@ -188,7 +251,7 @@
             $(this).attr('disabled',true);
             $(this).text('正在提交');
             $.ajax({
-                url: "{{url('submitLineShow')}}",
+                url: "{{url('submitProject')}}",
                 data: formFile,
                 type: "Post",
                 dataType: "json",
@@ -208,9 +271,6 @@
                 },
             });
         });
-
     </script>
-
-
 @endsection
 

@@ -214,6 +214,8 @@
             var allownumbers=5;
         } else if("{{$type}}"=="meet"){
             var allownumbers=1;
+        } else if("{{$type}}"=="daV"){
+            var allownumbers=1;
         }
         if(reselect.length==allownumbers){
             if($.inArray(value,reselect)>=0){
