@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,94 @@ use JPush\Exceptions\APIRequestException;
 
 class PublicController extends Controller
 {
+    /**
+     * 个人设置页面
+     */
+    public function personalSet()
+    {
+        $userid = session('userId');
+        $data = DB::table('t_u_user')->where('userid',$userid)->first();
+        return view('public.personalSet',compact('data'));
+    }
+    /**
+     * 个人设置页面修改手机号
+     */
+    public function changeTel()
+    {
+        return view('public.changeTel');
+    }
+    /**
+     * 个人设置页面修改密码
+     */
+    public function changePwd()
+    {
+        return view('public.changePwd');
+    }
+
+//
+
+    /**
+     * 修改手机号
+     * @return array
+     */
+    public function changeNewPhone(Request $request){
+
+        $userId= session('userId');
+
+        $phone=$_POST['phone'];
+
+        $code=$_POST['code'];
+
+        $str=array();
+      /*  $phone=DB::table("T_U_USER")->where("userid",$userId)->pluck("phone");*/
+        if(Cache::has($phone)){
+            $smsCode=Cache::get($phone);
+            if($smsCode!=$code){
+                $str['code']="code";
+                $str['msg']="验证码输入错误!";
+                return $str;
+            }else{
+                $str=\UserClass::changeVerify($phone,$userId);
+                return $str;
+            }
+        }else{
+            $str['code']="code";
+            $str['msg']="没有生成验证码,稍后重试!";
+            return $str;
+        }
+
+    }
+
+
+    /**修改密码处理
+     * @param Request $request
+     * @return array
+     */
+    public function updatePwd(Request $request){
+        $res=array();
+        $userId=session('userId');
+        $oldPassWord=$_POST['oldPassWord'];
+        $passWord=$_POST['passWord'];
+        $result=DB::table("t_u_user")
+            ->where("userid",$userId)
+            ->where("passWord",md5($oldPassWord))
+            ->first();
+        if($result){
+            $results=DB::table("t_u_user")->where("userid",$userId)->update([
+                "password"=>md5($passWord),
+                "updated_at"=>date("Y-m-d H:i:s",time())
+            ]);
+            if($results){
+                $res = ['code' =>'success','url' => url('personalSet')];
+            }else{
+                $res['code']="xxoo";
+            }
+        }else{
+            $res['code']="error";
+        }
+        return $res;
+    }
+
     //公共的上传图片的方法
     public function upload(){
         error_reporting(E_ALL | E_STRICT);
@@ -22,7 +111,7 @@ class PublicController extends Controller
         $uploadHandler =new \App\UploadHandler(["upload_dir" => dirname(base_path()) . "/swUpload/images/", "upload_url" => dirname(base_path()) . "/swUpload/images/"]);
     }
 
-    public function isLogin (){
+    static public function isLogin (){
         if(empty(session('userId'))){
             return ['icon' => 2,'code' => 2];
         } else {
@@ -428,7 +517,9 @@ class PublicController extends Controller
         $res=array();
         if(!$_POST['eventId']){
             $teamId=DB::table("t_s_im")->where(["consultid"=>$_POST['consultId']])->pluck("tid");
-        }else{
+        }elseif(!$_POST['meetid']){
+            $teamId=DB::table("t_s_im")->where(["eventid"=>$_POST['meetid']])->pluck("tid");
+        } else {
             $teamId=DB::table("t_s_im")->where(["eventid"=>$_POST['eventId']])->pluck("tid");
         }
         if($teamId){

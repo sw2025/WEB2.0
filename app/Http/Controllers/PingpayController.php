@@ -50,13 +50,13 @@ class PingpayController extends Controller
                     $expertIDS[]=$values[0];
                 }
             }
-            $amount=$amounts/100;
+            $amount=$amounts;
             $orderNo = 'CZ' . time() . mt_rand(1000,9999);
             $metadata=['payType'=>'payExpertMoney','type'=>$payload['type'],'userid'=>$user['userid'],"expert"=>$expertIDS,"consultid"=>$payload['consultid'],"chargeFrom"=>$payload['chargeFrom']];
         }else{
             if($payload['type']=="consult"){
                 $amounts = $payload['amount'];
-                $amount=$amounts/100;
+                $amount=$amounts;
             }else if($payload['type']=="onlineshow" || $payload['type']=="show"  ){
                 $amount = $payload['amount'];
                 $user = $payload['userid'];
@@ -79,7 +79,8 @@ class PingpayController extends Controller
         }
      
         $url =$payload['urlType'];
-        $amountMoney=$amount*100;
+        /*$amountMoney=$amount*100;*/
+        $amountMoney=$amount;
         $subject = isset($payload['subject']) ? $payload['subject']:'充值金额';
 
         /**

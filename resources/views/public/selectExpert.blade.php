@@ -139,7 +139,7 @@
                         {{$v->brief}}
                     </div>
                 </a>
-                <span class="checkbox-wrapper nocheck xuanzhong" linefee="{{$v->linefee}}" name="{{$v->expertname}}" id="{{$v->expertid}}" index="{{$v->showimage}}"></span>
+                <span class="checkbox-wrapper nocheck xuanzhong" linefee="{{$v->linefee}}"fee="{{$v->fee}}" name="{{$v->expertname}}" id="{{$v->expertid}}" index="{{$v->showimage}}"></span>
             </li>
             @endforeach
         </ul>
@@ -190,13 +190,14 @@
     $('.xuanzhong').click(function(event) {
         var name=$(this).attr("name");
         var linefee=$(this).attr("linefee");
+        var fee=$(this).attr("fee");
         var key=$(this).attr("id");
         var img=$(this).attr("index");
         var type = "{{$type}}";
         if( type == 'show'){
             var value=key+'@'+img;
         }else{
-            var value=key+'@'+img+'@'+name+'@'+linefee;
+            var value=key+'@'+img+'@'+name+'@'+linefee+'@'+fee;
         }
         var reselect;
         var date = new Date();
@@ -213,6 +214,8 @@
             var allownumbers=5;
         } else if("{{$type}}"=="meet"){
             var allownumbers=1;
+        } else if("{{$type}}"=="daV"){
+            var allownumbers=1;
         }
         if(reselect.length==allownumbers){
             if($.inArray(value,reselect)>=0){
@@ -220,7 +223,7 @@
                 $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'sw2025.com'});
                 $.cookie("reselect",reselect.join(","),{expires:date,path:'/',domain:'swchina.com'});
             }else{
-                layer.alert('您已经指定5位大V', {
+                layer.alert('您已经指定'+allownumbers+'位大V', {
                     btn: ['确定'], //按钮
                     'title':'升维网提示'
                 });
@@ -254,6 +257,8 @@
             window.location.href="{{url('showIndex')}}";
         } else if("{{$type}}"=="meet"){
             window.location.href="{{url('meetIndex')}}";
+        } else if("{{$type}}"=="daV"){
+            window.location.href="{{url('daVIndex')}}";
         }
     })
     $("#return").on("click",function(){
@@ -263,6 +268,8 @@
             window.location.href="{{url('showIndex')}}";
         } else if("{{$type}}"=="meet"){
             window.location.href="{{url('meetIndex')}}";
+        } else if("{{$type}}"=="daV"){
+            window.location.href="{{url('daVIndex')}}";
         }
 
     })

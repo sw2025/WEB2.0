@@ -21,6 +21,7 @@
                     $roles=DB::table("view_userrole")->where('userid',$counts[0]['userid'])->pluck("role");
                     $array['role']=$roles;
                     session(['role' => $roles]);
+                    session(['phone' => substr_replace($phone,'****',3,4)]);
                 } else {
                     $array['code'] = "pwd";
                     $array['msg'] = "密码错误!";
@@ -87,6 +88,7 @@
                     $result['name'] = !empty($counts[0]['nickname'])?$counts[0]['nickname']:substr_replace($phone,'****',3,4);
                     $roles=DB::table("view_userrole")->where('userid',$userid)->pluck("role");
                     session(['role' => $roles]);
+                    session(['phone' => substr_replace($phone,'****',3,4)]);
                     $result['role']=$roles;
                 } else {
                     $result['code'] = "phone";
@@ -121,6 +123,30 @@
             }
             $result['code'] = "phone";
             $result['msg'] = "该手机号尚未注册!";
+            return $result;
+        }
+        //找回密码验证
+        public static function changeVerify($phone, $userId)
+        {
+            $result = array();
+            $counts = \App\User::where("phone", $phone)->get()->toArray();
+            if (count($counts) == 0) {
+                $res = DB::table("T_U_USER")->where("userid", $userId)->update([
+                    "phone" => $phone,
+                    "updated_at" => date("Y-m-d H:i:s", time()),
+                ]);
+                if ($res) {
+                    $result['code'] = "success";
+                    $result['msg'] = "修改成功!";
+                    $result['url'] = url('personalSet');
+                } else {
+                    $result['code'] = "error";
+                    $result['msg'] = "修改失败!";
+                }
+                return $result;
+            }
+            $result['code'] = "phone";
+            $result['msg'] = "该手机号已经存在!";
             return $result;
         }
 
@@ -237,6 +263,35 @@
                 "state"=>0,
                 "consultid"=>'',
                 "eventid"=>$eventId,
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time())
+            ]);
+        }
+
+
+        /**反选专家之后，创建网易云的群
+         * @param $expertIDS
+         * @param $consultId
+         */
+        public  static function createMeetGroups($expertID,$meetid){
+            $accids=array();
+            $userId=DB::table("t_u_expert")->select("userid")->where("expertid",$expertID)->first();
+            $accid=DB::table('t_u_user')->where("userid",$userId->userid)->pluck("accid");
+            $entinfophone = DB::table('t_m_meet as meet')->leftJoin('t_u_user as user','user.userid','=','meet.userid')->where('meet.meetid',$meetid)->pluck('accid');
+            $accids[]=$accid;
+            $tname="线上约见厅";
+            $AppKey = env('AppKey');
+            $AppSecret = env('AppSecret');
+            $serverApi = new \ServerApiClass($AppKey, $AppSecret);
+            $msg="欢迎";
+            $codes=$serverApi->createGroup($tname,$entinfophone,$accids,'','',$msg,'0','0','0');
+            DB::table("t_s_im")->insert([
+                "userid"=>session('userId'),
+                "tid"=>$codes['tid'],
+                "state"=>0,
+                "consultid"=>'',
+                "eventid"=>"",
+                "meetid"=>$meetid,
                 "created_at"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);

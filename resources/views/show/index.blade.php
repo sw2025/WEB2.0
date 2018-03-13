@@ -18,8 +18,8 @@
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
         <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">项目评议</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">创业加速包</a>
+        <a href="{{url('meetIndex')}}" class="swcol-md-4 swcol-xs-12">约见投资人</a>
+        <a href="{{url('lineShowIndex')}}" class="swcol-md-4 swcol-xs-12">线下路演</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">

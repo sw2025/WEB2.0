@@ -20,6 +20,7 @@
     <script type="text/javascript" src="{{asset('js/jquery/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/public.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery/jquery.cookie.js')}}"></script>
     <script src="{{asset('js/jquery/jquery.ui.widget.js')}}"></script>
     <script src="{{asset('js/jquery/jquery.fileupload.js')}}"></script>
 </head>
@@ -32,9 +33,20 @@
         <div class="sw-menu">
             <div class="sw-user">
                 <!-- 登录前 -->
-                <a href="{{url('/login')}}">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{{url('/register')}}">注册</a>
-                <!-- 登录后 -->
-                <!-- <a href="#">个人中心</a> -->
+                @if(empty(session('userId')))
+                    <span class="sw-mt">
+                        <a href="javascript:;">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;">注册</a>
+                    </span>
+                        <!-- 登录后 -->
+                @else
+                <a href="#" class="sw-info sw-read"><i class="iconfont icon-email"></i><span class="info-exist"></span></a>
+                <a href="javascript:;" class="sw-logined"><img src="{{asset('img/avatar.jpg')}}"><span>{{session('phone')}}</span></a>
+                <div class="sw-entry">
+                    <a href="{{url('expindex/index')}}">专家入口</a>
+                    <a href="{{url('entindex/index')}}">企业入口</a>
+                    <a href="#" class="quit">退出</a>
+                </div>
+                @endif
             </div>
             <ul class="sw-nav">
                 <li><a href="{{url('showIndex')}}">创业孵化</a></li>
@@ -48,13 +60,14 @@
 <!-- 公共header / end -->
 @yield("content")
         <!-- 公共footer / end -->
+<!-- 底部 -->
 <div class="sw-footer">
     <div class="swcontainer clearfix">
         <div class="swcol-md-6 swcol-xs-12">
             <div class="sw-footer-l">
                 <span>客服电话：</span>
                 <strong>010-64430881&nbsp;/&nbsp;68985908</strong>
-                <p>E-Mail：sunwy@swchina.com</p>
+                <p>E-Mail：shengwei2025@163.com</p>
                 <p>北京市朝阳区安贞里街道浙江大厦</p>
             </div>
         </div>
@@ -62,17 +75,20 @@
             <div class="sw-footer-r clearfix">
                 <div class="swcol-md-6 sw-wx">
                     升维公众号
-                    <img src="{{asset('img/erweima1.jpg')}}" alt="升维公众号">
+                    <img src="{{asset('img/erweima1.jpg')}} " alt="升维公众号">
                 </div>
                 <div class="swcol-md-6 sw-app">
                     <p class="sw-app-caption">客户端</p>
-                    <img src="{{asset('img/erweima2.jpg')}}" alt="客户端">
+                    <img src="{{asset('img/erweima2.jpg')}} " alt="客户端">
                     <div class="app-caption">
                         <span><i class="iconfont icon-changyonglogo35"></i>IOS</span>
                         <span><i class="iconfont icon-changyonglogo37"></i>Android</span>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="sw-copy">
+            <p>京ICP备17053834号copyright&nbsp;&nbsp;&copy;&nbsp;&nbsp;2017&nbsp;swchina.com</p>
         </div>
     </div>
 </div>
@@ -88,7 +104,74 @@
         hm.src = "https://hm.baidu.com/hm.js?6f6e01e4a95947e6714c0d5ce631597b";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
+
+        var str=window.location.pathname;
+        var num1=str.indexOf('/');
+        var find = '/';//表示要找的字符
+        var flag = 2;//表示第几次出现
+        var num2=0;
+        for(var i=0;i<str.length;i++){
+            if(str.charAt(i)==find)
+                flag--;
+            if(flag==0){
+                num2=i;
+                break;
+            }
+        }
+        if(num2){
+            var string=str.substring(num1+1,num2);
+        }else{
+            var string=str.substring(num1+1);
+        }
+        $("#"+string).addClass('active');
+        $("#"+string).addClass('on');
     })();
+
+    $(".quit").on("click",function(){
+        $.ajax({
+            url:"{{asset("quit")}}",
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    $.cookie("userId",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("name",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("avatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("enterAvatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("expertAvatar",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("phone",'',{path:'/',domain:'sw2025.com'});
+                    $.cookie("userId",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("name",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("avatar",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("enterAvatar",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("expertAvatar",'',{path:'/',domain:'swchina.com'});
+                    $.cookie("phone",'',{path:'/',domain:'swchina.com'});
+                    window.location.href="{{asset('/')}}"
+                }else{
+                    window.location.href="{{asset('/')}}"
+                }
+            }
+        })
+    })
+
+    $('.sw-mt a').on('click',function () {
+        var isreturnurl = window.location.search.indexOf('returnurl');
+        if(isreturnurl==-1){
+            if($.trim($(this).text())=='登录'){
+                window.location.href="{{url('/login')}}?returnurl="+window.location.href;
+            }else {
+                window.location.href="{{url('/register')}}?returnurl="+window.location.href;
+            }
+        } else {
+            if($.trim($(this).text())=='登录'){
+                window.location.href="{{url('/login')}}"+window.location.search;
+            }else {
+                window.location.href="{{url('/register')}}"+window.location.search;
+            }
+        }
+
+
+    });
 </script>
 
 

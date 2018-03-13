@@ -26,31 +26,52 @@
             <div class="sw-pro-para">
                 只需要几十元，当您提交问题后，可以获得约见投资人多个维度的论证点评与反馈，让您的创业之路不再迷茫。
             </div>
-            <div class="sw-pro-form">
+
+
 
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">选择daV</div>
+                    <div class="swcol-md-4 sw-pro-label">选择投资人</div>
                     <div class="swcol-md-8 sw-pro-rowcon sw-refer">
                         <div class="sw-need-con sw-mine" style="display: block;">
+                            @if(!empty($meetData)))
+                            <div class="expert-img-wrapper"><img src="{{env('ImagePath').$expertData->showimage}}" alt=""></div>
+                            @endif
+
                             <a href="{{url('selectExpert')}}?type=meet" class="sw-choose-link">选择大V</a>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="sw-pro-row clearfix linefee">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>专家名称</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="name" class="sw-name" value=""></div>
+            <div class="sw-pro-row clearfix linefee">
+                <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>专家名称</div>
+                <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="name" class="sw-name" value="{{$expertData->expertname or  ' ' }}"></div>
+            </div>
+
+            <div class="sw-pro-row clearfix linefee">
+                <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>约见模式</div>
+                <div class="swcol-md-8 sw-pro-rowcon">
+                    <a href="javascript:;" class="sw-select-default sw-pattern" >@if(!empty($meetData)) @if($meetData->meettype=='1')线上约见@else线下约见@endif @else选择模式@endif</a>
+                    <ul class="sw-select-list sw-field-list">
+                        <li>线下约见</li>
+                        <li>线上约见</li>
+                    </ul>
+                    <span class="sw-error"></span>
                 </div>
+            </div>
+
+
+
 
                 <div class="sw-pro-row clearfix linefee">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>资费</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" value=""></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" fee="" linefee="" value="{{$meetData->price or  '' }}"></div>
                 </div>
 
                 <div class="sw-pro-row clearfix linefee">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>约见时长</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-timelot">{{$basedata['industry'] or '选择约见时长'}}</a>
+                        <a href="javascript:;" class="sw-select-default sw-timelot">{{$meetData->timelot or '选择约见时长' }}</a>小时
                         <ul class="sw-select-list sw-field-list">
                             <li>1</li>
                             <li>2</li>
@@ -65,41 +86,32 @@
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label "><span class="need">*</span>问题描述</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <textarea placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$showinfo->brief or ''}}</textarea>
+                        <textarea placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$meetData->contents or ''}}</textarea>
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div>
 
+
+
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>问题领域</div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>备注</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-domain">{{$showinfo->domain1 or '选择领域'}}</a>
-                        <ul class="sw-select-list sw-field-list">
-                            @foreach($cate as $v)
-                                <li style="padding: 5px;">{{$v->domainname}}</li>
-                            @endforeach
-                        </ul>
-                        <span class="sw-error"></span>
+                        <textarea placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-one-word" >{{$basedata['oneword'] or ''}}</textarea>
                     </div>
                 </div>
 
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>备注</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" class="sw-one-word" value=""></div>
-                </div>
-
-                <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>工商注册公司全称</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入公司全名" class="sw-entername" value="{{$basedata['enterprisename'] or ''}}"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入公司全名" class="sw-entername" value="@if(!empty($basedata['enterprisename'])){{$basedata['enterprisename']}}@elseif(!empty($entinfo)){{$entinfo->enterprisename}}@else @endif"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="{{$basedata['job'] or ''}}"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}} @else @endif"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-industry">{{$basedata['industry'] or '选择行业'}}</a>
+                        <a href="javascript:;" class="sw-select-default sw-industry">@if(!empty($basedata['industry'])){{$basedata['industry']}}@elseif(!empty($entinfo)) {{$entinfo->industry}}@else选择行业@endif</a>
                         <ul class="sw-select-list sw-field-list">
                             <li>IT|通信|电子|互联网</li>
                             <li>金融业</li>
@@ -119,37 +131,36 @@
                     </div>
                 </div>
 
-
-                <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">支付方式</div>
-                    <div class="swcol-md-8 sw-pro-rowcon sw-need-con">
-                        <div class="sw-radio-wrapper @if(empty($basedata) ||  $basedata['paytype'] == '微信支付') swon @endif">
-                            <input type="radio" id="payWX" name="pay">
-                            <label for="payWX" class="radio-label">
-                                <span></span><i class="iconfont icon-weixin"></i><em>微信支付</em>
-                            </label>
-                        </div>
-                        <div class="sw-radio-wrapper @if(!empty($basedata) && $basedata['paytype'] == '支付宝支付') swon @endif">
-                            <input type="radio" id="payZFB" name="pay">
-                            <label for="payZFB" class="radio-label">
-                                <span></span><i class="iconfont icon-zhifubao"></i><em>支付宝支付</em>
-                            </label>
-                        </div>
+            <div class="sw-pro-row clearfix">
+                <div class="swcol-md-4 sw-pro-label">支付方式</div>
+                <div class="swcol-md-8 sw-pro-rowcon sw-need-con">
+                    <div class="sw-radio-wrapper @if(empty($basedata) ||  $basedata['paytype'] == '微信支付') swon @endif">
+                        <input type="radio" id="payWX" name="pay">
+                        <label for="payWX" class="radio-label">
+                            <span></span><i class="iconfont icon-weixin"></i><em>微信支付</em>
+                        </label>
+                    </div>
+                    <div class="sw-radio-wrapper @if(!empty($basedata) && $basedata['paytype'] == '支付宝支付') swon @endif">
+                        <input type="radio" id="payZFB" name="pay">
+                        <label for="payZFB" class="radio-label">
+                            <span></span><i class="iconfont icon-zhifubao"></i><em>支付宝支付</em>
+                        </label>
                     </div>
                 </div>
-               {{-- <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">每一位评议人评议价格</div>
-                    <div class="swcol-md-8 sw-pro-rowcon sw-pay-money">89元</div>
-                </div>--}}
-                <div class="sw-btn-wrapper">
-                    @if(!empty($showinfo))
-                        <input type="hidden" value="{{$showinfo->meetid}}" id="meetid">
-                        <button class="sw-btn-submit" type="button" id="" style="margin-right: 10%;" onclick=window.location="{{url('/showIndex/')}}">重新发起项目评议 </button>
-                        <button class="sw-btn-submit" type="button" id="submit">修改内容资料</button>
-                    @else
+            </div>
+
+
+
+          <input type="hidden" value="{{$meetData->expertid or ''}}" id="expertid">
+          <div class="sw-btn-wrapper">
+              @if(!empty($meetData))
+                  <input type="hidden" value="{{$meetid}}" id="meetid">
+                  <button class="sw-btn-submit" type="button" >返回</button>
+                  <button class="sw-btn-submit" type="button" id="submit">确认修改</button>
+              @else
                         <input type="hidden" value="" id="meetid">
                         <button class="sw-btn-submit" type="button" id="submit">邀请专家</button>
-                    @endif
+              @endif
 
                 </div>
             </div>
@@ -180,73 +191,60 @@
             $('.sw-upload-cap').text(value2);
         });
 
+
+
         /**
          * 提交onclick事件
          */
         $('#submit').on('click',function () {
+            var meettype = $('.sw-pattern').text();
             var name = $('.sw-name').val();  //专家姓名
             var linefee = $('.sw-linefee').val();  //资费
-            var timelot = $('.sw-timelot').val();  //时长
+            var expertid = $('#expertid').val();  //资费
+            var timelot = $('.sw-timelot').text();  //时长
             var oneword = $('.sw-one-word').val();  //备注
             var domain = $('.sw-domain').text();  //领域
             var projecttxt = $('.sw-project-txt').val();  //项目概述
-            var role = $('.sw-role').text();  //身份
-            //var stage = $('.sw-stage').text(); //融资轮次
-
+            var enterjob = $('.sw-enterjob').val(); //身份
             var entername = $('.sw-entername').val(); //企业名称
-            //var enterjob = $('.sw-enterjob').val(); //项目名称
             var industry = $('.sw-industry').text(); //企业行业
-            //var upload= $('.sw-upload-btn').attr('index');    //上传文件
             var meetid = $('#meetid').val();
-            //选择方式
-            var selecttype = $.trim($('.sw-need-con .swon').children('label').eq(0).text());
-            if(selecttype=='系统匹配'){
-                //选择评议人的数量
-                var selectnumbers = $.trim($('.sw-need-con .swon').children('label').eq(1).text());
-            } else {
-                var selectnumbers = ids;
-            }
-            //支付的方式
-            var paytype = $.trim($('.sw-need-con .swon').children('label').eq(2).text());
 
-            if(oneword == '' || projecttxt == '' || entername == '' || timelot == ''){
+            //支付的方式
+            var paytype = $.trim($('.sw-need-con .swon').children('label').text());
+
+            //约见模式
+            if(meettype == '线上约见'){
+                var meettype ='1';
+            }else if(meettype == '线下约见'){
+                var meettype ='0';
+            }
+
+            if(meettype == '选择模式' || oneword == '' || projecttxt == '' || entername == '' || timelot == '选择约见时长'){
                 layer.alert('请填写完整信息');
                 return false;
             }
 
-            if(domain == '选择领域' || industry == '选择行业'){
-                layer.alert('请填写问题领域或者行业信息');
+            if(industry == '选择行业'){
+                layer.alert('请填写行业信息');
                 return false;
             }
 
             //var fileObj = document.getElementById("bpurl").files[0]; // js 获取文件对象
             var formFile = new FormData();
+            formFile.append("meettype", meettype);
+            formFile.append("type", 1);
             formFile.append("name", name);
             formFile.append("linefee", linefee);
             formFile.append("timelot", timelot);
+            formFile.append("expertid", expertid);
             formFile.append("oneword", oneword);
-            formFile.append("domain", domain);
             formFile.append("projecttxt", projecttxt);
-            //formFile.append("role", role);
-            //formFile.append("stage", stage);
             formFile.append("entername", entername);
-            //formFile.append("enterjob", enterjob);
+            formFile.append("enterjob", enterjob);
             formFile.append("industry", industry);
-
-           // formFile.append("file", fileObj); //加入文件对象
-
-            //formFile.append("selecttype", selecttype); //加入文件对象
-            //formFile.append("selectnumbers", selectnumbers); //加入文件对象
             formFile.append("paytype", paytype); //加入文件对象
             formFile.append("meetid", meetid); //加入文件对象
-            //formFile.append("upload", upload); //加入文件对象
-           /* if($.trim(upload)!='1'){
-                if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-                    layer.alert('请选择正确的文件');
-                    return false;
-                }
-            }*/
-
 
             $(this).attr('disabled',true);
             $(this).text('正在提交');
@@ -271,8 +269,9 @@
                 },
             });
         });
+
         $(function () {
-            if({{$meetid}}){
+           /* if({{$meetid}}){
                 var layermsg = '提示：修改暂不支持更换选择大V方式，请您重新填写项目';
             } else {
                 var layermsg = '提示：请您先选择好几位大V进行评议或者自定完大V 再填写项目';
@@ -280,26 +279,31 @@
             layer.tips(layermsg, '#tipsneed', {
                 tips: [1, '#e25633'],
                 time: 8000
-            });
+            });*/
 
             if($.cookie("reselect")){
                 var expertChecked=$.cookie('reselect').split("@");
-                id = expertChecked[0];
+                expertid = expertChecked[0];
                 image = expertChecked[1];
                 name = expertChecked[2];
                 linefee = expertChecked[3];
+                fee = expertChecked[4];
                 $('.sw-choose-expert').eq(0).removeClass('swon');
                 $('.sw-choose-expert').eq(1).addClass('swon');
                 var str = '';
                 str += '<div class="expert-img-wrapper"><img src="http://images.sw2025.com'+image+'" alt=""></div>';
+                $('#expertid').val(expertid);
                 $('#name').val(name);
-                $('#linefee').val(linefee);
+                $('#linefee').attr('linefee',linefee);
+                $('#linefee').attr('fee',fee);
                 $('.sw-mine').css('display','block').siblings('.sw-need-con').css('display','none');
                 $('.sw-mine').prepend(str);
                 $.cookie("reselect","",{path:'/',domain:'sw2025.com'});
                 $.cookie("reselect","",{path:'/',domain:'swchina.com'});
             }else {
-                $('.linefee').css('display','none');
+                if(!{{$meetid}}) {
+                    $('.linefee').css('display', 'none');
+                }
             }
         });
     </script>

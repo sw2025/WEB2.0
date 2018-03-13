@@ -1,0 +1,201 @@
+body{
+    background: #eeeeee;
+}
+.junior-banner {
+    width: 100%;
+    height: 430px;
+    background: url("../img/swpro.jpg") no-repeat center top;
+    border-bottom: 0.08rem solid #e25633;
+}
+
+.jun-banner-cap {
+    padding: 1.6rem 0 0 0.6rem;
+    color: #fff;
+    font-size: 0.4rem;
+}
+
+.jun-banner-btn {
+    display: block;
+    line-height: 0.4rem;
+    width: 1.6rem;
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    color: #867a6e;
+    border-radius: 5px;
+}
+
+.jun-banner-intro {
+    font-size: 0.3rem;
+}
+
+
+.sw-article{
+    position: relative;
+    margin-bottom:0.35rem;
+    border-top: 3px solid #e25633;
+    background: #f2f2f2;
+}
+.sw-article-tit{
+    padding: 0.2rem;
+    font-size:0;
+    border-bottom: 2px solid #ffffff;
+}
+.sw-article-tit span{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 22px;
+    font-size: 14px;
+    color: #6a6a6a;
+    font-weight: 600;
+}
+.sw-article-tit a{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 22px;
+    font-size: 18px;
+    color: #e25633;
+    font-weight: 600;
+}
+.sw-article-desc{
+    padding: 0.2rem 0.2rem 0.12rem;
+    border-bottom: 2px solid #ffffff;
+}
+.sw-article-desc b{
+    color: #6a6a6a;
+}
+.sw-article-para{
+    line-height: 30px;
+    color: #898989;
+    text-align: justify;
+}
+.sw-article-person{
+    padding:0.1rem 0.2rem 0.05rem;
+    font-size: 0;
+}
+.sw-article-cap{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 48px;
+    font-size: 14px;
+    color: #6a6a6a;
+    font-weight: 600;
+}
+.sw-article-img{
+    display: inline-block;
+    vertical-align: top;
+    margin:0 0.12rem 0.05rem;
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+}
+.sw-article-state,.sw-article-time{
+    font-weight: 600;
+    color: #b4b3b3;
+}
+.sw-article-time{
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+    line-height: 22px;
+}
+.sw-article-state{
+    position: absolute;
+    bottom: 0.05rem;
+    right: 0.2rem;
+    line-height: 48px;
+}
+.sw-time-explain{
+    color: #898989;
+}
+.zhan-wei{
+    font-size: 0;
+    height: 0.6rem;
+}
+.sw-to-review{
+    display: inline-block;
+    vertical-align: top;
+    padding:0 0.3rem;
+    line-height: 22px;
+    margin:19px 0 0 0.2rem;
+    background: #e25633;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.sw-no-time{
+    display: inline-block;
+    vertical-align: top;
+    padding:0 0.3rem;
+    line-height: 22px;
+    margin:19px 0 0 0.2rem;
+    border: 1px solid #e25633;
+    font-size: 14px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #e25633;
+}
+
+/* 评议结果列表 */
+.sw-result-article{
+    position: relative;
+    border-top: 3px solid #e25633;
+    background: #f2f2f2;
+}
+.sw-article-info,.sw-result-info{
+    padding:0.2rem;
+    font-size: 0;
+    border-bottom: 2px solid #ffffff;
+}
+.sw-result-info{
+    padding: 0;
+    border-bottom: 1px dotted #e25633;
+}
+.sw-article-column{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 22px;
+    width: 33%;
+    font-size: 14px;
+    color: #898989;
+}
+.sw-article-column b{
+    color: #6a6a6a;
+}
+.sw-result-tit{
+    padding:0.2rem 0;
+    line-height: 1;
+    text-align: center;
+    font-size: 0.24rem;
+}
+.sw-result-tit span{
+    color: #e25633;
+}
+.sw-white-style .sw-result-item{
+    padding:8px 0.16rem 8px 8px;
+}
+@media (max-width: 1000px) {
+    .sw-article-column{
+        width: 50%;
+    }
+}
+
+@media (max-width: 767px){
+    .jun-banner-cap {
+        padding: 1.12rem 0 0 0.42rem;
+        font-size: 0.28rem;
+    }
+
+    .jun-banner-btn {
+        line-height: 0.28rem;
+        width: 1.12rem;
+    }
+
+    .jun-banner-intro {
+        font-size: 0.21rem;
+    }
+
+    .sw-article-column{
+        width: 100%;
+    }
+}
