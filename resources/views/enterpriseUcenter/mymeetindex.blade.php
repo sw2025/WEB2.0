@@ -26,22 +26,20 @@
         @foreach($data as $v)
            <ul class="sw-white-style">
             <li class="sw-white-item">
-                 <span onclick="javascript:window.location.href= '{{url('keepmeet',$v->meetid)}}'" style="cursor:pointer;">
                 <div class="img-wrapper">
                     <img src="{{env('ImagePath').$v->showimage}}" class="sw-expert-img">
-                        @if($v->configid == 2 || $v->configid == 3|| $v->configid == 5)
-                            @if($v->meettype == 0)
+                        @if($v->configid == 3|| $v->configid == 5)
+                            @if($v->meettype == 1)
                                 <a href="javascript:;" class="sw-connect-btn">联系专家</a>
                              @else
-                                <a href="javascript:;" class="sw-connect-btn">{{$expertinfo[$v->expertid]->phone}}</a>
+                            <a href="javascript:;" index="{{$expertinfo[$v->expertid]->phone}}" class="sw-connect-btn contact">联系专家</a>
                             @endif
                         @endif
                 </div>
-
+            <span onclick="javascript:window.location.href= '{{url('keepmeet',$v->meetid)}}'" style="cursor:pointer;">
                 <div class="content-wrapper">
                     <strong class="sw-meet-name">{{$v->expertname}}</strong>
                     <span style="color: red">（{{$v->meettypename}}）</span>
-
                     <div class="sw-meet-label">
                         <a href="javacript:;">天使投资</a>
                         <a href="javacript:;">A轮</a>
@@ -57,11 +55,17 @@
                 </div>
             </span>
                 <div class="sw-meet-time"><span></span>{{$v->puttime}}</div>
-                <span class="sw-meet-state"> <a href="{{url('keepmeet',$v->meetid)}}" style="color:#e25633;">{{$v->configname}}</a></span>
-
+                <span class="sw-meet-state">  <a href="{{url('keepmeet',$v->meetid)}}" style="color:#e25633;">{{$v->configname}}</a></span>
             </li>
         </ul>
-    @endforeach
+        @endforeach
+
     </div>
 </div>
+    <script>
+        $('.contact').on('click',function () {
+            var e = $(this).attr('index');
+            $('.contact').html(e);
+        })
+    </script>
 @endsection

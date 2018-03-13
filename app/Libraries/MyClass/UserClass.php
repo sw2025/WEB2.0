@@ -125,6 +125,30 @@
             $result['msg'] = "该手机号尚未注册!";
             return $result;
         }
+        //找回密码验证
+        public static function changeVerify($phone, $userId)
+        {
+            $result = array();
+            $counts = \App\User::where("phone", $phone)->get()->toArray();
+            if (count($counts) == 0) {
+                $res = DB::table("T_U_USER")->where("userid", $userId)->update([
+                    "phone" => $phone,
+                    "updated_at" => date("Y-m-d H:i:s", time()),
+                ]);
+                if ($res) {
+                    $result['code'] = "success";
+                    $result['msg'] = "修改成功!";
+                    $result['url'] = url('personalSet');
+                } else {
+                    $result['code'] = "error";
+                    $result['msg'] = "修改失败!";
+                }
+                return $result;
+            }
+            $result['code'] = "phone";
+            $result['msg'] = "该手机号已经存在!";
+            return $result;
+        }
 
         /**获取用户余额
          * @param $userId
