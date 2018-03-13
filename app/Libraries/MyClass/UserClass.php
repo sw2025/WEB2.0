@@ -267,5 +267,34 @@
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
         }
+
+
+        /**反选专家之后，创建网易云的群
+         * @param $expertIDS
+         * @param $consultId
+         */
+        public  static function createMeetGroups($expertID,$meetid){
+            $accids=array();
+            $userId=DB::table("t_u_expert")->select("userid")->where("expertid",$expertID)->first();
+            $accid=DB::table('t_u_user')->where("userid",$userId->userid)->pluck("accid");
+            $entinfophone = DB::table('t_m_meet as meet')->leftJoin('t_u_user as user','user.userid','=','meet.userid')->where('meet.meetid',$meetid)->pluck('accid');
+            $accids[]=$accid;
+            $tname="线上约见厅";
+            $AppKey = env('AppKey');
+            $AppSecret = env('AppSecret');
+            $serverApi = new \ServerApiClass($AppKey, $AppSecret);
+            $msg="欢迎";
+            $codes=$serverApi->createGroup($tname,$entinfophone,$accids,'','',$msg,'0','0','0');
+            DB::table("t_s_im")->insert([
+                "userid"=>session('userId'),
+                "tid"=>$codes['tid'],
+                "state"=>0,
+                "consultid"=>'',
+                "eventid"=>"",
+                "meetid"=>$meetid,
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time())
+            ]);
+        }
     }
 ?>

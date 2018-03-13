@@ -85,6 +85,8 @@ Route::post('getTeamId','PublicController@getTeamId');
 Route::get('entindex/index','EnterpriseUcenter@Index');
 //评议列表页
 Route::get('entmyshow/myshowindex','EnterpriseUcenter@myShowIndex');
+//评议详情页
+Route::get('/entmyshow/myshowdetail/{showid}','EnterpriseUcenter@myShowDetail');
 //修改企业数据
 Route::post('modifyEntData','EnterpriseUcenter@modifyEntData');
 //约见投资人列表页
@@ -107,8 +109,13 @@ Route::get('entmysector/detail/{consultId}', 'EnterpriseUcenter@sectorDetail');
 Route::post('handleSelect', 'MyEnterpriseController@handleSelect');
 //判断正在咨询的时间
 Route::post('compareConsultTime', 'MyEnterpriseController@compareConsultTime');
+//判断正在咨询的时间
+Route::post('compareMeetTime', 'MyEnterpriseController@compareMeetTime');
 //咨询结束
 Route::post('finishConsult', 'MyEnterpriseController@finishConsult');
+Route::post('finishMeet', 'EnterpriseUcenter@finishMeet');
+//线上约见页面
+Route::get('entmymeet/intomeeting/{meetid}','EnterpriseUcenter@intoMeeting');
 /**************个人中心  我是专家 **************/
 //个人中心认证首页
 Route::get('expindex/index','ExpertUcenter@Index');
@@ -120,8 +127,7 @@ Route::get('expmyshow/myShowList','ExpertUcenter@myShowList');
 Route::get('expmymeet/myMeetList','ExpertUcenter@myMeetList');
 //我的私董会列表页
 Route::get('expmysector/mySectorList','ExpertUcenter@mySectorList');
-//我的钱包
-Route::get('expmycharge/myCharge','ExpertUcenter@myCharge');
+
 //我的评议详情页
 Route::get('expmyshow/showdetail/{showid}','ExpertUcenter@showDetail');
 //发表评议
@@ -134,6 +140,28 @@ Route::get('expmysector/intoSector/{consultid}','ExpertUcenter@intoSector');
 Route::post('uct_myask/responseconsult', 'ExpertUcenter@responseConsult');
 //处理约见
 Route::post('dealmeet', 'ExpertUcenter@dealMeet');
+
+//线上约见页面
+Route::get('expmymeet/intomeeting/{meetid}','ExpertUcenter@intoMeeting');
+//我的钱包
+Route::get('expmycharge/myCharge','ExpertUcenter@myCharge');
+//充值提现
+Route::get('uct_recharge', 'CenterController@recharge');
+//获取充值记录
+Route::post('getRecord', 'ExpertUcenter@getRecord');
+//更换银行卡
+Route::post('updateCard', 'ExpertUcenter@updateCard');
+//专家绑定银行卡
+Route::post('expertHaveCard', 'ExpertUcenter@expertHaveCard');
+//提现
+Route::post('applicationCashs', 'ExpertUcenter@applicationCashs');
+//提现验证银行卡
+Route::post('haveCard', 'ExpertUcenter@haveCard');
+//专家绑定银行卡
+Route::post('expertHaveCard', 'ExpertUcenterController@expertHaveCard');
+//提现
+Route::get('recharge/cash', 'ExpertUcenter@cash');
+
 //个人设置页面
 Route::get('personalSet', 'PublicController@personalSet');
 //修改手机号页面
@@ -144,7 +172,5 @@ Route::post('/changeNewPhone', 'PublicController@changeNewPhone');
 Route::get('/changePwd', 'PublicController@changePwd');
 //修改密码
 Route::post('/updatePwd', 'PublicController@updatePwd');
-
-
 
 

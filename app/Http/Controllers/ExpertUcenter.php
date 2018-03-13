@@ -133,6 +133,7 @@ class ExpertUcenter extends Controller
             ->where('show.userid',$userid)
             ->select('show.*','status.configid')
             ->orderBy('show.showid','desc')
+            ->where('show.level',1)
             ->paginate(3);
         $expertinfo = [];
         $configname = [1 => '已保存',2 => '已支付' ,3 => '未通过审核',4 => '已推送' ,5 => '已完成',6 => '已评价'];
@@ -287,6 +288,7 @@ class ExpertUcenter extends Controller
                     'configid' => 3,
                     'verifytime' => date('Y-m-d H:i:s')
                 ]);
+                \UserClass::createMeetGroups($meetinfo->expertid,$data['meetid']);
             } else {
                 DB::table('t_m_meetverify')->insert([
                     'meetid' => $data['meetid'],
@@ -303,6 +305,33 @@ class ExpertUcenter extends Controller
 
     }
 
+    public function intoMeeting($meetid)
+    {
+        $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
+        if(empty(session('userId')) || empty($expert->expertid)){
+            return redirect('login');
+        }
+
+        $datas=DB::table("t_m_meet as meet")
+            ->leftJoin("t_m_meetverify","t_m_meetverify.meetid","=","meet.meetid")
+            ->leftJoin('t_u_enterprise as ent','meet.userid','=','ent.userid')
+            ->where(['meet.meetid'=>$meetid,'meet.expertid'=>$expert->expertid])
+            ->select('meet.*','ent.*','t_m_meetverify.*')
+            ->first();
+
+       /* $selExperts=DB::table("t_c_consult")
+            ->leftJoin("t_c_consultresponse","t_c_consultresponse.consultid","=","t_c_consult.consultid")
+            ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
+            ->where("t_c_consultresponse.state",3)
+            ->where("t_c_consultresponse.consultid",$consultId)
+            ->get();*/
+       /* $comperes=DB::table("t_u_bill")
+            ->leftJoin("t_u_user","t_u_user.userid","=","t_u_bill.userid")
+            ->where("t_u_bill.consultid",$consultId)
+            ->where("t_u_bill.type","支出")
+            ->get();*/
+        return view("expertUcenter.meeting",compact('selExperts','expert','comperes','datas',"meetid"));
+    }
 
     /**我的私董会列表页
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -438,6 +467,148 @@ class ExpertUcenter extends Controller
 
     public function myCharge()
     {
+        $userId=session("userId");
+        $incomes=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"收入"])->sum("money");
+        $pays=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"支出"])->sum("money");
+        $expends=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"在途"])->sum("money");
+        $balance=$incomes-$pays-$expends;
+
+        //$bankcard=DB::table("t_u_bank")->where(["userid"=>$userId,"state"=>0])->pluck("bankcard");
+
+        $bankcard=DB::table("t_u_bank")->where(["userid"=>$userId])->pluck("bankcard");
+        $state=DB::table("t_u_bank")->where("userid",$userId)->pluck("state");
+        return view("expertUcenter.mycharge",compact("incomes","pays","expends","balance","bankcard","state"));
+    }
+
+    /**个人中心首页充值，消费记录
+     * @return array
+     */
+    public  function getRecord(){
+        $type=$_POST['type'];
+        $startPage=isset($_POST['startPage'])?$_POST['startPage']:1;
+        $offset=($startPage-1)*10;
+        $userId=session("userId");
+        $result=array();
+        $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("type",$type)->where("payflag",1)->count();
+        $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("payflag",1)->skip($offset)->take(10)->get();
+
+        $counts=!empty(ceil($counts/10))?ceil($counts/10):0;
+        foreach ($datas as $data){
+            $data->created_at=date("Y-m-d",strtotime($data->created_at));
+            if($data->type=="收入"){
+                $data->money="+".$data->money;
+            }else{
+                $data->money="-".$data->money;
+            }
+        }
+        if($datas){
+            $result['code']="success";
+            $result['counts']=$counts;
+            $result['startPage']=$startPage;
+            $result['msg']=$datas;
+        }else{
+            $result['code']="error";
+        }
+        return $result;
 
     }
+
+    /**更改银行卡号
+     * @return array
+     */
+    public  function updateCard(){
+        $res=array();
+        $result=DB::table("t_u_bank")->where("userid",$_POST['userId'])->update([
+            "state"=>1,
+            "updated_at"=>date("Y-m-d H:i:s",time()),
+        ]);
+        if($result){
+            $res['code']="success";
+        }else{
+            $res['code']="error";
+        }
+        return $res;
+    }
+
+    /**判断用户是否绑定银行卡
+     * @return array
+     */
+    public  function expertHaveCard(){
+        $res=array();
+        $userId=session('userId');
+        $counts=DB::table('t_u_bank')->where('userid',$userId)->count();
+        if($counts){
+            $states=DB::table('t_u_bank')->where('userid',$userId)->pluck('state');
+            if($states==1 ){
+                $res['code']='0';
+            }elseif($states==0){
+                $res['code']='1';
+            }else{
+                $res['code']='2';
+            }
+        }else{
+            $res['code']='0';
+        }
+        return $res;
+    }
+
+    /**提现
+     * @return mixed
+     */
+    public function cash(){
+        $userId=session("userId");
+        $incomes=DB::table("T_U_BILL")->where(["userid"=>$userId,"type"=>"收入"])->sum("money");
+        $pays=DB::table("T_U_BILL")->where("userid",$userId)->whereIn("type",["支出","在途"])->sum("money");
+        $balance=$incomes-$pays;
+        return view("expertUcenter.cash",compact("balance"));
+    }
+
+    /**申请提现
+     * @return array
+     */
+    public function applicationCashs(){
+        $res=array();
+        $money=$_POST['money'];
+        $userId=$_POST['userId'];
+        $payno=$this->getPayNum("提现");
+        $result=DB::table("t_u_bill")->insert([
+            "userid"=>$userId,
+            "type"=>"在途",
+            "channel"=>"提现申请",
+            "money"=>$money,
+            "payno"=>$payno,
+            "billtime"=>date("Y-m-d H:i:s",time()),
+            "brief"=>"提现",
+            "created_at"=>date("Y-m-d H:i:s",time()),
+            "updated_at"=>date("Y-m-d H:i:s",time()),
+        ]);
+        if($result){
+            $res['code']="success";
+        }else{
+            $res['code']="error";
+        }
+        return $res;
+    }
+
+    public  function haveCard(){
+        $res=array();
+        $userId=session('userId');
+        $counts=DB::table('t_u_bank')->where('userid',$userId)->count();
+        if($counts){
+            $states=DB::table('t_u_bank')->where('userid',$userId)->pluck('state');
+            if($states==1 ){
+                $res['code']='0';
+            }elseif($states==0){
+                $res['code']='1';
+            }else{
+                $res['code']='2';
+            }
+        }else{
+            $res['code']='0';
+        }
+
+        return $res;
+    }
+
+
 }

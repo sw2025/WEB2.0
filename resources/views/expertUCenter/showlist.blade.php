@@ -34,7 +34,7 @@
                     @if($v->state==0 || $v->state==1)
                         <a href="javascript:;" class="sw-to-review" index="{{$v->showid}}">去评议</a>
                     @else
-                        <a href="javascript:;" class="sw-to-review">查看评议</a>
+                        <a href="javascript:;" class="sw-to-review" index="{{$v->showid}}">查看评议</a>
                     @endif
                 </div>
                 <span class="sw-article-time"><b class="sw-time-explain" style="display: none">提交时间：</b>{{$v->showtime}}</span>

@@ -1803,44 +1803,22 @@ class MyEnterpriseController extends Controller
     /*
      * 视频完成
      */
-    public  function finishConsult(){
-        $consutId=$_POST['consultId'];
-        $type=$_POST['type'];
+    public  function finishMeet(){
+        $meetid=$_POST['meetid'];
         $content = empty($_POST['msg']) ? '' : '异常终止:'.$_POST['msg'];
-        if($type=='end'){
-            $configId=7;
-            $state=4;
-        }else{
-            $configId=9;
-            $state=5;
-        }
+
+        $configId=5;
+
         $res=array();
         DB::beginTransaction();
         try{
-            DB::table('t_c_consultverify')->insert([
-                'consultid'=>$consutId,
+            DB::table('t_m_meetverify')->insert([
+                'meetid'=>$meetid,
                 'configid'=>$configId,
                 'verifytime'=>date('Y-m-d H:i:s',time()),
                 'remark'=>$content,
-                'created_at'=>date('Y-m-d H:i:s',time()),
-                'updated_at'=>date('Y-m-d H:i:s',time()),
             ]);
-            $expertIds=DB::table('t_c_consultresponse')
-                ->where(['consultid'=>$consutId,'state'=>3])
-                ->select('expertid')
-                ->distinct()
-                ->get();
-            foreach($expertIds as $value){
-                DB::table('t_c_consultresponse')->insert([
-                    'consultid'=>$consutId,
-                    'expertid'=>$value->expertid,
-                    'responsetime'=>date('Y-m-d H:i:s'),
-                    'state'=>$state,
-                    'created_at'=>date('Y-m-d H:i:s',time()),
-                    'updated_at'=>date('Y-m-d H:i:s',time()),
 
-                ]);
-            }
             DB::commit();
         }catch (Exception $e){
             DB::rollback();
@@ -2174,6 +2152,22 @@ class MyEnterpriseController extends Controller
             $res['code']="error";
         }else{
             $res['code']="success";
+        }
+        return $res;
+    }
+
+    /**比较当前时间与约见剩余的时间
+     * @return array
+     */
+    public  function compareMeetTime(){
+        $res=array();
+        $meetid=$_POST['meetid'];
+        $nowTime=$_POST['nowTime'];
+        $endTime=DB::table("t_m_meet")->where("meetid",$meetid)->first();
+        if(strtotime($endTime->puttime)<strtotime('-5 hours')){
+            $res['code']="success";
+        }else{
+            $res['code']="error";
         }
         return $res;
     }

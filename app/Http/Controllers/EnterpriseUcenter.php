@@ -76,18 +76,33 @@ class EnterpriseUcenter extends Controller
             ->where('show.userid',$userid)
             ->select('show.*','status.configid')
             ->orderBy('show.showid','desc')
+            ->where('show.level',1)
             ->paginate(3);
         $expertinfo = [];
-        $configname = [1 => '已保存',2 => '已支付' ,3 => '未通过审核',4 => '已推送' ,5 => '已完成',6 => '已评价'];
+        $configname = [1 => '已保存',2 => '已支付' ,3 => '未通过审核',4 => '已推送/已评议' ,5 => '已完成',6 => '已评价'];
         foreach($data as $k => $v){
-            $expert = DB::table('t_u_expert')
-                ->whereIn('expertid',explode(',',$v->expertids))
-                ->select('expertid','showimage','expertname')
+            $expert = DB::table('t_s_pushshow')
+                ->leftJoin('t_u_expert','t_u_expert.expertid','=','t_s_pushshow.expertid')
+                ->where('t_s_pushshow.showid',$v->showid)
+                ->whereRaw('t_s_pushshow.id in (select max(id) from t_s_pushshow group by showid,expertid)')
+                ->select('t_u_expert.expertid','t_u_expert.showimage','t_u_expert.expertname','t_s_pushshow.state')
                 ->get();
             $expertinfo[$k] = $expert;
             $v->configname = $configname[$v->configid];
         }
         return view('enterpriseUcenter.myshowindex',compact('data','expertinfo'));
+    }
+
+    //
+    public function myShowDetail($showid)
+    {
+        $data = DB::table('t_s_show')->where('showid',$showid)->first();
+        $mess = DB::table('t_s_messagetoshow as mess')
+                ->leftJoin('t_u_expert as expert','expert.userid','=','mess.userid')
+                ->where('showid',$showid)
+                ->select('mess.*','expert.expertname','expert.expertid')
+                ->get();
+        return view('enterpriseUcenter.showdetail',compact('data','mess'));
     }
 
     public function myMeetIndex()
@@ -116,6 +131,86 @@ class EnterpriseUcenter extends Controller
             $v->meettypename = $meettype[$v->meettype];
         }
         return view('enterpriseUcenter.mymeetindex',compact('data','expertinfo'));
+    }
+
+    public function intoMeeting($meetid)
+    {
+
+
+        $datas=DB::table("t_m_meet as meet")
+            ->leftJoin("t_m_meetverify","t_m_meetverify.meetid","=","meet.meetid")
+            ->leftJoin('t_u_enterprise as ent','meet.userid','=','ent.userid')
+            ->where(['meet.meetid'=>$meetid])
+            ->select('meet.*','ent.*','t_m_meetverify.*')
+            ->first();
+        $expert = DB::table('t_u_expert')->where('expertid',$datas->expertid)->first();
+        /* $selExperts=DB::table("t_c_consult")
+             ->leftJoin("t_c_consultresponse","t_c_consultresponse.consultid","=","t_c_consult.consultid")
+             ->leftJoin("t_u_expert","t_c_consultresponse.expertid","=","t_u_expert.expertid")
+             ->where("t_c_consultresponse.state",3)
+             ->where("t_c_consultresponse.consultid",$consultId)
+             ->get();*/
+        /* $comperes=DB::table("t_u_bill")
+             ->leftJoin("t_u_user","t_u_user.userid","=","t_u_bill.userid")
+             ->where("t_u_bill.consultid",$consultId)
+             ->where("t_u_bill.type","支出")
+             ->get();*/
+        return view("enterpriseUcenter.meeting",compact('selExperts','expert','comperes','datas',"meetid"));
+    }
+
+
+    /*
+     * 约见完成
+     */
+    public  function finishMeet(){
+        $consutId=$_POST['meetId'];
+        $type=$_POST['type'];
+        $content = empty($_POST['msg']) ? '' : '异常终止:'.$_POST['msg'];
+        if($type=='end'){
+            $configId=7;
+            $state=4;
+        }else{
+            $configId=9;
+            $state=5;
+        }
+        $res=array();
+        DB::beginTransaction();
+        try{
+            DB::table('t_c_consultverify')->insert([
+                'consultid'=>$consutId,
+                'configid'=>$configId,
+                'verifytime'=>date('Y-m-d H:i:s',time()),
+                'remark'=>$content,
+                'created_at'=>date('Y-m-d H:i:s',time()),
+                'updated_at'=>date('Y-m-d H:i:s',time()),
+            ]);
+            $expertIds=DB::table('t_c_consultresponse')
+                ->where(['consultid'=>$consutId,'state'=>3])
+                ->select('expertid')
+                ->distinct()
+                ->get();
+            foreach($expertIds as $value){
+                DB::table('t_c_consultresponse')->insert([
+                    'consultid'=>$consutId,
+                    'expertid'=>$value->expertid,
+                    'responsetime'=>date('Y-m-d H:i:s'),
+                    'state'=>$state,
+                    'created_at'=>date('Y-m-d H:i:s',time()),
+                    'updated_at'=>date('Y-m-d H:i:s',time()),
+
+                ]);
+            }
+            DB::commit();
+        }catch (Exception $e){
+            DB::rollback();
+            throw $e;
+        }
+        if(!isset($e)){
+            $res['code']='success';
+        }else{
+            $res['code']='error';
+        }
+        return $res;
     }
 
     public function myDavIndex()

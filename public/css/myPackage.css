@@ -1,0 +1,226 @@
+body {
+    background: #eeeeee;
+}
+
+.junior-banner {
+    width: 100%;
+    height: 430px;
+    background: url("../img/swpro.jpg") no-repeat center top;
+    border-bottom: 0.08rem solid #e25633;
+}
+
+.jun-banner-cap {
+    padding: 1.6rem 0 0 0.6rem;
+    color: #fff;
+    font-size: 0.4rem;
+}
+
+.jun-banner-btn {
+    display: block;
+    line-height: 0.4rem;
+    width: 1.6rem;
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    color: #867a6e;
+    border-radius: 5px;
+}
+
+.jun-banner-intro {
+    font-size: 0.3rem;
+}
+
+.my-money{
+    padding:20px 0;
+    border-top: 3px solid #e25633;
+}
+
+.my-money-top{
+    font-size: 0;
+    text-align: center;
+}
+.m-t-left{
+    display: inline-block;
+    vertical-align: top;
+    font-size: 14px;
+    margin:0 25px;
+    text-align: left;
+}
+.m-t-l-income{
+    margin-bottom: 20px;
+}
+
+.m-t-l-income span b{
+    color: #898989;
+}
+.m-t-l-income span{
+    margin-right: 30px;
+    color: #b4b3b3;
+}
+.sw-apply-btn,.sw-recharge-btn{
+    padding:0 25px;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+.sw-recharge-btn{
+    background: #e25633;
+    color: #ffffff;
+}
+.sw-apply-btn{
+    background: #ffffff;
+    border: 1px solid #e25633;
+    color: #e25633;
+}
+
+.sw-upload-bankcard {
+    display: inline-block;
+    vertical-align: top;
+    margin:0 25px 20px;
+}
+.sw-uploaded-img, .sw-bankcard-img {
+    margin: 0 auto;
+    width: 240px;
+    height: 110px;
+}
+
+.sw-bankcard-img {
+    background: #d89494;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+    line-height: 36px;
+    font-size: 14px;
+}
+
+.sw-uploaded-img {
+    position: relative;
+    display: inline-block;
+    margin: 0 10px;
+    vertical-align: top;
+}
+
+.card-upload {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.sw-bankcard-img em {
+    font-size: 20px;
+    display: block;
+    padding-top: 28px;
+}
+
+.delete-card {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: rgba(0, 0, 0, 0.7);
+    filter: alpha(opacity=70);
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    display: none;
+}
+
+.card-span {
+    display: block;
+    position: relative;
+    width: 90px;
+    height: 105px;
+    text-align: center;
+    margin: 0;
+    overflow: hidden;
+    font-size: 14px;
+}
+.swcard-upload-tip a{
+    color: #e25633;
+}
+.swcard-upload-tip i {
+    display: block;
+    font-size: 54px;
+    color: #f0bac1;
+}
+.my-money-list{
+    padding:20px 0 0;
+    border-top: 1px dashed #e25633;
+}
+.my-money-table-wrapper{
+    min-height: 455px;
+}
+.my-money-table{
+    width: 100%;
+    border: 1px solid #f2f2f2;
+    border-collapse: collapse;
+}
+
+.my-money-table thead{
+    background: #a29e9e;
+    color: #ffffff;
+}
+.my-money-table thead a{
+    color: #ffffff;
+    display: block;
+}
+.my-money-table th div{
+    border-right: 1px solid #ffffff;
+    text-align: left;
+}
+
+.my-money-table th:last-child div {
+    border-right:none;
+}
+.my-money-table th i{
+    float: right;
+}
+.my-money-table td{
+    border-right: 1px solid #d8d8d8;
+    text-align: left;
+}
+.my-money-table td:last-child {
+    border-right:none;
+}
+.my-money-table th,.my-money-table td{
+    padding:6px 0 6px 8px;
+}
+.my-money-table th div,.my-money-table td div{
+    padding-right: 8px;
+}
+.my-money-table tbody{
+    color: #333333;
+}
+.my-money-table tbody tr:nth-child(even){
+    background: #fafafa;
+}
+.my-money-table tbody tr:nth-child(odd){
+    background: #f2f2f2;
+}
+.my-money-list .pages{
+    float: right;
+    padding:0.3rem 0 0;
+}
+
+@media (max-width: 767px) {
+    /*html {*/
+    /*font-size: 70px;*/
+    /*}*/
+    .jun-banner-cap {
+        padding: 1.12rem 0 0 0.42rem;
+        font-size: 0.28rem;
+    }
+
+    .jun-banner-btn {
+        line-height: 0.28rem;
+        width: 1.12rem;
+    }
+
+    .jun-banner-intro {
+        font-size: 0.21rem;
+    }
+}
