@@ -43,15 +43,18 @@ var userUID = readCookie("uid")
 var yunXin = new YX(userUID)
 var consultId=$("#consult").val();
 var eventId=$("#eventVideo").val();
+var meetid=$("#meetid").val();
 consultId=(typeof(consultId)!='undefined')?consultId:"";
 eventId=(typeof(eventId)!='undefined')?eventId:"";
+meetid=(typeof(meetid)!='undefined')?meetid:"";
 $.ajax({
     url:"/getTeamId",
-    data:{"consultId":consultId,"eventId":eventId},
+    data:{"consultId":consultId,"eventId":eventId,'meetid':meetid},
     dataType:"json",
     type:"POST",
     success:function(res){
         if(res['code']=="success"){
+            console.log(res+'-------------------------------');
             yunXin.openChatBox(res['tid'],"team");
         }
     }

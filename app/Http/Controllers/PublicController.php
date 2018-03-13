@@ -428,7 +428,9 @@ class PublicController extends Controller
         $res=array();
         if(!$_POST['eventId']){
             $teamId=DB::table("t_s_im")->where(["consultid"=>$_POST['consultId']])->pluck("tid");
-        }else{
+        }elseif(!$_POST['meetid']){
+            $teamId=DB::table("t_s_im")->where(["eventid"=>$_POST['meetid']])->pluck("tid");
+        } else {
             $teamId=DB::table("t_s_im")->where(["eventid"=>$_POST['eventId']])->pluck("tid");
         }
         if($teamId){

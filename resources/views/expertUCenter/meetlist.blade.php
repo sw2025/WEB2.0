@@ -47,7 +47,11 @@
                         <a href="javascript:;" class="sw-to-review" index="{{$v->meetid}}">同意约见</a>
                         <a href="javascript:;" class="sw-no-time refalse" index="{{$v->meetid}}">没有时间</a>
                     @elseif($v->configid==3)
-                        <a href="javascript:;" class="sw-no-time">已响应</a>
+                        @if($v->meettype)
+                            <a href="{{url('expmymeet/intomeeting',$v->meetid)}}" class="sw-no-time intomeeting">进入约见厅</a>
+                        @else
+                            <a href="javascript:;" class="sw-no-time">等待企业联系您</a>
+                        @endif
                     @else
                         <a href="javascript:;" class="sw-no-time">已拒绝</a>
                     @endif
@@ -108,6 +112,10 @@
                     });
                 });
             });
+
+        });
+
+        $('.intomeeting').on('click',function () {
 
         });
     </script>
