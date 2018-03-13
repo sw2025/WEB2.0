@@ -44,7 +44,7 @@
                 <button type="button" class="login-btn">注 册</button>
                 <div class="login-bottom">
                     <a href="javascript:;" class="protocol">注册协议</a>
-                    <span class="go-login">已有账号，去 <a href="{{asset('login')}}" class="to-log">登录</a></span>
+                    <span class="go-login">已有账号，去 <a href="javascript:;" class="to-log switchtype">登录</a></span>
                 </div>
             </div>
         </div>

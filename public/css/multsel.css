@@ -1,0 +1,70 @@
+/**
+ * multiple select plugin
+ * @date: 2017/09/13
+ * @author: liugl@inspur.com
+ */
+.multsel {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 80%;
+}
+.multsel .view {
+    position: relative;
+    display: block;
+    padding: 0 42px 0 8px;
+    line-height: 40px;
+    height: 40px;
+    border: 1px solid #dedede;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #696f77;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.multsel .view:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 42px;
+    height: 40px;
+    font-family: "iconfont";
+    content: "\e60c";
+    background: #dfdfdf;
+    color: #868686;
+    text-align: center;
+    font-size: 36px;
+}
+.multsel i {
+	display: none;
+}
+.multsel i.pop {
+	/* display: none; */
+}
+.multsel .selist {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    font-size: 14px;
+    background: #ffffff;
+    box-shadow: 0 0 3px #ddd;
+    border-radius: 4px;
+    width: 100%;
+    display: none;
+    z-index: 2;
+}
+.multsel .selist .seitem {
+    display: block;
+    line-height: 26px;
+    padding: 0 10px;
+    border-bottom: 1px dotted #eee;
+    color: #6a6a6a;
+    cursor: pointer;
+}
+.multsel .selist .seitem:hover,.multsel .selist .checked {
+    background: #eeeeee;
+    color: #e25633;
+}

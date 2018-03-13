@@ -304,23 +304,44 @@ class ShowController extends Controller
                 }
 
             case 'meet':
-                /*$basicdata = DB::table('t_m_meet')->where('meetid',$id)->pluck('basicdata');
-                $amount = $basicdata['selectnumbers']*env('showPrice');
+                $meetData = DB::table('t_m_meet as meet')
+                    ->leftJoin('t_m_meetverify as verify','verify.meetid','=','meet.meetid')
+                    ->where('meet.meetid',$id)
+                    ->whereRaw('verify.id=(select max(id) from t_m_meetverify where meetid='.$id.' order by id desc)')
+                    ->first();
+                if(empty($meetData)){
+                    return [
+                        'icon' => 2,
+                        'msg' => '未找到该约见'
+                    ];
+                }
+                if($meetData->configid != 1){
+                    return [
+                        'icon' => 2,
+                        'msg' => '已经支付过了'
+                    ];
+                }
+                $basicdata = DB::table('t_m_meet')->where('meetid',$id)->pluck('basicdata');
+                $basicdata = unserialize($basicdata);
+                $amount = $meetData->price;
                 $channel = $basicdata['paytype'] == '微信支付' ? 'wx_pub_qr' :'alipay_pc_direct';
-                $type = 'show';
-                $showid = $id;
-                $urlType = url('/keepshow',$id);
-                $subject = '升维网项目评议';
+                $type = 'meet';
+                $meetid = $id;
+                $urlType = url('/keepmeet',$id);
+                $subject = '升维网约见投资人/大V';
                 return [
-                    'payType' => $payType,
-                    'userid' => $userid,
-                    'channel' => $channel,
-                    'type' => $type,
-                    'showid' => $showid,
-                    'urlType' => $urlType,
-                    'subject' => $subject,
-                    'amount' => $amount
-                ];*/
+                    'icon' => 1,
+                    'data' => [
+                        'payType' => $payType,
+                        'userid' => $userid,
+                        'channel' => $channel,
+                        'type' => $type,
+                        'meetid' => $meetid,
+                        'urlType' => $urlType,
+                        'subject' => $subject,
+                        'amount' => $amount
+                    ]
+                ];
         }
     }
 

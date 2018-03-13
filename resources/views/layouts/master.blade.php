@@ -35,7 +35,7 @@
                 <!-- 登录前 -->
                 @if(empty(session('userId')))
                     <span class="sw-mt">
-                        <a href="javascript:;">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;">注册</a>
+                        <a href="javascript:;" class="switchtype">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;" class="switchtype">注册</a>
                     </span>
                         <!-- 登录后 -->
                 @else
@@ -125,6 +125,26 @@
         }
         $("#"+string).addClass('active');
         $("#"+string).addClass('on');
+
+        $('.switchtype').on('click',function () {
+            var isreturnurl = window.location.search.indexOf('returnurl');
+            var istype = window.location.search.indexOf('type');
+            if(isreturnurl==-1 && istype == -1){
+                if($.trim($(this).text())=='登录'){
+                    window.location.href="{{url('/login')}}?returnurl="+window.location.href;
+                }else {
+                    window.location.href="{{url('/register')}}?returnurl="+window.location.href;
+                }
+            } else {
+                if($.trim($(this).text())=='登录'){
+                    window.location.href="{{url('/login')}}"+window.location.search;
+                }else {
+                    window.location.href="{{url('/register')}}"+window.location.search;
+                }
+            }
+
+
+        });
     })();
 
     $(".quit").on("click",function(){
@@ -154,24 +174,7 @@
         })
     })
 
-    $('.sw-mt a').on('click',function () {
-        var isreturnurl = window.location.search.indexOf('returnurl');
-        if(isreturnurl==-1){
-            if($.trim($(this).text())=='登录'){
-                window.location.href="{{url('/login')}}?returnurl="+window.location.href;
-            }else {
-                window.location.href="{{url('/register')}}?returnurl="+window.location.href;
-            }
-        } else {
-            if($.trim($(this).text())=='登录'){
-                window.location.href="{{url('/login')}}"+window.location.search;
-            }else {
-                window.location.href="{{url('/register')}}"+window.location.search;
-            }
-        }
 
-
-    });
 </script>
 
 

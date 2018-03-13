@@ -145,6 +145,10 @@ Route::post('dealmeet', 'ExpertUcenter@dealMeet');
 Route::get('expmymeet/intomeeting/{meetid}','ExpertUcenter@intoMeeting');
 //我的钱包
 Route::get('expmycharge/myCharge','ExpertUcenter@myCharge');
+//收费设置
+Route::get('expmycharge/chargeStandard','ExpertUcenter@chargeStandard');
+//设置收费
+Route::post('chargeStandard','ExpertUcenter@PostchargeStandard');
 //充值提现
 Route::get('uct_recharge', 'CenterController@recharge');
 //获取充值记录
@@ -161,7 +165,16 @@ Route::post('haveCard', 'ExpertUcenter@haveCard');
 Route::post('expertHaveCard', 'ExpertUcenterController@expertHaveCard');
 //提现
 Route::get('recharge/cash', 'ExpertUcenter@cash');
-
+//提现添加银行卡
+Route::get('expmycharge/card', 'ExpertUcenter@card');
+//获取银行卡名称
+Route::post('getBankName', 'PublicController@getBankName');
+//验证银行卡
+Route::get('expmycharge/card2', 'ExpertUcenterController@card2');
+//添加银行卡处理
+Route::post('cardHandle', 'ExpertUcenter@cardHandle');
+//验证银行卡处理
+Route::post('verifyCard', 'ExpertUcenter@verifyCard');
 //个人设置页面
 Route::get('personalSet', 'PublicController@personalSet');
 //修改手机号页面
