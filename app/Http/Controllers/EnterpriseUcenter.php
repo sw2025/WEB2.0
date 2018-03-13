@@ -118,8 +118,8 @@ class EnterpriseUcenter extends Controller
             ->select('meet.*','verify.configid','expert.*')
             ->orderBy('meet.meetid','desc')
             ->paginate(4);
-        $configname = [1 => '已保存',2 => '已支付' ,3 => '已响应',4 => '已拒绝' ,5 => '已完成'];
-        $meettype = [1 => '线下约谈' ,0 => '线上约谈'];
+        $configname = [1 => '待支付',2 => '已支付，等待响应' ,3 => '已响应,请联系投资人',4 => '已拒绝' ,5 => '已完成'];
+        $meettype = [0 => '线下约谈' ,1 => '线上约谈'];
         foreach($data as $v) {
             $expert = DB::table('t_u_expert')
                 ->leftJoin('t_u_user', 't_u_user.userid', '=', 't_u_expert.userid')
@@ -227,7 +227,7 @@ class EnterpriseUcenter extends Controller
             ->orderBy('meet.meetid','desc')
             ->paginate(4);
         $configname = [1 => '已保存',2 => '已支付' ,3 => '已响应',4 => '已拒绝' ,5 => '已完成'];
-        $meettype = [1 => '线下约谈' ,0 => '线上约谈'];
+        $meettype = [0 => '线下约谈' ,1 => '线上约谈'];
         foreach($data as $v) {
             $expert = DB::table('t_u_expert')
                 ->leftJoin('t_u_user', 't_u_user.userid', '=', 't_u_expert.userid')
@@ -245,7 +245,7 @@ class EnterpriseUcenter extends Controller
     {
         $userid = session('userId');
 
-        $data = DB::table("t_s_lineshow")->where('userid',$userid)->paginate(4);
+        $data = DB::table("t_s_lineshow")->where('userid',$userid)->where('state',1)->paginate(4);
 
         return view('enterpriseUcenter.mylineshowindex',compact('data','expertinfo'));
     }

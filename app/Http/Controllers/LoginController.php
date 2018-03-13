@@ -157,6 +157,13 @@ class LoginController extends Controller
                     $res['msg']="该手机号不存在!";
                     return $res;
                 }
+            case "change":
+                $user = User::where('phone', $phone)->first();
+                if($user) {
+                    $res['code']="phone";
+                    $res['msg']="该手机号已存在!";
+                    return $res;
+                }
                 break;
         }
         // 获取验证码

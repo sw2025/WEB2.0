@@ -49,5 +49,9 @@
     $('.sw-avatar').on('click',function () {
         window.location = "{{url('/entindex/index')}}";
     });
+    $('.icon-cog').on('click',function () {
+
+        window.location = "{{url('personalSet')}}";
+    });
 
 </script>

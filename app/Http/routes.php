@@ -52,6 +52,16 @@ Route::get('daVIndex/{meetid?}','MeetController@Index');
 //提交约见大V约见页面
 Route::get('keepdav/{meetid}','MeetController@keepmeet');
 
+//提交项目
+Route::get('submitIndex/{showid?}','ShowController@submitIndex');
+//提交项目
+Route::post('submitProject','ShowController@submitProject');
+//提交项目
+Route::get('keepSubmit/{showid}','ShowController@keepSubmit');
+//删除提交项目
+Route::post('deteleSubmit','ShowController@deteleSubmit');
+
+
 //判断支付
 Route::post('payJudge','ShowController@payJudge');
 //ping++支付接口
@@ -62,6 +72,8 @@ Route::get('lineShowIndex','ShowController@lineShowIndex');
 Route::post('submitLineShow','ShowController@submitLineShow');
 //线下路演
 Route::get('keeplineshow/{lineshowid}','ShowController@keeplineshow');
+//取消线下路演
+Route::post('cancelLineShow','ShowController@cancelLineShow');
 //获取accid和token
 Route::post('getAccid','PublicController@getAccid');
 //获取群ID
@@ -128,6 +140,7 @@ Route::get('expmysector/intoSector/{consultid}','ExpertUcenter@intoSector');
 Route::post('uct_myask/responseconsult', 'ExpertUcenter@responseConsult');
 //处理约见
 Route::post('dealmeet', 'ExpertUcenter@dealMeet');
+
 //线上约见页面
 Route::get('expmymeet/intomeeting/{meetid}','ExpertUcenter@intoMeeting');
 //我的钱包
@@ -148,3 +161,16 @@ Route::post('haveCard', 'ExpertUcenter@haveCard');
 Route::post('expertHaveCard', 'ExpertUcenterController@expertHaveCard');
 //提现
 Route::get('recharge/cash', 'ExpertUcenter@cash');
+
+//个人设置页面
+Route::get('personalSet', 'PublicController@personalSet');
+//修改手机号页面
+Route::get('/changeTel', 'PublicController@changeTel');
+//修改手机号
+Route::post('/changeNewPhone', 'PublicController@changeNewPhone');
+//修改密码页面
+Route::get('/changePwd', 'PublicController@changePwd');
+//修改密码
+Route::post('/updatePwd', 'PublicController@updatePwd');
+
+

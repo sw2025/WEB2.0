@@ -4,9 +4,6 @@
     <link type="text/css" rel="stylesheet" href="{{asset('css/ucenterProView.css')}}">
     <link type="text/css" rel="stylesheet" href="{{asset('css/fillIn.css')}}">
     <script type="text/javascript" src="{{asset('js/fill.js')}}"></script>
-
-
-
     <!-- banner -->
     <div class="junior-banner">
         <div class="swcontainer">
@@ -34,12 +31,7 @@
                         </div>
                         <div class="zhan-wei"></div>
                         <span class="sw-article-time"><b class="sw-time-explain">提交时间：</b>{{$v->puttime}}</span>
-                        @if($v->state==1)
-                            <span class="sw-article-state">已提交</span>
-                        @else
-                            <span class="sw-article-state">已删除</span>
-                        @endif
-
+                        <span class="sw-article-state">已提交</span>
                     </li>
                 </ul>
                 @endforeach

@@ -109,7 +109,6 @@ class MeetController extends Controller
             ];
 
             if($meetid){
-
                 DB::table('t_m_meet')->where('meetid',$meetid)->update([
                     "timelot"=>$data['timelot'],
                     "expertid"=> $data['expertid'],

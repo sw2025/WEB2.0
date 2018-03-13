@@ -28,13 +28,10 @@
             </div>
             <div class="sw-pro-form">
 
-
-
-
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>项目名称</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <input type="text" placeholder="输入项目名称" readonly="true" class="project-name" value="{{$lineShowData->title or ''}}">
+                        <input type="text" placeholder="输入项目名称"disabled class="project-name" value="{{$lineShowData->title or ''}}">
                         <span class="sw-error"></span>
                     </div>
                 </div>
@@ -43,14 +40,14 @@
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label "><span class="need">*</span>项目概述</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <textarea readonly="true" placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$lineShowData->describe or ''}}</textarea>
+                        <textarea disabled placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$lineShowData->describe or ''}}</textarea>
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div><
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label "><span class="need">*</span>项目备注</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <textarea placeholder="备注，不超过1000字" readonly="true" maxlength="1000" class="sw-remarks" >{{$lineShowData->remarks or ''}}</textarea>
+                        <textarea placeholder="备注，不超过1000字" disabled maxlength="1000" class="sw-remarks" >{{$lineShowData->remarks or ''}}</textarea>
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div>
@@ -62,7 +59,7 @@
                         <div class="swcol-md-8 sw-pro-rowcon">
                             <div class="sw-upload-wrapper">
                                 <span class="sw-upload-cap">{{$lineShowData->bpname or '上传文件'}}</span>
-                                <input class="sw-upload-btn" type="file" name="files[]" id='bpurl' data-url="https://www.sw2025.com/upload" {{--index="/images/15078635376874.png"--}} multiple="" accept="" index="@if(!empty($lineShowData)) 1 @endif">
+                                <input class="sw-upload-btn" disabled type="file" name="files[]" id='bpurl' data-url="https://www.sw2025.com/upload" {{--index="/images/15078635376874.png"--}} multiple="" accept="" index="@if(!empty($lineShowData)) 1 @endif">
                             </div>
                             <span class="sw-upload-exp">请上传小于7.5M的PDF文件</span>
                             <div class="sw-upload-det">填写具体的媒体报道、产品描述、核心竞争力等，让投资人更了解你<i class="iconfont icon-arrows"></i></div>
@@ -71,11 +68,11 @@
                 </form>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>工商注册公司全称</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" placeholder="输入公司全名" class="sw-entername" value="{{$lineShowData->enterprisename or ''}} "></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled placeholder="输入公司全名" class="sw-entername" value="{{$lineShowData->enterprisename or ''}} "></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" placeholder="输入您所在职位" class="sw-enterjob" value="{{$lineShowData->job or ''}} "></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled placeholder="输入您所在职位" class="sw-enterjob" value="{{$lineShowData->job or ''}} "></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
@@ -90,7 +87,7 @@
                     @if(!empty($lineShowData))
                         @if($lineShowData->state==1)
                             <input type="hidden" value="" id="lineshowid">
-                            <button class="sw-btn-submit" type="button" id="" style="margin-right: 10%;" onclick=window.location="{{url('/showIndex/')}}">取消线下路演项目提交</button>
+                            <button class="sw-btn-submit" type="button" id="delete" style="margin-right: 10%;" >取消线下路演项目提交</button>
                             <button class="sw-btn-submit" type="button" id="submit">等待</button>
                         @else
                             <button class="sw-btn-submit" type="button" id="submit">已取消</button>
@@ -108,6 +105,21 @@
     </div>
 </div>
     <script>
+
+        $('#delete').on('click',function () {
+            var lineshowid = {{$lineShowData->lineshowid}};
+            $.post('{{url('cancelLineShow')}}',{'lineshowid':lineshowid},function (data) {
+                    if(data.state == 2){
+                        layer.msg(data.msg,{'icon':data.icon,'time':2000},function () {
+                            window.location = data.url;
+                        });
+                    }else{
+                        layer.msg(data.msg,{'icon':data.icon,'time':2000},function () {
+                            window.location = window.location.href;
+                        });
+                    }
+                })
+        });
 
 
     </script>
