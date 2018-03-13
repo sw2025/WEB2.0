@@ -86,10 +86,7 @@ $(function() {
         var searchName=$(".uct-list-search-inp").val();
         var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
-
-        if(searchName == '请输入大V姓名'){
-            searchName = '';
-        }
+       var type = $('.list-type').val();
         searchName=(searchName)?searchName:null;
         supply=(supply)?supply:null;
         address=(address)?address:null;
@@ -123,6 +120,6 @@ $(function() {
             }
         }
         ordertime=(ordertime)?ordertime:null;
-        window.location.href="?searchname="+searchName+"&address="+address+"&ordertime="+ordertime;
+        window.location.href="?type="+type+"&searchname="+searchName+"&address="+address+"&ordertime="+ordertime;
     }
 })

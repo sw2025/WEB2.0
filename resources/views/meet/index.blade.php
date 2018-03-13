@@ -17,9 +17,9 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">项目评议</a>
+        <a href="{{url('showIndex')}}" class=" swcol-md-4 swcol-xs-12">项目评议</a>
         <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">创业加速包</a>
+        <a href="{{url('lineShowIndex')}};" class="swcol-md-4 swcol-xs-12">创业加速包</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
@@ -294,8 +294,8 @@
                 str += '<div class="expert-img-wrapper"><img src="http://images.sw2025.com'+image+'" alt=""></div>';
                 $('#expertid').val(expertid);
                 $('#name').val(name);
-                $('#linefee').attr('linefee',linefee);
-                $('#linefee').attr('fee',fee);
+                $('#linefee').attr('linefee',linefee+'/元每小时');
+                $('#linefee').attr('fee',fee+'/元每分钟');
                 $('.sw-mine').css('display','block').siblings('.sw-need-con').css('display','none');
                 $('.sw-mine').prepend(str);
                 $.cookie("reselect","",{path:'/',domain:'sw2025.com'});

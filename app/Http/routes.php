@@ -173,4 +173,10 @@ Route::get('/changePwd', 'PublicController@changePwd');
 //修改密码
 Route::post('/updatePwd', 'PublicController@updatePwd');
 
+//专家列表
+Route::get('expert','ExpertController@index');
+//专家详情
+Route::get('expert/detail/{expertId}','ExpertController@detail');
+//专家详情
+Route::post('message','ExpertController@message');
 

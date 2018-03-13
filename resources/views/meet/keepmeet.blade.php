@@ -104,7 +104,7 @@
                     <div class="swcol-md-4 sw-pro-label">支付方式</div>
                     <div class="swcol-md-8 sw-pro-rowcon sw-need-con">
                         <div class="sw-radio-wrapper @if(empty($basedata) ||  $basedata['paytype'] == '微信支付') swon @endif">
-                            <input type="radio"  id="payWX" name="pay" disabled>
+                            <input type="radio"  id="payWX" name="pay" readonly="true">
                             <label for="payWX" class="radio-label">
                                 <span></span><i class="iconfont icon-weixin"></i><em>微信支付</em>
                             </label>

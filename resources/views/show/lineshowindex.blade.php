@@ -17,8 +17,8 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">项目评议</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">约见投资人</a>
+        <a href="{{url('showIndex')}}" class="swcol-md-4 swcol-xs-12">项目评议</a>
+        <a href="{{url('meetIndex')}}" class="swcol-md-4 swcol-xs-12">约见投资人</a>
         <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">线下路演</a>
     </div>
     <div class="sw-pro-content">
@@ -99,8 +99,6 @@
                         <span class="sw-error"></span>
                     </div>
                 </div>
-
-
                 <div class="sw-btn-wrapper">
                     @if(!empty($showinfo))
                         <input type="hidden" value="" id="lineshowid">

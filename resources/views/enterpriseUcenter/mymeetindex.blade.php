@@ -59,9 +59,18 @@
             </li>
         </ul>
         @endforeach
-
+            <div class="xxxooo" style="width: 100%;text-align:center;">
+                {!! $data->render() !!}
+            </div>
+            <div style="width: 100%;text-align: center;margin: 10px 0px;">
+                <span class="page-sum">共<strong class="allPage"> {{$data->lastpage()}}</strong> 页</span>
+            </div>
     </div>
 </div>
+    <style>
+        .xxxooo li{display: inline; padding:20px;font-size: 16px;}
+        .xxxooo .active{color:#e25633;}
+    </style>
     <script>
         $('.contact').on('click',function () {
             var e = $(this).attr('index');

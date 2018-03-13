@@ -117,7 +117,7 @@ class EnterpriseUcenter extends Controller
             ->whereRaw('verify.id in (select max(id) from t_m_meetverify group by meetid)')
             ->select('meet.*','verify.configid','expert.*')
             ->orderBy('meet.meetid','desc')
-            ->paginate(4);
+            ->paginate(3);
         $configname = [1 => '待支付',2 => '已支付，等待响应' ,3 => '已响应,请联系投资人',4 => '已拒绝' ,5 => '已完成'];
         $meettype = [0 => '线下约谈' ,1 => '线上约谈'];
         foreach($data as $v) {
@@ -135,8 +135,6 @@ class EnterpriseUcenter extends Controller
 
     public function intoMeeting($meetid)
     {
-
-
         $datas=DB::table("t_m_meet as meet")
             ->leftJoin("t_m_meetverify","t_m_meetverify.meetid","=","meet.meetid")
             ->leftJoin('t_u_enterprise as ent','meet.userid','=','ent.userid')
@@ -245,7 +243,7 @@ class EnterpriseUcenter extends Controller
     {
         $userid = session('userId');
 
-        $data = DB::table("t_s_lineshow")->where('userid',$userid)->where('state',1)->paginate(4);
+        $data = DB::table("t_s_lineshow")->where('userid',$userid)->where('state',1)->paginate(3);
 
         return view('enterpriseUcenter.mylineshowindex',compact('data','expertinfo'));
     }
