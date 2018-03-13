@@ -38,15 +38,19 @@ Route::get('keepshow/{showid}','ShowController@keepshow');
 Route::any('selectExpert','ShowController@selectExpert');
 
 
-//提交约见页面
-Route::get('meetIndex/{meetid?}','MeetController@index');
+//提交线下约见页面
+Route::get('meetIndex/{meetid?}','MeetController@Index');
 //保存约见
 Route::post('submitMeet','MeetController@submitMeet');
 //保存约见页面
 Route::get('keepmeet/{meetid}','MeetController@keepmeet');
 
-//支付页面
-Route::get('paypage/{type}','PublicController@paypage');
+//判断支付
+Route::post('payJudge','ShowController@payJudge');
 
 //线下路演发布页
 Route::get('lineShowIndex','ShowController@lineShowIndex');
+
+//ping++支付接口
+Route::post("charge",'PingpayController@charge');
+

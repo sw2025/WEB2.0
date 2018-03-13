@@ -4,7 +4,16 @@
     <link type="text/css" rel="stylesheet" href="{{asset('css/login.css')}}">
     <script type="text/javascript" src="{{asset('js/reg.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/jquery/jquery.cookie.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/payJudge.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/jquery/jquery.qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
+    <style>
 
+        .changeWeixin img{
+            margin:0 auto;
+        }
+    </style>
 
 <div class="section sw-bg"  onkeydown="autosubmit()">
         <div class="swcontainer">
@@ -26,19 +35,32 @@
         </div>
     </div>
     <!-- 登录 / end -->
-
+<div class="layer-pop" style="position:fixed;background: rgba(0,0,0,0.3);top: 0;left: 0;width: 100%;height: 100%;z-index: 19891016;display: none;">
+    <div class="popWx" style="position: absolute;top: 10%;width: 285px;border: 2px solid #ccc;left: 50%;top: 50%;margin: -160px 0 0 -145px;background: #fff;text-align: center;border-radius: 3px;font-size: 14px;padding: 30px 0 27px;">
+        <div class="changeWeixin">
+            <div class="popWeixin" id="code">
+            </div>
+        </div>
+        <span class="weixinLittle"></span>
+        <div class="weixinTips" style="display: none"><strong>扫瞄二维码完成支付</strong><br>支付完成后请关闭二维码</div>
+        <a href="javascript:;" class="closePop" title="关闭" style="position: absolute;top: 0;right: 0;"><i class="iconfont icon-chahao"></i></a>
+    </div>
+</div>
 <script>
     function autosubmit(){//事件触发函数
         if(event.keyCode==13){
             $(".login-btn").trigger("click");
         }
     }
+
     $(".login-btn").on("click",function(){
         var that=this;
         var reg1 = /^1[3578][0-9]{9}$/;//手机号
         var reg2 = /^[a-zA-Z0-9]{6,18}$/;//密码
         var phone=$(".user-tel-inp").val();
         var passWord=$(".user-pwd-inp").val();
+        var type="{{$type}}";
+        var id= "{{$id}}";
         if(!(reg1.test(phone))){
             layer.tips('手机号不能为空或输入错误', '.user-tel', {
                 tips: [2, '#e25633'],
@@ -57,7 +79,7 @@
         $(this).html('登录中...');
         $.ajax({
             url:"{{url('/loginHandle')}}",
-            data:{"phone":phone,"passWord":passWord},
+            data:{"phone":phone,"passWord":passWord,'id':parseInt(id),'type':type},
             dateType:"json",
             type:"POST",
             success:function(res){
@@ -84,15 +106,32 @@
                     $.cookie("name",res['name'],{expires:date,path:'/',domain:'swchina.com'});
                     $.cookie("role",res['role'],{expires:date,path:'/',domain:'sw2025.com'});
                     $.cookie("role",res['role'],{expires:date,path:'/',domain:'swchina.com'});
-                    if({{$return}}){
-                        window.location.href="{{$returnurl}}";
+                    if(type!='' && id!=''){
+
+                        if(res.data.icon==2){
+                            layer.msg(res.data.msg,function () {
+                                window.location.href="/";
+                                return false;
+                            });
+                        } else {
+                            callPingPay(res.data.data);
+                            $(that).html('登录完成,请支付');
+                            $('.closePop').on('click',function () {
+                                window.location = '/keep'+type+'/'+id;
+                            });
+                        }
                     } else {
-                        if(res['role']=="专家"){
-                            window.location.href="{{asset('uct_mywork')}}";
-                        }else{
-                            window.location.href="{{asset('uct_works')}}";
+                        if({{$return}}){
+                            window.location.href="{{$returnurl}}";
+                        } else {
+                            if(res['role']=="专家"){
+                                window.location.href="{{asset('uct_mywork')}}";
+                            }else{
+                                window.location.href="{{asset('uct_works')}}";
+                            }
                         }
                     }
+
 
                 }
             }

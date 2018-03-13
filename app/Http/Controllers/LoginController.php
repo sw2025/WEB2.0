@@ -17,12 +17,14 @@ class LoginController extends Controller
      */
     public function login(){
         $return = empty($_GET['returnurl']) ? 0 : 1 ;
+        $type = empty($_GET['type']) ? null : $_GET['type'] ;
+        $id = empty($_GET['id']) ? null : $_GET['id'] ;
         if($return){
             $returnurl = $_GET['returnurl'];
         } else {
             $returnurl = url('/');
         }
-        return view("login.login",compact('return','returnurl'));
+        return view("login.login",compact('return','returnurl','id','type'));
     }
 
     /**注册页面
@@ -30,12 +32,14 @@ class LoginController extends Controller
      */
     public  function  register(){
         $return = empty($_GET['returnurl']) ? 0 : 1 ;
+        $type = empty($_GET['type']) ? null : $_GET['type'] ;
+        $id = empty($_GET['id']) ? null : $_GET['id'] ;
         if($return){
             $returnurl = $_GET['returnurl'];
         } else {
             $returnurl = url('/');
         }
-        return view("login.register",compact('return','returnurl'));
+        return view("login.register",compact('return','returnurl','id','type'));
     }
 
     /**找回密码
@@ -51,7 +55,12 @@ class LoginController extends Controller
     public  function loginHandle(){
         $phone=$_POST['phone'];
         $passWord=$_POST['passWord'];
+        $type = $_POST['type'];
+        $id = $_POST['id'];
         $datas=\UserClass::LoginVerify($phone,$passWord);
+        if($datas['code'] == 'success' && $type && !empty($id) && $id != 'NaN'){
+            $datas['data'] = ShowController::getPayData($datas['userId'],$type,$id);
+        }
         return $datas;
     }
 
@@ -65,6 +74,8 @@ class LoginController extends Controller
         $pwd=$post['passWord'];
         $code=$post['codes'];
         $role=$post['role'];
+        $type = $_POST['type'];
+        $id = $_POST['id'];
         $str=array();
        if(Cache::has($phone)){
             $smsCode=Cache::get($phone);
@@ -79,6 +90,9 @@ class LoginController extends Controller
             return $str;
         }
         $datas=\UserClass::regVerify($phone,$role,$pwd);
+        if($datas['code'] == 'success' && $type && !empty($id) && $id != 'NaN'){
+            $datas['data'] = ShowController::getPayData($datas['userId'],$type,$id);
+        }
         return $datas;
     }
 

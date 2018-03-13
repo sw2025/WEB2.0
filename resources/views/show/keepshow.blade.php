@@ -2,7 +2,16 @@
 @section("content")
     <link type="text/css" rel="stylesheet" href="{{asset('css/project.css')}}">
     <script type="text/javascript" src="{{asset('js/project.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/payJudge.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/jquery/jquery.qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/js/pingpp.js')}}"></script>
+    <style>
 
+        .changeWeixin img{
+            margin:0 auto;
+        }
+    </style>
 
     <!-- banner -->
 <div class="junior-banner">
@@ -165,12 +174,21 @@
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label">支付金额</div>
-                    <div class="swcol-md-8 sw-pro-rowcon sw-pay-money">100元</div>
+                    <div class="swcol-md-8 sw-pro-rowcon sw-pay-money">{{env('showPrice').' * '.$basedata['selectnumbers'].' = '}}<b style="color: red;font-size: 18px;">{{env('showPrice')*$basedata['selectnumbers']}}</b>元</div>
                 </div>
-                <div class="sw-btn-wrapper">
-                    <a class="sw-btn-change" href="{{url('/showIndex',$showinfo->showid)}}">再改改</a>
-                    <a class="sw-btn-pay" href="javascript:;">去支付</a>
-                </div>
+                @if($configid == 1)
+                    <div class="sw-btn-wrapper">
+                        <a class="sw-btn-change" href="{{url('/showIndex',$showinfo->showid)}}">再改改</a>
+                        <a class="sw-btn-pay" href="javascript:;" id="gotopay">去支付</a>
+                    </div>
+                @else
+                    <div class="sw-btn-wrapper">
+                        <a class="sw-btn-pay" href="javascript:;" id="">已完成支付</a>
+                    </div>
+                @endif
+
+
+
             </div>
         </div>
         <div class="sw-pro-tabcon">222</div>
@@ -178,9 +196,56 @@
     </div>
 
 </div>
+
+
+    <div class="layer-pop" style="position:fixed;background: rgba(0,0,0,0.3);top: 0;left: 0;width: 100%;height: 100%;z-index: 19891016;display: none;">
+        <div class="popWx" style="position: absolute;top: 10%;width: 285px;border: 2px solid #ccc;left: 50%;top: 50%;margin: -160px 0 0 -145px;background: #fff;text-align: center;border-radius: 3px;font-size: 14px;padding: 30px 0 27px;">
+            <div class="changeWeixin">
+                <div class="popWeixin" id="code">
+                </div>
+            </div>
+            <span class="weixinLittle"></span>
+            <div class="weixinTips" style="display: none"><strong>扫瞄二维码完成支付</strong><br>支付完成后请关闭二维码</div>
+            <a href="javascript:;" class="closePop" title="关闭" style="position: absolute;top: 0;right: 0;"><i class="iconfont icon-chahao"></i></a>
+        </div>
+    </div>
+
     <script>
         $(function () {
             $('.sw-num').html($('.sw-project-txt').val().length)
         })
+        $('.closePop').on('click',function () {
+            window.location = window.location.href;
+        });
+        $('#gotopay').on('click',function () {
+            var showid={{$showinfo->showid}};
+            $.post("{{url('payJudge')}}",{'type':'show','id':showid},function (data) {
+                if(data.icon==2){
+                    layer.open({
+                        type: 1,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['360px', '160px'],
+                        title: false, //不显示标题
+                        shadeClose: false, //开启遮罩关闭
+                        content: '<div style="padding:15px;background: #3d921d;color: #fff;"><span style="font-size:18px;">系统检测到您还未登陆/注册</span><br /><br />登陆/注册完跳转到支付页面就可以成功发起项目了~</div>',
+                        btn: ['去登陆','去注册','再想想'],
+                        yes: function(index, layero){
+                            window.location.href="{{asset('/login')}}?type="+data.type+'&id='+data.id;
+                        },btn2: function(index, layero){
+                            window.location.href="{{asset('/register')}}?type="+data.type+'&id='+data.id;
+                        },btn3: function(index, layero){
+                            layer.close(index);
+                        }
+                    });
+                } else if(data.icon==1){
+                    callPingPay(data.data);
+                } else if(data.icon==3) {
+                    layer.msg(data.msg);
+                } else {
+                    window.location = window.location.href;
+                }
+
+            });
+        });
     </script>
 @endsection
