@@ -63,7 +63,7 @@
 
                 <div class="sw-pro-row clearfix linefee">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>资费</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" fee="{{$expertData->fee or 0}}" linefee="{{$expertData->linefee or 0}}"  value="@if(!empty($meetData) && $meetData->meettype) {{$expertData->fee or 0}} @else {{$expertData->linefee or 0}} @endif"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" fee="{{$expertData->fee or ''}}元/分钟" linefee="{{$expertData->linefee or ''}}元/小时"  value="@if(!empty($meetData) && $meetData->meettype){{$expertData->fee or ''}}元/分钟@else{{$expertData->linefee or ''}}元/小时@endif"></div>
                 </div>
 
                 <div class="sw-pro-row clearfix linefee">
@@ -80,6 +80,11 @@
                         <span class="sw-error"></span>
                     </div>
                 </div>
+
+            <div class="sw-pro-row clearfix linefee">
+                <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>约见时间</div>
+                <div class="swcol-md-8 sw-pro-rowcon"><input type="text" class="sw-time"  value="{{$basedata['time'] or ''}}"></div>
+            </div>
 
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label "><span class="need">*</span>问题描述</div>
@@ -100,16 +105,16 @@
 
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>工商注册公司全称</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入公司全名" class="sw-entername" value="@if(!empty($basedata['enterprisename'])){{$basedata['enterprisename']}} @elseif(!empty($entinfo)) {{$entinfo->enterprisename}} @else @endif"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入公司全名" class="sw-entername" value="@if(!empty($basedata['enterprisename'])){{$basedata['enterprisename']}}@elseif(!empty($entinfo)){{$entinfo->enterprisename}}@else @endif"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}} @elseif(!empty($entinfo)) {{$entinfo->job}} @else @endif"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-industry">@if(!empty($basedata['industry'])){{$basedata['industry']}} @elseif(!empty($entinfo)) {{$entinfo->industry}} @else选择行业@endif</a>
+                        <a href="javascript:;" class="sw-select-default sw-industry">@if(!empty($basedata['industry'])){{$basedata['industry']}}@elseif(!empty($entinfo)){{$entinfo->industry}}@else选择行业@endif</a>
                         <ul class="sw-select-list sw-field-list">
                             <li>IT|通信|电子|互联网</li>
                             <li>金融业</li>
@@ -153,7 +158,7 @@
           <div class="sw-btn-wrapper">
               @if(!empty($meetData))
                   <input type="hidden" value="{{$meetid}}" id="meetid">
-                  <button class="sw-btn-submit" type="button" >返回</button>
+                  <button class="sw-btn-submit" type="button" onclick=window.location.href="{{url('keepdav',$meetid)}}" >返回</button>
                   <button class="sw-btn-submit" type="button" id="submit">确认修改</button>
               @else
                         <input type="hidden" value="" id="meetid">
@@ -235,6 +240,7 @@
             var linefee = parseInt($('.sw-linefee').val());  //资费
             var expertid = $('#expertid').val();  //资费
             var timelot = $('.sw-timelot').text();  //时长
+            var time = $('.sw-time').val();  //时长
             var oneword = $('.sw-one-word').val();  //备注
             var domain = $('.sw-domain').text();  //领域
             var projecttxt = $('.sw-project-txt').val();  //项目概述
@@ -270,6 +276,7 @@
             formFile.append("name", name);
             formFile.append("linefee", linefee);
             formFile.append("timelot", timelot);
+            formFile.append("time", time);
             formFile.append("expertid", expertid);
             formFile.append("oneword", oneword);
             formFile.append("projecttxt", projecttxt);
@@ -327,8 +334,8 @@
                 str += '<div class="expert-img-wrapper"><img src="http://images.sw2025.com'+image+'" alt=""></div>';
                 $('#expertid').val(expertid);
                 $('#name').val(name);
-                $('#linefee').attr('linefee',linefee);
-                $('#linefee').attr('fee',fee);
+                $('#linefee').attr('linefee',linefee+'元/小时');
+                $('#linefee').attr('fee',fee+'元/分钟');
                 $('.sw-mine').css('display','block').siblings('.sw-need-con').css('display','none');
                 $('.sw-mine').prepend(str);
                 $.cookie("reselect","",{path:'/',domain:'sw2025.com'});

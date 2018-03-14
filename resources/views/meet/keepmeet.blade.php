@@ -65,7 +65,7 @@
 
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>总共咨询费用</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled id="linefee" class="sw-linefee" value="{{$meetData->price}}"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled id="linefee" class="sw-linefee" value="{{$meetData->price}}元"></div>
                 </div>
 
                 <div class="sw-pro-row clearfix forbidden">
@@ -74,6 +74,11 @@
                         <input type="text" disabled id="linefee" class="sw-linefee" value="{{$meetData->timelot}}小时">
                         <span class="sw-error"></span>
                     </div>
+                </div>
+
+                <div class="sw-pro-row clearfix linefee">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>约见时间</div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled class="sw-time"  value="{{$basedata['time'] or ''}}"></div>
                 </div>
 
                 <div class="sw-pro-row clearfix">
