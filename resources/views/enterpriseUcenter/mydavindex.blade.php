@@ -23,6 +23,7 @@
     @include('layouts.entucenter')
     <!-- 个人中心主体 -->
         <div class="sw-mains">
+            <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">约见大咖 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
 
             @foreach($data as $v)
 
@@ -67,9 +68,11 @@
                 <div class="xxxooo" style="width: 100%;text-align:center;">
                     {!! $data->render() !!}
                 </div>
+            @if(!empty($data->lastpage()))
                 <div style="width: 100%;text-align: center;margin: 10px 0px;">
                     <span class="page-sum">共<strong class="allPage"> {{$data->lastpage()}}</strong> 页</span>
                 </div>
+            @endif
         </div>
     </div>
     <style>

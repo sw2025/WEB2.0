@@ -55,7 +55,7 @@
 
 
         </div>
-        @if(!empty($datas))
+        @if(!empty($datas->lastpage()))
             <div style="width: 100%;text-align: center;margin: 10px 0px;">
                 <span class="page-sum">共<strong class="allPage"> {{$datas->lastpage()}}</strong> 页</span>
             </div>

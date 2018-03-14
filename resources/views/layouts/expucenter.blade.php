@@ -9,16 +9,16 @@
     </div>
     <ul class="sw-aside-list my-ucenter">
         <li class="sw-aside-item" id="expmyshow">
-            <a href="{{url('expmyshow/myShowList')}}" class="sw-item-title my1">我的评议</a>
+            <a href="{{url('expmyshow/myShowList')}}" class="sw-item-title my1"><i class="iconfont ">&#xe693;</i> 我的评议 </a>
         </li>
         <li class="sw-aside-item" id="expmymeet">
-            <a href="{{url('expmymeet/myMeetList')}}" class="sw-item-title my2">我的约见</a>
+            <a href="{{url('expmymeet/myMeetList')}}" class="sw-item-title my2"><i class="iconfont ">&#xe661;</i> 我的约见</a>
         </li>
         <li class="sw-aside-item" id="expmysector">
-            <a href="{{url('expmysector/mySectorList')}}" class="sw-item-title my3">我的私董会</a>
+            <a href="{{url('expmysector/mySectorList')}}" class="sw-item-title my3"><i class="iconfont ">&#xe610;</i> 我的私董会</a>
         </li>
         <li class="sw-aside-item" id="expmycharge">
-            <a href="{{url('expmycharge/myCharge')}}" class="sw-item-title my4">我的钱包</a>
+            <a href="{{url('expmycharge/myCharge')}}" class="sw-item-title my4"><i class="iconfont ">&#xe631;</i> 我的钱包</a>
         </li>
     </ul>
     <button type="button" class="sw-left-btn"><i class="iconfont icon-rilijiantouyoushuang"></i></button>

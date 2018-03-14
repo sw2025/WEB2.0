@@ -42,9 +42,11 @@
                     <div class="xxxooo" style="width: 100%;text-align:center;">
                         {!! $data->render() !!}
                     </div>
+                    @if(!empty($data->lastpage()))
                     <div style="width: 100%;text-align: center;margin: 10px 0px;">
                         <span class="page-sum">共<strong class="allPage"> {{$data->lastpage()}}</strong> 页</span>
                     </div>
+                        @endif
             </div>
 </div>
     <style>

@@ -17,7 +17,7 @@
     }
 </style>
 <!-- banner -->
-{{--<div class="junior-banner">
+<div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
             <a href="#" class="jun-banner-btn">创业孵化</a>
@@ -25,7 +25,7 @@
             <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
         </div>
     </div>
-</div>--}}
+</div>
 <!-- 主体 -->
 <div class="swcontainer sw-ucenter">
     <!-- 个人中心左侧 -->
@@ -33,6 +33,7 @@
     <!-- 个人中心主体 -->
     <div class="sw-mains">
         <ul class="sw-mains-list">
+            <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">我的项目评议 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
             @foreach($data as $k => $v)
             <li class="sw-article">
                 <div class="sw-article-tit"><span>项目名称：</span><a href="@if($v->configid==1 || $v->configid==2){{url('/keepshow',$v->showid)}}@elseif($v->configid == 4 || $v->configid==5){{url('/entmyshow/myshowdetail',$v->showid)}} @else javascript:;@endif">{{$v->title}}</a></div>
@@ -60,9 +61,12 @@
 
 
         </div>
-        <div style="width: 100%;text-align: center;margin: 10px 0px;">
-            <span class="page-sum">共<strong class="allPage"> {{$data->lastpage()}}</strong> 页</span>
-        </div>
+        @if(!empty($data->lastpage()))
+            <div style="width: 100%;text-align: center;margin: 10px 0px;">
+                <span class="page-sum">共<strong class="allPage"> {{$data->lastpage()}}</strong> 页</span>
+            </div>
+        @endif
+
 
 
     </div>

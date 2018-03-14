@@ -70,7 +70,7 @@
                     <div class="selist">
                         @if(empty($data) || ($data->configid != 2 && $data->configid != 1))
                             @foreach($cate as $k => $v)
-                                <a class="seitem" value="select{{$k}}">{{$v->domainname}}</a>
+                                <a class="seitem @if(!empty($data) && in_array($v->domainname,explode(',',$data->domain1)))checked " @endif" value="select{{$k}}">{{$v->domainname}}</a>
                             @endforeach
                         @endif
 
@@ -85,7 +85,7 @@
                     <div class="selist">
                         @if(empty($data) || $data->configid != 2 && $data->configid != 1)
                             @foreach($domain2 as $k => $v)
-                                <a class="seitem" value="select{{$k}}">{{$v->name}}</a>
+                                <a class="seitem @if(!empty($data) && in_array($v->name,explode(',',$data->domain2)))checked " @endif value="select{{$k}}">{{$v->name}}</a>
                             @endforeach
                         @endif
 
@@ -95,22 +95,24 @@
 
 
 
-          {{--  <div class="sw-fill-row">
+            <div class="sw-fill-row" id="preference">
                 <span class="sw-fill-left">投资偏好</span>
                 <div class="multsel" defval="0">
-                    <span class="view domain" title="{{$data->preference or '请选择'}}">{{$data->preference or '请选择'}}</span>
+                    <span class="view domain preference" title="{{$data->preference or '请选择'}}">{{$data->preference or '请选择'}}</span>
                     <div class="selist">
                         @if($data->configid != 2 && $data->configid != 1)
                             @foreach($preference as $k => $v)
-                                <a class="seitem" value="select{{$k}}">{{$v->name}}</a>
+                                <a class="seitem @if(!empty($data) && in_array($v->name,explode(',',$data->preference)))checked " @endif " value="select{{$k}}">{{$v->name}}</a>
                             @endforeach
                         @endif
 
                     </div>
                 </div>
-            </div>--}}
+            </div>
+
 
             <div class="sw-fill-row" id="preference" @if(!empty($data) && $data->configid != 2 && $data->configid != 1 && strpos($data->domain1,'风险投资') !== false)  style="display: block;" @else  style="display: block;" @endif>
+
                 <span class="sw-fill-left" >投资偏好</span>
                 <div class="sw-fill-select">
                     <a href="javascript:;"  class="sw-fill-opt preference" >{{$data->preference or '请选择'}}</a>
@@ -123,7 +125,7 @@
                     @endif
 
                 </div>
-            </div>
+            </div>--}}
 
             <div class="sw-fill-row" >
                 <span class="sw-fill-left">所在地区</span>
@@ -227,6 +229,7 @@
             multselInit($('.multsel').eq(0));
             multselInit($('.multsel').eq(1));
             multselInit($('.multsel').eq(2));
+            multselInit($('.multsel').eq(3));
         });
     </script>
     <script>

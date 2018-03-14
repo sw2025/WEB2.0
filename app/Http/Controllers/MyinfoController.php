@@ -15,7 +15,8 @@ class MyinfoController extends Controller
         $datas=DB::table("t_m_systemmessage")
             ->where("receiveid",$userid)
             ->where("state",'<>',2)
-            ->paginate(3);
+            ->orderBy('id','desc')
+            ->paginate(8);
         return view('myinfo.myinfo',compact('datas'));
     }
     /**修改信息已读或者删除
