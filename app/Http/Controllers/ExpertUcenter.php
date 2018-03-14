@@ -178,13 +178,17 @@ class ExpertUcenter extends Controller
     public function myShowList()
     {
         $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
-
+        if(empty($expert)){
+            $expertid = null;
+        } else {
+            $expertid = $expert->expertid;
+        }
         $datas = DB::table('t_s_show as show')
             ->leftJoin('t_u_enterprise as ent','ent.userid', '=','show.userid')
             ->leftJoin('view_showstatus as status','status.showid' ,'=' ,'show.showid')
             ->leftJoin('t_s_pushshow as push','push.showid' ,'=' ,'show.showid')
             ->select('show.*','push.state','ent.enterprisename')
-            ->where('push.expertid',$expert->expertid)
+            ->where('push.expertid',$expertid)
             ->whereRaw('push.id in (select max(id) from t_s_pushshow group by showid,expertid)')
             ->orderBy('show.showid','desc')
             ->paginate(3);
@@ -260,11 +264,15 @@ class ExpertUcenter extends Controller
     public function myMeetList()
     {
         $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
-
+        if(empty($expert)){
+            $expertid = null;
+        } else {
+            $expertid = $expert->expertid;
+        }
         $datas = DB::table('t_m_meet as meet')
             ->leftJoin('t_u_enterprise as ent','ent.userid', '=','meet.userid')
             ->leftJoin('t_m_meetverify as verify','verify.meetid', '=','meet.meetid')
-            ->where('meet.expertid',$expert->expertid)
+            ->where('meet.expertid',$expertid)
             ->where('verify.configid','<>',1)
             ->whereRaw('verify.id in (select max(id) from t_m_meetverify group by meetid)')
             ->select('meet.*','verify.configid','ent.enterprisename')
@@ -363,13 +371,17 @@ class ExpertUcenter extends Controller
     public function mySectorList()
     {
         $expert = DB::table('t_u_expert')->where('userid',session('userId'))->first();
-
+        if(empty($expert)){
+            $expertid = null;
+        } else {
+            $expertid = $expert->expertid;
+        }
         $datas = DB::table('t_c_consult as consult')
             ->leftJoin('t_u_enterprise as ent','ent.userid', '=','consult.userid')
             ->leftJoin('view_consultstatus as status','status.consultid' ,'=' ,'consult.consultid')
             ->leftJoin('t_c_consultresponse as res','res.consultid' ,'=' ,'consult.consultid')
             ->select('consult.*','res.state','ent.enterprisename')
-            ->where('res.expertid',$expert->expertid)
+            ->where('res.expertid',$expertid)
             ->whereRaw('res.id in (select max(id) from t_c_consultresponse group by consultid,expertid)')
             ->orderBy('consult.consultid','desc')
             ->paginate(3);
@@ -547,6 +559,9 @@ class ExpertUcenter extends Controller
                 ->leftJoin('t_u_expertfee as fee','fee.expertid','=','expert.expertid')
                 ->where('expert.userid',$userid)
                 ->first();
+        if(empty($expertinfo)){
+            return redirect('/expmycharge/myCharge');
+        }
         return view("expertUcenter.chargeStandard",compact("expertinfo"));
 
     }

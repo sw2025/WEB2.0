@@ -38,19 +38,19 @@
 
             <div class="sw-fill-row">
                 <span class="sw-fill-left">大V名称</span>
-                <input type="text" class="sw-fill-inp name" placeholder="请输入您的姓名" @if($data->configid == 2 || $data->configid == 1)disabled @endif value="{{$data->expertname or null}}">
+                <input type="text" class="sw-fill-inp name" placeholder="请输入您的姓名" @if(!empty($data) && ($data->configid == 2 || $data->configid == 1))disabled @endif value="{{$data->expertname or null}}">
             </div>
             <div class="sw-fill-row">
                 <span class="sw-fill-left">所在机构</span>
-                <input type="text" class="sw-fill-inp organiza" placeholder="请输入您的所在机构" @if($data->configid == 2 || $data->configid == 1)disabled @endif value={{$data->organiza or null}}>
+                <input type="text" class="sw-fill-inp organiza" placeholder="请输入您的所在机构" @if(!empty($data) && ($data->configid == 2 || $data->configid == 1))disabled @endif value={{$data->organiza or null}}>
             </div>
             <div class="sw-fill-row">
                 <span class="sw-fill-left">所处职位</span>
-                <input type="text" class="sw-fill-inp job" placeholder="请输入您的所处职位" @if($data->configid == 2 || $data->configid == 1)disabled @endif value={{$data->job or null}}>
+                <input type="text" class="sw-fill-inp job" placeholder="请输入您的所处职位" @if(!empty($data) && ($data->configid == 2 || $data->configid == 1))disabled @endif value={{$data->job or null}}>
             </div>
             <div class="sw-fill-row">
                 <span class="sw-fill-left">工作年限</span>
-                <input type="text" class="sw-fill-inp worklife" placeholder="" @if($data->configid == 2 || $data->configid == 1)disabled @endif value={{$data->worklife or null}}>
+                <input type="text" class="sw-fill-inp worklife" placeholder="" @if(!empty($data) && ($data->configid == 2 || $data->configid == 1))disabled @endif value={{$data->worklife or null}}>
             </div>
             {{--<div class="sw-fill-row">
                 <span class="sw-fill-left">擅长行业</span>
@@ -68,7 +68,7 @@
                 <div class="multsel" defval="0">
                     <span class="view domain" index="domain" title="{{$data->domain1 or '请选择'}}">{{$data->domain1 or '请选择'}}</span>
                     <div class="selist">
-                        @if($data->configid != 2 && $data->configid != 1)
+                        @if(empty($data) || ($data->configid != 2 && $data->configid != 1))
                             @foreach($cate as $k => $v)
                                 <a class="seitem" value="select{{$k}}">{{$v->domainname}}</a>
                             @endforeach
@@ -78,12 +78,12 @@
                 </div>
             </div>
 
-            <div class="sw-fill-row" id="domain2"  @if($data->configid != 2 && $data->configid != 1 && strpos($data->domain1,'风险投资') !== false)  style="display: block;" @else  style="display: block;" @endif>
+            <div class="sw-fill-row" id="domain2"  @if(!empty($data) && $data->configid != 2 && $data->configid != 1 && strpos($data->domain1,'风险投资') !== false)  style="display: block;" @else  style="display: block;" @endif>
                 <span class="sw-fill-left">投资领域</span>
                 <div class="multsel" defval="0">
-                    <span class="view domain2" index="domain2" title="{{$data->domain2 or '请选择'}}">{{$data->domain2 or '请选择'}}</span>
+                    <span class="view domain2" index="domain2" >{{$data->domain2 or '请选择'}}</span>
                     <div class="selist">
-                        @if($data->configid != 2 && $data->configid != 1)
+                        @if(empty($data) || $data->configid != 2 && $data->configid != 1)
                             @foreach($domain2 as $k => $v)
                                 <a class="seitem" value="select{{$k}}">{{$v->name}}</a>
                             @endforeach
@@ -110,11 +110,11 @@
                 </div>
             </div>--}}
 
-            <div class="sw-fill-row" id="preference" @if($data->configid != 2 && $data->configid != 1 && strpos($data->domain1,'风险投资') !== false)  style="display: block;" @else  style="display: block;" @endif>
+            <div class="sw-fill-row" id="preference" @if(!empty($data) && $data->configid != 2 && $data->configid != 1 && strpos($data->domain1,'风险投资') !== false)  style="display: block;" @else  style="display: block;" @endif>
                 <span class="sw-fill-left" >投资偏好</span>
                 <div class="sw-fill-select">
                     <a href="javascript:;"  class="sw-fill-opt preference" >{{$data->preference or '请选择'}}</a>
-                    @if($data->configid == 2 || $data->configid == 1) @else
+                    @if(!empty($data) && ($data->configid == 2 || $data->configid == 1)) @else
                         <ul class="sw-fill-list">
                             @foreach($preference as $k => $v)
                             <li>{{$v->name}}</li>
@@ -129,7 +129,7 @@
                 <span class="sw-fill-left">所在地区</span>
                 <div class="sw-fill-select">
                     <a href="javascript:;" class="sw-fill-opt address" >{{$data->address or '请选择'}}</a>
-                    @if($data->configid == 2 || $data->configid == 1) @else
+                    @if(!empty($data) && ($data->configid == 2 || $data->configid == 1)) @else
                         <ul class="sw-fill-list">
                             <li>北京</li>
                             <li>上海</li>
@@ -172,29 +172,29 @@
             </div>
             <div class="sw-fill-row">
                 <span class="sw-fill-left">个人简介</span>
-                <textarea type="text" style="height: 170px;" @if($data->configid == 2 || $data->configid == 1) disabled @endif class="sw-fill-textarea brief" placeholder="请输入您的个人简介 1000字以内">{{$data->brief or null}}</textarea>
+                <textarea type="text" style="height: 170px;" @if(!empty($data) && ($data->configid == 2 || $data->configid == 1)) disabled @endif class="sw-fill-textarea brief" placeholder="请输入您的个人简介 1000字以内">{{$data->brief or null}}</textarea>
             </div>
             <div class="sw-fill-row">
                 <span class="sw-fill-left">教育背景</span>
-                <input type="text" class="sw-fill-inp edubg" @if($data->configid == 2 || $data->configid == 1) disabled @endif placeholder="" value={{$data->edubg or null}}>
+                <input type="text" class="sw-fill-inp edubg" @if(!empty($data) && ($data->configid == 2 || $data->configid == 1)) disabled @endif placeholder="" value={{$data->edubg or null}}>
             </div>
             <div class="sw-fill-row">
                 <span class="sw-fill-left">工作经历</span>
-                <textarea type="text"  class="sw-fill-textarea workexperience" @if($data->configid == 2 || $data->configid == 1)disabled @endif placeholder="">{{$data->workexperience or null}}</textarea>
+                <textarea type="text"  class="sw-fill-textarea workexperience" @if(!empty($data) && ($data->configid == 2 || $data->configid == 1))disabled @endif placeholder="">{{$data->workexperience or null}}</textarea>
             </div>
             <div class="sw-fill-row sw-row-avatar">
                 <form id="formdata">
                 <span class="sw-fill-left">头像<br /> <small style="font-size: 11px;">(建议上传144*144或等比例照片)</small></span>
                 <div class="sw-fill-right">
-                    <div class="sw-upload-ava"><img id="avatar" src="@if(empty($data->showimage)) {{asset('img/avatar.jpg')}} @else @endif {{env('ImagePath').$data->showimage}}" /></div><!-- 上传的图片摆放位置 -->
+                    <div class="sw-upload-ava"><img id="avatar" src="@if(empty($data->showimage)) {{asset('img/avatar.jpg')}} @else {{env('ImagePath').$data->showimage}} @endif " /></div><!-- 上传的图片摆放位置 -->
                     <input type="hidden" id="myAvatar" name="myAvatar" value="/images/15078855261649.jpg">
 
-                    @if($data->configid != 2 && $data->configid != 1)
+                    @if(!empty($data) && $data->configid != 2 && $data->configid != 1)
 
                         <div class="sw-upload-wrapper">
                          <span class="sw-upload-btn">
                             <span>选&nbsp;&nbsp;&nbsp;择</span>
-                            <input class="hide-upbtn" id="fileupload" type="file" name="files[]" data-url="https://www.sw2025.com/upload" multiple="" index="@if(!empty($data)) 1 @endif"  @if($data->configid == 2 || $data->configid == 1)disabled @endif accept="image/png, image/gif, image/jpg, image/jpeg">
+                            <input class="hide-upbtn" id="fileupload" type="file" name="files[]" data-url="https://www.sw2025.com/upload" multiple="" index="@if(!empty($data)) 1 @endif"  @if(!empty($data) && ($data->configid == 2 || $data->configid == 1))disabled @endif accept="image/png, image/gif, image/jpg, image/jpeg">
                          </span>
                         </div>
 

@@ -72,6 +72,7 @@ class MeetController extends Controller
             ->where('meet.meetid',$meetid)
             ->whereRaw('verify.id=(select max(id) from t_m_meetverify where meetid='.$meetid.' order by id desc)')
             ->first();
+
         $basedata = unserialize($meetData->basicdata);
 
         $expertData = DB::table('t_u_expert')->where('expertid',$meetData->expertid)->select('showimage','expertname')->first();
@@ -124,6 +125,7 @@ class MeetController extends Controller
                 'job' => $data['enterjob'],
                 'industry' => $data['industry'],
                 'expertname' => $data['name'],
+                'time' => $data['time'],
                 'oneword' => $data['oneword']
             ];
             if($data['meettype']){
