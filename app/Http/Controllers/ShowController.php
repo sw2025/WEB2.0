@@ -27,8 +27,9 @@ class ShowController extends Controller
         if (!empty(session('userId'))) {
             $entinfo = DB::table('t_u_enterprise')->where('userid', session('userId'))->select('enterprisename', 'job', 'industry')->first();
         }
-        $cate = DB::table('t_common_domaintype')->where('level', 1)->get();
-        return view('show.index', compact('showid', 'cate', 'showinfo', 'basedata', 'showimages', 'entinfo'));
+        $cate1 = DB::table('t_i_investment')->where('type', 1)->get();
+        $cate2 = DB::table('t_i_investment')->where('type', 2)->get();
+        return view('show.index', compact('showid', 'cate1','cate2', 'showinfo', 'basedata', 'showimages', 'entinfo'));
     }
 
     /**提交项目
@@ -88,13 +89,15 @@ class ShowController extends Controller
                 $expertids = DB::table('t_u_expert')
                     ->leftJoin('view_expertstatus as state', 'state.expertid', '=', 't_u_expert.expertid')
                     ->where('state.configid', 2)
-                    ->where(['domain1' => $data['domain']])
+                    ->where('t_u_expert.domain2','like','%'. $data['domain'].'%')
+                    ->where('t_u_expert.preference','like','%'. $data['stage'].'%')
                     ->whereRaw('1=1  group by rand()')
+                    ->where('t_u_expert.userid','<>',$userid)
                     ->limit($expertnumbers)
                     ->lists('t_u_expert.expertid');
 
                 if (empty($expertids)) {
-                    $expertids = [0];
+                    $expertids = [75];
                 }
 
                 $expertids = join(',', $expertids);
@@ -105,8 +108,8 @@ class ShowController extends Controller
             }
 
             $basedata = [
-                'role' => $data['role'],
-                'stage' => $data['stage'],
+             /*   'role' => $data['role'],*/
+               /* 'stage' => $data['stage'],*/
                 'paytype' => $data['paytype'],
                 'enterprisename' => $data['entername'],
                 'job' => $data['enterjob'],
@@ -121,6 +124,7 @@ class ShowController extends Controller
                         'oneword' => $data['oneword'],
                         'title' => $data['projectname'],
                         'domain1' => $data['domain'],
+                        'preference' => $data['stage'],
                         'brief' => $data['projecttxt'],
                         'expertids' => $expertids,
                         'showtime' => date('Y-m-d H:i:s', time()),
@@ -134,6 +138,7 @@ class ShowController extends Controller
                         'oneword' => $data['oneword'],
                         'title' => $data['projectname'],
                         'domain1' => $data['domain'],
+                        'preference' => $data['stage'],
                         'brief' => $data['projecttxt'],
                         'expertids' => $expertids,
                         'showtime' => date('Y-m-d H:i:s', time()),
@@ -148,6 +153,7 @@ class ShowController extends Controller
                     'oneword' => $data['oneword'],
                     'title' => $data['projectname'],
                     'domain1' => $data['domain'],
+                    'preference' => $data['stage'],
                     'brief' => $data['projecttxt'],
                     'expertids' => $expertids,
                     'showtime' => date('Y-m-d H:i:s', time()),

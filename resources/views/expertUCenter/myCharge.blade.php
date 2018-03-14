@@ -61,6 +61,8 @@
     <!-- 个人中心右侧 -->
     <div class="sw-mains">
         <!-- 主体 -->
+        <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">我的钱包 <i class="iconfont" style="font-size: 23px;">&#xe61c;</i></h1>
+
         <div class="my-money">
             <div class="my-money-top">
                 <div class="m-t-left">
