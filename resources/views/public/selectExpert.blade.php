@@ -13,6 +13,7 @@
     <div class="swcontainer list-bg">
         <div class="list-search">
             <input type="text" class="list-search-inp" placeholder="请输入大V姓名" value="{{$searchname or null}}"/>
+            <input type="hidden" class="list-type"  value="{{$type or null}}"/>
             <button type="button" class="list-search-btn"><i class="iconfont icon-sousuo"></i></button>
         </div>
     </div>
@@ -121,7 +122,7 @@
         <ul class="expert-list clearfix">
             @foreach($datas as $v)
             <li class="swcol-md-4">
-                <a href="expert_details.html" class="expert-list-link">
+                <a href="{{url('expert/detail',$v->expertid)}}" class="expert-list-link">
                     <div class="exp-list-top">
                         <span class="exp-list-img"><img src="{{env('ImagePath').$v->showimage}}" /></span>
                         <div class="exp-list-brief">

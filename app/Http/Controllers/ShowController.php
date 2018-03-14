@@ -244,6 +244,7 @@ class ShowController extends Controller
 
         $datas = $datas->orderBy("ext.expertid", 'desc')->paginate(9);
         $ordertime = 'desc';
+
         return view("public.selectExpert", compact('type', 'cate', 'datas', 'ordertime'));
     }
 
