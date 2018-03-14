@@ -39,8 +39,8 @@
                     </span>
                         <!-- 登录后 -->
                 @else
-                <a href="#" class="sw-info sw-read"><i class="iconfont icon-email"></i><span class="info-exist"></span></a>
-                <a href="javascript:;" class="sw-logined"><img src="{{asset('img/avatar.jpg')}}"><span>{{session('phone')}}</span></a>
+                <a href="{{url('myinfo')}}" class="sw-info sw-read"><i class="iconfont icon-email"></i><span class="info-exist" @if($systemMessage>0)style="display: block" @else style="display: none" @endif ></span></a>
+                <a href="#" class="sw-logined"><img src="{{asset('img/avatar.jpg')}}"><span>{{session('phone')}}</span></a>
                 <div class="sw-entry">
                     <a href="{{url('expindex/index')}}">专家入口</a>
                     <a href="{{url('entindex/index')}}">企业入口</a>
@@ -52,7 +52,7 @@
                 <li><a href="{{url('showIndex')}}">创业孵化</a></li>
                 <li><a href="#">成长加速</a></li>
                 <li><a href="#">企业转型升级</a></li>
-            </ul>
+           </ul>
         </div>
         <span class="sw-toggle-nav"><i class="iconfont icon-daohang"></i></span>
     </div>

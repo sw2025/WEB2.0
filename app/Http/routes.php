@@ -173,4 +173,9 @@ Route::get('/changePwd', 'PublicController@changePwd');
 //修改密码
 Route::post('/updatePwd', 'PublicController@updatePwd');
 
+//系统消息
+Route::get('myinfo','MyinfoController@myinfo');
+//消息标记已读
+Route::post('uct_flagread', 'MyinfoController@flagRead');
+
 
