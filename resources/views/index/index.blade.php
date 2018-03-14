@@ -210,7 +210,7 @@
             </div>
         </a>
     </div>
-    <div class="investor-more"><a href="#" class="investor-more-link">更多投资人>></a></div>
+    <div class="investor-more"><a href="{{url('expert')}}" class="investor-more-link">更多投资人>></a></div>
 </div>
 <div class="institution">
     <div class="swcontainer institution-wrapper">

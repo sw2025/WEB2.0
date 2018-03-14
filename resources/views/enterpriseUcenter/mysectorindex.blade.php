@@ -24,6 +24,8 @@
         @include('layouts.entucenter')
     <!-- 个人中心主体 -->
     <div class="sw-mains">
+        <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">线上私董会 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
+
         <ul class="sw-mains-list">
             @foreach($data as $k => $v)
             <li class="sw-article">
@@ -49,9 +51,11 @@
 
 
         </div>
-        <div style="width: 100%;text-align: center;margin: 10px 0px;">
-            <span class="page-sum">共<strong class="allPage"> {{$data->lastpage()}}</strong> 页</span>
-        </div>
+        @if(!empty($data->lastpage()))
+            <div style="width: 100%;text-align: center;margin: 10px 0px;">
+                <span class="page-sum">共<strong class="allPage"> {{$data->lastpage()}}</strong> 页</span>
+            </div>
+        @endif
     </div>
 </div>
 @endsection

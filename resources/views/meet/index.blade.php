@@ -17,9 +17,11 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">项目评议</a>
+
+        <a href="{{url('/showIndex')}}" class="swcol-md-4 swcol-xs-12">项目评议</a>
         <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">创业加速包</a>
+        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">线下路演</a>
+
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
@@ -60,12 +62,9 @@
                 </div>
             </div>
 
-
-
-
                 <div class="sw-pro-row clearfix linefee">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>资费</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" fee="" linefee="" value="{{$meetData->price or  '' }}"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" fee="{{$expertData->fee or ''}}元/分钟" linefee="{{$expertData->linefee or ''}}元/小时" value="@if(!empty($meetData) && $meetData->meettype){{$expertData->fee or ''}}元/分钟@else{{$expertData->linefee or ''}}元/小时@endif"></div>
                 </div>
 
                 <div class="sw-pro-row clearfix linefee">
@@ -81,6 +80,11 @@
                         </ul>
                         <span class="sw-error"></span>
                     </div>
+                </div>
+
+                <div class="sw-pro-row clearfix linefee">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>约见时间</div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" class="sw-time"  value="{{$basedata['time'] or ''}}"></div>
                 </div>
 
                 <div class="sw-pro-row clearfix">
@@ -155,7 +159,7 @@
           <div class="sw-btn-wrapper">
               @if(!empty($meetData))
                   <input type="hidden" value="{{$meetid}}" id="meetid">
-                  <button class="sw-btn-submit" type="button" >返回</button>
+                  <button class="sw-btn-submit" type="button" onclick=window.location="{{url('keepmeet',$meetid)}}">返回</button>
                   <button class="sw-btn-submit" type="button" id="submit">确认修改</button>
               @else
                         <input type="hidden" value="" id="meetid">
@@ -199,9 +203,10 @@
         $('#submit').on('click',function () {
             var meettype = $('.sw-pattern').text();
             var name = $('.sw-name').val();  //专家姓名
-            var linefee = $('.sw-linefee').val();  //资费
+            var linefee = parseInt($('.sw-linefee').val());  //资费
             var expertid = $('#expertid').val();  //资费
             var timelot = $('.sw-timelot').text();  //时长
+            var time = $('.sw-time').val();  //约见时间
             var oneword = $('.sw-one-word').val();  //备注
             var domain = $('.sw-domain').text();  //领域
             var projecttxt = $('.sw-project-txt').val();  //项目概述
@@ -209,15 +214,14 @@
             var entername = $('.sw-entername').val(); //企业名称
             var industry = $('.sw-industry').text(); //企业行业
             var meetid = $('#meetid').val();
-
             //支付的方式
             var paytype = $.trim($('.sw-need-con .swon').children('label').text());
 
             //约见模式
-            if(meettype == '线上约见'){
-                var meettype ='1';
-            }else if(meettype == '线下约见'){
-                var meettype ='0';
+            if($.trim(meettype) == '线上约见'){
+                var meettype =1;
+            } else {
+                var meettype =0;
             }
 
             if(meettype == '选择模式' || oneword == '' || projecttxt == '' || entername == '' || timelot == '选择约见时长'){
@@ -237,6 +241,7 @@
             formFile.append("name", name);
             formFile.append("linefee", linefee);
             formFile.append("timelot", timelot);
+            formFile.append("time", time);
             formFile.append("expertid", expertid);
             formFile.append("oneword", oneword);
             formFile.append("projecttxt", projecttxt);
@@ -294,8 +299,8 @@
                 str += '<div class="expert-img-wrapper"><img src="http://images.sw2025.com'+image+'" alt=""></div>';
                 $('#expertid').val(expertid);
                 $('#name').val(name);
-                $('#linefee').attr('linefee',linefee);
-                $('#linefee').attr('fee',fee);
+                $('#linefee').attr('linefee',linefee+'元/小时');
+                $('#linefee').attr('fee',fee+'元/分钟');
                 $('.sw-mine').css('display','block').siblings('.sw-need-con').css('display','none');
                 $('.sw-mine').prepend(str);
                 $.cookie("reselect","",{path:'/',domain:'sw2025.com'});

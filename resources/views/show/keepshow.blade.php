@@ -1,7 +1,7 @@
 @extends("layouts.master")
 @section("content")
     <link type="text/css" rel="stylesheet" href="{{asset('css/project.css')}}">
-    <script type="text/javascript" src="{{asset('js/project.js')}}"></script>
+   {{-- <script type="text/javascript" src="{{asset('js/project.js')}}"></script>--}}
     <script type="text/javascript" src="{{asset('js/payJudge.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/jquery/jquery.qrcode.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
@@ -95,9 +95,15 @@
                 </div>
 
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>所属领域</div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>项目领域</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <a href="javascript:;" class="sw-select-default sw-domain">{{$showinfo->domain1}}</a>
+                    </div>
+                </div>
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>投资阶段</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <a href="javascript:;" class="sw-select-default sw-stage">{{$showinfo->preference or ''}}</a>
                     </div>
                 </div>
                {{-- <div class="sw-pro-row clearfix">
@@ -107,27 +113,22 @@
                     </div>
                 </div>--}}
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">项目概述</div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>项目概述</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <textarea maxlength="1000" class="sw-project-txt" disabled>{{$showinfo->brief or ''}}</textarea>
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div>
-                <div class="sw-pro-row clearfix">
+               {{-- <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>投资主体</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <a href="javascript:;" class="sw-select-default sw-role">{{$basedata['role'] or ''}}</a>
                     </div>
-                </div>
+                </div>--}}
 
-                <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">投资阶段</div>
-                    <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-stage">{{$basedata['stage'] or ''}}</a>
-                    </div>
-                </div>
+
                 <div class="sw-pro-row clearfix forbidden">
-                    <div class="swcol-md-4 sw-pro-label">商业计划书</div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>商业计划书</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <div class="sw-upload-wrapper">
                             <span class="sw-upload-cap">{{$showinfo->bpname or '上传文件'}}</span>
@@ -139,7 +140,7 @@
                 </div>
 
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">工商注册公司全称</div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>工商注册公司全称</div>
                     <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled value="{{$basedata['enterprisename'] or ''}}"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
@@ -183,7 +184,8 @@
                     </div>
                 @else
                     <div class="sw-btn-wrapper">
-                        <a class="sw-btn-pay" href="javascript:;" id="">已完成支付</a>
+                        <a class="sw-btn-pay" href="javascript:;" id="">该项目已完成支付</a>
+                        <a class="sw-btn-pay" href="{{url('/entmyshow/myshowindex')}}" id="">去个人中心查看我的项目 =></a>
                     </div>
                 @endif
 

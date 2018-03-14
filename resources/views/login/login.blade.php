@@ -27,7 +27,7 @@
                 </p>
                 <button type="button" class="login-btn">登 录</button>
                 <div class="login-bottom">
-                    <span class="go">尚无账号，去 <a href="{{url('/register')}}" class="to-register">注册</a></span>
+                    <span class="go">尚无账号，去 <a href="javascript:;" class="to-register switchtype">注册</a></span>
                     <a href="{{url('/forget')}}" class="find">找回密码</a>
                 </div>
             </div>

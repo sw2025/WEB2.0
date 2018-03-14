@@ -27,8 +27,9 @@ class ShowController extends Controller
         if (!empty(session('userId'))) {
             $entinfo = DB::table('t_u_enterprise')->where('userid', session('userId'))->select('enterprisename', 'job', 'industry')->first();
         }
-        $cate = DB::table('t_common_domaintype')->where('level', 1)->get();
-        return view('show.index', compact('showid', 'cate', 'showinfo', 'basedata', 'showimages', 'entinfo'));
+        $cate1 = DB::table('t_i_investment')->where('type', 1)->get();
+        $cate2 = DB::table('t_i_investment')->where('type', 2)->get();
+        return view('show.index', compact('showid', 'cate1','cate2', 'showinfo', 'basedata', 'showimages', 'entinfo'));
     }
 
     /**提交项目
@@ -88,13 +89,15 @@ class ShowController extends Controller
                 $expertids = DB::table('t_u_expert')
                     ->leftJoin('view_expertstatus as state', 'state.expertid', '=', 't_u_expert.expertid')
                     ->where('state.configid', 2)
-                    ->where(['domain1' => $data['domain']])
+                    ->where('t_u_expert.domain2','like','%'. $data['domain'].'%')
+                    ->where('t_u_expert.preference','like','%'. $data['stage'].'%')
                     ->whereRaw('1=1  group by rand()')
+                    ->where('t_u_expert.userid','<>',$userid)
                     ->limit($expertnumbers)
                     ->lists('t_u_expert.expertid');
 
                 if (empty($expertids)) {
-                    $expertids = [0];
+                    $expertids = [75];
                 }
 
                 $expertids = join(',', $expertids);
@@ -105,8 +108,8 @@ class ShowController extends Controller
             }
 
             $basedata = [
-                'role' => $data['role'],
-                'stage' => $data['stage'],
+             /*   'role' => $data['role'],*/
+               /* 'stage' => $data['stage'],*/
                 'paytype' => $data['paytype'],
                 'enterprisename' => $data['entername'],
                 'job' => $data['enterjob'],
@@ -121,6 +124,7 @@ class ShowController extends Controller
                         'oneword' => $data['oneword'],
                         'title' => $data['projectname'],
                         'domain1' => $data['domain'],
+                        'preference' => $data['stage'],
                         'brief' => $data['projecttxt'],
                         'expertids' => $expertids,
                         'showtime' => date('Y-m-d H:i:s', time()),
@@ -134,6 +138,7 @@ class ShowController extends Controller
                         'oneword' => $data['oneword'],
                         'title' => $data['projectname'],
                         'domain1' => $data['domain'],
+                        'preference' => $data['stage'],
                         'brief' => $data['projecttxt'],
                         'expertids' => $expertids,
                         'showtime' => date('Y-m-d H:i:s', time()),
@@ -148,6 +153,7 @@ class ShowController extends Controller
                     'oneword' => $data['oneword'],
                     'title' => $data['projectname'],
                     'domain1' => $data['domain'],
+                    'preference' => $data['stage'],
                     'brief' => $data['projecttxt'],
                     'expertids' => $expertids,
                     'showtime' => date('Y-m-d H:i:s', time()),
@@ -244,6 +250,7 @@ class ShowController extends Controller
 
         $datas = $datas->orderBy("ext.expertid", 'desc')->paginate(9);
         $ordertime = 'desc';
+
         return view("public.selectExpert", compact('type', 'cate', 'datas', 'ordertime'));
     }
 
@@ -304,23 +311,44 @@ class ShowController extends Controller
                 }
 
             case 'meet':
-                /*$basicdata = DB::table('t_m_meet')->where('meetid',$id)->pluck('basicdata');
-                $amount = $basicdata['selectnumbers']*env('showPrice');
+                $meetData = DB::table('t_m_meet as meet')
+                    ->leftJoin('t_m_meetverify as verify','verify.meetid','=','meet.meetid')
+                    ->where('meet.meetid',$id)
+                    ->whereRaw('verify.id=(select max(id) from t_m_meetverify where meetid='.$id.' order by id desc)')
+                    ->first();
+                if(empty($meetData)){
+                    return [
+                        'icon' => 2,
+                        'msg' => '未找到该约见'
+                    ];
+                }
+                if($meetData->configid != 1){
+                    return [
+                        'icon' => 2,
+                        'msg' => '已经支付过了'
+                    ];
+                }
+                $basicdata = DB::table('t_m_meet')->where('meetid',$id)->pluck('basicdata');
+                $basicdata = unserialize($basicdata);
+                $amount = $meetData->price;
                 $channel = $basicdata['paytype'] == '微信支付' ? 'wx_pub_qr' :'alipay_pc_direct';
-                $type = 'show';
-                $showid = $id;
-                $urlType = url('/keepshow',$id);
-                $subject = '升维网项目评议';
+                $type = 'meet';
+                $meetid = $id;
+                $urlType = url('/keepmeet',$id);
+                $subject = '升维网约见投资人/大V';
                 return [
-                    'payType' => $payType,
-                    'userid' => $userid,
-                    'channel' => $channel,
-                    'type' => $type,
-                    'showid' => $showid,
-                    'urlType' => $urlType,
-                    'subject' => $subject,
-                    'amount' => $amount
-                ];*/
+                    'icon' => 1,
+                    'data' => [
+                        'payType' => $payType,
+                        'userid' => $userid,
+                        'channel' => $channel,
+                        'type' => $type,
+                        'meetid' => $meetid,
+                        'urlType' => $urlType,
+                        'subject' => $subject,
+                        'amount' => $amount
+                    ]
+                ];
         }
     }
 
