@@ -32,8 +32,9 @@ class ExpertUcenter extends Controller
                 ->leftJoin('view_expertstatus as status','expert.expertid','=','status.expertid')
                 ->where('expert.userid', $userid)
                 ->first();
-
-        return view('expertUcenter.expertinfo',compact('data','cate'));
+        $domain2 = DB::table('t_i_investment')->where('type',1)->get();
+        $preference = DB::table('t_i_investment')->where('type',2)->get();
+        return view('expertUcenter.expertinfo',compact('data','cate','domain2','preference'));
     }
 
     public function submitExpertVerify(Request $request)
@@ -49,20 +50,22 @@ class ExpertUcenter extends Controller
                 //开启事务
                 DB::beginTransaction();
                 try{
-                    if ($file->isValid()) {
+                    if(trim($data['upload']) != 1){
+                        if ($file->isValid()) {
 
-                        // 获取文件相关信息
-                        $originalName = $file->getClientOriginalName(); // 文件原名
-                        $ext = $file->getClientOriginalExtension();     // 扩展名
-                        $realPath = $file->getRealPath();   //临时文件的绝对路径
-                        $type = $file->getClientMimeType();     // image/jpeg
+                            // 获取文件相关信息
+                            $originalName = $file->getClientOriginalName(); // 文件原名
+                            $ext = $file->getClientOriginalExtension();     // 扩展名
+                            $realPath = $file->getRealPath();   //临时文件的绝对路径
+                            $type = $file->getClientMimeType();     // image/jpeg
 
-                        // 上传文件
-                        $filename = date('YmdHis'). uniqid() . '.' . $ext;
-                        // 使用我们新建的uploads本地存储空间（目录）
-                        $bool = Storage::disk('uploadexpert')->put($filename, file_get_contents($realPath));
-                    } else {
-                        return ['msg' => '上传失败~','icon' => 2,'code' => 4];
+                            // 上传文件
+                            $filename = date('YmdHis'). uniqid() . '.' . $ext;
+                            // 使用我们新建的uploads本地存储空间（目录）
+                            $bool = Storage::disk('uploadexpert')->put($filename, file_get_contents($realPath));
+                        } else {
+                            return ['msg' => '上传失败~','icon' => 2,'code' => 4];
+                        }
                     }
                     if(empty($expertid->expertid)) {
                         $expertid = DB::table("T_U_EXPERT")
@@ -73,6 +76,8 @@ class ExpertUcenter extends Controller
                                 "showimage" => '/images/'.$filename,
                                 "brief" => $data['brief'],
                                 "domain1" => $domain1,
+                                "domain2" => $data['domain2'],
+                                "preference" => $data['preference'],
                                 'organiza' => $data['organiza'],
                                 'job' => $data['job'],
                                 'worklife' => $data['worklife'],
@@ -80,20 +85,39 @@ class ExpertUcenter extends Controller
                                 'workexperience' => $data['workexperience'],
                             ]);
                     }else{
-                        $expertdata = DB::table("T_U_EXPERT")
-                            ->where('expertid',$expertid->expertid)
-                            ->update([
-                                "expertname" => $data['name'],
+                        if(trim($data['upload']) == 1 ){
+                            $arr = [
+                                "expertname" => $data['expertname'],
                                 "address" => $data['address'],
-                                "showimage" => '/images/'.$filename,
                                 "brief" => $data['brief'],
                                 "domain1" => $domain1,
+                                "domain2" => $data['domain2'],
+                                "preference" => $data['preference'],
                                 'organiza' => $data['organiza'],
                                 'job' => $data['job'],
                                 'worklife' => $data['worklife'],
                                 'edubg' => $data['edubg'],
-                                'enterjob' => $data['enterjob'],
-                            ]);
+                                'workexperience' => $data['workexperience'],
+                            ];
+                        } else {
+                            $arr = [
+                                "expertname" => $data['expertname'],
+                                "address" => $data['address'],
+                                "showimage" => '/images/'.$filename,
+                                "brief" => $data['brief'],
+                                "domain1" => $domain1,
+                                "domain2" => $data['domain2'],
+                                "preference" => $data['preference'],
+                                'organiza' => $data['organiza'],
+                                'job' => $data['job'],
+                                'worklife' => $data['worklife'],
+                                'edubg' => $data['edubg'],
+                                'workexperience' => $data['workexperience'],
+                            ];
+                        }
+                        $expertdata = DB::table("T_U_EXPERT")
+                            ->where('expertid',$expertid->expertid)
+                            ->update($arr);
                         $expertid = $expertid->expertid;
                     }
                     if(!empty($expertid)){
@@ -489,8 +513,8 @@ class ExpertUcenter extends Controller
         $offset=($startPage-1)*10;
         $userId=session("userId");
         $result=array();
-        $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("type",$type)->where("payflag",1)->count();
-        $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("payflag",1)->skip($offset)->take(10)->get();
+        $counts=DB::table("T_U_BILL")->where("userid",$userId)->where("payflag",1)->count();
+        $datas=DB::table("T_U_BILL")->select("brief","payno","money","created_at","type")->where("userid",$userId)->where("payflag",1)->orderBy('id','desc')->skip($offset)->take(10)->get();
 
         $counts=!empty(ceil($counts/10))?ceil($counts/10):0;
         foreach ($datas as $data){
@@ -511,6 +535,50 @@ class ExpertUcenter extends Controller
         }
         return $result;
 
+    }
+
+    /**设置专家资费页面
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function chargeStandard()
+    {
+        $userid = session('userId');
+        $expertinfo = DB::table('t_u_expert as expert')
+                ->leftJoin('t_u_expertfee as fee','fee.expertid','=','expert.expertid')
+                ->where('expert.userid',$userid)
+                ->first();
+        return view("expertUcenter.chargeStandard",compact("expertinfo"));
+
+    }
+
+    /**
+     * post设置专家资费
+     */
+    public function PostchargeStandard(Request $request)
+    {
+        $data = $request;
+        $userid = session('userId');
+        if(!empty($userid)){
+            $expert = DB::table('t_u_expert')->where('userid',$userid)->pluck('expertid');
+            if(empty($expert)){
+                return ['icon' =>2 ,'msg' => '您还未认证，请去认证','url' => url('/expindex/index')];
+            }
+            DB::table('t_u_expert')->where('userid',$userid)->update([
+                'iscomment' => $data['iscomment'],
+                'islinemeet' => $data['islinemeet'],
+                'isonlinemeet' => $data['isonlinemeet']
+            ]);
+            if($data['fee']){
+                $arr = ['fee' => $data['fee'],'state' => 1,'linefee' => $data['linefee']];
+            } else {
+                $arr = ['fee' => $data['fee'],'state' => 0,'linefee' => $data['linefee']];
+            }
+
+            DB::table('t_u_expertfee')->where('expertid',$expert)->update($arr);
+            return ['icon' => 1,'msg' => '修改成功'];
+
+        }
+        return ['icon' => 2,'msg' => '请登录','url' => url('login').'?returnurl='.url('/expmycharge/chargeStandard')];
     }
 
     /**更改银行卡号
@@ -608,6 +676,71 @@ class ExpertUcenter extends Controller
         }
 
         return $res;
+    }
+
+    /**添加银行卡
+     * @return mixed
+     */
+    public  function  card(){
+        return view("expertUcenter.card");
+    }
+
+    /**银行卡处理
+     * @return mixed
+     */
+    public  function  cardHandle(){
+        $res=array();
+        $userId=session("userId");
+        $counts=DB::table("t_u_bank")->where("userid",$userId)->count();
+        if($counts){
+            $result=DB::table("t_u_bank")->where("userid",$userId)->update([
+                "userid"=>$userId,
+                "bankname"=>$_POST['bankName'],
+                "account"=>$_POST['account'],
+                "bankcard"=>$_POST['bankCard'],
+                "bankfullname"=>$_POST['bankFullName'],
+                "state"=>2,
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+        }else{
+            $result=DB::table("t_u_bank")->insert([
+                "userid"=>$userId,
+                "bankname"=>$_POST['bankName'],
+                "account"=>$_POST['account'],
+                "bankcard"=>$_POST['bankCard'],
+                "bankfullname"=>$_POST['bankFullName'],
+                "state"=>2,
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+        }
+        if($result){
+            $res['code']="success";
+        }else{
+            $res['code']="error";
+        }
+        return  $res;
+
+    }
+
+    /**银行卡处理
+     * @return mixed
+     */
+    public  function  verifyCard(Request $request){
+        $res=array();
+        $data=$request->all();
+        $money=DB::table("t_u_bank")->where("userId",$data['userId'])->pluck("money");
+        if($money==$data['money']){
+            DB::table('t_u_bank')->where('userId',$data['userId'])->update([
+                "state"=>0,
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+            $res['code']="success";
+        }else{
+            $res['code']="error";
+        }
+        return $res;
+
     }
 
 

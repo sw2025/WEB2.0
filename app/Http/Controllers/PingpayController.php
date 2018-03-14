@@ -61,7 +61,11 @@ class PingpayController extends Controller
                 $amount = $payload['amount'];
                 $user = $payload['userid'];
                 $body = '发布项目评议,由专家进行专业评议';
-            } else if($payload['type']=="linemeet") {
+            } else if($payload['type']=="meet"){
+                $amount = $payload['amount'];
+                $user = $payload['userid'];
+                $body = '约见升维网投资人/大V，线上约见或者线下面谈';
+            }else if($payload['type']=="linemeet") {
                 $amount = $payload['amount'];
                 $user = $payload['userid'];
                 $body = '线下约见专家';
@@ -79,8 +83,8 @@ class PingpayController extends Controller
         }
      
         $url =$payload['urlType'];
-        /*$amountMoney=$amount*100;*/
-        $amountMoney=$amount;
+        $amountMoney=$amount*100;
+        //$amountMoney=$amount;
         $subject = isset($payload['subject']) ? $payload['subject']:'充值金额';
 
         /**
@@ -196,7 +200,7 @@ class PingpayController extends Controller
             }else{
                 $data['userid'] = $user;
                 $data['type'] ="支出";
-                $data['channel'] = "消费";
+                $data['channel'] = "消费:".$subject;
                 $data['billtime'] = date("Y-m-d H:i:s",time());
                 $data['money'] = $amount;
                 $data['payno'] = $orderNo;

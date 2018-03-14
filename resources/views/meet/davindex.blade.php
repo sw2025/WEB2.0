@@ -63,7 +63,7 @@
 
                 <div class="sw-pro-row clearfix linefee">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>资费</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" fee="" linefee="" value="{{$meetData->price or  '' }}"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" fee="{{$expertData->fee or 0}}" linefee="{{$expertData->linefee or 0}}"  value="@if(!empty($meetData) && $meetData->meettype) {{$expertData->fee or 0}} @else {{$expertData->linefee or 0}} @endif"></div>
                 </div>
 
                 <div class="sw-pro-row clearfix linefee">
@@ -178,7 +178,7 @@
         $('.sw-choose-link').on('click',function (){
             layer.open({
                 title:'<h3 style="color: #e25633">请选择约见领域</h3>',
-                content:'选择精准领域能让你事半功倍，嘻嘻',
+                content:'选择精准领域能让您节省大量寻找大V的时间呦',
                 skin:'my-skin'
                 ,btn: ['找资金','找技术','找市场','找战略']
                 ,btn1: function(index, layero){
@@ -232,7 +232,7 @@
         $('#submit').on('click',function () {
             var meettype = $('.sw-pattern').text();
             var name = $('.sw-name').val();  //专家姓名
-            var linefee = $('.sw-linefee').val();  //资费
+            var linefee = parseInt($('.sw-linefee').val());  //资费
             var expertid = $('#expertid').val();  //资费
             var timelot = $('.sw-timelot').text();  //时长
             var oneword = $('.sw-one-word').val();  //备注
@@ -248,12 +248,11 @@
             var paytype = $.trim($('.sw-need-con .swon').children('label').text());
 
             //约见模式
-            if(meettype == '线上约见'){
-                var meettype ='1';
-            }else if(meettype == '线下约见'){
-                var meettype ='0';
+            if($.trim(meettype) == '线上约见'){
+                var meettype =1;
+            } else {
+                var meettype =0;
             }
-
             if(meettype == '选择模式' || oneword == '' || projecttxt == '' || entername == '' || timelot == '选择约见时长'){
                 layer.alert('请填写完整信息');
                 return false;
