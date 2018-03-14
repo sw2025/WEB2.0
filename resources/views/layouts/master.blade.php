@@ -35,12 +35,12 @@
                 <!-- 登录前 -->
                 @if(empty(session('userId')))
                     <span class="sw-mt">
-                        <a href="javascript:;">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;">注册</a>
+                        <a href="javascript:;" class="switchtype">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;" class="switchtype">注册</a>
                     </span>
                         <!-- 登录后 -->
                 @else
-                <a href="#" class="sw-info sw-read"><i class="iconfont icon-email"></i><span class="info-exist"></span></a>
-                <a href="javascript:;" class="sw-logined"><img src="{{asset('img/avatar.jpg')}}"><span>{{session('phone')}}</span></a>
+                <a href="{{url('myinfo')}}" class="sw-info sw-read"><i class="iconfont icon-email"></i><span class="info-exist" @if($systemMessage>0)style="display: block" @else style="display: none" @endif ></span></a>
+                <a href="#" class="sw-logined"><img src="{{asset('img/avatar.jpg')}}"><span>{{session('phone')}}</span></a>
                 <div class="sw-entry">
                     <a href="{{url('expindex/index')}}">专家入口</a>
                     <a href="{{url('entindex/index')}}">企业入口</a>
@@ -52,7 +52,7 @@
                 <li><a href="{{url('showIndex')}}">创业孵化</a></li>
                 <li><a href="#">成长加速</a></li>
                 <li><a href="#">企业转型升级</a></li>
-            </ul>
+           </ul>
         </div>
         <span class="sw-toggle-nav"><i class="iconfont icon-daohang"></i></span>
     </div>
@@ -125,6 +125,26 @@
         }
         $("#"+string).addClass('active');
         $("#"+string).addClass('on');
+
+        $('.switchtype').on('click',function () {
+            var isreturnurl = window.location.search.indexOf('returnurl');
+            var istype = window.location.search.indexOf('type');
+            if(isreturnurl==-1 && istype == -1){
+                if($.trim($(this).text())=='登录'){
+                    window.location.href="{{url('/login')}}?returnurl="+window.location.href;
+                }else {
+                    window.location.href="{{url('/register')}}?returnurl="+window.location.href;
+                }
+            } else {
+                if($.trim($(this).text())=='登录'){
+                    window.location.href="{{url('/login')}}"+window.location.search;
+                }else {
+                    window.location.href="{{url('/register')}}"+window.location.search;
+                }
+            }
+
+
+        });
     })();
 
     $(".quit").on("click",function(){
@@ -154,24 +174,7 @@
         })
     })
 
-    $('.sw-mt a').on('click',function () {
-        var isreturnurl = window.location.search.indexOf('returnurl');
-        if(isreturnurl==-1){
-            if($.trim($(this).text())=='登录'){
-                window.location.href="{{url('/login')}}?returnurl="+window.location.href;
-            }else {
-                window.location.href="{{url('/register')}}?returnurl="+window.location.href;
-            }
-        } else {
-            if($.trim($(this).text())=='登录'){
-                window.location.href="{{url('/login')}}"+window.location.search;
-            }else {
-                window.location.href="{{url('/register')}}"+window.location.search;
-            }
-        }
 
-
-    });
 </script>
 
 

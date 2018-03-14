@@ -17,9 +17,11 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="{{url('showIndex')}}" class=" swcol-md-4 swcol-xs-12">项目评议</a>
+
+        <a href={{url('/showIndex')}}" class=" swcol-md-4 swcol-xs-12">项目评议</a>
         <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="{{url('lineShowIndex')}};" class="swcol-md-4 swcol-xs-12">创业加速包</a>
+        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">线下路演</a>
+
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
@@ -65,7 +67,7 @@
 
                 <div class="sw-pro-row clearfix linefee">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>资费</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" fee="" linefee="" value="{{$meetData->price or  '' }}"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" readonly="true" id="linefee" class="sw-linefee" fee="{{$expertData->fee or 0}}" linefee="{{$expertData->linefee or 0}}" value="@if(!empty($meetData) && $meetData->meettype)  {{$expertData->fee or 0}} @else {{$expertData->linefee or 0}} @endif"></div>
                 </div>
 
                 <div class="sw-pro-row clearfix linefee">
@@ -199,7 +201,7 @@
         $('#submit').on('click',function () {
             var meettype = $('.sw-pattern').text();
             var name = $('.sw-name').val();  //专家姓名
-            var linefee = $('.sw-linefee').val();  //资费
+            var linefee = parseInt($('.sw-linefee').val());  //资费
             var expertid = $('#expertid').val();  //资费
             var timelot = $('.sw-timelot').text();  //时长
             var oneword = $('.sw-one-word').val();  //备注
@@ -209,15 +211,14 @@
             var entername = $('.sw-entername').val(); //企业名称
             var industry = $('.sw-industry').text(); //企业行业
             var meetid = $('#meetid').val();
-
             //支付的方式
             var paytype = $.trim($('.sw-need-con .swon').children('label').text());
 
             //约见模式
-            if(meettype == '线上约见'){
-                var meettype ='1';
-            }else if(meettype == '线下约见'){
-                var meettype ='0';
+            if($.trim(meettype) == '线上约见'){
+                var meettype =1;
+            } else {
+                var meettype =0;
             }
 
             if(meettype == '选择模式' || oneword == '' || projecttxt == '' || entername == '' || timelot == '选择约见时长'){

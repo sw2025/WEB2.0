@@ -64,19 +64,6 @@ body {
     font-size: 14px;
 }
 
-.sw-fill-textarea {
-    display: inline-block;
-    vertical-align: top;
-    padding: 8px 8px;
-    line-height: 16px;
-    height: 90px;
-    border: 1px solid #dedede;
-    box-sizing: border-box;
-    width: 80%;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
 .sw-fill-select {
     position: relative;
     display: inline-block;
@@ -133,8 +120,9 @@ body {
     cursor: pointer;
 }
 
-.sw-fill-list li:hover {
+.sw-fill-list li:hover ,.sw-fill-list li.active{
     background: #eeeeee;
+    color: #e25633;
 }
 
 .sw-btn-wrapper {
@@ -209,29 +197,95 @@ body {
     width: auto;
     height: auto;
 }
-
+/* 我的钱包 */
+.sw-package{
+    padding: 0.55rem 0;
+    margin:0 auto;
+    width: 95%;
+}
+.sw-package .sw-fill-row{
+    text-align: center;
+}
+.sw-charge-left{
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 20px;
+    line-height: 40px;
+    font-size: 14px;
+    color: #000;
+    font-weight: 600;
+    width: 126px;
+    text-align: right;
+    white-space:nowrap;
+}
+.sw-standard-wrapper{
+    display: inline-block;
+    vertical-align: top;
+}
+.sw-package .sw-fill-row:first-child .sw-standard-inp{
+    background: #f2f2f2;
+}
+.sw-standard-inp{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 40px;
+    padding:0 8px;
+    margin-right: 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    width: 270px;
+    color: #696f77;
+}
+.sw-fill-textarea{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 40px;
+    padding:0 8px;
+    margin-right: 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    width: 370px;
+    color: #696f77;
+}
+.sw-standard-unit{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 40px;
+    font-size: 14px;
+    color: #696f77;
+}
 @media (max-width: 767px) {
-    html {
-        font-size: 70px;
-    }
+    /*html {*/
+        /*font-size: 70px;*/
+    /*}*/
 
     .sw-fillin {
         width: 90%;
     }
 
-    /*.jun-banner-cap {
+    .jun-banner-cap {
         padding: 1.12rem 0 0 0.42rem;
         font-size: 0.28rem;
     }
-
+    
     .jun-banner-btn {
         line-height: 0.28rem;
         width: 1.12rem;
     }
-
+    
     .jun-banner-intro {
         font-size: 0.21rem;
-    }*/
+    }
+    .sw-package .sw-fill-row{
+        text-align: left;
+    }
+    .sw-charge-left{
+        text-align: left;
+    }
 }
 
 @media (max-width: 500px) {
@@ -243,5 +297,11 @@ body {
     .sw-fill-left {
         display: block;
         width: 100%;
+    }
+}
+@media (max-width: 420px){
+    .sw-standard-inp{
+        margin-right: 5px;
+        width: 200px;
     }
 }

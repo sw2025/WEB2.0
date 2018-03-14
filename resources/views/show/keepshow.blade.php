@@ -1,7 +1,7 @@
 @extends("layouts.master")
 @section("content")
     <link type="text/css" rel="stylesheet" href="{{asset('css/project.css')}}">
-    <script type="text/javascript" src="{{asset('js/project.js')}}"></script>
+   {{-- <script type="text/javascript" src="{{asset('js/project.js')}}"></script>--}}
     <script type="text/javascript" src="{{asset('js/payJudge.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/jquery/jquery.qrcode.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/js/qrcode.min.js')}}"></script>
