@@ -28,7 +28,10 @@ Route::post('/registerHandle','LoginController@registerHandle');
 Route::post('/forgetHandle','LoginController@forgetHandle');
 //退出
 Route::post('quit','LoginController@quit');
-
+//首页关于我们
+Route::get('us','PublicController@us');
+//首页服务介绍
+Route::get('service','PublicController@service');
 
 //提交项目评议页面
 Route::get('showIndex/{showid?}','ShowController@Index');

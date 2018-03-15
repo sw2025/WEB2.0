@@ -8,23 +8,23 @@
 <div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
-            <a href="#" class="jun-banner-btn">创业孵化</a>
-            <span class="jun-banner-intro">在线提交创业项目</span>
-            <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
+            <a href="#" class="jun-banner-btn">企业转型升级</a>
+            <span class="jun-banner-intro">免费提交创业项目</span>
+            <p>获得投资人兴趣意向<br>提高投资几率</p>
         </div>
     </div>
 </div>
 <!-- 主体 -->
 <div class="sw-project swcontainer ">
     <div class="sw-pro-tab clearfix">
-        <a href="" class=" swcol-md-4 swcol-xs-12">&ensp;</a>
-        <a href="" class="active swcol-md-4 swcol-xs-12">提交项目</a>
-        <a href="" class=" swcol-md-4 swcol-xs-12">&ensp;</a>
+        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">&ensp;</a>
+        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">提交项目</a>
+        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">&ensp;</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
             <div class="sw-pro-para">
-                只需要几十元，当您提交项目后，可以获得投资人多个维度的论证点评与反馈，让您的创业之路不再迷茫。
+                免费提交项目到升维网项目库，投资人可以查看所有项目提出兴趣意见，给您的项目增加几分投资机会。
             </div>
             <div class="sw-pro-form">
 

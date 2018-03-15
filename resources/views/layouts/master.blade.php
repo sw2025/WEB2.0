@@ -49,9 +49,11 @@
                 @endif
             </div>
             <ul class="sw-nav">
+
                 <li><a href="{{url('showIndex')}}">找投资</a></li>
-                <li><a href="#">企业加速</a></li>
-                <li><a href="#">企业转型升级</a></li>
+                <li><a href="{{url('/daVIndex')}}">企业加速</a></li>
+                <li><a href="{{url('/submitIndex')}}">企业转型升级</a></li>
+
            </ul>
         </div>
         <span class="sw-toggle-nav"><i class="iconfont icon-daohang"></i></span>
@@ -69,6 +71,10 @@
                 <strong>010-64430881&nbsp;/&nbsp;68985908</strong>
                 <p>E-Mail：shengwei2025@163.com</p>
                 <p>北京市朝阳区安贞里街道浙江大厦</p>
+                <p     style=" border-top: 1px solid #85827d;margin: 5px;"></p>
+
+                <p><a href="{{url('us')}}" style="color: #fff;padding-bottom: 20px;">关于我们</a></p>
+                <p><a href="{{url('service')}}" style="color: #fff;">服务内容</a></p>
             </div>
         </div>
         <div class="swcol-md-6 swcol-xs-12">

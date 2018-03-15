@@ -3,13 +3,14 @@ body{
 }
 .junior-banner {
     width: 100%;
-    height: 430px;
+   /* height: 430px;*/
+    height: 300px;
     background: url("../img/swpro.jpg") no-repeat center top;
     border-bottom: 0.08rem solid #e25633;
 }
 
 .jun-banner-cap {
-    padding: 1.6rem 0 0 0.6rem;
+    padding: 1.2rem 0 0 0.6rem;
     color: #fff;
     font-size: 0.4rem;
 }
