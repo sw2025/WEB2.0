@@ -8,7 +8,7 @@
 <div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
-            <a href="#" class="jun-banner-btn">创业孵化</a>
+            <a href="#" class="jun-banner-btn">找投资</a>
             <span class="jun-banner-intro">在线提交创业项目</span>
             <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
         </div>
@@ -17,11 +17,9 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-
-        <a href="{{url('/showIndex')}}" class="swcol-md-4 swcol-xs-12">项目评议</a>
+        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">直通路演</a>
+        <a href="{{url('/showIndex')}}" class="swcol-md-4 swcol-xs-12">VC直评</a>
         <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">线下路演</a>
-
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
@@ -38,7 +36,6 @@
                             @if(!empty($meetData)))
                             <div class="expert-img-wrapper"><img src="{{env('ImagePath').$expertData->showimage}}" alt=""></div>
                             @endif
-
                             <a href="{{url('selectExpert')}}?type=meet" class="sw-choose-link">选择大V</a>
 
                         </div>
@@ -110,12 +107,12 @@
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}} @else @endif"></div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-industry">@if(!empty($basedata['industry'])){{$basedata['industry']}}@elseif(!empty($entinfo)) {{$entinfo->industry}}@else选择行业@endif</a>
+                        <a href="javascript:;" class="sw-select-default sw-industry">@if(!empty($basedata['industry'])){{$basedata['industry']}}@elseif(!empty($entinfo)){{$entinfo->industry}}@else选择行业@endif</a>
                         <ul class="sw-select-list sw-field-list">
                             <li>IT|通信|电子|互联网</li>
                             <li>金融业</li>

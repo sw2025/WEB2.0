@@ -3,7 +3,7 @@
     <div class="sw-avatar-wrapper">
             <span class="sw-set-Wrapper">
                 <img src="{{$showimage2 or ''}}" class="sw-avatar">
-                <a href="javascript:;" class="sw-setting"><i class="iconfont icon-cog"></i></a>
+                <a href="javascript:;" class="sw-setting"><i class="iconfont icon-cog" onclick=window.location="{{url('personalSet')}}"></i></a>
             </span>
         <span class="sw-avatar-name" style="font-size: 12px;">{{$expertname or ''}}</span>
     </div>

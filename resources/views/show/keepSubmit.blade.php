@@ -17,7 +17,7 @@
 <div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
-            <a href="#" class="jun-banner-btn">创业孵化</a>
+            <a href="#" class="jun-banner-btn">企业转型升级</a>
             <span class="jun-banner-intro">在线提交创业项目</span>
             <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
         </div>
@@ -26,9 +26,8 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">项目评议</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">创业加速包</a>
+        <a href="" class="active swcol-md-12 swcol-xs-12">提交项目</a>
+
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
