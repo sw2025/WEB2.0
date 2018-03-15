@@ -8,23 +8,26 @@
 <div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
-            <a href="#" class="jun-banner-btn">创业孵化</a>
-            <span class="jun-banner-intro">在线提交创业项目</span>
-            <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
+            <a href="#" class="jun-banner-btn">成长加速</a>
+            <span class="jun-banner-intro">整合全球一线大V、机构资源</span>
+            <p>
+                专为待转型升级企业打造升维私董会<br />
+                线上线下结合，灵活的合作方式<br />
+                为企业实现战略、产品、品牌、管理、渠道五大维度升级
+            </p>
         </div>
     </div>
 </div>
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">xxx</a>
-        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见大V</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">xxx</a>
+        <a href="javascript:;" class="active swcol-md-6 swcol-xs-12">约见大V</a>
+        <a href="{{url('entmysector/supplysector')}}" class="swcol-md-6 swcol-xs-12">召开私董会</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
             <div class="sw-pro-para">
-                只需要几十元，当您提交问题后，可以获得约见投资人多个维度的论证点评与反馈，让您的创业之路不再迷茫。
+                只需要支付几百元，就可以与升维网大V面对面的交谈，一对一的沟通，得到高人指点，少走弯路。
             </div>
 
                 <div class="sw-pro-row clearfix">

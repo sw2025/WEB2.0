@@ -8,15 +8,16 @@
     <link rel="stylesheet" href="{{asset('css/events.css')}}">
     <script type="text/javascript" src="{{asset('js/laydate/laydate.js')}}"></script>
     <!-- banner -->
-    {{--<div class="junior-banner">
+    <div class="junior-banner">
         <div class="swcontainer">
             <div class="jun-banner-cap">
-                <a href="#" class="jun-banner-btn">创业孵化</a>
-                <span class="jun-banner-intro">在线提交创业项目</span>
-                <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
+                <a href="#" class="jun-banner-btn">成长加速</a>
+                <span class="jun-banner-intro">在线召开私董会</span>
+                <p>整合全球一线大V、机构资源<br>专为待转型升级企业打造升维私董会。<br />为企业实现战略、产品、品牌、管理、渠道五大维度升级</p>
             </div>
         </div>
-    </div>--}}
+    </div>
+
             <!-- 主体 -->
     <div class="swcontainer sw-ucenter">
         <!-- 个人中心左侧 -->
@@ -24,7 +25,7 @@
                 <!-- 个人中心主体 -->
         <div class="sw-mains">
             <div class="main">
-            <h3 class="main-top">专家视频咨询</h3>
+                <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">线上私董会 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
             <div class="ucenter-con">
                 <div class="main-right">
                     <div class="card-step works-step">

@@ -22,13 +22,18 @@
             <li class="img02">
                 <div class="swcontainer">
                     <div class="sw-banner-content">
-                        <span class="sw-banner-title">我是创业者</span>
+                        <span class="sw-banner-title">我是企业家</span>
                         <p class="sw-banner-para">
-                            当我拿着BP海投无果时，<br>升维网为我精准匹配到合适的投资人<br>不到两个月，公司获得天使投资500万<br>效率决定项目生死，融资我选择升维网
+                            以前企业遇到问题都自己扛
+                            <br>升维网为我提供了丰富的外部资源
+                            使我突破自身限制
+                            <br>不定战略、找资金、拓市场不在话下
+                            <br>我不是一个人在战斗
                         </p>
-                        <span class="sw-banner-tip">将创业项目提交至升维网，我们将对接投资机构对项目进行认真评估，<br>您将在系统中查看不同投资人对项目的评议、估值及宝贵建议！</span>
+                        <span class="sw-banner-tip">约见升维网大V、召开线上私董会，给您对接资源上带来诸多遍历<br></span>
                         <div class="sw-banner-links">
-                            <a href="{{url('daVIndex')}}" class="hover">约大V</a>
+                            <a href="{{url('daVIndex')}}" class="hover"> 约大V </a>
+                            <a href="{{url('entmysector/supplysector')}}">召开私董会</a>
                         </div>
                     </div>
                 </div>
@@ -36,13 +41,15 @@
             <li class="img03">
                 <div class="swcontainer">
                     <div class="sw-banner-content">
-                        <span class="sw-banner-title">我是创业者</span>
+                        <span class="sw-banner-title">作为一个传统企业的老板</span>
                         <p class="sw-banner-para">
-                            当我拿着BP海投无果时，<br>升维网为我精准匹配到合适的投资人<br>不到两个月，公司获得天使投资500万<br>效率决定项目生死，融资我选择升维网
+                            我深知企业转型升级的必要性
+                            <br>往哪转？怎么转？
+                            <br>升维网组织业界大咖给我出谋划策通过外部资源为我的企业赋能
                         </p>
-                        <span class="sw-banner-tip">将创业项目提交至升维网，我们将对接投资机构对项目进行认真评估，<br>您将在系统中查看不同投资人对项目的评议、估值及宝贵建议！</span>
+                        <span class="sw-banner-tip">产品升级  效率提高<br>管理提升  业绩翻番</span>
                         <div class="sw-banner-links">
-                            <a href="{{url('submitIndex')}}" class="hover">提交项目</a>
+                            <a href="{{url('submitIndex')}}" class="hover">免费提交项目</a>
                         </div>
                     </div>
                 </div>
