@@ -20,13 +20,13 @@
 
         <a href="{{url('/showIndex')}}" class="swcol-md-4 swcol-xs-12">项目评议</a>
         <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">线下路演</a>
+        <a href="{{url('/lineShowIndex')}}" class="swcol-md-4 swcol-xs-12">线下路演</a>
 
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
             <div class="sw-pro-para">
-                只需要几十元，当您提交问题后，可以获得约见投资人多个维度的论证点评与反馈，让您的创业之路不再迷茫。
+                只需要支付几百元，就可以与升维网大V面对面的交谈，一对一的沟通，得到高人指点，少走弯路。
             </div>
 
 
