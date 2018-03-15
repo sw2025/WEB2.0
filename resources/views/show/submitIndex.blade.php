@@ -17,9 +17,9 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer ">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">&ensp;</a>
-        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">提交项目</a>
-        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">&ensp;</a>
+        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">直通路演</a>
+        <a href="{{url('showIndex')}}" class="swcol-md-4 swcol-xs-12">VC直评</a>
+        <a href="{{url('meetIndex')}}" class="swcol-md-4 swcol-xs-12">约见投资人</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
@@ -47,12 +47,25 @@
                     </div>
                 </div>
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>所属领域</div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>项目领域</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <a href="javascript:;" class="sw-select-default sw-domain">{{$showinfo->domain1 or '选择领域'}}</a>
                         <ul class="sw-select-list sw-field-list">
-                            @foreach($cate as $v)
-                                <li style="padding: 5px;">{{$v->domainname}}</li>
+                            @foreach($cate1 as $v)
+                                <li style="padding: 5px;">{{$v->name}}</li>
+                            @endforeach
+                        </ul>
+                        <span class="sw-error"></span>
+                    </div>
+                </div>
+
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>投资阶段</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <a href="javascript:;" class="sw-select-default sw-stage">{{$showinfo->preference or '选择阶段'}}</a>
+                        <ul class="sw-select-list sw-role-list">
+                            @foreach($cate2 as $v)
+                                <li style="padding: 5px;">{{$v->name}}</li>
                             @endforeach
                         </ul>
                         <span class="sw-error"></span>
@@ -77,30 +90,7 @@
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div>
-               <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">投资主体</div>
-                    <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-role">{{$basedata['role'] or '选择主体'}}</a>
-                        <ul class="sw-select-list sw-role-list">
-                            <li>企业</li>
-                            <li>个人</li>
-                            <li>其他</li>
-                        </ul>
-                        <span class="sw-error"></span>
-                    </div>
-                </div>
-                <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">投资阶段</div>
-                    <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-stage">{{$basedata['stage'] or '选择阶段'}}</a>
-                        <ul class="sw-select-list sw-role-list">
-                            <li>种子期</li>
-                            <li>初创期</li>
-                            <li>成长期</li>
-                        </ul>
-                        <span class="sw-error"></span>
-                    </div>
-                </div>
+
 
                 <form name="form1" id="form1">
                     <div class="sw-pro-row clearfix">
@@ -195,7 +185,7 @@
             var oneword = $('.sw-one-word').val();  //一次简介
             var domain = $('.sw-domain').text();  //领域
             var projecttxt = $('.sw-project-txt').val();  //项目概述
-            var role = $('.sw-role').text();  //企业阶段
+            /*var role = $('.sw-role').text();  //企业阶段*/
             var stage = $('.sw-stage').text(); //融资轮次
             var entername = $('.sw-entername').val(); //企业名称
             var enterjob = $('.sw-enterjob').val(); //职位
@@ -218,10 +208,12 @@
                 return false;
             }
 
-            if(domain == '选择领域' || industry == '选择行业'){
-                layer.alert('请填写完整领域或者行业信息');
+
+            if(domain == '选择领域' || stage=='选择阶段' || industry == '选择行业'){
+                layer.alert('请填写完整领域/投资阶段/行业信息');
                 return false;
             }
+
 
             var fileObj = document.getElementById("bpurl").files[0]; // js 获取文件对象
             var formFile = new FormData();
@@ -229,7 +221,7 @@
             formFile.append("oneword", oneword);
             formFile.append("domain", domain);
             formFile.append("projecttxt", projecttxt);
-            formFile.append("role", role);
+          /*  formFile.append("role", role);*/
             formFile.append("stage", stage);
             formFile.append("entername", entername);
             formFile.append("enterjob", enterjob);
@@ -260,9 +252,28 @@
                 contentType: false, //必须
                 success: function (data) {
                     if(data.icon==1){
-                        layer.msg(data.msg,{'icon':data.icon,'time':2000},function () {
-                            window.location = data.url;
-                        });
+                        if(data.code==5){
+                            layer.open({
+                                type: 1,
+                                skin: 'layui-layer-rim', //加上边框
+                                area: ['360px', '160px'],
+                                title: false, //不显示标题
+                                shadeClose: false, //开启遮罩关闭
+                                content: '<div style="padding:15px;background: #3d921d;color: #fff;"><span style="font-size:18px;">系统检测到您还未登陆/注册</span><br /><br />登陆/注册完跳转到支付页面就可以成功发起项目了~</div>',
+                                btn: ['去登陆','去注册','再想想'],
+                                yes: function(index, layero){
+                                    window.location.href="{{asset('/login')}}?type="+data.type+'&id='+data.id;
+                                },btn2: function(index, layero){
+                                    window.location.href="{{asset('/register')}}?type="+data.type+'&id='+data.id;
+                                },btn3: function(index, layero){
+                                    layer.close(index);
+                                }
+                            });
+                        } else {
+                            layer.msg(data.msg,{'icon':data.icon,'time':2000},function () {
+                                window.location = data.url;
+                            });
+                        }
                     } else {
                         layer.msg(data.msg,{'icon':data.icon,'time':2000},function () {
                             window.location = window.location.href;

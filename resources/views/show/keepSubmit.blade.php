@@ -14,7 +14,7 @@
     </style>
 
     <!-- banner -->
-<div class="junior-banner">
+{{--<div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
             <a href="#" class="jun-banner-btn">企业转型升级</a>
@@ -22,7 +22,16 @@
             <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
         </div>
     </div>
-</div>
+</div>--}}
+    <div class="junior-banner">
+        <div class="swcontainer">
+            <div class="jun-banner-cap">
+                <a href="#" class="jun-banner-btn">找投资</a>
+                <span class="jun-banner-intro">免费提交创业项目</span>
+                <p>获得投资人兴趣意向<br>提高投资几率</p>
+            </div>
+        </div>
+    </div>
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
@@ -52,9 +61,15 @@
                 </div>
 
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>所属领域</div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>项目领域</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
                         <a href="javascript:;" class="sw-select-default sw-domain">{{$showinfo->domain1}}</a>
+                    </div>
+                </div>
+                <div class="sw-pro-row clearfix">
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>投资阶段</div>
+                    <div class="swcol-md-8 sw-pro-rowcon">
+                        <a href="javascript:;" class="sw-select-default sw-stage">{{$showinfo->preference or ''}}</a>
                     </div>
                 </div>
                {{-- <div class="sw-pro-row clearfix">
@@ -70,19 +85,7 @@
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div>
-                <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>投资主体</div>
-                    <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-role">{{$basedata['role'] or ''}}</a>
-                    </div>
-                </div>
 
-                <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label">投资阶段</div>
-                    <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-stage">{{$basedata['stage'] or ''}}</a>
-                    </div>
-                </div>
                 <div class="sw-pro-row clearfix forbidden">
                     <div class="swcol-md-4 sw-pro-label">商业计划书</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
@@ -111,8 +114,8 @@
                     </div>
                 </div>
                     <div class="sw-btn-wrapper">
+                        <a class="sw-btn-pay" href="javascript:;" onclick="window.location='{{url("submitIndex",$showinfo->showid)}}'">返回修改项目</a>
                         <a class="sw-btn-change" id="delete">取消提交</a>
-                        <a class="sw-btn-pay" href="javascript:;" id="">已经完成提交</a>
                     </div>
             </div>
         </div>

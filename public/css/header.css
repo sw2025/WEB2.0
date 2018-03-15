@@ -381,6 +381,17 @@
   border:none;
   display: none;
 }
+#putsector{
+  margin-right: 0%;
+  float: right;
+  background: #e25633;
+  border: 1px solid #eeeeee;
+  padding: 1px 11px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 19px;
+  font-weight:normal;
+}
 .sw-mains{
   margin-left: 185px;
   min-height: 750px;

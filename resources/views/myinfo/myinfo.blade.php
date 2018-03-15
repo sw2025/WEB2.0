@@ -40,17 +40,11 @@
                                         </a>
                         </div>
                         <div class="myinfo-row-details">
-                            @if(!empty($v->expertid))
-                                <a href="{{url('expert/detail/'.$v->expertid)}}" target="_blank" >
-                                    <p class="myinfo-row-det-con">{!! $v->content !!}</p>
-                                </a>
-                            @elseif(!empty($v->needid))
-                                <a href="{{url('supply/detail',$v->needid)}}" target="_blank">
-                                    <p class="myinfo-row-det-con">{!! $v->content !!}</p>
-                                </a>
-                            @else
-                                <p class="myinfo-row-det-con">{!! $v->content !!}</p>
+                            <p class="myinfo-row-det-con">{!! $v->content !!}</p>
+                            @if(!empty($v->url))
+                                <a href="{{$v->url}}">点此查看</a>
                             @endif
+
                             @if(!$v->sendid)
                                 <p class="myinfo-come">From 系统消息</p>
                             @endif
@@ -110,9 +104,7 @@
 
         function alsoread (arr,state) {
             $.post('{{url('uct_flagread')}}',{'data':arr,'state':state},function (data) {
-                layer.msg(data.msg,{'time':2000,'icon':data.icon},function () {
-                    window.location = window.location.href;
-                });
+                layer.msg(data.msg,{'time':2000,'icon':data.icon});
             });
         }
 

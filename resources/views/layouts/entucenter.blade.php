@@ -37,7 +37,7 @@
             <a href="javascript:;" class="sw-item-title" style="border-top: 2px solid #e0e0e0; cursor:default;color:#a18e8e">我的转型加速</a>
             <ul class="sw-aside-sublist">
                 <li id="entmydav">
-                    <a href="">提交项目</a>
+                    <a href="javascript:;" id="submitshow">提交项目</a>
                 </li>
 
             </ul>
@@ -46,3 +46,11 @@
 
     <button type="button" class="sw-left-btn"><i class="iconfont icon-rilijiantouyoushuang"></i></button>
 </div>
+
+<script>
+    $('#submitshow').on('click',function () {
+        layer.msg('该功能暂未开放,请等待');
+        return false;
+    });
+
+</script>
