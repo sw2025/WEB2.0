@@ -37,24 +37,24 @@
                             @endif
                         @endif
                 </div>
-            <span onclick="javascript:window.location.href= '{{url('keepmeet',$v->meetid)}}'" style="cursor:pointer;">
                 <div class="content-wrapper">
-                    <strong class="sw-meet-name">{{$v->expertname}}</strong>
+                    <strong class="sw-meet-name"><a title ="查看专家资料" style="color:black;" href="{{url('expert/detail',$v->expertid)}}">{{$v->expertname}}</a></strong>
                     <span style="color: red">（{{$v->meettypename}}）</span>
                     <div class="sw-meet-label">
-                        <a href="javacript:;">天使投资</a>
-                        <a href="javacript:;">A轮</a>
+                        <a style="cursor:default;" href="javacript:;">天使投资</a>
+                        <a style="cursor:default;" href="javacript:;">A轮</a>
                     </div>
-                    <h3>问题描述：</h3>
-                    <p class="sw-meet-desc">
-                        {{$v->contents}}
-                    </p>
-                    <h3>备注：</h3>
-                    <p class="sw-meet-desc">
-                        {{unserialize($v->basicdata)['oneword']}}
-                    </p>
+                        <h3>问题描述：</h3>
+                        <p class="sw-meet-desc">
+                            {{$v->contents}}
+                        </p>
+                        <h3>备注：</h3>
+                        <p class="sw-meet-desc">
+                            {{unserialize($v->basicdata)['oneword']}}
+                        </p>
+
                 </div>
-            </span>
+
                 <div class="sw-meet-time"><span></span>{{$v->puttime}}</div>
                 <span class="sw-meet-state">  <a href="{{url('keepmeet',$v->meetid)}}" style="color:#e25633;">{{$v->configname}}</a></span>
             </li>
@@ -62,8 +62,6 @@
         @endforeach
         <div style="width: 100%;text-align: center;">
             {!! $data->render() !!}
-
-
         </div>
         @if(!empty($data->lastpage()))
             <div style="width: 100%;text-align: center;margin: 10px 0px;">

@@ -15,9 +15,11 @@
     </div>
 </div>
 <!-- 主体 -->
-<div class="sw-project swcontainer">
+<div class="sw-project swcontainer ">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class="active swcol-md-12 swcol-xs-12">提交项目</a>
+        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">&ensp;</a>
+        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">提交项目</a>
+        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">&ensp;</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">

@@ -8,6 +8,7 @@
 <div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
+
             <a href="#" class="jun-banner-btn">成长加速</a>
             <span class="jun-banner-intro">整合全球一线大V、机构资源</span>
             <p>
@@ -15,14 +16,17 @@
                 线上线下结合，灵活的合作方式<br />
                 为企业实现战略、产品、品牌、管理、渠道五大维度升级
             </p>
+
         </div>
     </div>
 </div>
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
+
         <a href="javascript:;" class="active swcol-md-6 swcol-xs-12">约见大V</a>
         <a href="{{url('entmysector/supplysector')}}" class="swcol-md-6 swcol-xs-12">召开私董会</a>
+
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">

@@ -33,9 +33,7 @@
             <h1 style="margin: 0 auto;width: 70%;color: #ff1100;">当前认证状态：审核未通过 原因：{{$data->remark}}</h1>
         @endif
 
-        
         <div class="sw-fillin">
-
             <div class="sw-fill-row">
                 <span class="sw-fill-left">大V名称</span>
                 <input type="text" class="sw-fill-inp name" placeholder="请输入您的姓名" @if(!empty($data) && ($data->configid == 2 || $data->configid == 1))disabled @endif value="{{$data->expertname or null}}">
@@ -111,7 +109,7 @@
             </div>
 
 
-            <div class="sw-fill-row" id="preference" @if(!empty($data) && $data->configid != 2 && $data->configid != 1 && strpos($data->domain1,'风险投资') !== false)  style="display: block;" @else  style="display: block;" @endif>
+            {{--<div class="sw-fill-row" id="preference" @if(!empty($data) && $data->configid != 2 && $data->configid != 1 && strpos($data->domain1,'风险投资') !== false)  style="display: block;" @else  style="display: block;" @endif>
 
                 <span class="sw-fill-left" >投资偏好</span>
                 <div class="sw-fill-select">
