@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -59,7 +60,16 @@ class LoginController extends Controller
         $id = $_POST['id'];
         $datas=\UserClass::LoginVerify($phone,$passWord);
         if($datas['code'] == 'success' && $type && !empty($id) && $id != 'NaN'){
-            $datas['data'] = ShowController::getPayData($datas['userId'],$type,$id);
+            if($type=='meet'){
+                DB::table('t_m_meet')->where('meetid',$id)->update(['userid' => $datas['userId']]);
+            } else {
+                DB::table('t_s_show')->where('showid',$id)->update(['userid' => $datas['userId']]);
+            }
+            if($type=='Submit'){
+                $datas['data']['icon'] = 1;
+            } else {
+                $datas['data'] = ShowController::getPayData($datas['userId'],$type,$id);
+            }
         }
         return $datas;
     }
@@ -91,7 +101,16 @@ class LoginController extends Controller
         }
         $datas=\UserClass::regVerify($phone,$role,$pwd);
         if($datas['code'] == 'success' && $type && !empty($id) && $id != 'NaN'){
-            $datas['data'] = ShowController::getPayData($datas['userId'],$type,$id);
+            if($type=='meet'){
+                DB::table('t_m_meet')->where('meetid',$id)->update(['userid' => $datas['userId']]);
+            } else {
+                DB::table('t_s_show')->where('showid',$id)->update(['userid' => $datas['userId']]);
+            }
+            if($type=='Submit'){
+                $datas['data']['icon'] = 1;
+            } else {
+                $datas['data'] = ShowController::getPayData($datas['userId'],$type,$id);
+            }
         }
         return $datas;
     }

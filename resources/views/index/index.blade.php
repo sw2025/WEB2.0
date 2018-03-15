@@ -14,7 +14,7 @@
                         </p>
                         <span class="sw-banner-tip">将创业项目提交至升维网，我们将对接投资机构对项目进行认真评估，<br>您将在系统中查看不同投资人对项目的评议、估值及宝贵建议！</span>
                         <div class="sw-banner-links">
-                            <a href="{{url('lineShowIndex')}}" class="hover">直通路演</a> <a href="{{url('showIndex')}}" >VC直评</a><a href="{{url('meetIndex')}}">约见投资人</a>
+                            <a href="{{url('submitIndex')}}" class="hover">直通路演</a> <a href="{{url('showIndex')}}" >VC直评</a><a href="{{url('meetIndex')}}">约见投资人</a>
                         </div>
                     </div>
                 </div>

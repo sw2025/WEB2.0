@@ -17,7 +17,7 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">直通路演</a>
+        <a href="{{url('/submitIndex')}}" class="swcol-md-4 swcol-xs-12">直通路演</a>
         <a href="{{url('/showIndex')}}" class="swcol-md-4 swcol-xs-12">VC直评</a>
         <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见投资人</a>
 

@@ -11,9 +11,9 @@
     <div class="junior-banner">
         <div class="swcontainer">
             <div class="jun-banner-cap">
-                <a href="#" class="jun-banner-btn">创业孵化</a>
-                <span class="jun-banner-intro">在线提交创业项目</span>
-                <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
+                <a href="#" class="jun-banner-btn">企业加速</a>
+                <span class="jun-banner-intro">线上线下约大V</span>
+                <p>轻轻松松对接资源</p>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
     @include('layouts.entucenter')
     <!-- 个人中心主体 -->
         <div class="sw-mains">
-            <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">约见大咖 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
+            <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">约见大咖 <i class="iconfont" style="font-size: 23px;">&#xe602;</i>  <a href="{{url('/daVIndex')}}" id="putsector">我想约见</a></h1>
 
             @foreach($data as $v)
 

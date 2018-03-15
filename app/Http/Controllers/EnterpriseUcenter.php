@@ -243,7 +243,7 @@ class EnterpriseUcenter extends Controller
     {
         $userid = session('userId');
 
-        $data = DB::table("t_s_lineshow")->where('userid',$userid)->where('state',1)->paginate(3);
+        $data = DB::table("t_s_show")->where(['userid' => $userid,'level' => 0,'state' => 1])->paginate(3);
 
         return view('enterpriseUcenter.mylineshowindex',compact('data','expertinfo'));
     }

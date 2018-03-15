@@ -4,6 +4,19 @@
     <link type="text/css" rel="stylesheet" href="{{asset('css/ucenterProView.css')}}">
     <link type="text/css" rel="stylesheet" href="{{asset('css/fillIn.css')}}">
     <script type="text/javascript" src="{{asset('js/fill.js')}}"></script>
+    <style>
+        .iscomplete{
+            color: #000;
+            font-size: 15px;
+            line-height: 20px;
+            padding: 1px 10px;
+            background: #e66b4d;
+            border: 1px solid #e66b4d;
+            border-radius: 5px;
+            color: #fff;
+            margin: 10px 10px;
+        }
+    </style>
     <!-- banner -->
     <div class="junior-banner">
         <div class="swcontainer">
@@ -20,22 +33,25 @@
         @include('layouts.entucenter')
     <!-- 个人中心主体 -->
             <div class="sw-mains">
+                <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">我的直通路演 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/submitIndex')}}" id="putsector">免费发布项目</a></h1>
                 @foreach($data as $v)
                 <ul class="sw-mains-list">
                     <li class="sw-article">
-                        <div class="sw-article-tit"><a href="{{url('keeplineshow',$v->lineshowid)}}">{{$v->title}}</a></div>
+                        <div class="sw-article-tit"><a href="{{url('keepSubmit',$v->showid)}}">{{$v->title}}</a></div>
                         <div class="sw-article-desc">
-                            <p class="sw-article-para">{{$v->describe}}</p>
-                            <p class="sw-article-para">{{$v->remarks}}</p>
+                            <b>项目描述：</b>
+                            <p class="sw-article-para">{{mb_substr($v->brief,0,500)}}</p>
                             {{--<a href="javascript:;" class="sw-connect-btn">项目资料</a>--}}
                         </div>
-                        <div class="sw-upload-wrapper" style="margin-left: 10px;">
+                        {{--<div class="sw-upload-wrapper" style="margin-left: 10px;">
                             <span class="sw-upload-cap">{{$v->bpname or '上传文件'}}</span>
-                            <input class="sw-upload-btn"  type="file" name="files[]" id='bpurl' data-url="https://www.sw2025.com/upload" {{--index="/images/15078635376874.png"--}} multiple="" accept="" index="@if(!empty($lineShowData)) 1 @endif">
+                        </div>--}}
+                        <div class="sw-article-person">
+                            <span class="sw-article-cap">BP：</span>
+                            <button class="iscomplete" onclick="window.location='{{env('ImagePath')."/show/".$v->bpurl}}'">{{$v->bpname}}</button>
                         </div>
 
-                        <span class="sw-article-time"><b class="sw-time-explain">提交时间：</b>{{$v->puttime}}</span>
-                        <span class="sw-article-state">等待平台回复</span>
+                        <span class="sw-article-time"><b class="sw-time-explain">提交时间：</b>{{$v->showtime}}</span>
                     </li>
                 </ul>
                 @endforeach

@@ -13,7 +13,7 @@
             <div class="jun-banner-cap">
                 <a href="#" class="jun-banner-btn">成长加速</a>
                 <span class="jun-banner-intro">在线召开私董会</span>
-                <p>整合全球一线大V、机构资源<br>专为待转型升级企业打造升维私董会。<br />为企业实现战略、产品、品牌、管理、渠道五大维度升级</p>
+                <p>整合全球一线大V、机构资源<br>专为待转型升级企业打造升维私董会</p>
             </div>
         </div>
     </div>

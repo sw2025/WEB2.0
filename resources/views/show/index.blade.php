@@ -17,7 +17,7 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="{{url('lineShowIndex')}}" class="swcol-md-4 swcol-xs-12">直通路演</a>
+        <a href="{{url('/submitIndex')}}" class="swcol-md-4 swcol-xs-12">直通路演</a>
         <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">VC直评</a>
 
         <a href="{{url('meetIndex')}}" class="swcol-md-4 swcol-xs-12">约见投资人</a>
@@ -270,15 +270,15 @@
             var upload= $('.sw-upload-btn').attr('index');    //上传文件
             var showid = $('#showid').val();
             //选择方式
-            var selecttype = $.trim($('.sw-need-con .swon').children('label').eq(0).text());
+           /* var selecttype = $.trim($('.sw-need-con .swon').children('label').eq(0).text());
             if(selecttype=='系统匹配'){
                 //选择评议人的数量
                 var selectnumbers = $.trim($('.sw-need-con .swon').children('label').eq(1).text());
             } else {
                 var selectnumbers = ids;
-            }
+            }*/
             //支付的方式
-            var paytype = $.trim($('.sw-need-con .swon').children('label').eq(2).text());
+           /* var paytype = $.trim($('.sw-need-con .swon').children('label').eq(2).text());*/
 
             if(projectname == '' || oneword == '' || projecttxt == '' || entername == '' || enterjob == '' || upload == ''){
                 layer.alert('请填写完整信息');
@@ -339,15 +339,15 @@
             });
         });
         $(function () {
-            if({{$showid}}){
+            /*if({{$showid}}){
                 var layermsg = '提示：修改暂不支持更换选择大V方式，请您重新填写项目';
             } else {
                 var layermsg = '提示：请您先选择好几位大V进行评议或者自定完大V 再填写项目';
-            }
-            layer.tips(layermsg, '#tipsneed', {
+            }*/
+            /*layer.tips(layermsg, '#tipsneed', {
                 tips: [1, '#e25633'],
                 time: 8000
-            });
+            });*/
 
             if($.cookie("reselect")){
                 var expertChecked=$.cookie('reselect').split(",");
