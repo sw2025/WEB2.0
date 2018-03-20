@@ -99,13 +99,13 @@ body {
     margin-right: 20px;
 }
 
-.serve-field-list-deft:before {
+/*.serve-field-list-deft:before {
     content: '\ea81';
     position: absolute;
     font-family: "iconfont";
     right: 0;
     top: -4px;
-}
+}*/
 
 .serve-field-list-show {
     position: absolute;

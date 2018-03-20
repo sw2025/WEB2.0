@@ -37,7 +37,7 @@
 
     <div class="container section" style="padding-top: 0px;margin-top: 0px;" >
         <div class="row clearfix">
-            <div class="main-content col-md-8">
+            <div class="main-content col-md-8" style="margin-top: 25px;">
                 <div class="details-top clearfix">
                     <div class="details-bg">
                         <span class="blue-circle"><i class="iconfont icon-jianjie1"></i></span>

@@ -196,6 +196,8 @@ Route::get('expert','ExpertController@index');
 Route::get('expert/detail/{expertId}','ExpertController@detail');
 //专家详情
 Route::post('message','ExpertController@message');
+//收藏
+Route::post('dealextcollect','ExpertController@dealCollect');
 
 //系统消息
 Route::get('myinfo','MyinfoController@myinfo');

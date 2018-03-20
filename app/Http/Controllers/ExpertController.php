@@ -36,32 +36,21 @@ class ExpertController extends Controller
         if (!empty($get = $request->input())) {
             //获取到get中的数据并处理
             $searchname = (isset($get['searchname']) && $get['searchname'] != "null") ? $get['searchname'] : null;
-            $role = (isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
-            $supply = (isset($get['supply']) && $get['supply'] != "null") ? explode('/', $get['supply']) : null;
+            //$role = (isset($get['role']) && $get['role'] != "null") ? $get['role'] : null;
+            //$supply = (isset($get['supply']) && $get['supply'] != "null") ? explode('/', $get['supply']) : null;
             $address = (isset($get['address']) && $get['address'] != "null") ? $get['address'] : null;
             $consult = (isset($get['consult']) && $get['consult'] != "null") ? $get['consult'] : null;
             $ordertime = (isset($get['ordertime']) && $get['ordertime'] != "null") ? $get['ordertime'] : null;
             $ordercollect = (isset($get['ordercollect']) && $get['ordercollect'] != "null") ? $get['ordercollect'] : null;
             $ordermessage = (isset($get['ordermessage']) && $get['ordermessage'] != "null") ? $get['ordermessage'] : null;
             //设置where条件生成where数组
-            $rolewhere = !empty($role) ? array("category" => $role) : array();
+            //$rolewhere = !empty($role) ? array("category" => $role) : array();
 
             $addresswhere = !empty($address) ? array("ext.address" => $address) : array();
-            if (!empty($consult) && $consult == '收费') {
-                $consultwhere = ['fee.state' => 1];
-            } elseif (!empty($consult) && $consult == '免费') {
-                $consultwhere = ['fee.state' => 0];
-            } else {
-                $consultwhere = [];
-            }
+            $consultwhere = !empty($consult) ? array("ext.domain1" => $consult) : array();
 
-            if (!empty($supply)) {
-                $supply[0] = $domainselect2[$supply[0]];
-                $obj = $datas->where($rolewhere)->where('ext.domain1', $supply[0])->where('ext.domain2', 'like', '%' . $supply[1] . '%')->where($addresswhere)->where($consultwhere);
-                $supply[0] = $domainselect[$supply[0]];
-            } else {
-                $obj = $datas->where($rolewhere)->where($addresswhere)->where($consultwhere);
-            }
+            $obj = $datas->where($addresswhere)->where($consultwhere);
+
 
             //判断是否有搜索的关键字
             if (!empty($searchname)) {

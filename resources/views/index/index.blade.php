@@ -49,7 +49,7 @@
                         </p>
                         <span class="sw-banner-tip">产品升级  效率提高<br>管理提升  业绩翻番</span>
                         <div class="sw-banner-links">
-                            <a href="{{url('submitIndex')}}" class="hover">免费提交项目</a>
+                            <a href="{{url('submitIndex')}}" class="hover">提交项目</a>
                         </div>
                     </div>
                 </div>

@@ -106,13 +106,9 @@ $(function(){
         if(searchName == '请输入专家姓名／机构名称／企业家姓名'){
             searchName = '';
         }
-        var role=$(".all-results-expert").text();
-        var supply=$(".all-results-field").text();
         var address=$(".all-results-location").text();
         var consult=$(".all-results-video").text();
         searchName=(searchName)?searchName:null;
-        role=(role)?role:null;
-        supply=(supply)?supply:null;
         address=(address)?address:null;
         consult=(consult)?consult:null;
         if( $(".sort").children('a').hasClass('active')){
@@ -133,14 +129,8 @@ $(function(){
 
         if(Condition.length!=0){
             switch(Condition[0]){
-                case "role":
-                    role=(Condition[1]!="全部")?Condition[1]:null;
-                    break;
                 case "serveName":
                     searchName=Condition[1];
-                    break;
-                case "supply":
-                    supply=(Condition[1]!="全部")?Condition[1]:null;
                     break;
                 case "consult":
                     consult=(Condition[1]!="全部")?Condition[1]:null;
@@ -163,7 +153,7 @@ $(function(){
         ordertime=(ordertime)?ordertime:null;
         ordercollect=(ordercollect)?ordercollect:null;
         ordermessage=(ordermessage)?ordermessage:null;
-        window.location.href="?searchname="+searchName+"&role="+role+"&supply="+supply+"&consult="+consult+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
+        window.location.href="?searchname="+searchName+"&consult="+consult+"&address="+address+"&ordertime="+ordertime+"&ordercollect="+ordercollect+"&ordermessage="+ordermessage;
     }
 })
 
