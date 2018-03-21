@@ -26,7 +26,8 @@
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
             <div class="sw-pro-para">
-                只需要几十元，当您提交项目后，可以获得投资人多个维度的论证点评与反馈，让您的创业之路不再迷茫。
+                只需要几十元，当您提交项目后，可以获得投资人多个维度的论证点评与反馈，让您的创业之路不再迷茫。<br />
+                用户在VC直评提交BP后，投资人将在5个工作日内予以反馈，若因投资人特殊原因无法及时反馈，平台将在2个工作日内按用户付款账号原路退返相应款项。
             </div>
             <div class="sw-pro-form">
 
@@ -131,7 +132,7 @@
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label "><span class="need">*</span>项目概述</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <textarea placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$showinfo->brief or ''}}</textarea>
+                        <textarea placeholder="分为产品描述、团队介绍、用户群体、项目愿景、竞争对手等方面，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$showinfo->brief or ''}}</textarea>
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div>
@@ -167,8 +168,8 @@
                     <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入公司全名" class="sw-entername" value="@if(!empty($basedata['enterprisename'])){{$basedata['enterprisename']}}@elseif(!empty($entinfo)){{$entinfo->enterprisename}}@else @endif"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif"></div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>联系人</div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入联系人" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
@@ -270,15 +271,15 @@
             var upload= $('.sw-upload-btn').attr('index');    //上传文件
             var showid = $('#showid').val();
             //选择方式
-           /* var selecttype = $.trim($('.sw-need-con .swon').children('label').eq(0).text());
+           var selecttype = $.trim($('.sw-need-con .swon').children('label').eq(0).text());
             if(selecttype=='系统匹配'){
                 //选择评议人的数量
                 var selectnumbers = $.trim($('.sw-need-con .swon').children('label').eq(1).text());
             } else {
                 var selectnumbers = ids;
-            }*/
+            }
             //支付的方式
-           /* var paytype = $.trim($('.sw-need-con .swon').children('label').eq(2).text());*/
+            var paytype = $.trim($('.sw-need-con .swon').children('label').eq(2).text());
 
             if(projectname == '' || oneword == '' || projecttxt == '' || entername == '' || enterjob == '' || upload == ''){
                 layer.alert('请填写完整信息');
@@ -339,15 +340,15 @@
             });
         });
         $(function () {
-            /*if({{$showid}}){
+            if({{$showid}}){
                 var layermsg = '提示：修改暂不支持更换选择大V方式，请您重新填写项目';
             } else {
                 var layermsg = '提示：请您先选择好几位大V进行评议或者自定完大V 再填写项目';
-            }*/
-            /*layer.tips(layermsg, '#tipsneed', {
+            }
+            layer.tips(layermsg, '#tipsneed', {
                 tips: [1, '#e25633'],
                 time: 8000
-            });*/
+            });
 
             if($.cookie("reselect")){
                 var expertChecked=$.cookie('reselect').split(",");

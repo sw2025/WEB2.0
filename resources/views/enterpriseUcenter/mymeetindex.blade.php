@@ -31,9 +31,9 @@
                     <img src="{{env('ImagePath').$v->showimage}}" class="sw-expert-img">
                         @if($v->configid == 3|| $v->configid == 5)
                             @if($v->meettype == 1)
-                                <a href="javascript:;" class="sw-connect-btn">联系专家</a>
+                                <a href="{{url('entmymeet/intomeeting',$v->meetid)}}" class="sw-connect-btn">进入会议厅</a>
                              @else
-                            <a href="javascript:;" index="{{$expertinfo[$v->expertid]->phone}}" class="sw-connect-btn contact">联系专家</a>
+                            <a href="javasctipt:;" index="{{$expertinfo[$v->expertid]->phone}}" class="sw-connect-btn contact">联系专家</a>
                             @endif
                         @endif
                 </div>

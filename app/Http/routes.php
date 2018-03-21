@@ -189,6 +189,7 @@ Route::get('/changePwd', 'PublicController@changePwd');
 //修改密码
 Route::post('/updatePwd', 'PublicController@updatePwd');
 
+Route::get('expshows/index','ExpertUcenter@ShowsIndex');
 
 //专家列表
 Route::get('expert','ExpertController@index');

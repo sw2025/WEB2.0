@@ -95,8 +95,8 @@
                     <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled placeholder="输入公司全名" class="sw-entername" value="{{$basedata['enterprisename'] or ''}}"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled placeholder="输入您所在职位" class="sw-enterjob" value="{{$basedata['job']}}"></div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>联系人</div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled placeholder="输入联系人" class="sw-enterjob" value="{{$basedata['job']}}"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
@@ -135,7 +135,7 @@
                 @else
                     <div class="sw-btn-wrapper">
                         <a class="sw-btn-pay" href="javascript:;" id="" style="background:#dedede">已完成支付</a>
-                        <a class="sw-btn-pay" href="{{url('/entmydav/mydavindex')}}" id="">前往个人中心 =></a>
+                        <a class="sw-btn-pay" href="{{url('/entmydav/mydavindex')}}" id="">前往个人中心查看 =></a>
 
                     </div>
                 @endif

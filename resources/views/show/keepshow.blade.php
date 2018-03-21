@@ -144,7 +144,7 @@
                     <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled value="{{$basedata['enterprisename'] or ''}}"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>联系人</div>
                     <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled class="sw-enterjob" value="{{$basedata['job'] or ''}}"></div>
                 </div>
 
@@ -185,7 +185,7 @@
                 @else
                     <div class="sw-btn-wrapper">
                         <a class="sw-btn-pay" href="javascript:;" id="" style="background:#dedede">该项目已完成支付</a>
-                        <a class="sw-btn-pay" href="{{url('/entmymeet/mymeetindex')}}" id="">前往个人中心 =></a>
+                        <a class="sw-btn-pay" href="{{url('/entmyshow/myshowindex')}}" id="">前往个人中心 =></a>
                     </div>
                 @endif
 

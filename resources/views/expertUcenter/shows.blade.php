@@ -31,17 +31,17 @@
     <!-- 主体 -->
     <div class="swcontainer sw-ucenter">
         <!-- 个人中心左侧 -->
-        @include('layouts.entucenter')
+        @include('layouts.expucenter')
     <!-- 个人中心主体 -->
             <div class="sw-mains">
-                <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">我的直通路演 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/submitIndex')}}" id="putsector">免费发布项目</a></h1>
-                @foreach($data as $v)
+                <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">项目中心 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> </h1>
+                @foreach($data as $k => $v)
                 <ul class="sw-mains-list">
                     <li class="sw-article">
-                        <div class="sw-article-tit"><a href="{{url('keepSubmit',$v->showid)}}">{{$v->title}}</a></div>
+                        <div class="sw-article-tit"><a href="{{url('keepSubmit',$v->showid)}}">{{$v->title}} </a></div>
                         <div class="sw-article-desc">
-                            <b>项目描述：</b>
-                            <p class="sw-article-para">{{mb_substr($v->brief,0,500)}}</p>
+                           <p class="sw-article-para"> <b>领域轮次：</b>{{'【'.$v->domain1.'】'.$v->preference}}</p>
+                            <p class="sw-article-para"> <b>一句话描述：</b>{{$v->oneword}}</p>
                             {{--<a href="javascript:;" class="sw-connect-btn">项目资料</a>--}}
                         </div>
                         {{--<div class="sw-upload-wrapper" style="margin-left: 10px;">

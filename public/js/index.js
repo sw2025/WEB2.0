@@ -11,7 +11,7 @@
         $('.sw-banner ul li').eq(imgKey).fadeIn();
     }
     var timer01 = null;
-    timer01 = setInterval(lunbo,4000);
+    timer01 = setInterval(lunbo,8000);
 
     $('.sw-banner ol li').click(function(event) {
         var ind = $(this).index();
@@ -24,7 +24,7 @@
         clearInterval(timer01);
     }, function() {
         $('.leftBtn,.rightBtn').stop().fadeOut();
-        timer01 = setInterval(lunbo,4000);
+        timer01 = setInterval(lunbo,8000);
     });
     $('.rightBtn').click(function() {
         lunbo();

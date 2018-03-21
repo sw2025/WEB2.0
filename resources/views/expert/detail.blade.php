@@ -12,6 +12,9 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/details.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/ucenter.css')}}" />
     <style>
+        .exp-details-best{
+            color: #000;
+        }
         textarea{
             border:none;
         }
@@ -69,24 +72,63 @@
                              @else
                                   <i class="iconfont icon-shipin"></i>线上约谈:未开启</span>
                             @endif
-                            <span class="exp-details-time">入驻时间：<em>{{$datas->created_at}}</em></span>
+                            {{--<span class="exp-details-time">入驻时间：<em>{{$datas->created_at}}</em></span>--}}
 
 
                             <span class="exp-details-best">擅长领域：<em>{{--{{$datas->domain1}}--}}</em></span>
 
                             <div class="exp-details-lab">
+                                @foreach(explode(',',$datas->domain1) as $do2)
+                                    <span class="exp-lab-a">&nbsp;{{$do2}}&nbsp;</span>
+                                @endforeach
+                            </div>
+                           
+                            @if(in_array('风险投资',explode(',',$datas->domain1)))
+                             <span class="exp-details-best">投资领域：<em></em></span>
+                             <div class="exp-details-lab">
                                 @foreach(explode(',',$datas->domain2) as $do2)
                                     <span class="exp-lab-a">&nbsp;{{$do2}}&nbsp;</span>
                                 @endforeach
                             </div>
+                            <span class="exp-details-best">投资阶段：<em></em></span>
+                             <div class="exp-details-lab">
+                                @foreach(explode(',',$datas->preference) as $do2)
+                                    <span class="exp-lab-a" style="border-color: #23840d;color: #23840d;">&nbsp;{{$do2}}&nbsp;</span>
+                                @endforeach
+                            </div>
+                            @endif
+                           
                         </div>
                     </div>
                     <div class="details-abs">
                         <div class="details-abs-tit">
                             <div class="details-graph"><span class="square"></span></div>
+                            <span class="details-tit-cap">工作年限</span>
+                        </div>
+                        <textarea id="textarea" style="overflow-y: auto;" class="details-abs-desc" readonly>{{$datas->worklife or '无'}}</textarea><a name="reply"></a>
+                    </div>
+                    <div class="details-abs">
+                        <div class="details-abs-tit">
+                            <div class="details-graph"><span class="square"></span></div>
+                            <span class="details-tit-cap">教育背景</span>
+                        </div>
+                        <textarea class="textareaspan" style="overflow-y: auto;" class="details-abs-desc" readonly>{{$datas->edubg or '无'}}</textarea><a name="reply"></a>
+                    </div>
+                   
+                    <div class="details-abs" style="margin-top: 20px;">
+                        <div class="details-abs-tit">
+                            <div class="details-graph"><span class="square"></span></div>
                             <span class="details-tit-cap">专家介绍</span>
                         </div>
-                        <textarea id="textarea" style="overflow-y: auto;" class="details-abs-desc" readonly>{{$datas->brief}}</textarea><a name="reply"></a>
+                        <textarea class="textareaspan" style="overflow-y: auto;" class="details-abs-desc" readonly>{{$datas->brief}}</textarea><a name="reply"></a>
+                    </div>
+
+                     <div class="details-abs" style="margin-top: 20px;">
+                        <div class="details-abs-tit">
+                            <div class="details-graph"><span class="square"></span></div>
+                            <span class="details-tit-cap">工作/投资经历</span>
+                        </div>
+                        <textarea class="textareaspan" style="overflow-y: auto;" class="details-abs-desc" readonly>{{$datas->workexperience or '无'}}</textarea><a name="reply"></a>
                     </div>
                 </div>
                 <div class="details-top clearfix">

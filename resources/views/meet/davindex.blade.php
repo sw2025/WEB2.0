@@ -9,13 +9,9 @@
     <div class="swcontainer">
         <div class="jun-banner-cap">
 
-            <a href="#" class="jun-banner-btn">成长加速</a>
-            <span class="jun-banner-intro">整合全球一线大V、机构资源</span>
-            <p>
-                专为待转型升级企业打造升维私董会<br />
-                线上线下结合，灵活的合作方式<br />
-                为企业实现战略、产品、品牌、管理、渠道五大维度升级
-            </p>
+            <a href="#" class="jun-banner-btn">企业加速</a>
+            <span class="jun-banner-intro">线上/线下约见大V</span>
+            <p>轻轻松松约见<br>融资之路不再迷茫。</p>
 
         </div>
     </div>
@@ -96,7 +92,7 @@
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label "><span class="need">*</span>问题描述</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <textarea placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$meetData->contents or ''}}</textarea>
+                        <textarea placeholder="请输入您遇到的问题描述，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$meetData->contents or ''}}</textarea>
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div>
@@ -106,7 +102,7 @@
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>备注</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <textarea placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-one-word" >{{$basedata['oneword'] or ''}}</textarea>
+                        <textarea placeholder="备注" maxlength="1000" class="sw-one-word" >{{$basedata['oneword'] or ''}}</textarea>
                     </div>
                 </div>
 
@@ -115,8 +111,8 @@
                     <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入公司全名" class="sw-entername" value="@if(!empty($basedata['enterprisename'])){{$basedata['enterprisename']}}@elseif(!empty($entinfo)){{$entinfo->enterprisename}}@else @endif"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif"></div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>联系人</div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="联系人" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif"></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>

@@ -758,5 +758,16 @@ class ExpertUcenter extends Controller
 
     }
 
+    public function ShowsIndex()
+    {
+        $data = DB::table('t_s_show as show')
+            ->leftJoin('view_showstatus as status','status.showid','=','show.showid')
+            ->where('show.userid','<>','')
+            ->where('show.level','<>',1)
+            ->select('show.*','status.configid')
+            ->orderBy('show.showid','desc')
+            ->paginate(3);
+        return view("expertUcenter.shows",compact('data'));
+    }
 
 }

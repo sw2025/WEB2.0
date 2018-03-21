@@ -188,6 +188,9 @@ class ShowController extends Controller
     {
         $configid = self::getNewShowVerify($showid);
         $showinfo = DB::table('t_s_show')->where('showid', $showid)->first();
+        if($showinfo->level == 2){
+            return redirect('keepSubmit/'.$showid);
+        }
         $basedata = unserialize($showinfo->basicdata);
         $expertids = explode(',', $showinfo->expertids);
         $showimages = DB::table('t_u_expert')->whereIn('expertid', $expertids)->select('showimage', 'expertname')->get();
@@ -281,28 +284,51 @@ class ShowController extends Controller
         switch ($type) {
             case 'show':
                 $showverify = DB::table('view_showstatus')->where('showid', $id)->pluck('configid');
-                if ($showverify == 1) {
-                    $basicdata = DB::table('t_s_show')->where('showid', $id)->pluck('basicdata');
-                    $basicdata = unserialize($basicdata);
-                    $amount = $basicdata['selectnumbers'] * env('showPrice');
-                    $channel = $basicdata['paytype'] == '微信支付' ? 'wx_pub_qr' : 'alipay_pc_direct';
-                    $type = 'show';
-                    $showid = $id;
-                    $urlType = url('/keepshow', $id);
-                    $subject = '升维网项目评议';
-                    return [
-                        'icon' => 1,
-                        'data' => [
-                            'payType' => $payType,
-                            'userid' => $userid,
-                            'channel' => $channel,
-                            'type' => $type,
-                            'showid' => $showid,
-                            'urlType' => $urlType,
-                            'subject' => $subject,
-                            'amount' => $amount
-                        ]
-                    ];
+                if (empty($showverify ) || $showverify == 1) {
+                    $showinfo = DB::table('t_s_show')->where('showid', $id)->first();
+                    if($showinfo->level == 1){
+                        $basicdata = $showinfo->basicdata;
+                        $basicdata = unserialize($basicdata);
+                        $amount = $basicdata['selectnumbers'] * env('showPrice');
+                        $channel = $basicdata['paytype'] == '微信支付' ? 'wx_pub_qr' : 'alipay_pc_direct';
+                        $type = 'show';
+                        $showid = $id;
+                        $urlType = url('/keepshow', $id);
+                        $subject = '升维网VC直评';
+                        return [
+                            'icon' => 1,
+                            'data' => [
+                                'payType' => $payType,
+                                'userid' => $userid,
+                                'channel' => $channel,
+                                'type' => $type,
+                                'showid' => $showid,
+                                'urlType' => $urlType,
+                                'subject' => $subject,
+                                'amount' => $amount
+                            ]
+                        ];
+                    } elseif($showinfo->level == 2){
+                        $amount = env('pushProjectPrice');
+                        $type = 'show';
+                        $showid = $id;
+                        $urlType = url('/keepSubmit', $id);
+                        $subject = '升维网直通路演';
+                        return [
+                            'icon' => 1,
+                            'data' => [
+                                'payType' => $payType,
+                                'userid' => $userid,
+                                'channel' => 'wx_pub_qr',
+                                'type' => $type,
+                                'showid' => $showid,
+                                'urlType' => $urlType,
+                                'subject' => $subject,
+                                'amount' => $amount
+                            ]
+                        ];
+                    }
+
                 } else {
                     return [
                         'icon' => 2,
@@ -498,6 +524,7 @@ class ShowController extends Controller
         $file = $request->file('file');
         $userid = empty(session('userId')) ? '' : session('userId');
         $showid = $data['showid'];
+        $level = empty($data['level']) ? 0 : $data['level'];
         if ($data['upload'] != 1) {
             if ($file->isValid()) {
 
@@ -586,8 +613,21 @@ class ShowController extends Controller
                     'bpurl' => $filename,
                     'bpname' => $originalName,
                     'basicdata' => serialize($basedata),
-                    'level' => 0
+                    'level' => $level,
                 ]);
+
+                DB::table('t_s_showverify')->insert([
+                    'showid' => $showid,
+                    'configid' => 1,
+                    'verifytime' => date('Y-m-d H:i:s', time()),
+                ]);
+                if($level==0){
+                    DB::table('t_s_showverify')->insert([
+                        'showid' => $showid,
+                        'configid' => 2,
+                        'verifytime' => date('Y-m-d H:i:s', time()),
+                    ]);
+                }
 
             }
 
@@ -614,6 +654,7 @@ class ShowController extends Controller
      */
     public function keepSubmit($showid)
     {
+        $configid = self::getNewShowVerify($showid);
         $showinfo = DB::table('t_s_show')->where('showid', $showid)->first();
         $basedata = unserialize($showinfo->basicdata);
         $expertids = explode(',', $showinfo->expertids);
