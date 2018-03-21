@@ -31,8 +31,8 @@
                 <input type="text" class="sw-fill-inp entname" placeholder="输入企业名称" value="{{$entinfo->enterprisename or ''}}">
             </div>
             <div class="sw-fill-row">
-                <span class="sw-fill-left">你的职位</span>
-                <input type="text" class="sw-fill-inp entjob" placeholder="输入职位名称" value="{{$entinfo->job or ''}}">
+                <span class="sw-fill-left">联系人</span>
+                <input type="text" class="sw-fill-inp entjob" placeholder="输入联系人名称" value="{{$entinfo->job or ''}}">
             </div>
 
             <div class="sw-fill-row">

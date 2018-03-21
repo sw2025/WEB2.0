@@ -35,7 +35,7 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="" class="active swcol-md-12 swcol-xs-12">提交项目</a>
+        <a href="javascript:;" class="active swcol-md-12 swcol-xs-12">直通路演@if($showinfo->level==2) --付费推送 @else --免费项目  @endif</a>
 
     </div>
     <div class="sw-pro-content">
@@ -114,8 +114,22 @@
                     </div>
                 </div>
                     <div class="sw-btn-wrapper">
-                        <a class="sw-btn-pay" href="javascript:;" onclick="window.location='{{url("submitIndex",$showinfo->showid)}}'">返回修改项目</a>
-                        <a class="sw-btn-change" id="delete">取消提交</a>
+                        @if($showinfo->level)
+                            @if(empty($configid) || $configid==1)
+                                <a class="sw-btn-pay" href="javascript:;" onclick="window.location='{{url("submitIndex",$showinfo->showid)}}'">返回修改项目</a>
+                                <a class="sw-btn-change" href="javascript:;"  id="gotopay">去支付</a>
+                            @else
+                                <a class="sw-btn-change" style="background: #ccc;border: none;color: #000;">已完成支付</a>
+                                <a class="sw-btn-change" href="{{url('/entmylineshow/mylineshowindex')}}">去用户中心查看</a>
+
+                            @endif
+
+                        @else
+                            <a class="sw-btn-pay" href="javascript:;" onclick="window.location='{{url("submitIndex",$showinfo->showid)}}'">返回修改项目</a>
+                            {{--<a class="sw-btn-change" id="delete">取消提交</a>--}}
+                            <a class="sw-btn-change" href="{{url('/entmylineshow/mylineshowindex')}}">去用户中心查看</a>
+
+                        @endif
                     </div>
             </div>
         </div>
@@ -158,6 +172,37 @@
                     });
                 }
             })
+        });
+
+        $('#gotopay').on('click',function () {
+            var showid={{$showinfo->showid}};
+            $.post("{{url('payJudge')}}",{'type':'show','id':showid},function (data) {
+                if(data.icon==2){
+                    layer.open({
+                        type: 1,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['360px', '160px'],
+                        title: false, //不显示标题
+                        shadeClose: false, //开启遮罩关闭
+                        content: '<div style="padding:15px;background: #3d921d;color: #fff;"><span style="font-size:18px;">系统检测到您还未登陆/注册</span><br /><br />登陆/注册完跳转到支付页面就可以成功发起项目了~</div>',
+                        btn: ['去登陆','去注册','再想想'],
+                        yes: function(index, layero){
+                            window.location.href="{{asset('/login')}}?type="+data.type+'&id='+data.id;
+                        },btn2: function(index, layero){
+                            window.location.href="{{asset('/register')}}?type="+data.type+'&id='+data.id;
+                        },btn3: function(index, layero){
+                            layer.close(index);
+                        }
+                    });
+                } else if(data.icon==1){
+                    callPingPay(data.data);
+                } else if(data.icon==3) {
+                    layer.msg(data.msg);
+                } else {
+                    window.location = window.location.href;
+                }
+
+            });
         });
     </script>
 @endsection

@@ -79,7 +79,7 @@ class EnterpriseUcenter extends Controller
             ->where('show.level',1)
             ->paginate(3);
         $expertinfo = [];
-        $configname = [1 => '已保存',2 => '已支付' ,3 => '未通过审核',4 => '已推送/已评议' ,5 => '已完成',6 => '已评价'];
+        $configname = [1 => '已保存',2 => '已支付/待审核推送' ,3 => '未通过审核',4 => '已推送/已评议' ,5 => '已完成',6 => '已评价'];
         foreach($data as $k => $v){
             $expert = DB::table('t_s_pushshow')
                 ->leftJoin('t_u_expert','t_u_expert.expertid','=','t_s_pushshow.expertid')
@@ -243,7 +243,11 @@ class EnterpriseUcenter extends Controller
     {
         $userid = session('userId');
 
-        $data = DB::table("t_s_show")->where(['userid' => $userid,'level' => 0,'state' => 1])->paginate(3);
+        $data = DB::table("t_s_show")
+                ->where(['userid' => $userid,'state' => 1])
+                ->where('level','<>',1)
+                ->orderBy('showid','desc')
+                ->paginate(3);
 
         return view('enterpriseUcenter.mylineshowindex',compact('data','expertinfo'));
     }

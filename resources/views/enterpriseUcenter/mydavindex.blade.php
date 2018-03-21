@@ -5,7 +5,7 @@
     <link type="text/css" rel="stylesheet" href="{{asset('css/meet.css')}}">
     <link type="text/css" rel="stylesheet" href="{{asset('css/fillIn.css')}}">
     <script type="text/javascript" src="{{asset('js/fill.js')}}"></script>
-
+    <link type="text/css" rel="stylesheet" href="{{asset('css/paginate.css')}}">
 
     <!-- banner -->
     <div class="junior-banner">

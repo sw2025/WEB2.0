@@ -8,7 +8,7 @@
 <div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
-            <a href="#" class="jun-banner-btn">企业转型升级</a>
+            <a href="#" class="jun-banner-btn">找投资</a>
             <span class="jun-banner-intro">免费提交创业项目</span>
             <p>获得投资人兴趣意向<br>提高投资几率</p>
         </div>
@@ -86,7 +86,7 @@
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label "><span class="need">*</span>项目概述</div>
                     <div class="swcol-md-8 sw-pro-rowcon">
-                        <textarea placeholder="可拆分为产品描述、用户群体、项目愿景、竞争对手等方面详细描述，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$showinfo->brief or ''}}</textarea>
+                        <textarea placeholder="分为产品描述、团队介绍、用户群体、项目愿景、竞争对手等方面，不超过1000字" maxlength="1000" class="sw-project-txt" >{{$showinfo->brief or ''}}</textarea>
                         <div class="sw-count"><span class="sw-num">0</span>/1000</div>
                     </div>
                 </div>
@@ -110,8 +110,8 @@
                     <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入公司全名" class="sw-entername" value="@if(!empty($basedata['enterprisename'])){{$basedata['enterprisename']}}@elseif(!empty($entinfo)){{$entinfo->enterprisename}}@else @endif "></div>
                 </div>
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入您所在职位" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif "></div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>联系人</div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" placeholder="输入联系人" class="sw-enterjob" value="@if(!empty($basedata['job'])){{$basedata['job']}}@elseif(!empty($entinfo)){{$entinfo->job}}@else @endif "></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>
@@ -145,7 +145,8 @@
                         <button class="sw-btn-submit" type="button" id="submit">修改项目</button>
                     @else
                         <input type="hidden" value="" id="showid">
-                        <button class="sw-btn-submit" type="button" id="submit">提交项目</button>
+                        <button class="sw-btn-submit" type="button" id="submit">免费提交项目</button>
+                        <button class="sw-btn-submit" type="button" id="submit2" style="margin-left: 5%;">付费推送10家投资机构</button>
                     @endif
 
                 </div>
@@ -232,6 +233,102 @@
             //formFile.append("paytype", paytype); //加入文件对象
             formFile.append("showid", showid); //加入文件对象
             formFile.append("upload", upload); //加入文件对象
+            formFile.append("level", 0); //加入文件对象
+            if($.trim(upload)!='1'){
+                if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+                    layer.alert('请选择正确的文件');
+                    return false;
+                }
+            }
+
+
+            $(this).attr('disabled',true);
+            $(this).text('正在提交');
+            $.ajax({
+                url: "{{url('submitProject')}}",
+                data: formFile,
+                type: "Post",
+                dataType: "json",
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if(data.icon==1){
+                        if(data.code==5){
+                            layer.open({
+                                type: 1,
+                                skin: 'layui-layer-rim', //加上边框
+                                area: ['360px', '160px'],
+                                title: false, //不显示标题
+                                shadeClose: false, //开启遮罩关闭
+                                content: '<div style="padding:15px;background: #3d921d;color: #fff;"><span style="font-size:18px;">系统检测到您还未登陆/注册</span><br /><br />登陆/注册完跳转到支付页面就可以成功发起项目了~</div>',
+                                btn: ['去登陆','去注册','再想想'],
+                                yes: function(index, layero){
+                                    window.location.href="{{asset('/login')}}?type="+data.type+'&id='+data.id;
+                                },btn2: function(index, layero){
+                                    window.location.href="{{asset('/register')}}?type="+data.type+'&id='+data.id;
+                                },btn3: function(index, layero){
+                                    layer.close(index);
+                                }
+                            });
+                        } else {
+                            layer.msg(data.msg,{'icon':data.icon,'time':2000},function () {
+                                window.location = data.url;
+                            });
+                        }
+                    } else {
+                        layer.msg(data.msg,{'icon':data.icon,'time':2000},function () {
+                            window.location = window.location.href;
+                        });
+                    }
+                },
+            });
+        });
+
+
+        $('#submit2').on('click',function () {
+            var projectname = $('.project-name').val();  //项目名称
+            var oneword = $('.sw-one-word').val();  //一次简介
+            var domain = $('.sw-domain').text();  //领域
+            var projecttxt = $('.sw-project-txt').val();  //项目概述
+            /*var role = $('.sw-role').text();  //企业阶段*/
+            var stage = $('.sw-stage').text(); //融资轮次
+            var entername = $('.sw-entername').val(); //企业名称
+            var enterjob = $('.sw-enterjob').val(); //职位
+            var industry = $('.sw-industry').text(); //企业行业
+            var upload= $('.sw-upload-btn').attr('index');    //上传文件
+            var showid = $('#showid').val();
+
+            if(projectname == '' || oneword == '' || projecttxt == '' || entername == '' || enterjob == '' || upload == ''){
+                layer.alert('请填写完整信息');
+                return false;
+            }
+
+
+            if(domain == '选择领域' || stage=='选择阶段' || industry == '选择行业'){
+                layer.alert('请填写完整领域/投资阶段/行业信息');
+                return false;
+            }
+
+
+            var fileObj = document.getElementById("bpurl").files[0]; // js 获取文件对象
+            var formFile = new FormData();
+            formFile.append("projectname", projectname);
+            formFile.append("oneword", oneword);
+            formFile.append("domain", domain);
+            formFile.append("projecttxt", projecttxt);
+            /*  formFile.append("role", role);*/
+            formFile.append("stage", stage);
+            formFile.append("entername", entername);
+            formFile.append("enterjob", enterjob);
+            formFile.append("industry", industry);
+            formFile.append("file", fileObj); //加入文件对象
+            //formFile.append("selecttype", selecttype); //加入文件对象
+            //formFile.append("selectnumbers", selectnumbers); //加入文件对象
+            //formFile.append("paytype", paytype); //加入文件对象
+            formFile.append("showid", showid); //加入文件对象
+            formFile.append("upload", upload); //加入文件对象
+            formFile.append("level", 2); //加入文件对象
             if($.trim(upload)!='1'){
                 if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
                     layer.alert('请选择正确的文件');

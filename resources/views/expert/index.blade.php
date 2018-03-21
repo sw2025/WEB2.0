@@ -121,7 +121,7 @@
                     <div class="exp-list-top">
                         <span class="exp-list-img"><img src="{{env('ImagePath').$v->showimage}}" /></span>
                         <div class="exp-list-brief">
-                            <span class="exp-list-name" >{{$v->expertname}}  &nbsp;&nbsp;&nbsp;<span style="font-size:14px">xxx|xxx</span></span>
+                            <span class="exp-list-name" >{{$v->expertname}}  &nbsp;&nbsp;&nbsp;<span style="font-size:14px">{{$v->organiza}} | {{$v->job}}</span></span>
 
                             @if($v->islinemeet==1)
                                 <span class="exp-list-video"><i class="iconfont icon-shipin"></i>线下约谈:￥{{$v->linefee}}/小时

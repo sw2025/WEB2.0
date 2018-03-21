@@ -14,7 +14,7 @@
                         </p>
                         <span class="sw-banner-tip">将创业项目提交至升维网，我们将对接投资机构对项目进行认真评估，<br>您将在系统中查看不同投资人对项目的评议、估值及宝贵建议！</span>
                         <div class="sw-banner-links">
-                            <a href="{{url('submitIndex')}}" class="hover">直通路演</a> <a href="{{url('showIndex')}}" >VC直评</a><a href="{{url('meetIndex')}}">约见投资人</a>
+                            <a href="{{url('submitIndex')}}" class="hover">直通路演(免费)</a> <a href="{{url('showIndex')}}" >VC直评</a><a href="{{url('meetIndex')}}">约见投资人</a>
                         </div>
                     </div>
                 </div>
@@ -106,11 +106,11 @@
     </div>
 </div>
 <div class="swcontainer investor">
-    <span class="investor-title">投资人</span>
+    <span class="investor-title">升维网大V</span>
     <div class="investor-wrapper">
     @foreach($datas as $v)
         <a href="{{url('/expert/detail',$v->expertid)}}" class="investor-img-wrapper">
-            <img src="{{env('ImagePath').$v->showimage}}" style="width: 227px;height: 335px;" class="investor-ava">
+            <img src="{{env('ImagePath').$v->showimage}}" style="width: 227px;height: 250px;" class="investor-ava">
             <div class="investor-intro">
                 <span class="investor-name">{{$v->expertname}}</span>
                 <span class="investor-job">职位：升维网签约大V</span>
@@ -123,111 +123,13 @@
                         @endif
 
                     @endforeach</span>
-                <span class="investor-project">已投资的项目20个</span>
+               {{-- <span class="investor-project">已投资的项目20个</span>--}}
             </div>
         </a>
     @endforeach
-        {{--<a href="#" class="investor-img-wrapper">
-            <img src="img/person2.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person3.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person4.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person1.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person1.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person1.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person1.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person1.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person1.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person1.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person1.jpg" class="investor-ava">
-            <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
-                <span class="investor-project">已投资的项目20个</span>
-            </div>
-        </a>--}}
+
     </div>
-    <div class="investor-more"><a href="{{url('expert')}}" class="investor-more-link">更多投资人>></a></div>
+    <div class="investor-more"><a href="{{url('expert')}}" class="investor-more-link">更多大V>></a></div>
 </div>
 <div class="institution">
     <div class="swcontainer institution-wrapper">

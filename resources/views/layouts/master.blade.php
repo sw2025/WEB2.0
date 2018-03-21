@@ -50,6 +50,7 @@
             </div>
             <ul class="sw-nav">
 
+                <li><a href="{{url('/')}}">首页</a></li>
                 <li><a href="{{url('showIndex')}}">找投资</a></li>
                 <li><a href="{{url('/daVIndex')}}">企业加速</a></li>
                 <li><a href="{{url('/submitIndex')}}">企业转型升级</a></li>

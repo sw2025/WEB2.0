@@ -71,8 +71,8 @@
                     <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled placeholder="输入公司全名" class="sw-entername" value="{{$lineShowData->enterprisename or ''}} "></div>
                 </div>
                 <div class="sw-pro-row clearfix">
-                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>您所在职位</div>
-                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled placeholder="输入您所在职位" class="sw-enterjob" value="{{$lineShowData->job or ''}} "></div>
+                    <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>联系人</div>
+                    <div class="swcol-md-8 sw-pro-rowcon"><input type="text" disabled placeholder="输入联系人" class="sw-enterjob" value="{{$lineShowData->job or ''}} "></div>
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>公司所在行业</div>

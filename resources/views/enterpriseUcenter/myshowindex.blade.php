@@ -47,7 +47,9 @@
                         <img src="{{env('ImagePath').$vv->showimage}}"  @if($vv->state==2) style="border: 3px solid #f00;" title="{{$vv->expertname}}已评议" @elseif($vv->state==4) style="border: 3px solid #e25633;" title="{{$vv->expertname}}已完成"  @else style="border: 3px solid #ccc;" title="{{$vv->expertname}}" @endif  class="sw-article-img">
                     @endforeach
                     @if($v->configid==4)
-                        <div><button class="iscomplete">完成评议</button></div>
+                        <div><button class="iscomplete" onclick='window.location="{{url('/entmyshow/myshowdetail',$v->showid)}}"'>查看评议</button><button class="iscomplete" id="iscomplete">完成评议</button></div>
+                    @elseif($v->configid==5)
+                        <div><button class="iscomplete" onclick='window.location="{{url('/entmyshow/myshowdetail',$v->showid)}}"'>查看评议</button></div>
                     @endif
                 </div>
                 <span class="sw-article-time">{{$v->showtime}}</span>
@@ -73,7 +75,7 @@
 
 </div>
 <script>
-    $('.iscomplete').on('click',function () {
+    $('#iscomplete').on('click',function () {
         layer.msg('请耐心等待升维网官方做核查');
     });
 </script>
