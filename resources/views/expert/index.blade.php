@@ -25,43 +25,28 @@
 <!-- 筛选条件 / start -->
 <div class="container list-filter">
     <div class="all-results filter-row clearfix"><span class="left-cap">全部结果：</span>
+{{--
         @if(isset($role))<a href="javascript:;" class="all-results-expert all-results-opt">{{$role}}</a>@endif
-        @if(isset($supply))<a href="javascript:;" class="all-results-field all-results-opt" index="{{$supply[0].'/'.$supply[1]}}">{{$supply[0].'/'.$supply[1]}}</a>@endif
-        @if(isset($address))<a href="javascript:;" class="all-results-location all-results-opt">{{$address}}</a>@endif
+--}}
         @if(isset($consult))<a href="javascript:;" class="all-results-video all-results-opt">{{$consult}}</a>@endif
+        @if(isset($address))<a href="javascript:;" class="all-results-location all-results-opt">{{$address}}</a>@endif
 
     </div>
-    <div class="experts-classify filter-row clearfix">
+    {{--<div class="experts-classify filter-row clearfix">
         <span class="left-cap">专家分类：</span>
         <a href="javascript:;" {{$role or 'class=active'}}>全部</a>
         <a href="javascript:;" @if(isset($role) && $role == '专家') class=active @endif>专家</a>
         <a href="javascript:;" @if(isset($role) && $role == '机构') class=active @endif>机构</a>
         <a href="javascript:;" @if(isset($role) && $role == '企业家') class=active @endif>企业家</a>
-    </div>
+    </div>--}}
     <div class="video-consult filter-row clearfix">
-        <span class="left-cap">视频咨询：</span>
-        <a href="javascript:;" {{$consult or 'class=active'}}>全部</a>
-        <a href="javascript:;" @if(isset($consult) && $consult == '收费') class=active @endif>收费</a>
-        <a href="javascript:;" @if(isset($consult) && $consult == '免费') class=active @endif>免费</a>
-    </div>
-    <div class="serve-field filter-row clearfix">
         <span class="left-cap">服务领域：</span>
-        <a href="javascript:;" class="serve-all @if(empty($supply)) active @endif">全部</a>
+        <a href="javascript:;" {{$consult or 'class=active'}}>全部</a>
         @foreach($cate as $big)
-            @if($big->level == 1)
-                <div class="serve-field-list">
-                    <a href="javascript:;" class="serve-field-list-deft @if(isset($supply) && $supply[0] == $big->exdomainname) active @endif" index="{{$big->domainname}}">{{$big->exdomainname}}</a>
-                    <ul class="serve-field-list-show" >
-                        @foreach($cate as $small)
-                            @if($small->level == 2 && $small->parentid == $big->domainid)
-                                <li class="@if(!empty($supply) && $small->domainname == $supply[1]) active @endif">{{$small->domainname}}</li>
-                            @endif
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        <a href="javascript:;" @if(empty($consult)) @else class=active' @endif>{{$big->exdomainname}}</a>
         @endforeach
     </div>
+
     <div class="location filter-row clearfix">
         <span class="left-cap">所在地区：</span>
         <div class="location-province">
@@ -166,9 +151,9 @@
                     </span>--}}
 
                     <a href="{{url('expert/detail',$v->expertid)}}#reply" class="review" title="留言"><i class="iconfont icon-pinglun1"></i></a>
-{{--
+
                     <a href="javascript:;" class="collect @if(in_array($v->expertid,$collectids)) red @endif" index="{{$v->expertid}}" title="@if(in_array($v->expertid,$collectids))已收藏 @else 收藏@endif"><i class="iconfont icon-likeo"></i> <span>{{$v->collcount}}</span></a>
---}}
+
                 </div>
             </li>
            @endforeach
