@@ -484,8 +484,9 @@ class ShowController extends Controller
         if (!empty(session('userId'))) {
             $entinfo = DB::table('t_u_enterprise')->where('userid', session('userId'))->select('enterprisename', 'job', 'industry')->first();
         }
-        $cate = DB::table('t_common_domaintype')->where('level', 1)->get();
-        return view('show.submitIndex', compact('showid', 'cate', 'showinfo', 'basedata', 'showimages', 'entinfo'));
+        $cate1 = DB::table('t_i_investment')->where('type', 1)->get();
+        $cate2 = DB::table('t_i_investment')->where('type', 2)->get();
+        return view('show.submitIndex', compact('showid', 'cate1','cate2', 'showinfo', 'basedata', 'showimages', 'entinfo'));
     }
 
     /**
@@ -537,12 +538,13 @@ class ShowController extends Controller
                 }
             }
 
+
             $basedata = [
-                'role' => $data['role'],
-                'stage' => $data['stage'],
+                /*   'role' => $data['role'],*/
+                /* 'stage' => $data['stage'],*/
                 'enterprisename' => $data['entername'],
                 'job' => $data['enterjob'],
-                'industry' => $data['industry']
+                'industry' => $data['industry'],
             ];
             if ($showid) {
                 if ($data['upload'] != 1) {
@@ -552,6 +554,7 @@ class ShowController extends Controller
                         'title' => $data['projectname'],
                         'domain1' => $data['domain'],
                         'brief' => $data['projecttxt'],
+                        'preference' => $data['stage'],
                         'showtime' => date('Y-m-d H:i:s', time()),
                         'bpurl' => $filename,
                         'bpname' => $originalName,
@@ -563,6 +566,7 @@ class ShowController extends Controller
                         'oneword' => $data['oneword'],
                         'title' => $data['projectname'],
                         'domain1' => $data['domain'],
+                        'preference' => $data['stage'],
                         'brief' => $data['projecttxt'],
                         'showtime' => date('Y-m-d H:i:s', time()),
                         'basicdata' => serialize($basedata)
@@ -577,6 +581,7 @@ class ShowController extends Controller
                     'title' => $data['projectname'],
                     'domain1' => $data['domain'],
                     'brief' => $data['projecttxt'],
+                    'preference' => $data['stage'],
                     'showtime' => date('Y-m-d H:i:s', time()),
                     'bpurl' => $filename,
                     'bpname' => $originalName,
@@ -587,7 +592,13 @@ class ShowController extends Controller
             }
 
             DB::commit();
-            $msg = ['msg' => '提交成功', 'icon' => 1, 'code' => 4, 'url' => url('keepSubmit', $showid)];
+            if($userid){
+                $msg = ['msg' => '提交成功', 'icon' => 1, 'code' => 4, 'url' => url('keepSubmit', $showid)];
+
+            } else {
+                $msg = ['msg' => '提交成功', 'icon' => 1, 'code' => 5,'id'=> $showid,'type' => 'Submit'];
+
+            }
 
         } catch (Exception $e) {
             DB::rollback();
@@ -617,7 +628,7 @@ class ShowController extends Controller
     {
         if ($_POST['showid']) {
 
-            $result = DB::table('t_s_show')->where('showid', $_POST['xshowid'])->update([
+            $result = DB::table('t_s_show')->where('showid', $_POST['showid'])->update([
                 "state" => 0
             ]);
 

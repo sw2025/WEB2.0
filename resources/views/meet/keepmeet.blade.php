@@ -18,7 +18,7 @@
 <div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
-            <a href="#" class="jun-banner-btn">创业孵化</a>
+            <a href="#" class="jun-banner-btn">找投资</a>
             <span class="jun-banner-intro">在线提交创业项目</span>
             <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
         </div>
@@ -27,9 +27,9 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">项目评议</a>
-        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见投资人</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">创业加速包</a>
+        <a href="{{url('showIndex')}}" class=" swcol-md-4 swcol-xs-12">VC直评</a>
+        <a href="{{url('meetIndex')}}" class="active swcol-md-4 swcol-xs-12">约见投资人</a>
+        <a href="{{url('lineShowIndex')}}" class="swcol-md-4 swcol-xs-12">直通路演</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
@@ -143,7 +143,9 @@
                     </div>
                 @else
                     <div class="sw-btn-wrapper">
-                        <a class="sw-btn-pay" href="javascript:;" id="">已完成支付</a>
+                        <a class="sw-btn-pay" href="javascript:;" style="background:#dedede">已完成支付</a>
+                        <a class="sw-btn-pay" href="{{url('/entmymeet/mymeetindex')}}" id="">去个人中心查看我的项目 =></a>
+
                     </div>
                 @endif
             </div>

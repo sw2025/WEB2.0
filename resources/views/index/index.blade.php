@@ -14,7 +14,7 @@
                         </p>
                         <span class="sw-banner-tip">将创业项目提交至升维网，我们将对接投资机构对项目进行认真评估，<br>您将在系统中查看不同投资人对项目的评议、估值及宝贵建议！</span>
                         <div class="sw-banner-links">
-                            <a href="{{url('showIndex')}}" class="hover">提交项目</a><a href="{{url('meetIndex')}}">约见投资人</a><a href="{{url('lineShowIndex')}}">线下路演</a>
+                            <a href="{{url('submitIndex')}}" class="hover">直通路演</a> <a href="{{url('showIndex')}}" >VC直评</a><a href="{{url('meetIndex')}}">约见投资人</a>
                         </div>
                     </div>
                 </div>
@@ -22,13 +22,18 @@
             <li class="img02">
                 <div class="swcontainer">
                     <div class="sw-banner-content">
-                        <span class="sw-banner-title">我是创业者</span>
+                        <span class="sw-banner-title">我是企业家</span>
                         <p class="sw-banner-para">
-                            当我拿着BP海投无果时，<br>升维网为我精准匹配到合适的投资人<br>不到两个月，公司获得天使投资500万<br>效率决定项目生死，融资我选择升维网
+                            以前企业遇到问题都自己扛
+                            <br>升维网为我提供了丰富的外部资源
+                            使我突破自身限制
+                            <br>不定战略、找资金、拓市场不在话下
+                            <br>我不是一个人在战斗
                         </p>
-                        <span class="sw-banner-tip">将创业项目提交至升维网，我们将对接投资机构对项目进行认真评估，<br>您将在系统中查看不同投资人对项目的评议、估值及宝贵建议！</span>
+                        <span class="sw-banner-tip">约见升维网大V、召开线上私董会，给您对接资源上带来诸多遍历<br></span>
                         <div class="sw-banner-links">
-                            <a href="{{url('daVIndex')}}" class="hover">约大V</a>
+                            <a href="{{url('daVIndex')}}" class="hover"> 约大V </a>
+                            <a href="{{url('entmysector/supplysector')}}">召开私董会</a>
                         </div>
                     </div>
                 </div>
@@ -36,13 +41,15 @@
             <li class="img03">
                 <div class="swcontainer">
                     <div class="sw-banner-content">
-                        <span class="sw-banner-title">我是创业者</span>
+                        <span class="sw-banner-title">作为一个传统企业的老板</span>
                         <p class="sw-banner-para">
-                            当我拿着BP海投无果时，<br>升维网为我精准匹配到合适的投资人<br>不到两个月，公司获得天使投资500万<br>效率决定项目生死，融资我选择升维网
+                            我深知企业转型升级的必要性
+                            <br>往哪转？怎么转？
+                            <br>升维网组织业界大咖给我出谋划策通过外部资源为我的企业赋能
                         </p>
-                        <span class="sw-banner-tip">将创业项目提交至升维网，我们将对接投资机构对项目进行认真评估，<br>您将在系统中查看不同投资人对项目的评议、估值及宝贵建议！</span>
+                        <span class="sw-banner-tip">产品升级  效率提高<br>管理提升  业绩翻番</span>
                         <div class="sw-banner-links">
-                            <a href="{{url('submitIndex')}}" class="hover">提交项目</a>
+                            <a href="{{url('submitIndex')}}" class="hover">免费提交项目</a>
                         </div>
                     </div>
                 </div>
@@ -58,13 +65,13 @@
     <div class="swcontainer clearfix">
         <div class="swcol-md-4 swcol-xs-12 sw-pre-item pre-item1">
             <img src="img/swicon1.png">
-            <span class="pre-item-title">创业孵化</span>
+            <span class="pre-item-title">找投资</span>
             <p>找投资快人一步</p>
             <p class="pre-item-para">直接联系投资人得到评议<br>了解您的项目实际竞争力<br>掌握新技能，找到创业突破口</p>
         </div>
         <div class="swcol-md-4 swcol-xs-12 sw-pre-item pre-item2">
             <img src="img/swicon2.png">
-            <span class="pre-item-title">成长加速</span>
+            <span class="pre-item-title">企业加速</span>
             <p>开创市场销售新机会</p>
             <p class="pre-item-para">对接资本资源，加速融资<br>共享市场资源，实现协同销售<br>梳理战略部署，提升综合运营能力</p>
         </div>
@@ -101,16 +108,26 @@
 <div class="swcontainer investor">
     <span class="investor-title">投资人</span>
     <div class="investor-wrapper">
-        <a href="#" class="investor-img-wrapper">
-            <img src="img/person1.jpg" class="investor-ava">
+    @foreach($datas as $v)
+        <a href="{{url('/expert/detail',$v->expertid)}}" class="investor-img-wrapper">
+            <img src="{{env('ImagePath').$v->showimage}}" style="width: 227px;height: 335px;" class="investor-ava">
             <div class="investor-intro">
-                <span class="investor-name">王澜</span>
-                <span class="investor-job">中企业港资本总裁</span>
-                <span class="investor-field">投资领域：人工智能／大健康</span>
+                <span class="investor-name">{{$v->expertname}}</span>
+                <span class="investor-job">职位：升维网签约大V</span>
+                <span class="investor-field">投资领域：
+                    @foreach(explode(',',$v->domain1) as $do2)
+                        @if($do2 == '风险投资人')
+                            {{$do2}}
+                        @else
+                           &nbsp;{{$do2}}
+                        @endif
+
+                    @endforeach</span>
                 <span class="investor-project">已投资的项目20个</span>
             </div>
         </a>
-        <a href="#" class="investor-img-wrapper">
+    @endforeach
+        {{--<a href="#" class="investor-img-wrapper">
             <img src="img/person2.jpg" class="investor-ava">
             <div class="investor-intro">
                 <span class="investor-name">王澜</span>
@@ -208,7 +225,7 @@
                 <span class="investor-field">投资领域：人工智能／大健康</span>
                 <span class="investor-project">已投资的项目20个</span>
             </div>
-        </a>
+        </a>--}}
     </div>
     <div class="investor-more"><a href="{{url('expert')}}" class="investor-more-link">更多投资人>></a></div>
 </div>

@@ -113,11 +113,16 @@
                                 return false;
                             });
                         } else {
-                            callPingPay(res.data.data);
-                            $(that).html('登录完成,请支付');
-                            $('.closePop').on('click',function () {
+                            if($.trim(type)=='Submit'){
                                 window.location = '/keep'+type+'/'+id;
-                            });
+                            } else {
+                                callPingPay(res.data.data);
+                                $(that).html('登录完成,请支付');
+                                $('.closePop').on('click',function () {
+                                    window.location = '/keep'+type+'/'+id;
+                                });
+                            }
+
                         }
                     } else {
                         if({{$return}}){

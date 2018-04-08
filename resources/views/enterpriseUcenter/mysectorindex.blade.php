@@ -7,14 +7,25 @@
     <script type="text/javascript" src="{{asset('js/fill.js')}}"></script>
 
     <link type="text/css" rel="stylesheet" href="{{asset('css/paginate.css')}}">
-
+    <style>
+        #putsector{
+            margin-right: 0%;
+            float: right;
+            background: #e25633;
+            border: 1px solid #eeeeee;
+            padding: 1px 11px;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 19px;
+        }
+    </style>
     <!-- banner -->
     <div class="junior-banner">
         <div class="swcontainer">
             <div class="jun-banner-cap">
-                <a href="#" class="jun-banner-btn">创业孵化</a>
-                <span class="jun-banner-intro">在线提交创业项目</span>
-                <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
+                <a href="#" class="jun-banner-btn">成长加速</a>
+                <span class="jun-banner-intro">在线召开私董会</span>
+                <p>整合全球一线大V、机构资源<br>专为待转型升级企业打造升维私董会</p>
             </div>
         </div>
     </div>
@@ -24,7 +35,7 @@
         @include('layouts.entucenter')
     <!-- 个人中心主体 -->
     <div class="sw-mains">
-        <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">线上私董会 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
+        <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">线上私董会 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/entmysector/supplysector')}}" id="putsector">发布私董会</a></h1>
 
         <ul class="sw-mains-list">
             @foreach($data as $k => $v)

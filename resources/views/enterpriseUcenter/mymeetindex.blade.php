@@ -12,8 +12,8 @@
         <div class="swcontainer">
             <div class="jun-banner-cap">
                 <a href="#" class="jun-banner-btn">创业孵化</a>
-                <span class="jun-banner-intro">在线提交创业项目</span>
-                <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
+                <span class="jun-banner-intro">线上线下约投资人</span>
+                <p>轻轻松松找投资</p>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
         @include('layouts.entucenter')
     <!-- 个人中心主体 -->
     <div class="sw-mains">
-        <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">约见投资人 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
+        <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">约见投资人 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/meetIndex')}}" id="putsector">我想约见</a></h1>
     @foreach($data as $v)
            <ul class="sw-white-style">
             <li class="sw-white-item">
@@ -37,24 +37,24 @@
                             @endif
                         @endif
                 </div>
-            <span onclick="javascript:window.location.href= '{{url('keepmeet',$v->meetid)}}'" style="cursor:pointer;">
                 <div class="content-wrapper">
-                    <strong class="sw-meet-name">{{$v->expertname}}</strong>
+                    <strong class="sw-meet-name"><a title ="查看专家资料" style="color:black;" href="{{url('expert/detail',$v->expertid)}}">{{$v->expertname}}</a></strong>
                     <span style="color: red">（{{$v->meettypename}}）</span>
                     <div class="sw-meet-label">
-                        <a href="javacript:;">天使投资</a>
-                        <a href="javacript:;">A轮</a>
+                        <a style="cursor:default;" href="javacript:;">天使投资</a>
+                        <a style="cursor:default;" href="javacript:;">A轮</a>
                     </div>
-                    <h3>问题描述：</h3>
-                    <p class="sw-meet-desc">
-                        {{$v->contents}}
-                    </p>
-                    <h3>备注：</h3>
-                    <p class="sw-meet-desc">
-                        {{unserialize($v->basicdata)['oneword']}}
-                    </p>
+                        <h3>问题描述：</h3>
+                        <p class="sw-meet-desc">
+                            {{$v->contents}}
+                        </p>
+                        <h3>备注：</h3>
+                        <p class="sw-meet-desc">
+                            {{unserialize($v->basicdata)['oneword']}}
+                        </p>
+
                 </div>
-            </span>
+
                 <div class="sw-meet-time"><span></span>{{$v->puttime}}</div>
                 <span class="sw-meet-state">  <a href="{{url('keepmeet',$v->meetid)}}" style="color:#e25633;">{{$v->configname}}</a></span>
             </li>
@@ -62,8 +62,6 @@
         @endforeach
         <div style="width: 100%;text-align: center;">
             {!! $data->render() !!}
-
-
         </div>
         @if(!empty($data->lastpage()))
             <div style="width: 100%;text-align: center;margin: 10px 0px;">

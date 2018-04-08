@@ -17,7 +17,7 @@
 <div class="junior-banner">
     <div class="swcontainer">
         <div class="jun-banner-cap">
-            <a href="#" class="jun-banner-btn">创业孵化</a>
+            <a href="#" class="jun-banner-btn">企业加速</a>
             <span class="jun-banner-intro">在线提交创业项目</span>
             <p>获得投资人论证评议+反馈，<br>融资之路不再迷茫。</p>
         </div>
@@ -26,9 +26,7 @@
 <!-- 主体 -->
 <div class="sw-project swcontainer">
     <div class="sw-pro-tab clearfix">
-        <a href="javascript:;" class=" swcol-md-4 swcol-xs-12">xx</a>
-        <a href="javascript:;" class="active swcol-md-4 swcol-xs-12">约见大V</a>
-        <a href="javascript:;" class="swcol-md-4 swcol-xs-12">xx</a>
+        <a href="{{url('daVIndex')}}" class="active swcol-md-12 swcol-xs-12">约见大V</a>
     </div>
     <div class="sw-pro-content">
         <div class="sw-pro-tabcon show">
@@ -136,7 +134,9 @@
                     </div>
                 @else
                     <div class="sw-btn-wrapper">
-                        <a class="sw-btn-pay" href="javascript:;" id="">已完成支付</a>
+                        <a class="sw-btn-pay" href="javascript:;" id="" style="background:#dedede">已完成支付</a>
+                        <a class="sw-btn-pay" href="{{url('/entmydav/mydavindex')}}" id="">前往个人中心 =></a>
+
                     </div>
                 @endif
             </div>
