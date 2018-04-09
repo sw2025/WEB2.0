@@ -58,6 +58,16 @@ return [
             // 文件将上传到public/uploads目录 如果需要浏览器直接访问 请设置成这个
             //'root' => public_path('uploads'),
         ],
+        'uploads2' => [
+
+            'driver' => 'local',
+
+            // 文件将上传到storage/app/uploads目录
+            'root' => './show/',
+
+            // 文件将上传到public/uploads目录 如果需要浏览器直接访问 请设置成这个
+            //'root' => public_path('uploads'),
+        ],
         'uploadexpert' => [
 
             'driver' => 'local',

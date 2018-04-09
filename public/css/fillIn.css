@@ -7,7 +7,7 @@ body {
     /*height: 430px;*/
     height: 300px;
     background: url("../img/swpro.jpg") no-repeat center top;
-    border-bottom: 0.08rem solid #e25633;
+    border-bottom: 0.08rem solid #61498f;
 }
 
 .jun-banner-cap {
@@ -124,7 +124,7 @@ body {
 
 .sw-fill-list li:hover ,.sw-fill-list li.active{
     background: #eeeeee;
-    color: #e25633;
+    color: #61498f;
 }
 
 .sw-btn-wrapper {
@@ -136,7 +136,7 @@ body {
 .sw-btn-submit {
     display: inline-block;
     line-height: 0.38rem;
-    background: #e25633;
+    background: #61498f;
     color: #fff;
     width: 1.42rem;
     text-align: center;
@@ -176,7 +176,7 @@ body {
     width: 100px;
     height: 0.38rem;
     line-height:0.38rem;
-    border: 1px solid #e25633;
+    border: 1px solid #61498f;
     border-radius: 4px;
     text-align: center;
     overflow: hidden;
@@ -184,7 +184,7 @@ body {
 
 .sw-upload-btn{
     font-size: 14px;
-    color: #e25633;
+    color: #61498f;
 }
 .hide-upbtn {
     position: absolute;

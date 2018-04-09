@@ -24,7 +24,7 @@
     <!-- 个人中心右侧 -->
     <div class="sw-mains">
         <!-- 主体 -->
-        <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">企业信息 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
+        <h1 style="font-size: 22px;color: #61498f;margin-bottom: 25px;">企业信息 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
         <div class="sw-fillin">
             <div class="sw-fill-row">
                 <span class="sw-fill-left">企业名称</span>

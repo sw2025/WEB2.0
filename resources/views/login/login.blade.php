@@ -62,14 +62,14 @@
         var id= "{{$id}}";
         if(!(reg1.test(phone))){
             layer.tips('手机号不能为空或输入错误', '.user-tel', {
-                tips: [2, '#e25633'],
+                tips: [2, '#61498f'],
                 time: 4000
             });
             return false;
         };
         if(!(reg2.test(passWord))){
             layer.tips('密码只能是6-18位的数字或者字母', '.user-pwd', {
-                tips: [2, '#e25633'],
+                tips: [2, '#61498f'],
                 time: 4000
             });
             return false;
@@ -84,7 +84,7 @@
             success:function(res){
                 if(res['code']=="phone"){
                     layer.tips(res['msg'], '.user-tel', {
-                        tips: [2, '#e25633'],
+                        tips: [2, '#61498f'],
                         time: 4000
                     });
                     $(that).removeAttr('disabled');
@@ -93,7 +93,7 @@
                     $(that).removeAttr('disabled');
                     $(that).html('登录');
                     layer.tips(res['msg'], '.user-pwd', {
-                        tips: [2, '#e25633'],
+                        tips: [2, '#61498f'],
                         time: 4000
                     });
                 }else{

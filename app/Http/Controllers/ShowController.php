@@ -55,7 +55,7 @@ class ShowController extends Controller
                 // 上传文件
                 $filename = date('YmdHis') . uniqid() . '.' . $ext;
                 // 使用我们新建的uploads本地存储空间（目录）
-                $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
+                $bool = Storage::disk('uploads2')->put($filename, file_get_contents($realPath));
             } else {
                 return ['msg' => '上传失败~', 'icon' => 2, 'code' => 3];
             }
@@ -411,7 +411,7 @@ class ShowController extends Controller
                 // 上传文件
                 $filename = date('YmdHis') . uniqid() . '.' . $ext;
                 // 使用我们新建的uploads本地存储空间（目录）
-                $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
+                $bool = Storage::disk('uploads2')->put($filename, file_get_contents($realPath));
             } else {
                 return ['msg' => '上传失败~', 'icon' => 2, 'code' => 3];
             }
@@ -537,7 +537,7 @@ class ShowController extends Controller
                 // 上传文件
                 $filename = date('YmdHis') . uniqid() . '.' . $ext;
                 // 使用我们新建的uploads本地存储空间（目录）
-                $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
+                $bool = Storage::disk('uploads2')->put($filename, file_get_contents($realPath));
             } else {
                 return ['msg' => '上传失败~', 'icon' => 2, 'code' => 3];
             }

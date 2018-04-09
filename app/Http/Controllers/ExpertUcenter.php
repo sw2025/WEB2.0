@@ -15,9 +15,9 @@ class ExpertUcenter extends Controller
 {
 
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        parent::__construct();
+        parent::__construct($request);
 
     }
 
@@ -768,6 +768,19 @@ class ExpertUcenter extends Controller
             ->orderBy('show.showid','desc')
             ->paginate(3);
         return view("expertUcenter.shows",compact('data'));
+    }
+
+    /**
+     * 项目详情
+     */
+    public function showsDetail($showid)
+    {
+        $data = DB::table('t_s_show as show')
+            ->where('show.showid',$showid)
+            ->where('show.level','<>',1)
+            ->first();
+        $message = DB::table('t_s_messagetoshow')->where(['showid' => $showid,'userid' => session('userId')])->first();
+        return view('expertUcenter.showsdetail',compact('data','message'));
     }
 
 }

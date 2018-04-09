@@ -12,7 +12,7 @@
     .card-sum,.card-bank-open{width: 300px;}
     .card-sum,.card-bank-open,.cash-num{height: 30px;line-height: 30px;background:#eaeaea;margin:0 10px;padding-left: 10px;}
     .must{color:#ff1919;font-size: 20px;display: inline-block;vertical-align: middle;}
-    .test-btn,.cash-btn{display: inline-block;width: 250px;height: 40px;text-align: center;line-height: 40px;background:#e25633;border: none;border-radius: 4px;color:#fff;font-size: 16px;margin-bottom: 50px;}
+    .test-btn,.cash-btn{display: inline-block;width: 250px;height: 40px;text-align: center;line-height: 40px;background:#61498f;border: none;border-radius: 4px;color:#fff;font-size: 16px;margin-bottom: 50px;}
     .card-number{padding-top: 50px;padding-bottom: 34px;}
     .card-name,.card-bank{padding-bottom: 34px;}
     .card-number label,.card-name label,.card-bank label{display:inline-block;width:3em;text-align:right;}
@@ -20,7 +20,7 @@
     .card-tip{color: #999;display: block;padding-bottom: 20px;}
     .card-bank-sel{display: inline-block;position: relative;width: 330px;}
     .card-bank-open{display: block;color: #ABABAB;text-align: left;position: relative;}
-    .card-bank-open:before{font-family: "iconfont";content: "\e618";background: #e25633;position: absolute;color: #fff;width: 30px;text-align: center;top: 0;right: 0;}
+    .card-bank-open:before{font-family: "iconfont";content: "\e618";background: #61498f;position: absolute;color: #fff;width: 30px;text-align: center;top: 0;right: 0;}
     .card-bank-list{position: absolute;top: 30px;left: 10px;text-align: left;background: #fff;width: 310px;display: none;}
     .card-bank-list li{margin: 2px 0;padding: 5px 0 5px 10px;}
     .card-bank-list li:hover{background: #f5f5f5;}
@@ -116,28 +116,28 @@
         var bankFullName=$("#bankFullName").val();
         if(!bankCard){
             layer.tips("卡号不能为空", '.bank-card', {
-                tips: [2, '#e25633'],
+                tips: [2, '#61498f'],
                 time: 4000
             });
             return false;
         }
         if(!account){
             layer.tips("户主不能为空", '.bank-account', {
-                tips: [2, '#e25633'],
+                tips: [2, '#61498f'],
                 time: 4000
             });
             return false;
         }
         if(!bankName){
             layer.tips("银行不能为空", '.card-bank-open', {
-                tips: [2, '#e25633'],
+                tips: [2, '#61498f'],
                 time: 4000
             });
             return false;
         }
         if(!bankFullName){
             layer.tips("开户行不能为空", '.bank-full', {
-                tips: [2, '#e25633'],
+                tips: [2, '#61498f'],
                 time: 4000
             });
             return false;

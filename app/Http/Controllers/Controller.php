@@ -12,11 +12,12 @@ use Aliyun\Core\DefaultAcsClient;
 use Aliyun\Api\Sms\Request\V20170525\SendSmsRequest;
 use Aliyun\Api\Sms\Request\V20170525\QuerySendDetailsRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 abstract class Controller extends BaseController{
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function __construct()
+    public function __construct(Request $request)
 
     {
 
@@ -39,7 +40,18 @@ abstract class Controller extends BaseController{
                 $showimage2 = env('ImagePath') . $expertinfo->showimage;
             }
             view()->share(['enterprisename' => $enterprisename, 'showimage' => $showimage,'expertname' => $expertname,'showimage2' => $showimage2,'systemMessage'=>$systemMessage]);
+            $userid = session('userId');
+        } else {
+            $userid = 0; 
         }
+        $ip = $request->getClientIp();
+        $url =$request->path();
+       /* DB::table('ipaccess')->insert([
+            'ip' => $ip,
+            'url' => $url,
+            'userid' => $userid
+            ]);*/
+
 
     }
     /**

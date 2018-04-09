@@ -11,7 +11,7 @@
         #putsector{
             margin-right: 0%;
             float: right;
-            background: #e25633;
+            background: #61498f;
             border: 1px solid #eeeeee;
             padding: 1px 11px;
             border-radius: 5px;
@@ -35,7 +35,7 @@
         @include('layouts.entucenter')
     <!-- 个人中心主体 -->
     <div class="sw-mains">
-        <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">线上私董会 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/entmysector/supplysector')}}" id="putsector">发布私董会</a></h1>
+        <h1 style="font-size: 22px;color: #61498f;margin-bottom: 25px;">线上私董会 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/entmysector/supplysector')}}" id="putsector">发布私董会</a></h1>
 
         <ul class="sw-mains-list">
             @foreach($data as $k => $v)
@@ -48,7 +48,7 @@
                     <span class="sw-article-cap">参会人：</span>
                     @if(!empty($expertinfo))
                         @foreach($expertinfo[$k] as $vv)
-                            <img src="{{env('ImagePath').$vv->showimage}}" @if($vv->state==2) style="border: 3px solid #f00;" title="{{$vv->expertname}}已响应" @elseif($vv->state==3) style="border: 3px solid #36b942;" title="{{$vv->expertname}}已被选择" @elseif($vv->state==4) style="border: 3px solid #e25633;" title="{{$vv->expertname}}已完成" @elseif($vv->state==5) style="border: 3px solid #000;" title="{{$vv->expertname}}已拒绝或失效" @else style="border: 3px solid #ccc;" title="{{$vv->expertname}}" @endif class="sw-article-img"  >
+                            <img src="{{env('ImagePath').$vv->showimage}}" @if($vv->state==2) style="border: 3px solid #f00;" title="{{$vv->expertname}}已响应" @elseif($vv->state==3) style="border: 3px solid #36b942;" title="{{$vv->expertname}}已被选择" @elseif($vv->state==4) style="border: 3px solid #61498f;" title="{{$vv->expertname}}已完成" @elseif($vv->state==5) style="border: 3px solid #000;" title="{{$vv->expertname}}已拒绝或失效" @else style="border: 3px solid #ccc;" title="{{$vv->expertname}}" @endif class="sw-article-img"  >
                         @endforeach
                     @endif
                 </div>

@@ -6,7 +6,7 @@ body {
     width: 100%;
     height: 430px;
     background: url("../img/swpro.jpg") no-repeat center top;
-    border-bottom: 0.08rem solid #e25633;
+    border-bottom: 0.08rem solid #61498f;
 }
 
 .jun-banner-cap {
@@ -32,7 +32,7 @@ body {
 
 .my-money{
     padding:20px 0;
-    border-top: 3px solid #e25633;
+    border-top: 3px solid #61498f;
 }
 
 .my-money-top{
@@ -65,13 +65,13 @@ body {
     border-radius: 4px;
 }
 .sw-recharge-btn{
-    background: #e25633;
+    background: #61498f;
     color: #ffffff;
 }
 .sw-apply-btn{
     background: #ffffff;
-    border: 1px solid #e25633;
-    color: #e25633;
+    border: 1px solid #61498f;
+    color: #61498f;
 }
 
 .sw-upload-bankcard {
@@ -140,7 +140,7 @@ body {
     font-size: 14px;
 }
 .swcard-upload-tip a{
-    color: #e25633;
+    color: #61498f;
 }
 .swcard-upload-tip i {
     display: block;
@@ -149,7 +149,7 @@ body {
 }
 .my-money-list{
     padding:20px 0 0;
-    border-top: 1px dashed #e25633;
+    border-top: 1px dashed #61498f;
 }
 .my-money-table-wrapper{
     min-height: 455px;

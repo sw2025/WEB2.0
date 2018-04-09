@@ -94,27 +94,19 @@
                 </div>
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>项目领域</div>
-                    <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-domain">{{$showinfo->domain1 or '选择领域'}}</a>
-                        <ul class="sw-select-list sw-field-list">
-                            @foreach($cate1 as $v)
-                                <li style="padding: 5px;">{{$v->name}}</li>
-                            @endforeach
-                        </ul>
-                        <span class="sw-error"></span>
+                    <div class="swcol-md-8 sw-pro-rowcon" style="padding-top: 7px">
+                        @foreach($cate1 as $k => $v)
+                            <input type='radio' @if(!empty($showinfo) && $showinfo->domain1 == $v->name) checked @endif name=sw-domain id="sw-domain{{$k}}" style="width: 4%" value="{{$v->name}}"><label for="sw-domain{{$k}}">{{$v->name}}</span> &ensp; 
+                        @endforeach
                     </div>
                 </div>
 
                 <div class="sw-pro-row clearfix">
                     <div class="swcol-md-4 sw-pro-label"><span class="need">*</span>投资阶段</div>
-                    <div class="swcol-md-8 sw-pro-rowcon">
-                        <a href="javascript:;" class="sw-select-default sw-stage">{{$showinfo->preference or '选择阶段'}}</a>
-                        <ul class="sw-select-list sw-role-list">
-                            @foreach($cate2 as $v)
-                                <li style="padding: 5px;">{{$v->name}}</li>
-                            @endforeach
-                        </ul>
-                        <span class="sw-error"></span>
+                    <div class="swcol-md-8 sw-pro-rowcon" style="padding-top: 7px">
+                        @foreach($cate2 as $k => $v)
+                            <input type='radio' @if(!empty($showinfo) && $showinfo->preference == $v->name) checked @endif name=sw-stage id="sw-stage{{$k}}" style="width: 4%" value="{{$v->name}}"><label for="sw-stage{{$k}}">{{$v->name}}</span> &ensp; 
+                        @endforeach
                     </div>
                 </div>
             {{--    <div class="sw-pro-row clearfix">
@@ -261,10 +253,14 @@
         $('#submit').on('click',function () {
             var projectname = $('.project-name').val();  //项目名称
             var oneword = $('.sw-one-word').val();  //一次简介
-            var domain = $('.sw-domain').text();  //领域
+            //var domain = $('.sw-domain').text();  //领域
             var projecttxt = $('.sw-project-txt').val();  //项目概述
             /*var role = $('.sw-role').text();  //身份*/
-            var stage = $('.sw-stage').text(); //融资轮次
+            var domain = $("input[name='sw-domain']:checked").val();  
+            /*var role = $('.sw-role').text();  //企业阶段*/
+            //var stage = $('.sw-stage').text(); //融资轮次
+            var stage = $("input[name='sw-stage']:checked").val();  
+            //var stage = $('.sw-stage').text(); //融资轮次
             var entername = $('.sw-entername').val(); //企业名称
             var enterjob = $('.sw-enterjob').val(); //项目名称
             var industry = $('.sw-industry').text(); //企业行业
@@ -281,12 +277,12 @@
             //支付的方式
             var paytype = $.trim($('.sw-need-con .swon').children('label').eq(2).text());
 
-            if(projectname == '' || oneword == '' || projecttxt == '' || entername == '' || enterjob == '' || upload == ''){
+            if(projectname == '' || oneword == '' || projecttxt == ''  || enterjob == '' || upload == ''){
                 layer.alert('请填写完整信息');
                 return false;
             }
 
-            if(domain == '选择领域' || stage=='选择阶段' || industry == '选择行业'){
+            if(domain == undefined || stage == undefined || industry == '选择行业'){
                 layer.alert('请填写完整领域/投资阶段/行业信息');
                 return false;
             }
@@ -346,7 +342,7 @@
                 var layermsg = '提示：请您先选择好几位大V进行评议或者自定完大V 再填写项目';
             }
             layer.tips(layermsg, '#tipsneed', {
-                tips: [1, '#e25633'],
+                tips: [1, '#61498f'],
                 time: 8000
             });
 
