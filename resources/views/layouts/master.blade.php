@@ -84,14 +84,14 @@
                     升维公众号
                     <img src="{{asset('img/erweima1.jpg')}} " alt="升维公众号">
                 </div>
-                <div class="swcol-md-6 sw-app">
+               <!--  <div class="swcol-md-6 sw-app">
                     <p class="sw-app-caption">客户端</p>
                     <img src="{{asset('img/erweima2.jpg')}} " alt="客户端">
                     <div class="app-caption">
                         <span><i class="iconfont icon-changyonglogo35"></i>IOS</span>
                         <span><i class="iconfont icon-changyonglogo37"></i>Android</span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="sw-copy">
@@ -153,6 +153,17 @@
 
         });
     })();
+    layer.config({extend: 'extend/layer.ext.js'}) 
+      $('#expshows').on('click',function (){
+            layer.prompt({title: '请输入投资人查阅项目口令', formType: 1}, function(pass, index){
+              layer.close(index);
+              if(pass=='123456'){
+                window.location = "{{url('expshows/index')}}";
+              } else {
+                layer.msg('口令输入口误');
+              }
+            });
+        });
 
     $(".quit").on("click",function(){
         $.ajax({

@@ -23,7 +23,7 @@
     @include('layouts.entucenter')
     <!-- 个人中心主体 -->
         <div class="sw-mains">
-            <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">约见大咖 <i class="iconfont" style="font-size: 23px;">&#xe602;</i>  <a href="{{url('/daVIndex')}}" id="putsector">我想约见</a></h1>
+            <h1 style="font-size: 22px;color: #61498f;margin-bottom: 25px;">约见大咖 <i class="iconfont" style="font-size: 23px;">&#xe602;</i>  <a href="{{url('/daVIndex')}}" id="putsector">我想约见</a></h1>
 
             @foreach($data as $v)
 
@@ -60,7 +60,7 @@
                 </div>
         </span>
                         <div class="sw-meet-time"><span></span>{{$v->puttime}}</div>
-                        <span class="sw-meet-state"> <a href="{{url('keepmeet',$v->meetid)}}" style="color:#e25633;">{{$v->configname}}</a></span>
+                        <span class="sw-meet-state"> <a href="{{url('keepmeet',$v->meetid)}}" style="color:#61498f;">{{$v->configname}}</a></span>
 
                     </li>
                 </ul>
@@ -77,7 +77,7 @@
     </div>
     <style>
         .xxxooo li{display: inline; padding:20px;font-size: 16px;}
-        .xxxooo .active{color:#e25633;}
+        .xxxooo .active{color:#61498f;}
     </style>
     <script>
         $('.contact').on('click',function () {

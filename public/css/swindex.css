@@ -1,4 +1,5 @@
-.sw-banner{position: relative;margin:0 auto;width:100%;border-bottom: 0.08rem solid #e25633;}
+.sw-banner{position: relative;margin:0 auto;width:100%;border-bottom: 0.08rem solid #61498f
+;}
 .sw-banner ul{position: relative;height: 762px;}
 .sw-banner ul li{position: absolute;top: 0;left: 0;display: none;height: 762px;width: 100%;}
 .img01{background: url(../img/swbanner1.jpg) no-repeat center top;}
@@ -7,7 +8,8 @@
 .img04{background: url(../img/swbanner1.jpg) no-repeat center top;}
 .sw-banner ol{position: absolute;bottom: 0.6rem;left: 50%;margin-left: -52px;z-index: 5;}
 .sw-banner ol li{width: 10px;height: 10px;border-radius: 20px;background:#fff;float: left;margin:0 8px;cursor: pointer;}
-.sw-banner ol .cur{background:#dc5140;}
+.sw-banner ol .cur{background:#61498f
+;}
 .sw-banner i{font-size: 50px;}
 /* 图片文字 */
 .sw-banner-content{
@@ -39,8 +41,8 @@
   color: #fff;
 }
 .sw-banner-links a:hover,.sw-banner-links a.hover{
-  background: #e25633;
-  border-color: #e25633;
+  background: #61498f;
+  border-color: #61498f;
 }
 /**/
 .sw-preview{
@@ -58,13 +60,15 @@
   margin:0 auto;
 }
 .pre-item1{
-  background: #e25633;
+  background: #61498f
+;
 }
 .pre-item2{
-  background: #d64e2d;
+  background: #58447d;
 }
 .pre-item3{
-  background: #cd4825;
+  background: #523e79;
+;
 }
 .pre-item-title{
   display: block;
@@ -86,7 +90,8 @@
   font-size: 0.18rem;
 }
 .five-item-title{
-  color: #cd4825;
+  color: #61498f
+;
   font-size: 0.2rem;
 }
 /**/
@@ -97,7 +102,7 @@
   display: block;
   line-height: 1;
   margin-bottom:0.4rem;
-  color: #e25633;
+  color: #61498f;
   text-align: center;
   font-size: 0.3rem;
 }
@@ -121,13 +126,14 @@
   font-size: 12px;
   color: #fff;
   text-align: left;
-  border-bottom:0.05rem solid #e25633;
+  border-bottom:0.05rem solid #61498f;
 }
 .investor-name{
   display: block;
   line-height: 1;
   margin-bottom: 12px;
-  color: #d64e2d;
+  color: #61498f
+;
   font-size: 0.2rem;
 }
 .investor-job,.investor-field,.investor-project{
@@ -141,7 +147,7 @@
 }
 .investor-more-link{
   margin-right: 0.2rem;
-  color: #e25633;
+  color: #61498f;
 }
 .institution{
   background: #eeeeee;
@@ -155,8 +161,9 @@
 }
 .institution-brand span{
   display: inline-block;
-  margin-bottom: 12px;
-  width: 25%;
+      margin-left: 15px;
+      margin-bottom: 15px;
+    width: 18%;
 }
 .institution-brand img{
   margin:0 auto;
@@ -166,14 +173,14 @@
   width: 100%;
   height: 309px;
   text-align: center;
-  color: #cd4825;
+  color: #61498f;
   font-size: 0.24rem;
 }
 .sw-about-tit{
   display: block;
   padding:0.8rem 0 0.4rem;
   line-height: 1;
-  color: #e25633;
+  color: #61498f;
   font-size: 0.36rem;
 }
 @media (max-width: 955px){

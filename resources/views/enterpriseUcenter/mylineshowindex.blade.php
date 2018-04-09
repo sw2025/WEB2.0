@@ -34,7 +34,7 @@
         @include('layouts.entucenter')
     <!-- 个人中心主体 -->
             <div class="sw-mains">
-                <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">我的直通路演 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/submitIndex')}}" id="putsector">免费发布项目</a></h1>
+                <h1 style="font-size: 22px;color: #61498f;margin-bottom: 25px;">我的直通路演 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/submitIndex')}}" id="putsector">免费发布项目</a></h1>
                 @foreach($data as $v)
                 <ul class="sw-mains-list">
                     <li class="sw-article">
@@ -71,7 +71,7 @@
 </div>
     <style>
     .xxxooo li{display: inline; padding:20px;font-size: 16px;}
-    .xxxooo .active{color:#e25633;}
+    .xxxooo .active{color:#61498f;}
     </style>
 <!-- 底部 -->
 @endsection

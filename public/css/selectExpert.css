@@ -27,14 +27,14 @@ body {
     line-height: 0.4rem;
     padding: 0 0.7rem 0 0.2rem;
     box-sizing: border-box;
-    border: 1px solid #e25633;
+    border: 1px solid #61498f;
 }
 
 .list-search-btn {
     position: absolute;
     right: 0;
     top: 25px;
-    background: #e25633;
+    background: #61498f;
     border: none;
     color: #fff;
     width: 0.5rem;
@@ -65,7 +65,7 @@ body {
 }
 
 .filter-row .active, .experts-classify a:hover, .video-consult a:hover, .location a:hover {
-    color: #e25633;
+    color: #61498f;
 }
 
 .left-cap {
@@ -146,16 +146,16 @@ body {
 .all-results a {
     float: left;
     padding: 0 40px 0 12px;
-    border: 1px solid #e25633;
+    border: 1px solid #61498f;
     line-height: 22px;
-    color: #e25633;
+    color: #61498f;
     position: relative;
     margin-right: 12px;
     border-radius: 4px;
 }
 
 .all-results a:hover {
-    background: #e25633;
+    background: #61498f;
     color: #fff;
 }
 
@@ -174,7 +174,7 @@ body {
   overflow: hidden;
 }
 .sort {
-    background: #e25734;
+    background: #61498f;
     padding: 10px 16px;
     border: 1px solid #f1f1f1;
     overflow: hidden;
@@ -196,7 +196,7 @@ body {
 }
 
 .sort .blue-color {
-    color: #e25734;
+    color: #61498f;
 }
 
 .sort .list-collect {
@@ -305,8 +305,8 @@ body {
 .exp-list-lab span {
     float: left;
     display: block;
-    border: 1px solid #e25633;
-    color: #e25633;
+    border: 1px solid #61498f;
+    color: #61498f;
     border-radius: 3px;
     line-height: 1.4;
     margin-right: 4px;
@@ -418,7 +418,7 @@ body {
 }
 
 .supp-list-img {
-    border: 1px dotted #e25633;
+    border: 1px dotted #61498f;
     width: 180px;
     height: 180px;
     position: absolute;
@@ -475,11 +475,11 @@ body {
 }
 
 .supply-list-link:hover, .expert-list-link:hover {
-    border-color: #e25633;
+    border-color: #61498f;
     box-shadow: 0 0 10px #ccc;
 }
 .reselect-btn-box{text-align: center;padding-bottom: 30px;}
-.reselect-btn{display: inline-block;padding:3px 25px;background:#e25734;color:#fff;border: 1px solid #ccc;border-radius: 3px;margin:0 50px;}
+.reselect-btn{display: inline-block;padding:3px 25px;background:#61498f;color:#fff;border: 1px solid #ccc;border-radius: 3px;margin:0 50px;}
 .back-btn{background:#ececec;color:#333;}
 .checkbox-wrapper:hover{background-position: 0 0px;cursor: pointer;}
 

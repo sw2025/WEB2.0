@@ -35,7 +35,7 @@
     <!-- 个人中心主体 -->
     <div class="sw-mains">
         <ul class="sw-mains-list">
-            <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">我的约见 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
+            <h1 style="font-size: 22px;color: #61498f;margin-bottom: 25px;">我的约见 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
             @foreach($datas as $v)
             <li class="sw-article">
                 <div class="sw-article-tit"><a href="{{url('expmymeet/myMeetdetail',$v->meetid)}}"><span class="meettype">@if($v->meettype==1)线上约见 @else线下约见 @endif</span> {{$v->enterprisename}}</a></div>

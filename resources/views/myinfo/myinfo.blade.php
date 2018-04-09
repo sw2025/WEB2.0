@@ -7,7 +7,7 @@
     <script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
     <div class="swcontainer sw-ucenter">
         <div class="main" style="margin-top: 65px">
-            <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">我的消息 <i class="iconfont" style="font-size: 23px;">&#xe7f6;</i></h1>
+            <h1 style="font-size: 22px;color: #61498f;margin-bottom: 25px;">我的消息 <i class="iconfont" style="font-size: 23px;">&#xe7f6;</i></h1>
 
             <div class="ucenter-con">
         <div class="main-right">

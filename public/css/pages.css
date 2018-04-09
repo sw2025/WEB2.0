@@ -84,7 +84,7 @@
   float: left;
   display: inline;
   padding: 0.05rem 0.15rem;
-  border: 1px solid #e25633;
+  border: 1px solid #61498f;
   border-radius: 3px;
   background: #f6f6f6;
   color: #666666;
@@ -94,14 +94,14 @@
 }
 
 .pages #Pagination .pagination .current {
-  background: #e25633;
+  background: #61498f;
   color: #fff;
 }
 
 .pages #Pagination .pagination .prev, .pages #Pagination .pagination .next {
   float: left;
   padding: 0.05rem 0.15rem;
-  border: 1px solid #e25633;
+  border: 1px solid #61498f;
   background: #f6f6f6;
   color: #666666;
   cursor: pointer;

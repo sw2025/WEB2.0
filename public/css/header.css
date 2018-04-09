@@ -35,7 +35,7 @@
 }
 
 .sw-nav li a:hover {
-  color: #e25633;
+  color: #61498f;
 }
 
 .sw-user {
@@ -70,7 +70,7 @@
   position: absolute;
   bottom: 9px;
   right: 11px;
-  background: #e25633;
+  background: #61498f;
   width: 7px;
   height:7px;
   border-radius: 50%;
@@ -92,7 +92,7 @@
   width: 33px;
   height: 33px;
   border-radius: 50%;
-  border: 1px solid #e25633;
+  border: 1px solid #61498f;
 }
 .sw-logined span{
   display: inline-block;
@@ -126,7 +126,7 @@
   width: 100%;
   background: #2c2c2c;
   font-size: 0.16rem;
-  border-top:1px solid #e25633;
+  border-top:1px solid #61498f;
 }
 
 .sw-footer-l {
@@ -287,13 +287,13 @@
   text-align: center;
 }
 .sw-setting i{
-  color: #e25633;
+  color: #61498f;
 }
 
 .sw-avatar{
   width: 108px;
   height: 108px;
-  border: 2px solid #e25633;
+  border: 2px solid #61498f;
   border-radius: 50%;
 }
 .sw-avatar-name{
@@ -333,7 +333,7 @@
   border:none;
 }
 .my-ucenter .sw-aside-item a:hover{
-  color: #e25633;
+  color: #61498f;
 }
 .my-ucenter .sw-item-title{
   background: url("../img/usericon.png") no-repeat 15px 13px;
@@ -348,7 +348,7 @@
   background-position: 15px -147px;
 }
 .my-ucenter .on a,.my-ucenter .sw-aside-item a:hover{
-  background: #e25633;
+  background: #61498f;
   color: #ffffff;
   font-size: 18px;
   font-weight: normal;
@@ -361,7 +361,7 @@
   font-weight: 600;
 }
 .sw-aside-sublist a:hover,.sw-aside-sublist li.active a{
-  background: #e25633;
+  background: #61498f;
   color: #ffffff;
   font-size: 18px;
   font-weight: normal;
@@ -376,7 +376,7 @@
   height: 30px;
   box-sizing: border-box;
   border-radius: 3px;
-  background: #e25633;
+  background: #61498f;
   color: #ffffff;
   border:none;
   display: none;
@@ -384,7 +384,7 @@
 #putsector{
   margin-right: 0%;
   float: right;
-  background: #e25633;
+  background: #61498f;
   border: 1px solid #eeeeee;
   padding: 1px 11px;
   border-radius: 5px;
@@ -397,7 +397,7 @@
   min-height: 750px;
   box-sizing: border-box;
   padding: 0.25rem 0.25rem 0;
-  border: 1px solid #e25633;
+  border: 1px solid #61498f;
   border-top-width: 2px;
   border-bottom-width: 2px;
 }

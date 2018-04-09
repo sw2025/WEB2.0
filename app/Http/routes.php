@@ -188,9 +188,10 @@ Route::post('/changeNewPhone', 'PublicController@changeNewPhone');
 Route::get('/changePwd', 'PublicController@changePwd');
 //修改密码
 Route::post('/updatePwd', 'PublicController@updatePwd');
-
+//项目中心
 Route::get('expshows/index','ExpertUcenter@ShowsIndex');
-
+//项目详情
+Route::get('expshows/detail/{showid}','ExpertUcenter@ShowsDetail');
 //专家列表
 Route::get('expert','ExpertController@index');
 //专家详情
@@ -206,3 +207,7 @@ Route::get('myinfo','MyinfoController@myinfo');
 Route::post('uct_flagread', 'MyinfoController@flagRead');
 
 
+//pdf  app小程序
+Route::get('pdf','IndexController@pdfUpload');
+Route::post('acceptfile', 'IndexController@acceptFile');
+Route::post('getUploadStatus', 'IndexController@getUploadStatus');

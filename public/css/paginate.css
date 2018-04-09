@@ -17,7 +17,7 @@
     padding: 6px 12px;
     margin-left: -1px;
     line-height: 1.42857143;
-    color: #f54721;
+    color: #61498f;
     text-decoration: none;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -40,8 +40,8 @@
     z-index: 2;
     color: #fff;
     cursor: default;
-    background-color: #f54721;
-    border-color: #f54721;
+    background-color: #61498f;
+    border-color: #61498f;
 }
 .pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
     color: #777;

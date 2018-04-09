@@ -26,7 +26,7 @@
         <!-- 主体 -->
         <h1 style="font-size: 20px;margin: 0 auto;    width: 70%;">专家认证</h1>
         @if(!empty($data) && $data->configid == 1)
-            <h1 style="margin: 0 auto;width: 70%;color: #e25633;">当前认证状态：正在审核中</h1>
+            <h1 style="margin: 0 auto;width: 70%;color: #61498f;">当前认证状态：正在审核中</h1>
         @elseif(!empty($data) && $data->configid == 2)
             <h1 style="margin: 0 auto;width: 70%;color: green;">当前认证状态：审核通过</h1>
         @elseif(!empty($data) && $data->configid == 3)

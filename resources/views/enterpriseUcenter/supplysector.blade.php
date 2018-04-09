@@ -25,7 +25,7 @@
                 <!-- 个人中心主体 -->
         <div class="sw-mains">
             <div class="main">
-                <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">线上私董会 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
+                <h1 style="font-size: 22px;color: #61498f;margin-bottom: 25px;">线上私董会 <i class="iconfont" style="font-size: 23px;">&#xe602;</i></h1>
             <div class="ucenter-con">
                 <div class="main-right">
                     <div class="card-step works-step">
@@ -368,7 +368,7 @@
                 var videoType=1;
                 if(!title){
                     layer.tips("会议标题不能为空", '.video-title', {
-                        tips: [2, '#e25633'],
+                        tips: [2, '#61498f'],
                         time: 4000
                     });
                     return false;
@@ -384,7 +384,7 @@
 
                 if(!describe){
                     layer.tips("会议描述不能为空", '.uct-works-txt', {
-                        tips: [2, '#e25633'],
+                        tips: [2, '#61498f'],
                         time: 4000
                     });
                     return false;
@@ -398,21 +398,21 @@
                 }
                 if(!dateStart){
                     layer.tips("开始时间必填", '.start', {
-                        tips: [2, '#e25633'],
+                        tips: [2, '#61498f'],
                         time: 4000
                     });
                     return false;
                 }
                 if(!dateEnd){
                     layer.tips("结束时间必填", '.end ',{
-                        tips: [2, '#e25633'],
+                        tips: [2, '#61498f'],
                         time: 4000
                     });
                     return false;
                 }
                 if(!$('.uct-works-exp a').hasClass('active')){
                     layer.tips("请自选专家", '.uct-works-exp', {
-                        tips: [2, '#e25633'],
+                        tips: [2, '#61498f'],
                         time: 4000
                     });
                     return false;

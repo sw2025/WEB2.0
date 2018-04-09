@@ -14,9 +14,9 @@ class EnterpriseUcenter extends Controller
 {
 
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        parent::__construct();
+        parent::__construct($request);
 
     }
 

@@ -6,7 +6,7 @@ body{
    /* height: 430px;*/
     height: 300px;
     background: url("../img/swpro.jpg") no-repeat center top;
-    border-bottom: 0.08rem solid #e25633;
+    border-bottom: 0.08rem solid #61498f;
 }
 
 .jun-banner-cap {
@@ -34,7 +34,7 @@ body{
 .sw-article{
     position: relative;
     margin-bottom:0.35rem;
-    border-top: 3px solid #e25633;
+    border-top: 3px solid #61498f;
     background: #f2f2f2;
 }
 .sw-article-tit{
@@ -55,7 +55,7 @@ body{
     vertical-align: top;
     line-height: 22px;
     font-size: 18px;
-    color: #e25633;
+    color: #61498f;
     font-weight: 600;
 }
 .sw-article-desc{
@@ -119,7 +119,7 @@ body{
     padding:0 0.3rem;
     line-height: 22px;
     margin:19px 0 0 0.2rem;
-    background: #e25633;
+    background: #61498f;
     color: #ffffff;
     border-radius: 4px;
     font-size: 14px;
@@ -130,17 +130,17 @@ body{
     padding:0 0.3rem;
     line-height: 22px;
     margin:19px 0 0 0.2rem;
-    border: 1px solid #e25633;
+    border: 1px solid #61498f;
     font-size: 14px;
     border-radius: 4px;
     box-sizing: border-box;
-    color: #e25633;
+    color: #61498f;
 }
 
 /* 评议结果列表 */
 .sw-result-article{
     position: relative;
-    border-top: 3px solid #e25633;
+    border-top: 3px solid #61498f;
     background: #f2f2f2;
 }
 .sw-article-info,.sw-result-info{
@@ -150,7 +150,7 @@ body{
 }
 .sw-result-info{
     padding: 0;
-    border-bottom: 1px dotted #e25633;
+    border-bottom: 1px dotted #61498f;
 }
 .sw-article-column{
     display: inline-block;
@@ -170,7 +170,7 @@ body{
     font-size: 0.24rem;
 }
 .sw-result-tit span{
-    color: #e25633;
+    color: #61498f;
 }
 .sw-white-style .sw-result-item{
     padding:8px 0.16rem 8px 8px;

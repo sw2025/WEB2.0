@@ -9,8 +9,8 @@
         font-size: 15px;
         line-height: 20px;
         padding: 1px 10px;
-        background: #e66b4d;
-        border: 1px solid #e66b4d;
+        background: #61498f;
+        border: 1px solid #61498f;
         border-radius: 5px;
         color: #fff;
         margin: 10px 10px;
@@ -33,7 +33,7 @@
     <!-- 个人中心主体 -->
     <div class="sw-mains">
         <ul class="sw-mains-list">
-            <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">我的VC直评 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/showIndex')}}" id="putsector">发布VC</a></h1>
+            <h1 style="font-size: 22px;color: #61498f;margin-bottom: 25px;">我的VC直评 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> <a href="{{url('/showIndex')}}" id="putsector">发布VC</a></h1>
             @foreach($data as $k => $v)
             <li class="sw-article">
                 <div class="sw-article-tit"><span>项目名称：</span><a href="@if($v->configid==1 || $v->configid==2){{url('/keepshow',$v->showid)}}@elseif($v->configid == 4 || $v->configid==5){{url('/entmyshow/myshowdetail',$v->showid)}} @else javascript:;@endif">{{$v->title}}</a></div>
@@ -44,7 +44,7 @@
                 <div class="sw-article-person">
                     <span class="sw-article-cap">评议人：</span>
                     @foreach($expertinfo[$k] as $vv)
-                        <img src="{{env('ImagePath').$vv->showimage}}"  @if($vv->state==2) style="border: 3px solid #f00;" title="{{$vv->expertname}}已评议" @elseif($vv->state==4) style="border: 3px solid #e25633;" title="{{$vv->expertname}}已完成"  @else style="border: 3px solid #ccc;" title="{{$vv->expertname}}" @endif  class="sw-article-img">
+                        <img src="{{env('ImagePath').$vv->showimage}}"  @if($vv->state==2) style="border: 3px solid #f00;" title="{{$vv->expertname}}已评议" @elseif($vv->state==4) style="border: 3px solid #61498f;" title="{{$vv->expertname}}已完成"  @else style="border: 3px solid #ccc;" title="{{$vv->expertname}}" @endif  class="sw-article-img">
                     @endforeach
                     @if($v->configid==4)
                         <div><button class="iscomplete" onclick='window.location="{{url('/entmyshow/myshowdetail',$v->showid)}}"'>查看评议</button><button class="iscomplete" id="iscomplete">完成评议</button></div>

@@ -11,8 +11,8 @@
             font-size: 15px;
             line-height: 20px;
             padding: 1px 10px;
-            background: #e66b4d;
-            border: 1px solid #e66b4d;
+            background: #61498f;
+            border: 1px solid #61498f;
             border-radius: 5px;
             color: #fff;
             margin: 10px 10px;
@@ -34,11 +34,11 @@
         @include('layouts.expucenter')
     <!-- 个人中心主体 -->
             <div class="sw-mains">
-                <h1 style="font-size: 22px;color: #e25633;margin-bottom: 25px;">项目中心 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> </h1>
+                <h1 style="font-size: 22px;color: #61498f;margin-bottom: 25px;">项目中心 <i class="iconfont" style="font-size: 23px;">&#xe602;</i> </h1>
                 @foreach($data as $k => $v)
                 <ul class="sw-mains-list">
                     <li class="sw-article">
-                        <div class="sw-article-tit"><a href="{{url('keepSubmit',$v->showid)}}">{{$v->title}} </a></div>
+                        <div class="sw-article-tit"><a href="{{url('expshows/detail',$v->showid)}}">{{$v->title}} </a></div>
                         <div class="sw-article-desc">
                            <p class="sw-article-para"> <b>领域轮次：</b>{{'【'.$v->domain1.'】'.$v->preference}}</p>
                             <p class="sw-article-para"> <b>一句话描述：</b>{{$v->oneword}}</p>
@@ -49,7 +49,7 @@
                         </div>--}}
                         <div class="sw-article-person">
                             <span class="sw-article-cap">BP：</span>
-                            <button class="iscomplete" onclick="window.location='{{env('ImagePath')."/show/".$v->bpurl}}'">{{$v->bpname}}</button>
+                            <button class="iscomplete" onclick="window.location='{{asset("./show/".$v->bpurl)}}'">{{$v->bpname}}</button>
                         </div>
 
                         <span class="sw-article-time"><b class="sw-time-explain">提交时间：</b>{{$v->showtime}}</span>
@@ -71,7 +71,7 @@
 </div>
     <style>
     .xxxooo li{display: inline; padding:20px;font-size: 16px;}
-    .xxxooo .active{color:#e25633;}
+    .xxxooo .active{color:#61498f;}
     </style>
 <!-- 底部 -->
 @endsection

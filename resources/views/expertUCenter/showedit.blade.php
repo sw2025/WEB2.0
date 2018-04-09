@@ -51,7 +51,7 @@
                 </div>
                 <div class="sw-result-desc">
                     <b class="sw-prodesc-cap">项目描述：</b>
-                    <p class="sw-detail-desc"><a href="{{env('ImagePath').'/show/'.$data->bpurl}}" target="_blank">{{$data->bpname}}</a></p>
+                    <p class="sw-detail-desc"><a href="{{asset('./show/'.$data->bpurl)}}" target="_blank">{{$data->bpname}}</a></p>
                 </div>
                 <div class="sw-result-desc">
                     <b class="sw-prodesc-cap">项目BP：</b>

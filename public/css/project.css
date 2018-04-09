@@ -6,7 +6,7 @@ body {
     width: 100%;
     height: 430px;
     background: url("../img/swpro.jpg") no-repeat center top;
-    border-bottom: 0.08rem solid #e25633;
+    border-bottom: 0.08rem solid #61498f;
 }
 
 .jun-banner-cap {
@@ -39,19 +39,19 @@ body {
 
 .sw-pro-tab {
     width: 100%;
-    border: 2px solid #e25633;
+    border: 2px solid #61498f;
     box-sizing: border-box;
 }
 
 .sw-pro-tab a {
     font-size: 0.2rem;
     text-align: center;
-    color: #e25633;
+    color: #61498f;
     line-height: 0.42rem;
 }
 
 .sw-pro-tab .active, .sw-pro-tab a:hover {
-    background: #e25633;
+    background: #61498f;
     color: #fff;
 }
 
@@ -61,10 +61,10 @@ body {
 }
 
 .sw-pro-para {
-    color: #e25633;
+    color: #61498f;
     text-align: justify;
     padding: 0 0 0.4rem;
-    border-bottom: 1px dotted #e25633;
+    border-bottom: 1px dotted #61498f;
 }
 
 .sw-pro-form {
@@ -83,7 +83,7 @@ body {
 
 .sw-pro-label .need {
     margin-right: 5px;
-    color: #e25633;
+    color: #61498f;
 }
 
 .sw-pro-rowcon {
@@ -164,7 +164,7 @@ body {
     cursor: pointer;
 }
 .sw-select-list li:hover{
-    background: #e25633;
+    background: #61498f;
     color: #fff;
 }
 
@@ -176,10 +176,10 @@ body {
     /*width: 1.48rem;*/
     padding: 0 3%;
     overflow: hidden;
-    border: 2px solid #e25633;
+    border: 2px solid #61498f;
     border-radius: 5px;
     text-align: center;
-    color: #e25633;
+    color: #61498f;
     position: relative;
     cursor: pointer;
     box-sizing: border-box;
@@ -291,11 +291,11 @@ body {
     vertical-align: -24px;
     /*margin-left: 15px;*/
     padding:0 6px;
-    border: 1px solid #e25633;
+    border: 1px solid #61498f;
     border-radius: 3px;
     box-sizing: border-box;
     line-height: 16px;
-    color: #e25633;
+    color: #61498f;
     font-size: 12px;
 }
 .icon-weixin{
@@ -324,7 +324,7 @@ body {
 .sw-btn-submit{
     display: inline-block;
     line-height: 0.38rem;
-    background: #e25633;
+    background: #61498f;
     color: #fff;
     width: 1.9rem;
     text-align: center;
@@ -337,7 +337,7 @@ body {
     bottom: -14px;
     left: 0.15rem;
     line-height: 14px;
-    color: #e25633;
+    color: #61498f;
     font-size: 12px;
 }
 .sw-pro-content .show{
